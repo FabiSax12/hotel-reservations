@@ -10,7 +10,7 @@
     "./types": "./src/types.ts"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "biome check .",
     "type-check": "tsc --noEmit",
     "generate-types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/database.types.ts",
     "clean": "rm -rf dist .turbo node_modules"
