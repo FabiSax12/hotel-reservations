@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Portal de Reservas",
@@ -12,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body className="min-h-screen bg-white antialiased">{children}</body>
     </html>
   );
 }

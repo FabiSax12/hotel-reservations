@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hotel - Página Principal",
+  title: "Hotel - Pagina Principal",
   description: "Bienvenido a nuestro hotel",
 };
 
@@ -12,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body className="min-h-screen bg-white antialiased">{children}</body>
     </html>
   );
 }
