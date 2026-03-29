@@ -26,13 +26,13 @@
     }
   },
   "files": {
-    "ignore": [
-      "node_modules",
-      ".next",
-      "dist",
-      ".turbo",
-      "*.gen.ts",
-      "database.types.ts"
+    "includes": [
+      "!node_modules",
+      "!.next",
+      "!dist",
+      "!.turbo",
+      "!*.gen.ts",
+      "!database.types.ts"
     ]
   }
 }
