@@ -11,9 +11,10 @@
     "clean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
-    "@hotel/ui": "workspace:*",
-    "@hotel/db": "workspace:*",
+    "@heroui/styles": "^3.0.1",
     "@hotel/core": "workspace:*",
+    "@hotel/db": "workspace:*",
+    "@hotel/ui": "workspace:*",
     "next": "^15.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

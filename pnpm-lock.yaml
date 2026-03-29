@@ -57,6 +57,9 @@ importers:
 
   apps/panel-admin:
     dependencies:
+      '@heroui/styles':
+        specifier: ^3.0.1
+        version: 3.0.1(tailwind-merge@3.4.0)(tailwindcss@4.2.2)
       '@hotel/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -97,6 +100,9 @@ importers:
 
   apps/portal-reservas:
     dependencies:
+      '@heroui/styles':
+        specifier: ^3.0.1
+        version: 3.0.1(tailwind-merge@3.4.0)(tailwindcss@4.2.2)
       '@hotel/core':
         specifier: workspace:*
         version: link:../../packages/core
