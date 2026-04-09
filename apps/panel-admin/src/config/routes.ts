@@ -3,4 +3,4 @@ export const ROUTES = Object.freeze({
     LOGIN: '/admin/login',
     DASHBOARD: '/admin/dashboard',
   }),
-})
+}) as const
