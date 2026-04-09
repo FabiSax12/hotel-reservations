@@ -12,14 +12,18 @@
   "scripts": {
     "lint": "biome check .",
     "type-check": "tsc --noEmit",
-    "generate-types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/database.types.ts",
-    "clean": "rm -rf dist .turbo node_modules"
+    "generate-types": "supabase gen types typescript --project-id vhnblyovgvpamjsqlzix > src/database.types.ts",
+    "clean": "rm -rf dist .turbo node_modules",
+    "db:push": "supabase db push",
+    "db:types": "supabase gen types typescript --project-id vhnblyovgvpamjsqlzix > src/database.types.ts",
+    "db:migration": "supabase migration new"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.0"
+    "@supabase/ssr": "^0.10.0"
   },
   "devDependencies": {
-    "supabase": "^2.20.0",
+    "@types/node": "^22.0.0",
+    "supabase": "^2.84.4",
     "typescript": "^5.8.0"
   }
 }
