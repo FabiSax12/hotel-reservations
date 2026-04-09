@@ -1,15 +1,12 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { createServerClient } from "@supabase/ssr";
 import { verifyAdminRole } from "@hotel/core/auth";
 import { createSupabaseServerClient } from "@hotel/db";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export async function loginAction(
-  prevState: { error: string } | null,
-  formData: FormData
-) {
+export async function loginAction(prevState: { error: string } | null, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 

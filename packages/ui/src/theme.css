@@ -11,7 +11,7 @@
 [data-theme="light"],
 [data-theme="default"] {
   /* Theme Colors (Light Mode) */
-  --accent: oklch(62.04% 0.1950 224.67);
+  --accent: oklch(62.04% 0.195 224.67);
   --accent-foreground: oklch(99.11% 0 0);
   --background: oklch(97.02% 0.0012 224.67);
   --border: oklch(90.00% 0.0012 224.67);
@@ -22,7 +22,7 @@
   --field-background: oklch(100.00% 0.0006 224.67);
   --field-foreground: oklch(21.03% 0.0012 224.67);
   --field-placeholder: oklch(55.17% 0.0024 224.67);
-  --focus: oklch(62.04% 0.1950 224.67);
+  --focus: oklch(62.04% 0.195 224.67);
   --foreground: oklch(21.03% 0.0012 224.67);
   --muted: oklch(55.17% 0.0024 224.67);
   --overlay: oklch(100.00% 0.0004 224.67);
@@ -31,13 +31,13 @@
   --segment: oklch(100.00% 0.0012 224.67);
   --segment-foreground: oklch(21.03% 0.0012 224.67);
   --separator: oklch(92.00% 0.0012 224.67);
-  --success: oklch(73.29% 0.1940 147.31);
+  --success: oklch(73.29% 0.194 147.31);
   --success-foreground: oklch(21.03% 0.0059 147.31);
   --surface: oklch(100.00% 0.0006 224.67);
   --surface-foreground: oklch(21.03% 0.0012 224.67);
-  --surface-secondary: oklch(95.24% 0.0010 224.67);
+  --surface-secondary: oklch(95.24% 0.001 224.67);
   --surface-secondary-foreground: oklch(21.03% 0.0012 224.67);
-  --surface-tertiary: oklch(93.73% 0.0010 224.67);
+  --surface-tertiary: oklch(93.73% 0.001 224.67);
   --surface-tertiary-foreground: oklch(21.03% 0.0012 224.67);
   --warning: oklch(78.19% 0.1589 68.83);
   --warning-foreground: oklch(21.03% 0.0059 68.83);
@@ -55,7 +55,7 @@
 [data-theme="dark"] {
   color-scheme: dark;
   /* Theme Colors (Dark Mode) */
-  --accent: oklch(62.04% 0.1950 224.67);
+  --accent: oklch(62.04% 0.195 224.67);
   --accent-foreground: oklch(99.11% 0 0);
   --background: oklch(12.00% 0.0012 224.67);
   --border: oklch(28.00% 0.0012 224.67);
@@ -66,7 +66,7 @@
   --field-background: oklch(21.03% 0.0024 224.67);
   --field-foreground: oklch(99.11% 0.0012 224.67);
   --field-placeholder: oklch(70.50% 0.0024 224.67);
-  --focus: oklch(62.04% 0.1950 224.67);
+  --focus: oklch(62.04% 0.195 224.67);
   --foreground: oklch(99.11% 0.0012 224.67);
   --muted: oklch(70.50% 0.0024 224.67);
   --overlay: oklch(21.03% 0.0024 224.67);
@@ -75,7 +75,7 @@
   --segment: oklch(39.64% 0.0012 224.67);
   --segment-foreground: oklch(99.11% 0.0012 224.67);
   --separator: oklch(25.00% 0.0012 224.67);
-  --success: oklch(73.29% 0.1940 147.31);
+  --success: oklch(73.29% 0.194 147.31);
   --success-foreground: oklch(21.03% 0.0059 147.31);
   --surface: oklch(21.03% 0.0024 224.67);
   --surface-foreground: oklch(99.11% 0.0012 224.67);

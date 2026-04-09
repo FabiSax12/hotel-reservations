@@ -1,6 +1,5 @@
-import { createServerClient, createBrowserClient } from "@supabase/ssr";
+import { createBrowserClient, createServerClient } from "@supabase/ssr";
 import type { Database } from "./database.types";
-
 
 export function createSupabaseServerClient(cookieStore: {
   getAll: () => { name: string; value: string }[];
@@ -13,9 +12,7 @@ export function createSupabaseServerClient(cookieStore: {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookies) =>
-        cookies.forEach(({ name, value, options }) =>
-          cookieStore.set(name, value, options)
-        ),
+        cookies.forEach(({ name, value, options }) => cookieStore.set(name, value, options)),
     },
   });
 }
