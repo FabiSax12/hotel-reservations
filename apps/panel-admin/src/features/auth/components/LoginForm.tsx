@@ -1,27 +1,16 @@
-"use client"
+"use client";
 
-import { validateEmail, validatePassword } from "@/features/auth/domain/credentials"
-import type { LoginActionState } from "@/features/auth/domain/credentials"
-import {
-  Button,
-  Description,
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
-} from "@heroui/react"
-import { useActionState } from "react"
+import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { useActionState } from "react";
+import type { LoginActionState } from "@/features/auth/domain/credentials";
+import { validateEmail, validatePassword } from "@/features/auth/domain/credentials";
 
 interface LoginFormProps {
-  action: (prevState: LoginActionState, formData: FormData) => Promise<LoginActionState>
+  action: (prevState: LoginActionState, formData: FormData) => Promise<LoginActionState>;
 }
 
 export const LoginForm = ({ action }: LoginFormProps) => {
-  const [state, formAction, isPending] = useActionState<LoginActionState, FormData>(
-    action,
-    null
-  )
+  const [state, formAction, isPending] = useActionState<LoginActionState, FormData>(action, null);
 
   return (
     <main className="min-h-screen flex items-center justify-center">
@@ -61,5 +50,5 @@ export const LoginForm = ({ action }: LoginFormProps) => {
         </Form>
       </div>
     </main>
-  )
-}
+  );
+};

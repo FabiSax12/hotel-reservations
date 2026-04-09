@@ -28,7 +28,7 @@ export async function verifyAdminRole(userId: string): Promise<AdminUser | null>
   const { data, error } = await supabase
     .from(AUTH_TABLE)
     .select(
-      `${AUTH_COLUMNS.ID}, ${AUTH_COLUMNS.EMAIL}, ${AUTH_COLUMNS.ROLE}, ${AUTH_COLUMNS.IS_ACTIVE}`
+      `${AUTH_COLUMNS.ID}, ${AUTH_COLUMNS.EMAIL}, ${AUTH_COLUMNS.ROLE}, ${AUTH_COLUMNS.IS_ACTIVE}`,
     )
     .eq(AUTH_COLUMNS.ID, userId)
     .single();
