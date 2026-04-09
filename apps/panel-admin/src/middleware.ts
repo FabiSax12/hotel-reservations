@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@hotel/db";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { ROUTES } from "@/config/routes";
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({
@@ -16,11 +17,10 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isLoginPage = request.nextUrl.pathname === "/admin/login";
+  const isLoginPage = request.nextUrl.pathname === ROUTES.ADMIN.LOGIN;
 
   if (!user && !isLoginPage) {
-    console.log("User not authenticated, redirecting to login page...");
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    return NextResponse.redirect(new URL(ROUTES.ADMIN.LOGIN, request.url));
   }
 
   return response;
