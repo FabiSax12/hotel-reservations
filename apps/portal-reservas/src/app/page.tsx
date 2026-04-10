@@ -3,58 +3,134 @@
 import { useState } from "react";
 import { ModernSearchBar } from "@hotel/ui";
 
-const mockStays = [
+const mockRooms = [
+  // Monteverde
   {
-    id: 1,
-    title: "Eco Lodge Bosque Nuboso",
-    location: "Monteverde, Costa Rica",
-    price: "$180",
-    rating: "4.92",
-    description: "Despierta entre las nubes en esta cabaña inmersa en la reserva biológica, ideal para el avistamiento de quetzales.",
+    id: "mv-1",
+    location: "Monteverde",
+    title: "Cabaña Estándar del Bosque",
+    type: "Standard",
+    price: 145,
+    inventory: 8,
+    sqft: 45,
+    description: "Una inmersión acogedora en el bosque nuboso con ventanales de piso a techo y terraza de madera privada.",
     image: "https://images.unsplash.com/photo-1542314831-c6a4d27a6584?q=80&w=2070&auto=format&fit=crop"
   },
   {
-    id: 2,
-    title: "Tabacón Thermal Resort",
+    id: "mv-2",
+    location: "Monteverde",
+    title: "Suite Dosel Panorámica",
+    type: "Suite",
+    price: 280,
+    inventory: 3,
+    sqft: 80,
+    description: "Nuestra suite elevada al nivel del dosel arbóreo. Avistamiento de aves desde tu tina de hidromasaje exterior.",
+    image: "https://images.unsplash.com/photo-1590073844006-33379778ae09?q=80&w=2574&auto=format&fit=crop"
+  },
+  {
+    id: "mv-3",
+    location: "Monteverde",
+    title: "Eco-Lodge Familiar",
+    type: "Family",
+    price: 320,
+    inventory: 2,
+    sqft: 120,
+    description: "Diseñada para familias, con habitaciones conectadas, cocina completa y área de fogata exclusiva.",
+    image: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=2574&auto=format&fit=crop"
+  },
+  {
+    id: "mv-4",
+    location: "Monteverde",
+    title: "Villa Quetzal Exclusiva",
+    type: "Villa",
+    price: 550,
+    inventory: 1,
+    sqft: 200,
+    description: "El máximo lujo en la reserva. Incluye mayordomo privado, senderos exclusivos y piscina térmica incrustada en roca.",
+    image: "https://images.unsplash.com/photo-1586500036065-2184d048dc53?q=80&w=2574&auto=format&fit=crop"
+  },
+  
+  // La Fortuna
+  {
+    id: "lf-1",
     location: "Arenal & La Fortuna",
-    price: "$350",
-    rating: "4.98",
-    description: "Aguas termales privadas y vistas directas al volcán desde tu villa premium de lujo.",
+    title: "Habitación Vista Volcán",
+    type: "Standard",
+    price: 180,
+    inventory: 12,
+    sqft: 50,
+    description: "Despierta con vistas directas e interrumpidas al coloso Arenal. Diseño minimalista con tina interior de piedra.",
+    image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2062&auto=format&fit=crop"
+  },
+  {
+    id: "lf-2",
+    location: "Arenal & La Fortuna",
+    title: "Suite Aguas Termales Privadas",
+    type: "Suite",
+    price: 350,
+    inventory: 4,
+    sqft: 90,
+    description: "Tu propio paraíso termal en el patio trasero. Aguas minerales directas del flujo volcánico 24/7.",
     image: "https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?q=80&w=2600&auto=format&fit=crop"
   },
   {
-    id: 3,
-    title: "Villa Paradis Manuel Antonio",
-    location: "Manuel Antonio",
-    price: "$210",
-    rating: "4.88",
-    description: "Escapada tropical con acceso directo al parque nacional y pasarelas sobre el dosel arbóreo.",
-    image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2062&auto=format&fit=crop"
+    id: "lf-3",
+    location: "Arenal & La Fortuna",
+    title: "Lodge de Aventura",
+    type: "Family",
+    price: 290,
+    inventory: 5,
+    sqft: 110,
+    description: "Base ideal para aventureros. Incluye muros de escalar infantiles y espacio para equipos.",
+    image: "https://images.unsplash.com/photo-1542314831-c6a4d27a6584?q=80&w=2070&auto=format&fit=crop"
+  },
+  {
+    id: "lf-4",
+    location: "Arenal & La Fortuna",
+    title: "Gran Villa Tabacón Signature",
+    type: "Villa",
+    price: 850,
+    inventory: 1,
+    sqft: 350,
+    description: "Nuestra propiedad más extensa. Piscina infinity fundiéndose con la selva, servicio de chef privado y helipuerto.",
+    image: "https://images.unsplash.com/photo-1590073844006-33379778ae09?q=80&w=2574&auto=format&fit=crop"
   }
 ];
 
 export default function HomePage() {
   const [hasSearched, setHasSearched] = useState(false);
+  const [selectedDest, setSelectedDest] = useState<string | null>(null);
+
+  const handleSearchTrigger = (dest: string) => {
+    setSelectedDest(dest);
+    setHasSearched(true);
+  };
+
+  const filteredRooms = selectedDest && selectedDest !== 'Todos'
+    ? mockRooms.filter(r => r.location === selectedDest)
+    : mockRooms;
 
   return (
-    <main className="min-h-screen bg-neutral-50 overflow-x-hidden">
+    <main className="min-h-screen bg-neutral-50 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50">
       
       {/* 
-        HEADER 
-        Always visible, minimal utility.
+        HEADER
       */}
-      <header className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200/50">
-        <div className="w-full max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="text-emerald-900 text-xl font-serif font-bold tracking-tight cursor-pointer" onClick={() => setHasSearched(false)}>
+      <header className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-neutral-200/40">
+        <div className="w-full max-w-[1500px] mx-auto px-6 h-24 flex items-center justify-between">
+          <div className="text-emerald-950 text-2xl font-serif font-black tracking-tighter cursor-pointer hover:opacity-80 transition" onClick={() => setHasSearched(false)}>
             EcoResorts<span className="text-emerald-600">CR</span>
           </div>
           
-          <div className="flex items-center gap-4 text-sm font-medium text-neutral-600">
-            <button className="hover:text-neutral-900 transition-colors">Soporte</button>
-            <button className="flex items-center gap-2 pl-4 border-l border-neutral-300">
-              <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          <div className="flex items-center gap-6 text-sm font-bold text-neutral-600">
+            <button className="hover:text-emerald-900 transition-colors">¿Necesita Ayuda?</button>
+            <button className="flex items-center gap-3 pl-6 border-l-2 border-neutral-200">
+              <div className="text-right hidden md:block">
+                <div className="text-neutral-900 leading-none mb-0.5">Mis Reservas</div>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100">
+                <svg className="w-5 h-5 text-emerald-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
             </button>
@@ -63,10 +139,11 @@ export default function HomePage() {
         
         {/* Pinned Search Bar for State B */}
         {hasSearched && (
-          <div className="w-full bg-white pb-4 pt-1 shadow-sm border-t border-neutral-100 animate-in fade-in slide-in-from-top-4 duration-500">
+          <div className="w-full bg-white pb-6 pt-2 shadow-[0_12px_40px_rgba(0,0,0,0.06)] border-t border-neutral-100 animate-in fade-in slide-in-from-top-4 duration-500 flex justify-center px-6">
             <ModernSearchBar 
-              className="max-w-5xl" 
-              onSearch={() => console.log('Re-search')} 
+              size="compact"
+              className="w-full max-w-5xl" 
+              onSearch={handleSearchTrigger} 
             />
           </div>
         )}
@@ -74,21 +151,24 @@ export default function HomePage() {
 
       {/* 
         STATE A: HERO CENTERPIECE
-        Fades out and scales down when search triggers.
       */}
       {!hasSearched && (
-        <section className="relative w-full h-screen flex flex-col items-center justify-center px-6 pt-20 animate-in fade-in duration-500">
-          <div className="w-full max-w-5xl mx-auto flex flex-col items-center text-center">
+        <section className="relative w-full h-screen flex flex-col items-center px-6 pt-[18vh] animate-in fade-in duration-500">
+           {/* Background subtle noise/texture */}
+           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay"></div>
+           
+           <div className="w-full max-w-[1150px] mx-auto flex flex-col items-center text-center z-10">
             
-            <h1 className="text-4xl md:text-5xl font-serif text-neutral-900 tracking-tight leading-tight mb-4">
-              Encuentra tu refugio ideal
+            <h1 className="text-6xl md:text-8xl font-serif font-black text-emerald-950 tracking-tighter leading-[0.9] mb-6">
+              ¿Cuándo nos visitas?
             </h1>
-            <p className="text-lg text-neutral-500 font-medium mb-12 max-w-2xl">
-              Ingresa tu destino, fechas y cantidad de huéspedes para explorar opciones exclusivas en la naturaleza.
+            <p className="text-xl md:text-2xl text-neutral-600 font-medium mb-12 max-w-3xl">
+              Seleccione su destino, fechas y cantidad de personas
             </p>
             
-            <div className="w-full transform scale-100 transition-transform duration-500">
-              <ModernSearchBar onSearch={() => setHasSearched(true)} className="max-w-5xl" />
+            <div className="w-full transform scale-100 transition-transform duration-500 flex justify-center">
+              {/* Using the huge hero scale */}
+              <ModernSearchBar size="hero" onSearch={handleSearchTrigger} className="w-full max-w-[1150px]" />
             </div>
 
           </div>
@@ -96,72 +176,105 @@ export default function HomePage() {
       )}
 
       {/* 
-        STATE B: RESULTS LIST
-        Slides up and takes center stage after search. Bounded to same max-width.
+        STATE B: ROOM INVENTORY LIST
       */}
       {hasSearched && (
-        <section className="relative w-full max-w-5xl mx-auto px-6 py-12 mt-[160px] animate-in fade-in slide-in-from-bottom-12 duration-700 fill-mode-both">
+        <section className="relative w-full max-w-5xl mx-auto px-6 py-16 mt-[180px] animate-in fade-in slide-in-from-bottom-12 duration-700 fill-mode-both">
           
-          <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-200">
-            <h2 className="text-2xl font-bold text-neutral-900">3 resultados disponibles</h2>
-            <select className="bg-white border border-neutral-200 text-neutral-700 text-sm rounded-full px-4 py-2 outline-none cursor-pointer hover:bg-neutral-50 transition">
-              <option>Recomendados</option>
-              <option>Precio: Menor a Mayor</option>
-              <option>Precio: Mayor a Menor</option>
-              <option>Mejor Valorados</option>
-            </select>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b-2 border-emerald-900/10">
+            <div>
+              <div className="text-emerald-600 font-bold tracking-widest uppercase mb-2">Disponibilidad en tiempo real</div>
+              <h2 className="text-4xl font-black text-emerald-950 tracking-tight">Opciones en {selectedDest || 'Todos nuestros destinos'}</h2>
+            </div>
+            
+            <div className="mt-6 md:mt-0 px-4 py-2 bg-neutral-100 rounded-lg text-neutral-600 font-bold flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              {filteredRooms.length} habitaciones encontradas
+            </div>
           </div>
 
-          <div className="flex flex-col gap-6">
-            {mockStays.map((stay, index) => (
-              <div 
-                key={stay.id} 
-                className="group flex flex-col md:flex-row bg-white rounded-3xl p-4 gap-6 border border-neutral-200 hover:shadow-xl transition-shadow cursor-pointer animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
-                style={{ animationDelay: `${index * 150}ms`, animationDuration: '600ms' }}
-              >
-                {/* Image */}
-                <div className="relative w-full md:w-[320px] aspect-[4/3] md:aspect-auto md:h-[220px] rounded-2xl overflow-hidden flex-shrink-0">
-                  <div 
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: `url('${stay.image}')` }}
-                  />
-                  <button className="absolute top-3 right-3 p-2 bg-white/30 backdrop-blur-md rounded-full text-white hover:bg-white/50 transition-colors">
-                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </button>
-                </div>
+          <div className="flex flex-col gap-10">
+            {filteredRooms.map((room, index) => {
+              const isScarce = room.inventory <= 2;
+              
+              return (
+                <div 
+                  key={room.id} 
+                  className="group flex flex-col lg:flex-row bg-white rounded-[2rem] overflow-hidden border-2 border-neutral-100 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_60px_rgba(4,120,87,0.12)] hover:border-emerald-200 transition-all duration-500 animate-in fade-in slide-in-from-bottom-8 fill-mode-both"
+                  style={{ animationDelay: `${index * 150}ms`, animationDuration: '600ms' }}
+                >
+                  {/* Image Grid */}
+                  <div className="relative w-full lg:w-[400px] h-[300px] lg:h-auto overflow-hidden flex-shrink-0">
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105"
+                      style={{ backgroundImage: `url('${room.image}')` }}
+                    />
+                    
+                    {/* Urgency Badge overlay */}
+                    {isScarce && (
+                      <div className="absolute top-4 left-4 bg-[#7a1313] text-white px-4 py-2 rounded-xl font-bold text-sm shadow-xl flex items-center gap-2 animate-in slide-in-from-top-2">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        {room.inventory === 1 ? '¡Última habitación disponible!' : `Solo quedan ${room.inventory} habitaciones`}
+                      </div>
+                    )}
+                  </div>
 
-                {/* Content */}
-                <div className="flex flex-col flex-1 py-1 pr-2">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <p className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">{stay.location}</p>
-                      <h3 className="text-2xl font-bold text-neutral-900 leading-tight group-hover:text-emerald-700 transition-colors">{stay.title}</h3>
+                  {/* Room Data */}
+                  <div className="flex flex-col flex-1 p-8 lg:pr-10">
+                    
+                    <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
+                      <div>
+                        {/* Selected dest isn't always known if they select "Todos", so show location as context if they searched generally */}
+                        {(!selectedDest || selectedDest === 'Todos') && (
+                          <p className="text-emerald-700 font-extrabold uppercase tracking-widest text-xs mb-2">{room.location}</p>
+                        )}
+                        <h3 className="text-3xl font-black text-neutral-900 leading-none group-hover:text-emerald-800 transition-colors">{room.title}</h3>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-1 bg-emerald-50 px-2 py-1 rounded-lg text-emerald-900 font-bold text-sm">
-                      ★ {stay.rating}
+                    
+                    <div className="flex items-center gap-4 mb-6">
+                      <span className="px-3 py-1 bg-neutral-100 text-neutral-700 font-bold text-sm rounded-lg border border-neutral-200">
+                        {room.type} Tipo
+                      </span>
+                      <span className="text-neutral-500 font-medium flex items-center gap-1">
+                        <svg className="w-5 h-5 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                        {room.sqft} m²
+                      </span>
+                    </div>
+
+                    <p className="text-lg text-neutral-600 leading-relaxed mb-8 max-w-2xl font-medium">
+                      {room.description}
+                    </p>
+
+                    {/* Bold Price & Action Tier */}
+                    <div className="mt-auto flex flex-col sm:flex-row items-end sm:items-center justify-between border-t-2 border-neutral-100 pt-8 gap-6">
+                      
+                      {/* Price Block */}
+                      <div className="flex flex-col">
+                        <div className="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Precio Promedio Por Noche</div>
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-5xl font-black text-emerald-950 tracking-tighter">${room.price}</span>
+                          <span className="text-lg font-bold text-neutral-500">USD</span>
+                        </div>
+                        {/* Subdued inventory stat if not scarce enough for badge */}
+                        {!isScarce && (
+                          <div className="text-sm font-medium text-emerald-700 mt-2 flex items-center gap-1">
+                           <span className="w-2 h-2 rounded-full bg-emerald-500 opacity-60"></span> {room.inventory} disponibles para sus fechas
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Explicit Action block */}
+                      <button className="w-full sm:w-auto h-16 bg-emerald-950 hover:bg-emerald-900 text-white font-bold text-lg px-8 rounded-xl shadow-[0_8px_20px_rgba(2,44,34,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                        Seleccionar y Continuar
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                      </button>
+
                     </div>
                   </div>
-                  
-                  <p className="text-neutral-600 leading-relaxed mb-6 max-w-xl">
-                    {stay.description}
-                  </p>
-
-                  {/* Footer / Price */}
-                  <div className="mt-auto flex items-end justify-between border-t border-neutral-100 pt-4">
-                    <div className="flex gap-4 text-sm text-neutral-500">
-                      <span className="flex items-center gap-1"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Desayuno incl.</span>
-                      <span className="flex items-center gap-1"><svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg> Cancelación gratis</span>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-neutral-500 mb-0.5">Precio por noche</div>
-                      <div className="text-2xl font-bold text-neutral-900 leading-none">{stay.price} <span className="text-sm font-normal text-neutral-500">USD</span></div>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
         </section>
