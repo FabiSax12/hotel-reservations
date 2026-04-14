@@ -9,7 +9,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["node_modules"]
