@@ -1,5 +1,7 @@
+export type { SupabaseServerClient } from "./client";
 export {
   createSupabaseClient,
+  createSupabaseServerActionClient,
   createSupabaseServerClient,
   createSupabaseServiceClient,
 } from "./client";
