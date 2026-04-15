@@ -9,3 +9,18 @@ export type AdminUser = {
   role: "admin";
   is_active: boolean;
 };
+
+export type ClientUser = {
+  id: string;
+  email: string;
+  role: "client";
+  is_active: boolean;
+  created_at: string;
+};
+
+export type UserProfile = AdminUser | ClientUser;
+
+export type SignUpPayload = {
+  email: string;
+  password: string;
+};
