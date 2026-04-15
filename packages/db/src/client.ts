@@ -1,6 +1,6 @@
 import { createBrowserClient, createServerClient } from "@supabase/ssr";
-import type { Database } from "./database.types";
 import { DB_ENV } from "./config/env";
+import type { Database } from "./database.types";
 
 export function createSupabaseServerClient(cookieStore: {
   getAll: () => { name: string; value: string }[];

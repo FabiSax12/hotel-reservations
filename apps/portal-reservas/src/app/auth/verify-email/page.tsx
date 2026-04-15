@@ -14,13 +14,10 @@ export default function VerifyEmailPage() {
           ✉️
         </div>
 
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">
-          Revisa tu bandeja de entrada
-        </h1>
+        <h1 className="mb-2 text-2xl font-bold text-gray-900">Revisa tu bandeja de entrada</h1>
 
         <p className="mb-6 text-sm text-gray-600">
-          Te enviamos un enlace de verificación a tu correo. Revisa también la
-          carpeta de spam.
+          Te enviamos un enlace de verificación a tu correo. Revisa también la carpeta de spam.
         </p>
 
         <Link

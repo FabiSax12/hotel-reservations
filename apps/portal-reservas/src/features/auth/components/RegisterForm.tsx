@@ -31,7 +31,13 @@ export const RegisterForm = () => {
             {fullNameError && <FieldError>{fullNameError}</FieldError>}
           </TextField>
 
-          <TextField name="email" type="email" autoComplete="email" isInvalid={!!emailError} fullWidth>
+          <TextField
+            name="email"
+            type="email"
+            autoComplete="email"
+            isInvalid={!!emailError}
+            fullWidth
+          >
             <Label>Correo electrónico</Label>
             <Input placeholder="juan@ejemplo.com" />
             {emailError && <FieldError>{emailError}</FieldError>}
