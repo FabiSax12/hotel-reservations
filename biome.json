@@ -34,7 +34,9 @@
       "!**/.turbo",
       "!**/*.gen.ts",
       "!**/database.types.ts",
-      "!**/next-env.d.ts"
+      "!**/next-env.d.ts",
+      "!**/.agents",
+      "!**/.claude"
     ]
   }
 }
