@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { REGISTER_FIELDS, type RegisterField } from "@/features/auth/constants/fields";
 import { registerAction } from "@/features/auth/services/signUp-action";
 
 export const RegisterForm = () => {
@@ -8,14 +9,17 @@ export const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const fullNameError =
-    state && "fieldErrors" in state ? state.fieldErrors.fullName?.[0] : undefined;
-  const emailError = state && "fieldErrors" in state ? state.fieldErrors.email?.[0] : undefined;
-  const passwordError =
-    state && "fieldErrors" in state ? state.fieldErrors.password?.[0] : undefined;
-  const confirmPasswordError =
-    state && "fieldErrors" in state ? state.fieldErrors.confirmPassword?.[0] : undefined;
+  const getFieldError = (field: RegisterField) =>
+    state && "fieldErrors" in state ? state.fieldErrors[field]?.[0] : undefined;
+
+  const fullNameError = getFieldError(REGISTER_FIELDS.FULL_NAME);
+  const emailError = getFieldError(REGISTER_FIELDS.EMAIL);
+  const passwordError = getFieldError(REGISTER_FIELDS.PASSWORD);
+  const confirmPasswordError = getFieldError(REGISTER_FIELDS.CONFIRM_PASSWORD);
   const globalError = state && "error" in state ? state.error : undefined;
+
+  const handleTogglePassword = () => setShowPassword((prev) => !prev);
+  const handleToggleConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -69,7 +73,7 @@ export const RegisterForm = () => {
               <button
                 type="button"
                 aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={handleTogglePassword}
                 className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600"
               >
                 {showPassword ? "🙈" : "👁"}
@@ -98,7 +102,7 @@ export const RegisterForm = () => {
                     ? "Ocultar confirmación de contraseña"
                     : "Mostrar confirmación de contraseña"
                 }
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                onClick={handleToggleConfirmPassword}
                 className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600"
               >
                 {showConfirmPassword ? "🙈" : "👁"}

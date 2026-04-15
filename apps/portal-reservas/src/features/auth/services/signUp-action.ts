@@ -6,7 +6,10 @@ import { createSupabaseServerClient } from "@hotel/db";
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
+import { AUTH_ERRORS, ERROR_MESSAGES } from "@/features/auth/constants/errors";
+import { REGISTER_FIELDS } from "../constants/fields";
 
 const RegisterSchema = z
   .object({
@@ -17,7 +20,7 @@ const RegisterSchema = z
   })
   .refine((d) => d.password === d.confirmPassword, {
     message: "Las contraseñas no coinciden",
-    path: ["confirmPassword"],
+    path: [REGISTER_FIELDS.CONFIRM_PASSWORD],
   });
 
 export type ActionResult =
@@ -30,10 +33,10 @@ export async function registerAction(
   formData: FormData,
 ): Promise<ActionResult> {
   const result = RegisterSchema.safeParse({
-    fullName: formData.get("fullName"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    confirmPassword: formData.get("confirmPassword"),
+    fullName: formData.get(REGISTER_FIELDS.FULL_NAME),
+    email: formData.get(REGISTER_FIELDS.EMAIL),
+    password: formData.get(REGISTER_FIELDS.PASSWORD),
+    confirmPassword: formData.get(REGISTER_FIELDS.CONFIRM_PASSWORD),
   });
 
   if (!result.success) {
@@ -44,7 +47,7 @@ export async function registerAction(
 
   const cookieStore = await cookies();
   const supabase = createSupabaseServerClient(cookieStore);
-  const origin = (await headers()).get("origin") ?? "http://localhost:3001";
+  const origin = (await headers()).get("origin") ?? ENV.APP_URL;
   const redirectUrl = `${origin}${ROUTES.AUTH.CALLBACK}`;
 
   try {
@@ -54,11 +57,10 @@ export async function registerAction(
     if (authErr.code === "EMAIL_ALREADY_REGISTERED") {
       return {
         success: false,
-        error: "Si este email no está registrado, recibirás un correo de verificación.",
+        error: ERROR_MESSAGES[AUTH_ERRORS.EMAIL_ALREADY_REGISTERED],
       };
     }
-    console.error("Error during registration:", err);
-    return { success: false, error: "Ocurrió un error inesperado. Intente nuevamente." };
+    return { success: false, error: ERROR_MESSAGES[AUTH_ERRORS.UNKNOWN_ERROR] };
   }
 
   redirect(ROUTES.AUTH.VERIFY_EMAIL);
