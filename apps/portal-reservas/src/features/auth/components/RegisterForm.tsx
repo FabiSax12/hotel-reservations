@@ -1,25 +1,21 @@
 "use client";
 
-import { useActionState, useState } from "react";
-import { REGISTER_FIELDS, type RegisterField } from "@/features/auth/constants/fields";
-import { registerAction } from "@/features/auth/services/signUp-action";
+import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 
 export const RegisterForm = () => {
-  const [state, formAction, isPending] = useActionState(registerAction, null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const getFieldError = (field: RegisterField) =>
-    state && "fieldErrors" in state ? state.fieldErrors[field]?.[0] : undefined;
-
-  const fullNameError = getFieldError(REGISTER_FIELDS.FULL_NAME);
-  const emailError = getFieldError(REGISTER_FIELDS.EMAIL);
-  const passwordError = getFieldError(REGISTER_FIELDS.PASSWORD);
-  const confirmPasswordError = getFieldError(REGISTER_FIELDS.CONFIRM_PASSWORD);
-  const globalError = state && "error" in state ? state.error : undefined;
-
-  const handleTogglePassword = () => setShowPassword((prev) => !prev);
-  const handleToggleConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
+  const {
+    formAction,
+    isPending,
+    showPassword,
+    showConfirmPassword,
+    handleTogglePassword,
+    handleToggleConfirmPassword,
+    fullNameError,
+    emailError,
+    passwordError,
+    confirmPasswordError,
+    globalError,
+  } = useRegisterForm();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
