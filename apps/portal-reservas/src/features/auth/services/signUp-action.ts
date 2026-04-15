@@ -2,8 +2,11 @@
 
 import type { AuthError } from "@hotel/core/auth";
 import { signUp } from "@hotel/core/auth";
+import { createSupabaseServerClient } from "@hotel/db";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
+import { ROUTES } from "@/config/routes";
 
 const RegisterSchema = z
   .object({
@@ -39,8 +42,13 @@ export async function registerAction(
 
   const { fullName, email, password } = result.data;
 
+  const cookieStore = await cookies();
+  const supabase = createSupabaseServerClient(cookieStore);
+  const origin = (await headers()).get("origin") ?? "http://localhost:3001";
+  const redirectUrl = `${origin}${ROUTES.AUTH.CALLBACK}`;
+
   try {
-    await signUp({ full_name: fullName, email, password });
+    await signUp({ full_name: fullName, email, password }, supabase, redirectUrl);
   } catch (err) {
     const authErr = err as AuthError;
     if (authErr.code === "EMAIL_ALREADY_REGISTERED") {
@@ -49,8 +57,9 @@ export async function registerAction(
         error: "Si este email no está registrado, recibirás un correo de verificación.",
       };
     }
+    console.error("Error during registration:", err);
     return { success: false, error: "Ocurrió un error inesperado. Intente nuevamente." };
   }
 
-  redirect("/auth/verify-email");
+  redirect(ROUTES.AUTH.VERIFY_EMAIL);
 }
