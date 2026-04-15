@@ -1,5 +1,7 @@
 "use client";
 
+import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 
 export const RegisterForm = () => {
@@ -22,90 +24,70 @@ export const RegisterForm = () => {
       <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
         <h1 className="mb-6 text-2xl font-bold text-gray-900">Crear cuenta</h1>
 
-        <form action={formAction} className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-              Nombre completo
-            </label>
-            <input
-              id="fullName"
-              name="fullName"
-              type="text"
-              autoComplete="name"
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="Juan Pérez"
-            />
-            {fullNameError && <p className="text-xs text-red-600">{fullNameError}</p>}
-          </div>
+        <Form action={formAction} className="flex flex-col gap-5">
+          <TextField name="fullName" autoComplete="name" isInvalid={!!fullNameError} fullWidth>
+            <Label>Nombre completo</Label>
+            <Input placeholder="Juan Pérez" />
+            {fullNameError && <FieldError>{fullNameError}</FieldError>}
+          </TextField>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Correo electrónico
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="juan@ejemplo.com"
-            />
-            {emailError && <p className="text-xs text-red-600">{emailError}</p>}
-          </div>
+          <TextField name="email" type="email" autoComplete="email" isInvalid={!!emailError} fullWidth>
+            <Label>Correo electrónico</Label>
+            <Input placeholder="juan@ejemplo.com" />
+            {emailError && <FieldError>{emailError}</FieldError>}
+          </TextField>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Contraseña
-            </label>
-            <div className="relative">
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Mínimo 8 caracteres"
-              />
-              <button
-                type="button"
+          <TextField
+            name="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="new-password"
+            isInvalid={!!passwordError}
+            fullWidth
+          >
+            <Label>Contraseña</Label>
+            <div className="relative w-full">
+              <Input placeholder="Mínimo 8 caracteres" className="pr-10" />
+              <Button
+                isIconOnly
+                variant="ghost"
+                size="sm"
                 aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-                onClick={handleTogglePassword}
-                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600"
+                onPress={handleTogglePassword}
+                className="absolute inset-y-0 right-0 h-full"
               >
                 {showPassword ? "🙈" : "👁"}
-              </button>
+              </Button>
             </div>
-            {passwordError && <p className="text-xs text-red-600">{passwordError}</p>}
-          </div>
+            {passwordError && <FieldError>{passwordError}</FieldError>}
+          </TextField>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">
-              Confirmar contraseña
-            </label>
-            <div className="relative">
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
-                autoComplete="new-password"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                placeholder="Repetí tu contraseña"
-              />
-              <button
-                type="button"
+          <TextField
+            name="confirmPassword"
+            type={showConfirmPassword ? "text" : "password"}
+            autoComplete="new-password"
+            isInvalid={!!confirmPasswordError}
+            fullWidth
+          >
+            <Label>Confirmar contraseña</Label>
+            <div className="relative w-full">
+              <Input placeholder="Repetí tu contraseña" className="pr-10" />
+              <Button
+                isIconOnly
+                variant="ghost"
+                size="sm"
                 aria-label={
                   showConfirmPassword
                     ? "Ocultar confirmación de contraseña"
                     : "Mostrar confirmación de contraseña"
                 }
-                onClick={handleToggleConfirmPassword}
-                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600"
+                onPress={handleToggleConfirmPassword}
+                className="absolute inset-y-0 right-0 h-full"
               >
                 {showConfirmPassword ? "🙈" : "👁"}
-              </button>
+              </Button>
             </div>
-            {confirmPasswordError && <p className="text-xs text-red-600">{confirmPasswordError}</p>}
-          </div>
+            {confirmPasswordError && <FieldError>{confirmPasswordError}</FieldError>}
+          </TextField>
 
           {globalError && (
             <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -113,14 +95,10 @@ export const RegisterForm = () => {
             </p>
           )}
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className="mt-1 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-          >
+          <Button type="submit" variant="primary" fullWidth isPending={isPending} className="mt-1">
             {isPending ? "Creando cuenta..." : "Crear cuenta"}
-          </button>
-        </form>
+          </Button>
+        </Form>
       </div>
     </div>
   );
