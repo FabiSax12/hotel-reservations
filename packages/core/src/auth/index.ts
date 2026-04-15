@@ -1,4 +1,5 @@
-import { createSupabaseClient, createSupabaseServiceClient } from "@hotel/db";
+import type { SupabaseServerClient } from "@hotel/db";
+import { createSupabaseServerActionClient, createSupabaseServiceClient } from "@hotel/db";
 import type { AdminUser } from "@hotel/db/types";
 import { AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
 
@@ -13,28 +14,30 @@ export type AuthError =
   | { code: "UNKNOWN_ERROR"; message: string };
 
 export async function signInWithPassword(email: string, password: string) {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseServerActionClient();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) throw new Error(error.message);
   return data;
 }
 
 export async function signOut() {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseServerActionClient();
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
 }
 
 export async function getSession() {
-  const supabase = createSupabaseClient();
+  const supabase = createSupabaseServerActionClient();
   const { data, error } = await supabase.auth.getSession();
   if (error) throw new Error(error.message);
   return data;
 }
 
-export async function signUp(payload: RegisterPayload): Promise<{ success: true }> {
-  const supabase = createSupabaseClient();
-
+export async function signUp(
+  payload: RegisterPayload,
+  supabase: SupabaseServerClient,
+  redirectUrl?: string,
+): Promise<{ success: true }> {
   const { data, error } = await supabase.auth.signUp({
     email: payload.email,
     password: payload.password,
@@ -43,6 +46,7 @@ export async function signUp(payload: RegisterPayload): Promise<{ success: true 
         full_name: payload.full_name,
         phone: null,
       },
+      emailRedirectTo: redirectUrl,
     },
   });
 
@@ -56,20 +60,6 @@ export async function signUp(payload: RegisterPayload): Promise<{ success: true 
   const userId = data.user?.id;
   if (!userId) {
     throw { code: "UNKNOWN_ERROR", message: "User creation returned no ID" } satisfies AuthError;
-  }
-
-  const service = createSupabaseServiceClient();
-  const { error: insertError } = await service
-    .from(AUTH_TABLE)
-    .insert({
-      id: userId,
-      email: payload.email,
-      role: AUTH_ROLES.CLIENT,
-      created_at: new Date().toISOString(),
-    });
-
-  if (insertError) {
-    throw { code: "UNKNOWN_ERROR", message: insertError.message } satisfies AuthError;
   }
 
   return { success: true };
