@@ -22,7 +22,10 @@ export type ActionResult =
   | { success: false; error: string }
   | null;
 
-export async function registerAction(formData: FormData): Promise<ActionResult> {
+export async function registerAction(
+  _prevState: ActionResult,
+  formData: FormData,
+): Promise<ActionResult> {
   const result = RegisterSchema.safeParse({
     fullName: formData.get("fullName"),
     email: formData.get("email"),
