@@ -1,10 +1,14 @@
+import type { AuthTexts } from "@/features/auth/i18n/authTexts.type";
+
 export enum AUTH_ERRORS {
   EMAIL_ALREADY_REGISTERED,
   UNKNOWN_ERROR,
 }
 
-export const ERROR_MESSAGES = {
-  [AUTH_ERRORS.EMAIL_ALREADY_REGISTERED]:
-    "Si este email no está registrado, recibirás un correo de verificación.",
-  [AUTH_ERRORS.UNKNOWN_ERROR]: "Ocurrió un error inesperado. Intente nuevamente.",
-} as const;
+export type AuthErrorKey = keyof AuthTexts["ERRORS"];
+export type ValidationKey = keyof AuthTexts["VALIDATION"];
+
+export const ERROR_KEYS: Record<AUTH_ERRORS, AuthErrorKey> = {
+  [AUTH_ERRORS.EMAIL_ALREADY_REGISTERED]: "EMAIL_ALREADY_REGISTERED",
+  [AUTH_ERRORS.UNKNOWN_ERROR]: "UNKNOWN_ERROR",
+};

@@ -8,24 +8,25 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
-import { AUTH_ERRORS, ERROR_MESSAGES } from "@/features/auth/constants/errors";
+import type { AuthErrorKey, ValidationKey } from "@/features/auth/constants/errors";
+import { AUTH_ERRORS, ERROR_KEYS } from "@/features/auth/constants/errors";
 import { REGISTER_FIELDS } from "../constants/fields";
 
 const RegisterSchema = z
   .object({
-    fullName: z.string().min(2),
-    email: z.email(),
-    password: z.string().min(8),
+    fullName: z.string().min(2, "FULL_NAME_TOO_SHORT" satisfies ValidationKey),
+    email: z.email("INVALID_EMAIL" satisfies ValidationKey),
+    password: z.string().min(8, "PASSWORD_TOO_SHORT" satisfies ValidationKey),
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
-    message: "Las contraseñas no coinciden",
+    message: "PASSWORDS_DO_NOT_MATCH" satisfies ValidationKey,
     path: [REGISTER_FIELDS.CONFIRM_PASSWORD],
   });
 
 export type ActionResult =
-  | { success: false; fieldErrors: Partial<Record<string, string[]>> }
-  | { success: false; error: string }
+  | { success: false; fieldErrors: Partial<Record<string, ValidationKey[]>> }
+  | { success: false; error: AuthErrorKey }
   | null;
 
 export async function registerAction(
@@ -40,7 +41,10 @@ export async function registerAction(
   });
 
   if (!result.success) {
-    return { success: false, fieldErrors: result.error.flatten().fieldErrors };
+    return {
+      success: false,
+      fieldErrors: result.error.flatten().fieldErrors as Partial<Record<string, ValidationKey[]>>,
+    };
   }
 
   const { fullName, email, password } = result.data;
@@ -55,12 +59,9 @@ export async function registerAction(
   } catch (err) {
     const authErr = err as AuthError;
     if (authErr.code === "EMAIL_ALREADY_REGISTERED") {
-      return {
-        success: false,
-        error: ERROR_MESSAGES[AUTH_ERRORS.EMAIL_ALREADY_REGISTERED],
-      };
+      return { success: false, error: ERROR_KEYS[AUTH_ERRORS.EMAIL_ALREADY_REGISTERED] };
     }
-    return { success: false, error: ERROR_MESSAGES[AUTH_ERRORS.UNKNOWN_ERROR] };
+    return { success: false, error: ERROR_KEYS[AUTH_ERRORS.UNKNOWN_ERROR] };
   }
 
   redirect(ROUTES.AUTH.VERIFY_EMAIL);
