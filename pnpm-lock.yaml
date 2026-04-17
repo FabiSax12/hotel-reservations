@@ -23,6 +23,9 @@ importers:
       '@hotel/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@hotel/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -69,6 +72,9 @@ importers:
       '@hotel/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@hotel/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -118,6 +124,9 @@ importers:
       '@hotel/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@hotel/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -130,6 +139,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.0
@@ -175,6 +187,18 @@ importers:
       supabase:
         specifier: ^2.84.4
         version: 2.84.4
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+
+  packages/i18n:
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.0
+        version: 19.2.14
+      react:
+        specifier: ^19.1.0
+        version: 19.2.4
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
@@ -2096,6 +2120,9 @@ packages:
   yallist@5.0.0:
     resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
     engines: {node: '>=18'}
+
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
 
 snapshots:
 
@@ -4350,3 +4377,5 @@ snapshots:
   ws@8.20.0: {}
 
   yallist@5.0.0: {}
+
+  zod@4.3.6: {}

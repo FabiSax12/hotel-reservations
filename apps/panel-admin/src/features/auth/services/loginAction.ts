@@ -20,14 +20,14 @@ export async function loginAction(
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error || !data.user) {
-    return { error: "Credenciales inválidas" };
+    return { error: "INVALID_CREDENTIALS" };
   }
 
   const admin = await verifyAdminRole(data.user.id);
 
   if (!admin) {
     await supabase.auth.signOut();
-    return { error: "Acceso denegado" };
+    return { error: "ACCESS_DENIED" };
   }
 
   redirect(ROUTES.ADMIN.DASHBOARD);

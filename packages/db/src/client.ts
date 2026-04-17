@@ -1,14 +1,12 @@
 import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { DB_ENV } from "./config/env";
 import type { Database } from "./database.types";
 
 export function createSupabaseServerClient(cookieStore: {
   getAll: () => { name: string; value: string }[];
   set: (name: string, value: string, options?: object) => void;
 }) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-  return createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
+  return createServerClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_ANON_KEY, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookies) =>
@@ -17,17 +15,23 @@ export function createSupabaseServerClient(cookieStore: {
   });
 }
 
-// For client-side usage in browser context.
+// For client-side usage in browser context only.
 export function createSupabaseClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-  return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
+  return createBrowserClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_ANON_KEY);
 }
 
-export function createSupabaseServiceClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+// For Server Actions that don't need to read/write session cookies (e.g. signUp, signIn flows).
+export function createSupabaseServerActionClient() {
+  return createServerClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_ANON_KEY, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
+}
 
-  return createBrowserClient<Database>(supabaseUrl, supabaseServiceKey);
+export type SupabaseServerClient = ReturnType<typeof createSupabaseServerClient>;
+
+// Uses the service role key — never call from the browser.
+export function createSupabaseServiceClient() {
+  return createServerClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_SERVICE_ROLE_KEY, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
 }

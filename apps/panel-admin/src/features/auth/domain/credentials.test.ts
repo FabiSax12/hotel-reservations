@@ -1,25 +1,31 @@
 import { describe, expect, it } from "vitest";
-import { validateEmail, validatePassword } from "./credentials";
+import { createEmailValidator, createPasswordValidator } from "./credentials";
 
-describe("validateEmail", () => {
+const EMAIL_ERROR = "invalid email";
+const PASSWORD_ERROR = "password too short";
+
+const validateEmail = createEmailValidator(EMAIL_ERROR);
+const validatePassword = createPasswordValidator(PASSWORD_ERROR);
+
+describe("createEmailValidator", () => {
   it("returns null for a valid email", () => {
     expect(validateEmail("admin@hotel.com")).toBeNull();
   });
 
-  it("returns an error string for an email without @", () => {
-    expect(validateEmail("notanemail")).toBe("Please enter a valid email address");
+  it("returns the error message for an email without @", () => {
+    expect(validateEmail("notanemail")).toBe(EMAIL_ERROR);
   });
 
-  it("returns an error string for an email without domain", () => {
-    expect(validateEmail("admin@")).toBe("Please enter a valid email address");
+  it("returns the error message for an email without domain", () => {
+    expect(validateEmail("admin@")).toBe(EMAIL_ERROR);
   });
 
-  it("returns an error string for an empty string", () => {
-    expect(validateEmail("")).toBe("Please enter a valid email address");
+  it("returns the error message for an empty string", () => {
+    expect(validateEmail("")).toBe(EMAIL_ERROR);
   });
 });
 
-describe("validatePassword", () => {
+describe("createPasswordValidator", () => {
   it("returns null for a password with 8 characters", () => {
     expect(validatePassword("12345678")).toBeNull();
   });
@@ -28,11 +34,11 @@ describe("validatePassword", () => {
     expect(validatePassword("averylongpassword")).toBeNull();
   });
 
-  it("returns an error string for a password shorter than 8 characters", () => {
-    expect(validatePassword("1234567")).toBe("La contraseña debe tener al menos 8 caracteres");
+  it("returns the error message for a password shorter than 8 characters", () => {
+    expect(validatePassword("1234567")).toBe(PASSWORD_ERROR);
   });
 
-  it("returns an error string for an empty password", () => {
-    expect(validatePassword("")).toBe("La contraseña debe tener al menos 8 caracteres");
+  it("returns the error message for an empty password", () => {
+    expect(validatePassword("")).toBe(PASSWORD_ERROR);
   });
 });

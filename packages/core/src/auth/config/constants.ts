@@ -1,5 +1,6 @@
 export const AUTH_ROLES = Object.freeze({
   ADMIN: "admin",
+  CLIENT: "client",
 } as const);
 
 export type AuthRole = (typeof AUTH_ROLES)[keyof typeof AUTH_ROLES];
