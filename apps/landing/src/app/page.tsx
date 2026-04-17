@@ -1,7 +1,5 @@
+import { LandingHero } from "./components/LandingHero";
+
 export default function LandingPage() {
-  return (
-    <main>
-      <h1>Bienvenido</h1>
-    </main>
-  );
+  return <LandingHero />;
 }
