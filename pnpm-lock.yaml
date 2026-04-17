@@ -73,7 +73,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/db
       '@hotel/i18n':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
@@ -125,7 +125,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/db
       '@hotel/i18n':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
@@ -193,6 +193,12 @@ importers:
 
   packages/i18n:
     devDependencies:
+      '@types/react':
+        specifier: ^19.1.0
+        version: 19.2.14
+      react:
+        specifier: ^19.1.0
+        version: 19.2.4
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
