@@ -1,6 +1,6 @@
-export type { I18nContext } from "./create-i18n-context";
-export { createI18nContext } from "./create-i18n-context";
-export type { SupportedLocale } from "./locales";
-export { LOCALES } from "./locales";
-export { I18nProvider, useI18n } from "./provider";
+export type { SupportedLocale } from "./constants/locales";
+export { LOCALES } from "./constants/locales";
+export { createI18nContext } from "./context/createI18nContext";
+export { I18nProvider } from "./context/I18nProvider";
+export { useI18n } from "./hooks/useI18n";
 export type { Locale, TranslationMap } from "./types";
