@@ -23,6 +23,9 @@ importers:
       '@hotel/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@hotel/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -69,6 +72,9 @@ importers:
       '@hotel/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@hotel/i18n':
+        specifier: workspace:^
+        version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -118,6 +124,9 @@ importers:
       '@hotel/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@hotel/i18n':
+        specifier: workspace:^
+        version: link:../../packages/i18n
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -178,6 +187,12 @@ importers:
       supabase:
         specifier: ^2.84.4
         version: 2.84.4
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
+
+  packages/i18n:
+    devDependencies:
       typescript:
         specifier: ^5.8.0
         version: 5.9.3
