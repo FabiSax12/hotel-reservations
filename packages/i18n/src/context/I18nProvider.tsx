@@ -1,13 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { SupportedLocale } from "../constants/locales";
 import { I18nContext } from "./I18nContext";
 import type { I18nProviderProps } from "./I18nProvider.interface";
 
 export function I18nProvider<T>({ defaultLocale, translations, storage, children }: I18nProviderProps<T>) {
-  const [locale, setLocale] = useState<SupportedLocale>(() => storage?.get() ?? defaultLocale);
+  const [locale, setLocale] = useState<SupportedLocale>(defaultLocale);
   const t = translations[locale] ?? translations[defaultLocale];
+
+  useEffect(() => {
+    const saved = storage?.get();
+    if (saved && saved !== locale) setLocale(saved);
+  }, [locale, storage]);
 
   function handleSetLocale(next: SupportedLocale) {
     storage?.set(next);
