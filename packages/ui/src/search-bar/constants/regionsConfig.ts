@@ -1,3 +1,14 @@
+/**
+ * @file regionsConfig.ts — Destination data for the DestinationPopover.
+ *
+ * Each entry defines a selectable resort region displayed in the "Sede"
+ * dropdown. The `name` field must match the `location` values used in
+ * the portal's room mock data, as it is the key used for filtering.
+ *
+ * The `highlights` array provides bullet-point selling points shown in
+ * the hover-preview panel beside the destination list.
+ */
+
 export const REGIONS_CONFIG = [
   { 
     name: "Arenal & La Fortuna", 

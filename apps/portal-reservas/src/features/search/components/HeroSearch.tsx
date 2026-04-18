@@ -1,35 +1,61 @@
+/**
+ * @file HeroSearch.tsx — Full-viewport hero section with cinematic search.
+ *
+ * Displayed only in State A (before the user searches). Contains:
+ *  - An animated title block (h1 + subtitle) that fades out and slides
+ *    upward when the calendar is expanded.
+ *  - The `ModernSearchBar` in "hero" size, which slides upward by 200px
+ *    when its calendar opens, making room for the floating calendar panel.
+ *
+ * All animations use inline `style` transitions with a custom cubic-bezier
+ * easing (`0.22, 1, 0.36, 1`) for a smooth, cinematic feel.
+ */
+
 import { ModernSearchBar } from "@hotel/ui";
 import { UI_CONSTANTS } from "../../../shared/constants/ui";
+import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 
 interface HeroSearchProps {
+  /** Callback when the user submits a search. */
   onSearch: (params: any) => void;
+  /** Whether the hero calendar has been expanded (controls title fade-out). */
   heroCalendarActive: boolean;
+  /** Setter to mark the calendar as active, triggered by the search bar. */
   setHeroCalendarActive: (active: boolean) => void;
 }
 
 export function HeroSearch({ onSearch, heroCalendarActive, setHeroCalendarActive }: HeroSearchProps) {
   return (
-    <section className="relative w-full h-screen flex flex-col items-center px-6 pt-[24vh] pb-8 animate-in fade-in duration-500">
-       <div className="w-full max-w-[1150px] mx-auto flex flex-col items-center text-center z-10">
+    <section className={S.section}>
+       <div className={S.contentWrapper}>
         
+        {/*
+         * Title block: fades out (opacity 0) and slides up (-20px) when
+         * the calendar opens, giving the search bar maximum visual focus.
+         */}
         <div 
-          className="w-full flex flex-col items-center min-h-0 pointer-events-none"
+          className={S.titleBlock}
           style={{
             transition: "opacity 300ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1)",
             opacity: heroCalendarActive ? 0 : 1,
             transform: heroCalendarActive ? 'translateY(-20px)' : 'translateY(0)',
           }}
         >
-            <h1 className="text-6xl md:text-8xl font-serif font-black text-emerald-950 tracking-tighter leading-[0.9] mb-6 pt-4 pointer-events-auto">
+            <h1 className={S.heading}>
               {UI_CONSTANTS.HERO.TITLE}
             </h1>
-            <p className="text-xl md:text-2xl text-neutral-600 font-medium max-w-3xl pointer-events-auto">
+            <p className={S.subtitle}>
               {UI_CONSTANTS.HERO.SUBTITLE}
             </p>
         </div>
         
+        {/*
+         * Search bar wrapper: starts 48px below the title (visual breathing
+         * room), then jumps up by -200px when the calendar expands so the
+         * floating calendar panel has vertical space beneath the bar.
+         */}
         <div 
-          className="w-full flex justify-center relative z-20"
+          className={S.searchWrapper}
           style={{
             transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
             transform: heroCalendarActive ? 'translateY(-200px)' : 'translateY(48px)',
@@ -38,7 +64,7 @@ export function HeroSearch({ onSearch, heroCalendarActive, setHeroCalendarActive
           <ModernSearchBar 
             size="hero" 
             onSearch={onSearch} 
-            className="w-full max-w-[1150px]"
+            className={S.searchBarWidth}
             onHeroCalendarOpen={() => setHeroCalendarActive(true)}
           />
         </div>

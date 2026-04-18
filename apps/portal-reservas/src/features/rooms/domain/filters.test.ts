@@ -1,8 +1,19 @@
+/**
+ * @file filters.test.ts — Unit tests for the room filtering domain logic.
+ *
+ * Uses Vitest to validate the three fundamental behaviors of
+ * {@link filterRoomsByDestination}:
+ *  1. Returns all rooms when destination is `null`.
+ *  2. Returns all rooms when destination is the special "Todos" value.
+ *  3. Returns only rooms matching the given destination string.
+ */
+
 import { describe, it, expect } from 'vitest';
 import { filterRoomsByDestination } from './filters';
 import type { Room } from './types';
 
 describe('filterRoomsByDestination', () => {
+  /** Minimal stub rooms — only `id` and `location` are needed by the filter. */
   const mockRooms = [
     { id: '1', location: 'Monteverde' },
     { id: '2', location: 'La Fortuna' },

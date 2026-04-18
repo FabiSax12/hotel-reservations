@@ -1,26 +1,92 @@
+/**
+ * @file ModernSearchBar.tsx — Top-level search bar orchestrator.
+ *
+ * This is the **only** component exported by the `@hotel/ui` package.
+ * It manages all search state (destination, dates, guests) and the
+ * currently active UI section, then delegates rendering to atomic
+ * sub-components:
+ *
+ *  - {@link HeroCalendarFloat} — Floating calendar for hero mode.
+ *  - {@link HeroExpandTab}     — Chevron tab to open the calendar.
+ *  - {@link DestinationSection} / {@link DateSection} / {@link GuestsSection}
+ *    — Individual field sections within the bar.
+ *  - {@link SearchButton}      — The "Buscar" CTA.
+ *  - {@link DestinationPopover} / {@link CalendarPopover}
+ *    — Dropdown panels shown when the corresponding section is active.
+ *
+ * ## Two visual modes
+ *
+ *  - **`hero`**: Full-width bar on the cinematic landing page. Calendar
+ *    floats above the bar. An expand-tab offers first-time calendar entry.
+ *  - **`compact`**: Smaller bar pinned in the sticky header. Calendar
+ *    drops below the bar as a standard popover.
+ *
+ * ## Date-picking algorithm (`handlePickDate`)
+ *
+ * The algorithm handles three scenarios:
+ *
+ *  1. **Both dates already set** — "Smart replace": the clicked date
+ *     replaces whichever existing endpoint is closer, producing
+ *     two intuitive results: clicking before the range moves check-in,
+ *     clicking after moves check-out, clicking inside replaces the
+ *     nearest boundary.
+ *
+ *  2. **One date set** — Fills the other slot, but validates direction
+ *     (check-in must be ≤ check-out). Invalid picks trigger a
+ *     flash-and-fade red dot animation via `triggerInvalid()`.
+ *
+ *  3. **No dates set** — Sets the clicked date into whichever field
+ *     is currently active, then auto-advances to the next field.
+ */
+
 "use client";
 
 import React, { useState, useEffect } from "react";
 import type { SearchBarProps, ActiveSection } from "../domain/types";
 import { parseDateHelper } from "../utils/dateUtils";
 import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+
+// Sub-components
+import { HeroCalendarFloat } from "./HeroCalendarFloat";
+import { HeroExpandTab } from "./HeroExpandTab";
+import { DestinationSection } from "./sections/DestinationSection";
+import { DateSection } from "./sections/DateSection";
+import { GuestsSection } from "./sections/GuestsSection";
+import { SearchButton } from "./sections/SearchButton";
 import { DestinationPopover } from "./DestinationPopover";
-import { GuestsPopover } from "./GuestsPopover";
 import { CalendarPopover } from "./CalendarPopover";
 
 const C = SEARCH_BAR_UI_CONSTANTS;
 
 export function ModernSearchBar({ onSearch, className = "", size = 'compact', initialState, onHeroCalendarOpen }: SearchBarProps) {
+  // ─── State ──────────────────────────────────────────────────────────
+  /** Which section's popover/panel is currently expanded (null = all closed). */
   const [active, setActive] = useState<ActiveSection>(null);
+
+  /** Tracks the flash-and-fade animation for invalid date picks. */
   const [invalidState, setInvalidState] = useState<{ dayStr: string, isFading: boolean } | null>(null);
+
+  /** True once the hero title has been dismissed (prevents re-animation). */
   const [hasHeroTitleDismissed, setHasHeroTitleDismissed] = useState(false);
+
+  /** True once the hero calendar has been opened at least once. */
   const [hasHeroCalendarOpened, setHasHeroCalendarOpened] = useState(false);
+
+  /** True during the 800ms simulated search animation. */
   const [isSearching, setIsSearching] = useState(false);
 
+  /**
+   * Refs for the invalid-state timeout IDs. Using refs prevents stale
+   * closures and allows cleanup when rapid invalid picks overlap.
+   */
   const timeout1Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeout2Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** Ref for outside-click detection. */
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  // ─── Field State ────────────────────────────────────────────────────
   const [destination, setDestination] = useState(
     initialState?.destination && initialState?.destination !== 'Todos' ? initialState.destination : ""
   );
@@ -31,39 +97,46 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   const [pets, setPets] = useState(initialState?.pets || 0);
 
   const isHero = size === 'hero';
+  /** Sizing tokens (padding, label/value text sizes, button sizes) for the current variant. */
+  const sizing = S.sizing[size];
 
-  // ---- Side Effects ----
+  // ─── Side Effects ───────────────────────────────────────────────────
 
+  /**
+   * Hero-mode title & calendar effects:
+   *  - Dismiss the title on first section activation.
+   *  - Expand the floating calendar on first date-section activation.
+   */
   useEffect(() => {
-    if (size === 'hero' && active && !hasHeroTitleDismissed) {
-      setHasHeroTitleDismissed(true);
-    }
+    if (size === 'hero' && active && !hasHeroTitleDismissed) setHasHeroTitleDismissed(true);
     if (size === 'hero' && (active === 'checkIn' || active === 'checkOut') && !hasHeroCalendarOpened) {
       setHasHeroCalendarOpened(true);
       if (onHeroCalendarOpen) onHeroCalendarOpen();
     }
   }, [active, size, hasHeroCalendarOpened, hasHeroTitleDismissed, onHeroCalendarOpen]);
 
+  /** Close all sections when the user presses Escape. */
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") setActive(null); };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
+  /** Close all sections when the user clicks outside the search bar container. */
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setActive(null);
-      }
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) setActive(null);
     };
-    if (active) {
-      window.addEventListener("mousedown", handleOutsideClick);
-    }
+    if (active) window.addEventListener("mousedown", handleOutsideClick);
     return () => window.removeEventListener("mousedown", handleOutsideClick);
   }, [active]);
 
-  // ---- Helpers ----
+  // ─── Display Helpers ────────────────────────────────────────────────
 
+  /**
+   * Formats an ISO date string (e.g. "2026-10-15") into a short
+   * locale-friendly display string (e.g. "15 oct").
+   */
   const formatUIText = (isoStr: string) => {
     if (!isoStr) return "";
     const [y, m, d] = isoStr.split('-');
@@ -71,42 +144,50 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     return new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'short' }).format(dt).replace('.', '');
   };
 
+  /**
+   * Builds the summary string for the guests field.
+   * Uses abbreviated labels when multiple guest types are active
+   * to prevent text overflow in the compact bar.
+   */
   const formatGuests = () => {
-    let guestsText = `${adults} ${adults === 1 ? C.GUESTS.SINGLE_ADULT : C.GUESTS.PLURAL_ADULTS}`;
+    let text = `${adults} ${adults === 1 ? C.GUESTS.SINGLE_ADULT : C.GUESTS.PLURAL_ADULTS}`;
     if (children > 0 && pets > 0) {
-      guestsText = `${adults} ${C.GUESTS.SHORT_ADULT_1} • ${children} ${C.GUESTS.SHORT_CHILDREN_1} • ${pets} ${C.GUESTS.SHORT_PET_1}`;
+      text = `${adults} ${C.GUESTS.SHORT_ADULT_1} • ${children} ${C.GUESTS.SHORT_CHILDREN_1} • ${pets} ${C.GUESTS.SHORT_PET_1}`;
     } else if (children > 0) {
-      guestsText = `${adults} ${C.GUESTS.SHORT_ADULT_2} • ${children} ${children === 1 ? C.GUESTS.SHORT_CHILD : C.GUESTS.SHORT_CHILDREN}`;
+      text = `${adults} ${C.GUESTS.SHORT_ADULT_2} • ${children} ${children === 1 ? C.GUESTS.SHORT_CHILD : C.GUESTS.SHORT_CHILDREN}`;
     } else if (pets > 0) {
-      guestsText = `${adults} ${C.GUESTS.SHORT_ADULT_2} • ${pets} ${C.GUESTS.SHORT_PET}`;
+      text = `${adults} ${C.GUESTS.SHORT_ADULT_2} • ${pets} ${C.GUESTS.SHORT_PET}`;
     }
-    return guestsText;
+    return text;
   };
 
-  // ---- Date Picker Logic ----
+  // ─── Date Picker Logic ──────────────────────────────────────────────
 
+  /**
+   * Core date-pick handler. See the file-level JSDoc for the full
+   * three-scenario algorithm description.
+   */
   const handlePickDate = (dayStr: string) => {
+    // If no date section is active, auto-detect which field to fill
     let workingActive = active;
     if (workingActive !== "checkIn" && workingActive !== "checkOut") {
       workingActive = !checkIn ? "checkIn" : "checkOut";
       setActive(workingActive);
     }
 
+    // Toggle off: clicking the already-selected date clears it
     if (dayStr === checkIn) { setCheckIn(""); setActive("checkIn"); return; }
-    if (dayStr === checkOut) {
-      setCheckOut("");
-      setActive(!checkIn ? "checkIn" : "checkOut");
-      return;
-    }
+    if (dayStr === checkOut) { setCheckOut(""); setActive(!checkIn ? "checkIn" : "checkOut"); return; }
 
     const clickedVal = parseDateHelper(dayStr);
     const inVal = parseDateHelper(checkIn);
     const outVal = parseDateHelper(checkOut);
 
+    // Scenario 1: Both dates set → smart-replace nearest endpoint
     if (checkIn && checkOut) {
       if (clickedVal < inVal) { setCheckIn(dayStr); }
       else if (clickedVal > outVal) { setCheckOut(dayStr); }
-      else if (clickedVal > inVal && clickedVal < outVal) {
+      else {
         const distToIn = clickedVal - inVal;
         const distToOut = outVal - clickedVal;
         if (distToIn <= distToOut) { setCheckIn(dayStr); } else { setCheckOut(dayStr); }
@@ -114,6 +195,11 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       return;
     }
 
+    /**
+     * Triggers a flash-and-fade animation on an invalid date pick.
+     * Phase 1 (0→400ms): red dot appears.
+     * Phase 2 (400→700ms): dot fades out.
+     */
     const triggerInvalid = (ds: string) => {
       if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
       if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
@@ -122,176 +208,136 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       timeout2Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === ds ? null : old), 700);
     };
 
+    // Scenario 2: One date set → validate direction before setting
     if (workingActive === "checkIn" && checkOut && clickedVal > outVal) { triggerInvalid(dayStr); return; }
     if (workingActive === "checkOut" && checkIn && clickedVal < inVal) { triggerInvalid(dayStr); return; }
 
-    if (workingActive === "checkIn") {
-      setCheckIn(dayStr);
-      setActive("checkOut");
-    } else if (workingActive === "checkOut") {
-      setCheckOut(dayStr);
-      setActive(!checkIn ? "checkIn" : "checkOut");
-    }
+    // Scenario 3: Set the date and auto-advance to the next field
+    if (workingActive === "checkIn") { setCheckIn(dayStr); setActive("checkOut"); }
+    else if (workingActive === "checkOut") { setCheckOut(dayStr); setActive(!checkIn ? "checkIn" : "checkOut"); }
   };
 
-  // ---- Search Trigger ----
+  // ─── Search Trigger ─────────────────────────────────────────────────
 
+  /**
+   * Simulates a search with an 800ms loading animation, then fires
+   * the `onSearch` callback with the current field values.
+   */
   const handleSearchTrigger = () => {
     setActive(null);
     setIsSearching(true);
     setTimeout(() => {
       setIsSearching(false);
-      if (onSearch) {
-        onSearch({ destination: destination || 'Todos', checkIn, checkOut, adults, children, pets });
-      }
+      if (onSearch) onSearch({ destination: destination || 'Todos', checkIn, checkOut, adults, children, pets });
     }, 800);
   };
 
-  // ---- Sizing Tokens ----
+  // ─── Section Class Helper ───────────────────────────────────────────
 
-  const sectionPadding = isHero ? "px-10 py-5" : "px-6 py-2";
-  const labelText = isHero ? "text-sm" : "text-[11px]";
-  const valueText = isHero ? "text-xl" : "text-[15px]";
-  const searchBtnPadding = isHero ? "px-8 py-4" : "px-6 py-2";
-  const searchBtnIconSize = isHero ? "w-6 h-6" : "w-5 h-5";
+  /**
+   * Builds the full CSS class string for a bar section, combining:
+   *  - Base layout classes
+   *  - Variant-specific padding
+   *  - Section-specific width classes
+   *  - Active/inactive visual state
+   *  - Faded state (date sections dim when a non-date popover is open
+   *    and the hero calendar is already visible)
+   */
+  const sectionClass = (key: ActiveSection, extra: string) => [
+    S.sectionBase, sizing.padding, extra,
+    active === key ? S.sectionActive : S.sectionInactive,
+    ((active === "where" || active === "who") && hasHeroCalendarOpened && (key === "checkIn" || key === "checkOut")) ? S.sectionFaded : "",
+  ].filter(Boolean).join(" ");
 
-  // ---- Render ----
+  // ─── Render ─────────────────────────────────────────────────────────
 
   return (
-    <div ref={containerRef} className={`relative z-50 w-full flex flex-col items-center ${className}`}>
+    <div ref={containerRef} className={`${S.container} ${className}`}>
 
-      {/* Hero floating calendar */}
-      {size === 'hero' && (
-        <div className="absolute top-full mt-6 left-0 right-0 w-full z-10 flex flex-col items-center pointer-events-none">
-          <div
-            className="w-full flex flex-col items-center"
-            style={{
-              transition: `transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 150ms, opacity ${(active === "where" || active === "who") ? '200ms ease-out' : '800ms ease 100ms'}`,
-              transform: hasHeroCalendarOpened ? 'translateY(0)' : 'translateY(-40px)',
-              opacity: hasHeroCalendarOpened ? ((active === "where" || active === "who") ? 0.30 : 1) : 0,
-              pointerEvents: hasHeroCalendarOpened && !(active === "where" || active === "who") ? 'auto' : 'none'
-            }}
-          >
-            <CalendarPopover variant="hero" activeMode={active} checkIn={checkIn} checkOut={checkOut} invalidState={invalidState} onPickDate={handlePickDate} />
-          </div>
-        </div>
+      {/* Hero-only: floating calendar above the bar */}
+      {isHero && (
+        <HeroCalendarFloat
+          active={active}
+          hasHeroCalendarOpened={hasHeroCalendarOpened}
+          checkIn={checkIn}
+          checkOut={checkOut}
+          invalidState={invalidState}
+          onPickDate={handlePickDate}
+        />
       )}
 
-      <div className={`relative flex items-stretch rounded-full border border-neutral-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-visible transition-colors z-50 w-full bg-white ${isHero ? "shadow-2xl" : ""}`}>
+      <div className={S.bar(isHero)}>
 
-        {/* Hero calendar expand tab */}
-        {size === 'hero' && (
-          <button
-            type="button"
-            style={{
-              transition: "opacity 300ms ease, transform 300ms ease",
-              opacity: hasHeroCalendarOpened ? 0 : 1,
-              transform: hasHeroCalendarOpened ? 'translateY(-10px)' : 'translateY(0)',
-              pointerEvents: hasHeroCalendarOpened ? 'none' : 'auto'
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
+        {/* Hero-only: chevron tab to open the calendar for the first time */}
+        {isHero && (
+          <HeroExpandTab
+            hasHeroCalendarOpened={hasHeroCalendarOpened}
+            active={active}
+            onExpand={() => {
               setHasHeroCalendarOpened(true);
               if (onHeroCalendarOpen) onHeroCalendarOpen();
               if (active !== "checkIn" && active !== "checkOut") setActive("checkIn");
             }}
-            className="absolute -bottom-[26px] left-[42%] -translate-x-[50%] bg-white px-6 py-1.5 rounded-b-xl border-b border-l border-r border-neutral-200/50 shadow-[0_6px_16px_rgba(0,0,0,0.03)] flex items-center justify-center hover:bg-neutral-50 transition-colors cursor-pointer group -z-10"
-          >
-            <svg className="w-5 h-5 text-emerald-600 transition-transform duration-300 ease-out group-hover:translate-y-1 group-active:translate-y-2 group-active:scale-95" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+          />
         )}
 
-        {/* Destination Section */}
-        <div
-          onClick={() => setActive("where")}
-          className={`flex-[1.2] relative flex flex-col justify-center ${sectionPadding} pl-10 pr-6 rounded-full cursor-pointer transition flex-shrink-0
-            ${active === "where" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
-          `}
-        >
-          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>{C.DESTINATION.LABEL}</div>
-          <div className="flex items-center gap-2">
-             <div className={`w-full bg-transparent border-none outline-none focus:outline-none ${valueText} font-bold mt-0.5 truncate pointer-events-none ${!destination ? 'text-neutral-400' : 'text-emerald-950'}`}>
-               {destination || C.DESTINATION.PLACEHOLDER}
-             </div>
-          </div>
-        </div>
+        {/* ── Bar sections: Destination → Dates → Guests ── */}
 
-        <div className="self-center w-[1px] h-10 bg-neutral-300/80" />
+        <DestinationSection
+          isActive={active === "where"}
+          destination={destination}
+          sizing={sizing}
+          sectionClass={sectionClass("where", S.sectionDestination)}
+          onActivate={() => setActive("where")}
+        />
 
-        {/* Check In Section */}
-        <div
-          onClick={() => setActive("checkIn")}
-          className={`flex-1 relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition
-            ${active === "checkIn" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
-            ${(active === "where" || active === "who") && hasHeroCalendarOpened ? 'opacity-30' : ''}
-          `}
-        >
-          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>{C.DATES.CHECK_IN_LABEL}</div>
-          <div className={`${valueText} text-emerald-950 font-bold truncate mt-0.5 pointer-events-none`}>{formatUIText(checkIn) || C.DATES.PLACEHOLDER}</div>
-        </div>
+        <div className={S.divider} />
 
-        <div className="self-center w-[1px] h-10 bg-neutral-300/80 relative" />
+        <DateSection
+          label={C.DATES.CHECK_IN_LABEL}
+          placeholder={C.DATES.PLACEHOLDER}
+          displayValue={formatUIText(checkIn)}
+          sizing={sizing}
+          sectionClass={sectionClass("checkIn", S.sectionDate)}
+          onActivate={() => setActive("checkIn")}
+        />
 
-        {/* Check Out Section */}
-        <div
-          onClick={() => setActive("checkOut")}
-          className={`flex-1 relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition
-            ${active === "checkOut" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
-            ${(active === "where" || active === "who") && hasHeroCalendarOpened ? 'opacity-30' : ''}
-          `}
-        >
-          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>{C.DATES.CHECK_OUT_LABEL}</div>
-          <div className={`${valueText} text-emerald-950 font-bold truncate mt-0.5 pointer-events-none`}>{formatUIText(checkOut) || C.DATES.PLACEHOLDER}</div>
-        </div>
+        <div className={S.dividerRelative} />
 
-        <div className="self-center w-[1px] h-10 bg-neutral-300/80" />
+        <DateSection
+          label={C.DATES.CHECK_OUT_LABEL}
+          placeholder={C.DATES.PLACEHOLDER}
+          displayValue={formatUIText(checkOut)}
+          sizing={sizing}
+          sectionClass={sectionClass("checkOut", S.sectionDate)}
+          onActivate={() => setActive("checkOut")}
+        />
 
-        {/* Guests Section */}
-        <div
-          onClick={() => setActive("who")}
-          className={`flex-[1.2] relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
-            ${active === "who" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
-          `}
-        >
-          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>{C.GUESTS.LABEL}</div>
-          <div className={`${valueText} text-emerald-950 font-bold truncate mt-0.5 pointer-events-none`}>
-            {formatGuests()}
-          </div>
-          {active === "who" && (
-            <GuestsPopover
-              variant={size}
-              hasCalendarExpanded={hasHeroCalendarOpened}
-              adults={adults} setAdults={setAdults}
-              children={children} setChildren={setChildren}
-              pets={pets} setPets={setPets}
-            />
-          )}
-        </div>
+        <div className={S.divider} />
 
-        {/* Search Button */}
-        <div className="flex-shrink-0 pr-4 md:pr-5 flex items-center z-10">
-          <button
-            type="button"
-            onClick={(e) => { e.stopPropagation(); handleSearchTrigger(); }}
-            className={`flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white rounded-full transition-all duration-300 font-bold shadow-md hover:shadow-lg active:scale-95 ${searchBtnPadding} gap-2 whitespace-nowrap`}
-          >
-            {isSearching ? (
-              <svg className={`${searchBtnIconSize} animate-spin`} fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : (
-              <svg className={searchBtnIconSize} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            )}
-            <span className="md:block mr-1">{C.ACTION.SEARCH_BTN}</span>
-          </button>
-        </div>
+        <GuestsSection
+          isActive={active === "who"}
+          guestsText={formatGuests()}
+          sizing={sizing}
+          size={size}
+          hasCalendarExpanded={hasHeroCalendarOpened}
+          sectionClass={sectionClass("who", S.sectionGuests)}
+          adults={adults} setAdults={setAdults}
+          children={children} setChildren={setChildren}
+          pets={pets} setPets={setPets}
+          onActivate={() => setActive("who")}
+        />
 
-        {/* Destination Popover */}
+        <SearchButton
+          isSearching={isSearching}
+          iconClass={sizing.searchBtnIcon}
+          paddingClass={sizing.searchBtnPad}
+          onTrigger={handleSearchTrigger}
+        />
+
+        {/* ── Conditional popovers ── */}
+
+        {/* Destination popover (absolute-positioned inside the bar) */}
         {active === "where" && (
           <DestinationPopover
             variant={size}
@@ -301,9 +347,15 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           />
         )}
 
-        {/* Compact Calendar Popover */}
+        {/* Compact-mode calendar (hero uses HeroCalendarFloat instead) */}
         {(active === "checkIn" || active === "checkOut") && !isHero && (
-          <CalendarPopover activeMode={active} checkIn={checkIn} checkOut={checkOut} invalidState={invalidState} onPickDate={handlePickDate} />
+          <CalendarPopover
+            activeMode={active}
+            checkIn={checkIn}
+            checkOut={checkOut}
+            invalidState={invalidState}
+            onPickDate={handlePickDate}
+          />
         )}
 
       </div>

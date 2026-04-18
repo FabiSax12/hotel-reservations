@@ -1,30 +1,48 @@
+/**
+ * @file RoomList.tsx — Scrollable list of room results.
+ *
+ * Displayed in State B after the user searches. Shows a summary header
+ * (destination name + room count) and renders a vertically stacked
+ * list of {@link RoomCard} components.
+ *
+ * The `searchKey` prop is used as a React `key` on the grid container,
+ * so that switching searches re-mounts the list and replays entrance
+ * animations.
+ */
+
 import type { Room } from '../domain/types';
 import { RoomCard } from './RoomCard';
 import { UI_CONSTANTS } from '../../../shared/constants/ui';
+import { ROOM_LIST_STYLES as S } from '../../../theme/rooms.theme';
 
 interface RoomListProps {
+  /** Filtered array of rooms to display. */
   rooms: Room[];
+  /** The currently selected destination, or null for "all". */
   selectedDest: string | null;
+  /** Monotonic counter used as a React key to force re-mount animations. */
   searchKey: number;
 }
 
 export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
   return (
-    <section className="relative w-full max-w-5xl mx-auto px-6 py-16 mt-[180px] animate-in fade-in slide-in-from-bottom-12 duration-700 fill-mode-both">
+    <section className={S.section}>
       
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b-2 border-emerald-900/10">
+      {/* Summary header: destination name + live count badge */}
+      <div className={S.header}>
         <div>
-          <div className="text-emerald-600 font-bold tracking-widest uppercase mb-2">{UI_CONSTANTS.ROOMS.REALTIME_AVAIL}</div>
-          <h2 className="text-4xl font-black text-emerald-950 tracking-tight">{UI_CONSTANTS.ROOMS.OPTIONS_IN} {selectedDest || UI_CONSTANTS.ROOMS.ALL_DESTINATIONS}</h2>
+          <div className={S.badge}>{UI_CONSTANTS.ROOMS.REALTIME_AVAIL}</div>
+          <h2 className={S.heading}>{UI_CONSTANTS.ROOMS.OPTIONS_IN} {selectedDest || UI_CONSTANTS.ROOMS.ALL_DESTINATIONS}</h2>
         </div>
         
-        <div className="mt-6 md:mt-0 px-4 py-2 bg-neutral-100 rounded-lg text-neutral-600 font-bold flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <div className={S.countBadge}>
+          <span className={S.countDot} />
           {rooms.length} {UI_CONSTANTS.ROOMS.ROOMS_FOUND}
         </div>
       </div>
 
-      <div key={searchKey} className="flex flex-col gap-10">
+      {/* Stacked card grid — key forces re-mount for staggered animations */}
+      <div key={searchKey} className={S.grid}>
         {rooms.map((room, index) => (
           <RoomCard 
             key={room.id} 

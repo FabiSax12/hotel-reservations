@@ -1,7 +1,19 @@
+/**
+ * @file rooms.ts — Mock room data for Portal de Reservas.
+ *
+ * Placeholder dataset used during development. Four rooms per destination
+ * (Monteverde and Arenal & La Fortuna) spanning all four room types
+ * (Standard, Suite, Family, Villa) for a realistic demonstration.
+ *
+ * This file should be replaced by an API fetch in a future iteration.
+ * The `inventory` values intentionally include scarce rooms (≤ 2) to
+ * exercise the urgency badge logic in {@link RoomImagePanel}.
+ */
+
 import type { Room } from '../domain/types';
 
 export const mockRooms: Room[] = [
-  // Monteverde
+  // ─── Monteverde ────────────────────────────────────
   {
     id: "mv-1",
     location: "Monteverde",
@@ -47,7 +59,7 @@ export const mockRooms: Room[] = [
     image: "https://images.unsplash.com/photo-1586500036065-2184d048dc53?q=80&w=2574&auto=format&fit=crop"
   },
   
-  // La Fortuna
+  // ─── Arenal & La Fortuna ───────────────────────────
   {
     id: "lf-1",
     location: "Arenal & La Fortuna",
