@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 
 // --- Subcomponents for Popovers ---
 
-function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: string) => void; currentSelection?: string }) {
+function DestinationPopover({ onSelect, currentSelection, variant }: { onSelect: (v: string) => void, currentSelection: string, variant?: 'compact'|'hero' }) {
   const regions = [
     { 
       name: "Arenal & La Fortuna", 
@@ -24,16 +24,11 @@ function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: s
     },
   ];
 
-  const [clickedRegion, setClickedRegion] = useState<string | null>(currentSelection || null);
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
   const [hoverTimer, setHoverTimer] = useState<NodeJS.Timeout | null>(null);
 
-  const handleClick = (name: string) => {
-    setClickedRegion(name);
-    setTimeout(() => {
-      onSelect(name);
-    }, 200);
-  };
+  const isHero = variant === "hero";
+  const posClasses = isHero ? "bottom-[100%] mb-8 origin-bottom slide-in-from-bottom-4" : "top-[100%] mt-4 origin-top slide-in-from-top-4";
 
   const handleMouseEnter = (name: string) => {
     if (hoverTimer) clearTimeout(hoverTimer);
@@ -56,32 +51,33 @@ function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: s
   return (
     <>
       <div 
-        className="absolute top-[100%] mt-4 left-0 w-[400px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-6 z-50 animate-in fade-in slide-in-from-top-4 duration-300"
+        className={`absolute left-0 w-[400px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-6 z-50 animate-in fade-in duration-300 cursor-default ${posClasses}`}
         onMouseLeave={handleMouseLeave}
+        onClick={e => e.stopPropagation()}
       >
         <h3 className="text-sm font-bold text-neutral-800 mb-4 uppercase tracking-wider">Nuestras Sedes</h3>
         <div className="flex flex-col gap-2">
           {regions.map((region) => (
             <button 
               key={region.name} 
-              onClick={() => handleClick(region.name)}
+              onClick={() => onSelect(region.name)}
               onMouseEnter={() => handleMouseEnter(region.name)}
               className={`flex items-center gap-4 p-3 rounded-2xl transition text-left group
-                ${clickedRegion === region.name ? "bg-emerald-50 scale-[0.98]" : "hover:bg-neutral-100"}
-                ${hoveredRegion === region.name && clickedRegion !== region.name ? "bg-neutral-100" : ""}
+                ${currentSelection === region.name ? "bg-emerald-50 scale-[0.98]" : "hover:bg-neutral-100"}
+                ${hoveredRegion === region.name && currentSelection !== region.name ? "bg-neutral-100" : ""}
               `}
             >
               <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-colors shadow-sm
-                ${clickedRegion === region.name ? "bg-emerald-200" : "bg-neutral-100 group-hover:bg-white"}
-                ${hoveredRegion === region.name && clickedRegion !== region.name ? "bg-white" : ""}
+                ${currentSelection === region.name ? "bg-emerald-200" : "bg-neutral-100 group-hover:bg-white"}
+                ${hoveredRegion === region.name && currentSelection !== region.name ? "bg-white" : ""}
               `}>
                 {region.icon}
               </div>
               <div className="flex-1">
-                <div className={`text-lg font-bold transition-colors ${clickedRegion === region.name ? "text-emerald-900" : "text-neutral-900"}`}>{region.name}</div>
+                <div className={`text-lg font-bold transition-colors ${currentSelection === region.name ? "text-emerald-900" : "text-neutral-900"}`}>{region.name}</div>
                 <div className="text-sm text-neutral-500">{region.desc}</div>
               </div>
-              <svg className={`w-5 h-5 transition-transform ${hoveredRegion === region.name || clickedRegion === region.name ? "text-emerald-600 translate-x-1" : "text-neutral-300 group-hover:text-emerald-400 group-hover:translate-x-1"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <svg className={`w-5 h-5 transition-transform ${hoveredRegion === region.name || currentSelection === region.name ? "text-emerald-600 translate-x-1" : "text-neutral-300 group-hover:text-emerald-400 group-hover:translate-x-1"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -91,14 +87,14 @@ function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: s
 
       {hoveredData && (
         <div 
-          className="absolute top-[100%] mt-4 left-[416px] right-0 bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 overflow-hidden z-50 animate-in fade-in slide-in-from-left-4 duration-300 flex"
+          className={`absolute left-[416px] right-auto w-[400px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 overflow-hidden z-50 animate-in fade-in slide-in-from-left-4 duration-300 flex flex-col ${posClasses}`}
           onMouseEnter={() => {
             if (hoverTimer) clearTimeout(hoverTimer);
           }}
           onMouseLeave={handleMouseLeave}
-          style={{ minHeight: '264px' }}
+          style={{ minHeight: '380px' }}
         >
-          <div className="w-[40%] relative">
+          <div className="w-full h-[200px] relative shrink-0">
              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${hoveredData.image}')` }} />
              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
              <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -106,7 +102,7 @@ function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: s
                 <div className="text-2xl font-black">${hoveredData.priceFrom} <span className="text-sm font-medium opacity-80">USD/noche</span></div>
              </div>
           </div>
-          <div className="w-[60%] p-6 flex flex-col justify-center">
+          <div className="w-full p-6 flex flex-col justify-center flex-1">
             <h4 className="text-2xl font-black text-emerald-950 mb-4 tracking-tight">{hoveredData.name}</h4>
             <ul className="flex flex-col gap-3">
               {hoveredData.highlights.map((h, i) => (
@@ -122,6 +118,46 @@ function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: s
         </div>
       )}
     </>
+  );
+}
+
+function GuestsPopover({ adults, setAdults, children, setChildren, pets, setPets, variant }: any) {
+  const Stepper = ({ title, subtitle, value, setter, min = 0 }: any) => (
+    <div className="flex items-center justify-between py-6 border-b border-neutral-100 last:border-0">
+      <div>
+        <div className="text-lg font-bold text-neutral-900">{title}</div>
+        <div className="text-neutral-500 font-medium">{subtitle}</div>
+      </div>
+      <div className="flex items-center gap-4">
+        <button 
+          onClick={() => setter(Math.max(min, value - 1))}
+          className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent] ${value <= min ? 'border-neutral-200 text-neutral-300 cursor-not-allowed' : 'border-neutral-400 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900'}`}
+        >
+          <svg className="w-5 h-5 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
+        </button>
+        <span className="w-6 text-center text-xl font-bold text-neutral-900">{value}</span>
+        <button 
+          onClick={() => setter(value + 1)}
+          className="w-12 h-12 rounded-full flex items-center justify-center border-2 border-neutral-400 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]"
+        >
+          <svg className="w-5 h-5 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+        </button>
+      </div>
+    </div>
+  );
+
+  const isHero = variant === "hero";
+  const posClasses = isHero ? "bottom-[100%] mb-8 origin-bottom slide-in-from-bottom-4" : "top-[100%] mt-4 origin-top slide-in-from-top-4";
+
+  return (
+    <div 
+      className={`absolute left-1/2 -translate-x-1/2 w-[450px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-8 z-50 animate-in fade-in duration-300 cursor-default ${posClasses}`}
+      onClick={e => e.stopPropagation()}
+    >
+      <Stepper title="Adultos" subtitle="Edad 13 o superior" value={adults} setter={setAdults} min={1} />
+      <Stepper title="Niños" subtitle="Edades 2-12" value={children} setter={setChildren} />
+      <Stepper title="Mascotas" subtitle="¿Viajas con peludos?" value={pets} setter={setPets} />
+    </div>
   );
 }
 
@@ -195,26 +231,21 @@ function CalendarPopover({ activeMode, checkIn, checkOut, invalidState, onPickDa
                     ${hoveredDay === dayStr ? "!z-50" : ""}
                   `}
                 >
-                  {/* Backdrop connector */}
                   {isStart && outVal > 0 && outVal !== inVal && <div className="absolute inset-y-0 right-0 w-1/2 bg-emerald-50 z-0"></div>}
                   {isEnd && inVal > 0 && outVal !== inVal && <div className="absolute inset-y-0 left-0 w-1/2 bg-emerald-50 z-0"></div>}
                   
-                  {/* Hover interaction circle */}
                   {!isSelected && !isStart && !isEnd && (
                      <div className="absolute h-[85%] aspect-square rounded-full border-2 border-transparent group-hover:border-neutral-900 transition-colors pointer-events-none"></div>
                   )}
 
-                  {/* Colored circle */}
                   {isStart && <div className="absolute h-[85%] aspect-square bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 group-hover:scale-105"></div>}
                   {isEnd && !isStart && <div className="absolute h-[75%] aspect-square bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 ring-2 ring-emerald-700 ring-offset-2 group-hover:scale-105"></div>}
                   {isStart && isEnd && <div className="absolute h-[85%] aspect-square bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 group-hover:scale-105"></div>}
                   
-                  {/* Invalid state indication */}
                   {isInvalid && (
                     <div className={`absolute h-[85%] aspect-square bg-red-500 rounded-full z-20 shadow-[0_0_15px_rgba(239,68,68,0.5)] transition-all ease-in-out ${isFading ? 'opacity-0 scale-90 duration-300' : 'opacity-90 scale-100 animate-in zoom-in-75 duration-200'}`}></div>
                   )}
 
-                  {/* Tooltips */}
                   {isStart && hoveredDay === dayStr && !isInvalid && (
                     <div className={`absolute ${isHero ? "-top-12 text-xs px-4 py-2" : "-top-9 text-[10px] px-3 py-1.5"} bg-emerald-950 text-white uppercase font-black tracking-widest rounded-lg z-50 animate-in fade-in slide-in-from-bottom-2 duration-200 shadow-xl whitespace-nowrap pointer-events-none`}>
                       Llegada
@@ -239,40 +270,6 @@ function CalendarPopover({ activeMode, checkIn, checkOut, invalidState, onPickDa
   );
 }
 
-function GuestsPopover({ adults, setAdults, children, setChildren, pets, setPets }: any) {
-  const Stepper = ({ title, subtitle, value, setter, min = 0 }: any) => (
-    <div className="flex items-center justify-between py-6 border-b border-neutral-100 last:border-0">
-      <div>
-        <div className="text-lg font-bold text-neutral-900">{title}</div>
-        <div className="text-neutral-500 font-medium">{subtitle}</div>
-      </div>
-      <div className="flex items-center gap-4">
-        <button 
-          onClick={() => setter(Math.max(min, value - 1))}
-          className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent] ${value <= min ? 'border-neutral-200 text-neutral-300 cursor-not-allowed' : 'border-neutral-400 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900'}`}
-        >
-          <svg className="w-5 h-5 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
-        </button>
-        <span className="w-6 text-center text-xl font-bold text-neutral-900">{value}</span>
-        <button 
-          onClick={() => setter(value + 1)}
-          className="w-12 h-12 rounded-full flex items-center justify-center border-2 border-neutral-400 text-neutral-600 hover:border-neutral-900 hover:text-neutral-900 transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]"
-        >
-          <svg className="w-5 h-5 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-        </button>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="absolute top-[100%] mt-4 right-0 w-[450px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-8 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
-      <Stepper title="Adultos" subtitle="Edad 13 o superior" value={adults} setter={setAdults} min={1} />
-      <Stepper title="Niños" subtitle="Edades 2-12" value={children} setter={setChildren} />
-      <Stepper title="Mascotas" subtitle="¿Viajas con peludos?" value={pets} setter={setPets} />
-    </div>
-  );
-}
-
 type ActiveSection = "where" | "checkIn" | "checkOut" | "who" | null;
 
 export interface SearchState {
@@ -292,25 +289,28 @@ interface SearchBarProps {
   onHeroCalendarOpen?: () => void;
 }
 
-export function ModernSearchBar({ onSearch, className = "", size = 'compact', initialState, onHeroCalendarOpen }: SearchBarProps) {
+export function ModernSearchBar({ onSearch, className = "", size = 'compact', initialState, onHeroCalendarOpen, onActiveChange }: SearchBarProps) {
   const [active, setActive] = useState<ActiveSection>(null);
   const [invalidState, setInvalidState] = useState<{ dayStr: string, isFading: boolean } | null>(null);
+  const [hasHeroTitleDismissed, setHasHeroTitleDismissed] = useState(false);
   const [hasHeroCalendarOpened, setHasHeroCalendarOpened] = useState(false);
   const timeout1Ref = React.useRef<NodeJS.Timeout | null>(null);
   const timeout2Ref = React.useRef<NodeJS.Timeout | null>(null);
 
   const [isSearching, setIsSearching] = useState(false);
-  const [showExpanded, setShowExpanded] = useState(false);
 
   useEffect(() => {
-    if (active) {
-      setShowExpanded(true);
+    if (size === 'hero' && active && !hasHeroTitleDismissed) {
+      setHasHeroTitleDismissed(true);
     }
     if (size === 'hero' && (active === 'checkIn' || active === 'checkOut') && !hasHeroCalendarOpened) {
       setHasHeroCalendarOpened(true);
       if (onHeroCalendarOpen) onHeroCalendarOpen();
     }
-  }, [active, size, hasHeroCalendarOpened, onHeroCalendarOpen]);
+    if (onActiveChange) {
+      onActiveChange(active);
+    }
+  }, [active, size, hasHeroCalendarOpened, hasHeroTitleDismissed, onHeroCalendarOpen, onActiveChange]);
 
   const [destination, setDestination] = useState(initialState?.destination && initialState?.destination !== 'Todos' ? initialState.destination : "");
   const [checkIn, setCheckIn] = useState(initialState?.checkIn || "15 Oct");
@@ -322,14 +322,17 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
 
   const isHero = size === 'hero';
 
-  let guestsText = `${adults} ${adults === 1 ? 'Adulto' : 'Adultos'}`;
-  if (children > 0 && pets > 0) {
-    guestsText = `${adults} Ad. • ${children} Ni. • ${pets} Mas.`;
-  } else if (children > 0) {
-    guestsText = `${adults} Adult. • ${children} ${children === 1 ? 'Niño' : 'Niños'}`;
-  } else if (pets > 0) {
-    guestsText = `${adults} Adult. • ${pets} ${pets === 1 ? 'Masc.' : 'Masc.'}`;
-  }
+  const formatGuests = () => {
+    let guestsText = `${adults} ${adults === 1 ? 'Adulto' : 'Adultos'}`;
+    if (children > 0 && pets > 0) {
+      guestsText = `${adults} Ad. • ${children} Ni. • ${pets} Mas.`;
+    } else if (children > 0) {
+      guestsText = `${adults} Adult. • ${children} ${children === 1 ? 'Niño' : 'Niños'}`;
+    } else if (pets > 0) {
+      guestsText = `${adults} Adult. • ${pets} ${pets === 1 ? 'Masc.' : 'Masc.'}`;
+    }
+    return guestsText;
+  };
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") setActive(null); };
@@ -344,7 +347,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       setActive(workingActive);
     }
 
-    // 1. Explicit toggling off to prevent same-date selection and support direct removal
     if (dayStr === checkIn) {
       setCheckIn("");
       setActive("checkIn");
@@ -364,7 +366,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     const inVal = parseDateHelper(checkIn);
     const outVal = parseDateHelper(checkOut);
 
-    // If both dates are already selected, allow moving boundaries without errors
     if (checkIn && checkOut) {
       const clickedAbs = getAbsoluteDays(dayStr);
       const inAbs = getAbsoluteDays(checkIn);
@@ -386,7 +387,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       return;
     }
 
-    // Validate boundaries for single selection scenarios
     if (workingActive === "checkIn" && checkOut && clickedVal > outVal) {
       if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
       if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
@@ -405,7 +405,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       return;
     }
 
-    // 2. Linear assignment
     if (workingActive === "checkIn") {
       setCheckIn(dayStr);
       setActive("checkOut");
@@ -420,14 +419,29 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     }
   };
 
-  // Adjustments based on scale
-  const containerPadding = isHero ? "p-3" : "p-2";
   const sectionPadding = isHero ? "px-10 py-5" : "px-6 py-2";
-  const whoPadding = isHero ? "pl-2 pr-3 py-1.5" : "pl-2 pr-2 py-1.5";
   const labelText = isHero ? "text-sm" : "text-[11px]";
   const valueText = isHero ? "text-xl" : "text-[15px]";
-  const searchBtnSize = isHero ? "h-16" : "h-10";
+  const searchBtnPadding = isHero ? "px-8 py-4" : "px-6 py-2";
   const searchBtnIconSize = isHero ? "w-6 h-6" : "w-5 h-5";
+
+  const handleSearchTrigger = () => {
+    setActive(null);
+    setIsSearching(true);
+    setTimeout(() => {
+      setIsSearching(false);
+      if (onSearch) {
+        onSearch({
+          destination: destination || 'Todos',
+          checkIn,
+          checkOut,
+          adults,
+          children,
+          pets
+        });
+      }
+    }, 800);
+  };
 
   return (
     <div className={`relative z-50 w-full flex flex-col items-center ${className}`}>
@@ -448,14 +462,14 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
               style={{
                 transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms, opacity 800ms ease 300ms",
                 transform: hasHeroCalendarOpened ? 'translateY(0)' : 'translateY(100%)',
-                opacity: hasHeroCalendarOpened ? 1 : 0
+                opacity: hasHeroCalendarOpened ? ((active === "where" || active === "who") ? 0.15 : 1) : 0
               }}
             >
                <h2 
-                 className="text-xl font-serif font-medium text-emerald-950 mb-4 tracking-tight"
+                 className="text-xl font-serif font-medium text-emerald-950 mb-4 tracking-tight pointer-events-none"
                  style={{ 
                    transition: "opacity 800ms ease 1000ms", 
-                   opacity: hasHeroCalendarOpened ? 1 : 0 
+                   opacity: hasHeroCalendarOpened ? ((active === "where" || active === "who") ? 0.15 : 1) : 0 
                  }}
                >
                  Por favor, seleccione sus fechas de llegada y salida
@@ -473,9 +487,8 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
         />
       )}
 
-      <div className={`relative flex items-stretch rounded-full border border-neutral-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-visible transition-colors z-50 w-full [-webkit-tap-highlight-color:transparent] ${containerPadding} ${active ? 'bg-neutral-100' : 'bg-white'} ${isHero ? "shadow-2xl" : ""}`}>
+      <div className={`relative flex items-stretch rounded-full border border-neutral-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-visible transition-colors z-50 w-full bg-white ${isHero ? "shadow-2xl" : ""}`}>
         
-        {/* The Handle Tab */}
         {size === 'hero' && (
           <button 
             type="button"
@@ -500,89 +513,73 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
         
         <div 
           onClick={() => setActive("where")}
-          className={`flex-[1.2] relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
-            ${active === "where" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
+          className={`flex-[1.2] relative flex flex-col justify-center ${sectionPadding} pl-10 pr-6 rounded-full cursor-pointer transition flex-shrink-0
+            ${active === "where" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
           `}
         >
-          <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full`}>Sede</label>
-          <input 
-            type="text" 
-            placeholder="¿A cuál vas?"
-            className={`bg-transparent border-none outline-none focus:outline-none ${valueText} font-bold text-neutral-900 placeholder:text-neutral-400 w-full truncate cursor-pointer text-center`}
-            readOnly
-            value={destination}
-          />
+          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>Sede</div>
+          <div className="flex items-center gap-2">
+             <input 
+               type="text" 
+               readOnly
+               className={`w-full bg-transparent border-none outline-none focus:outline-none ${valueText} text-emerald-950 font-bold placeholder-neutral-400 mt-0.5 truncate cursor-pointer`}
+               placeholder="¿A cuál vas?"
+               value={destination}
+               onChange={(e) => setDestination(e.target.value)}
+             />
+          </div>
+          {active === "where" && <DestinationPopover variant={size} onSelect={(v) => { setDestination(v); setActive("checkIn"); }} currentSelection={destination} />}
         </div>
 
-        <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
+        <div className="self-center w-[1px] h-10 bg-neutral-300/80" />
 
-        <div className="flex-[2] flex items-stretch flex-shrink-0 min-w-0">
-          <div 
-            onClick={() => setActive("checkIn")}
-            className={`flex-1 relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition min-w-0
-              ${active === "checkIn" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
-            `}
-          >
-            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full truncate`}>Llegada</label>
-            <span className={`${valueText} font-bold ${checkIn ? 'text-neutral-900' : 'text-neutral-400'} text-center w-full whitespace-nowrap`}>{checkIn || "Fechas"}</span>
-          </div>
-
-          <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
-
-          <div 
-            onClick={() => setActive("checkOut")}
-            className={`flex-1 relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition min-w-0
-              ${active === "checkOut" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
-            `}
-          >
-            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full truncate`}>Salida</label>
-            <span className={`${valueText} font-bold ${checkOut ? 'text-neutral-900' : 'text-neutral-400'} text-center w-full whitespace-nowrap`}>{checkOut || "Fechas"}</span>
-          </div>
+        <div 
+          onClick={() => setActive("checkIn")}
+          className={`flex-1 relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition
+            ${active === "checkIn" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
+            ${(active === "where" || active === "who") && hasHeroCalendarOpened ? 'opacity-30' : ''}
+          `}
+        >
+          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>Llegada</div>
+          <div className={`${valueText} text-emerald-950 font-bold truncate mt-0.5 pointer-events-none`}>{checkIn || "Fechas"}</div>
         </div>
 
-        <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
+        <div className="self-center w-[1px] h-10 bg-neutral-300/80" />
+
+        <div 
+          onClick={() => setActive("checkOut")}
+          className={`flex-1 relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition
+            ${active === "checkOut" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
+            ${(active === "where" || active === "who") && hasHeroCalendarOpened ? 'opacity-30' : ''}
+          `}
+        >
+          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>Salida</div>
+          <div className={`${valueText} text-emerald-950 font-bold truncate mt-0.5 pointer-events-none`}>{checkOut || "Fechas"}</div>
+        </div>
+
+        <div className="self-center w-[1px] h-10 bg-neutral-300/80" />
 
         <div 
           onClick={() => setActive("who")}
-          className={`flex-[1.2] relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
-            ${active === "who" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
+          className={`flex-[1.2] relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
+            ${active === "who" ? 'bg-white shadow-lg' : 'hover:bg-black/5'}
           `}
         >
-          <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full`}>Huéspedes</label>
-          <span className={`${valueText} font-bold text-neutral-900 whitespace-nowrap text-center w-full`}>
-            {guestsText}
-          </span>
+          <div className={`${labelText} font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none`}>Huéspedes</div>
+          <div className={`${valueText} text-emerald-950 font-bold truncate mt-0.5 pointer-events-none`}>
+            {formatGuests()}
+          </div>
+          {active === "who" && <GuestsPopover variant={size} adults={adults} setAdults={setAdults} children={children} setChildren={setChildren} pets={pets} setPets={setPets} />}
         </div>
 
-        <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
-
-        <div className={`flex items-center justify-center pl-1 pr-1`}>
+        <div className="flex-shrink-0 pr-2.5 flex items-center z-10">
           <button 
-            className={`${searchBtnSize} rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 outline-none focus:outline-none [-webkit-tap-highlight-color:transparent] overflow-hidden
-              ${(showExpanded || isHero) && !isSearching ? 'bg-emerald-700 w-auto px-10 gap-3 text-white shadow-[0_8px_20px_rgba(4,120,87,0.4)] hover:bg-emerald-800' : 'bg-emerald-700 aspect-square text-white hover:bg-emerald-800'}
-            `}
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
-              if (isSearching) return;
-
-              setActive(null);
-              setShowExpanded(false);
-              setIsSearching(true);
-
-              setTimeout(() => {
-                setIsSearching(false);
-                if (onSearch) {
-                  onSearch({
-                    destination: destination || 'Todos',
-                    checkIn,
-                    checkOut,
-                    adults,
-                    children,
-                    pets
-                  });
-                }
-              }, 800);
+              handleSearchTrigger();
             }}
+            className={`flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white rounded-full transition-all duration-300 font-bold shadow-md hover:shadow-lg active:scale-95 ${searchBtnPadding} gap-2 whitespace-nowrap`}
           >
             {isSearching ? (
               <svg className={`${searchBtnIconSize} animate-spin`} fill="none" viewBox="0 0 24 24">
@@ -590,19 +587,17 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             ) : (
-              <svg className={searchBtnIconSize} fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              <svg className={searchBtnIconSize} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             )}
-            {((showExpanded || isHero) && !isSearching) && <span className={`${isHero ? 'text-xl' : 'text-[15px]'} font-extrabold`}>Buscar</span>}
+            <span className="md:block mr-1">Buscar</span>
           </button>
         </div>
 
-        {active === "where" && <DestinationPopover onSelect={(v) => { setDestination(v); setActive("checkIn"); }} currentSelection={destination} />}
         {(active === "checkIn" || active === "checkOut") && !hasHeroCalendarOpened && (
           <CalendarPopover activeMode={active} checkIn={checkIn} checkOut={checkOut} invalidState={invalidState} onPickDate={handlePickDate} />
         )}
-        {active === "who" && <GuestsPopover adults={adults} setAdults={setAdults} children={children} setChildren={setChildren} pets={pets} setPets={setPets} />}
 
       </div>
     </div>

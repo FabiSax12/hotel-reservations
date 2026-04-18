@@ -100,6 +100,7 @@ const mockRooms = [
 export default function HomePage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [heroCalendarActive, setHeroCalendarActive] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchKey, setSearchKey] = useState(0);
   const [searchParams, setSearchParams] = useState<any>({
     destination: 'Todos',
@@ -175,7 +176,7 @@ export default function HomePage() {
               className="grid w-full pointer-events-none"
               style={{
                 transition: "opacity 300ms ease, transform 300ms ease, grid-template-rows 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms",
-                opacity: heroCalendarActive ? 0 : 1,
+                opacity: heroCalendarActive ? 0 : ((activeMenu === 'where' || activeMenu === 'who') ? 0.2 : 1),
                 transform: heroCalendarActive ? 'translateY(-10px)' : 'translateY(0)',
                 gridTemplateRows: heroCalendarActive ? '0fr' : '1fr',
               }}
@@ -196,6 +197,7 @@ export default function HomePage() {
                 onSearch={handleSearchTrigger} 
                 className="w-full max-w-[1150px]"
                 onHeroCalendarOpen={() => setHeroCalendarActive(true)}
+                onActiveChange={(active) => setActiveMenu(active)}
               />
             </div>
 
