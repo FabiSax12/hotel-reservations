@@ -1,7 +1,7 @@
 import type { SupportedLocale } from "@hotel/i18n";
-import type { ReservacionesTexts } from "./reservacionesTexts.type";
+import type { ReservationsTexts } from "./reservationsTexts.type";
 
-export const RESERVACIONES_TEXTS: Record<SupportedLocale, ReservacionesTexts> = {
+export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
   es: {
     PAGE: {
       TITLE: "Reservaciones",
@@ -9,24 +9,24 @@ export const RESERVACIONES_TEXTS: Record<SupportedLocale, ReservacionesTexts> = 
     },
     TABLE: {
       ARIA_LABEL: "Tabla de reservaciones",
-      COL_CODIGO: "Código",
-      COL_HUESPED: "Huésped",
-      COL_HABITACION: "Habitación",
+      COL_CODE: "Código",
+      COL_GUEST: "Huésped",
+      COL_ROOM: "Habitación",
       COL_CHECKIN: "Check-in",
       COL_CHECKOUT: "Check-out",
-      COL_NOCHES: "Noches",
+      COL_NIGHTS: "Noches",
       COL_TOTAL: "Total (USD)",
-      COL_ESTADO: "Estado",
-      COL_ACCIONES: "Acciones",
+      COL_STATUS: "Estado",
+      COL_ACTIONS: "Acciones",
     },
     STATUS: {
-      PENDIENTE: "Pendiente",
-      APROBADA: "Aprobada",
-      CANCELADA: "Cancelada",
-      COMPLETADA: "Completada",
+      PENDING: "Pendiente",
+      APPROVED: "Aprobada",
+      CANCELLED: "Cancelada",
+      COMPLETED: "Completada",
     },
     ACTIONS: {
-      VER_DETALLE: "Ver detalle",
+      VIEW_DETAIL: "Ver detalle",
     },
     EMPTY: {
       TITLE: "Sin reservaciones",
@@ -40,24 +40,24 @@ export const RESERVACIONES_TEXTS: Record<SupportedLocale, ReservacionesTexts> = 
     },
     TABLE: {
       ARIA_LABEL: "Reservations table",
-      COL_CODIGO: "Code",
-      COL_HUESPED: "Guest",
-      COL_HABITACION: "Room",
+      COL_CODE: "Code",
+      COL_GUEST: "Guest",
+      COL_ROOM: "Room",
       COL_CHECKIN: "Check-in",
       COL_CHECKOUT: "Check-out",
-      COL_NOCHES: "Nights",
+      COL_NIGHTS: "Nights",
       COL_TOTAL: "Total (USD)",
-      COL_ESTADO: "Status",
-      COL_ACCIONES: "Actions",
+      COL_STATUS: "Status",
+      COL_ACTIONS: "Actions",
     },
     STATUS: {
-      PENDIENTE: "Pending",
-      APROBADA: "Approved",
-      CANCELADA: "Cancelled",
-      COMPLETADA: "Completed",
+      PENDING: "Pending",
+      APPROVED: "Approved",
+      CANCELLED: "Cancelled",
+      COMPLETED: "Completed",
     },
     ACTIONS: {
-      VER_DETALLE: "View details",
+      VIEW_DETAIL: "View details",
     },
     EMPTY: {
       TITLE: "No reservations",
