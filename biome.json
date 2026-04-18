@@ -27,12 +27,16 @@
   },
   "files": {
     "includes": [
-      "!node_modules",
-      "!.next",
-      "!dist",
-      "!.turbo",
-      "!*.gen.ts",
-      "!database.types.ts"
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/.turbo",
+      "!**/*.gen.ts",
+      "!**/database.types.ts",
+      "!**/next-env.d.ts",
+      "!**/.agents",
+      "!**/.claude"
     ]
   }
 }

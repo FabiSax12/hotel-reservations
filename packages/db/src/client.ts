@@ -1,15 +1,37 @@
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient, createServerClient } from "@supabase/ssr";
+import { DB_ENV } from "./config/env";
+import type { Database } from "./database.types";
 
-export function createServerClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-
-  return createClient(supabaseUrl, supabaseKey);
+export function createSupabaseServerClient(cookieStore: {
+  getAll: () => { name: string; value: string }[];
+  set: (name: string, value: string, options?: object) => void;
+}) {
+  return createServerClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_ANON_KEY, {
+    cookies: {
+      getAll: () => cookieStore.getAll(),
+      setAll: (cookies) =>
+        cookies.forEach(({ name, value, options }) => cookieStore.set(name, value, options)),
+    },
+  });
 }
 
-export function createBrowserClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// For client-side usage in browser context only.
+export function createSupabaseClient() {
+  return createBrowserClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_ANON_KEY);
+}
 
-  return createClient(supabaseUrl, supabaseAnonKey);
+// For Server Actions that don't need to read/write session cookies (e.g. signUp, signIn flows).
+export function createSupabaseServerActionClient() {
+  return createServerClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_ANON_KEY, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
+}
+
+export type SupabaseServerClient = ReturnType<typeof createSupabaseServerClient>;
+
+// Uses the service role key — never call from the browser.
+export function createSupabaseServiceClient() {
+  return createServerClient<Database>(DB_ENV.SUPABASE_URL, DB_ENV.SUPABASE_SERVICE_ROLE_KEY, {
+    cookies: { getAll: () => [], setAll: () => {} },
+  });
 }
