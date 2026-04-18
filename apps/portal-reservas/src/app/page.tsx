@@ -99,13 +99,24 @@ const mockRooms = [
 
 export default function HomePage() {
   const [hasSearched, setHasSearched] = useState(false);
-  const [selectedDest, setSelectedDest] = useState<string | null>(null);
+  const [heroCalendarActive, setHeroCalendarActive] = useState(false);
+  const [searchKey, setSearchKey] = useState(0);
+  const [searchParams, setSearchParams] = useState<any>({
+    destination: 'Todos',
+    checkIn: '15 Oct',
+    checkOut: '21 Oct',
+    adults: 2,
+    children: 0,
+    pets: 0
+  });
 
-  const handleSearchTrigger = (dest: string) => {
-    setSelectedDest(dest);
+  const handleSearchTrigger = (params: any) => {
+    setSearchParams(params);
     setHasSearched(true);
+    setSearchKey(prev => prev + 1);
   };
 
+  const selectedDest = searchParams.destination;
   const filteredRooms = selectedDest && selectedDest !== 'Todos'
     ? mockRooms.filter(r => r.location === selectedDest)
     : mockRooms;
@@ -144,6 +155,7 @@ export default function HomePage() {
               size="compact"
               className="w-full max-w-5xl" 
               onSearch={handleSearchTrigger} 
+              initialState={searchParams}
             />
           </div>
         )}
@@ -153,22 +165,38 @@ export default function HomePage() {
         STATE A: HERO CENTERPIECE
       */}
       {!hasSearched && (
-        <section className="relative w-full h-screen flex flex-col items-center px-6 pt-[18vh] animate-in fade-in duration-500">
+        <section className={`relative w-full h-screen flex flex-col items-center px-6 transition-[padding] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${heroCalendarActive ? 'pt-[14vh] pb-0' : 'pt-[18vh] pb-8'} animate-in fade-in duration-500`}>
            {/* Background subtle noise/texture */}
            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay"></div>
            
            <div className="w-full max-w-[1150px] mx-auto flex flex-col items-center text-center z-10">
             
-            <h1 className="text-6xl md:text-8xl font-serif font-black text-emerald-950 tracking-tighter leading-[0.9] mb-6">
-              ¿Cuándo nos visitas?
-            </h1>
-            <p className="text-xl md:text-2xl text-neutral-600 font-medium mb-12 max-w-3xl">
-              Seleccione su destino, fechas y cantidad de personas
-            </p>
+            <div 
+              className="grid w-full pointer-events-none"
+              style={{
+                transition: "opacity 300ms ease, transform 300ms ease, grid-template-rows 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms",
+                opacity: heroCalendarActive ? 0 : 1,
+                transform: heroCalendarActive ? 'translateY(-10px)' : 'translateY(0)',
+                gridTemplateRows: heroCalendarActive ? '0fr' : '1fr',
+              }}
+            >
+              <div className="overflow-hidden w-full flex flex-col items-center min-h-0">
+                <h1 className="text-6xl md:text-8xl font-serif font-black text-emerald-950 tracking-tighter leading-[0.9] mb-6 pt-4 pointer-events-auto">
+                  ¿Cuándo nos visitas?
+                </h1>
+                <p className="text-xl md:text-2xl text-neutral-600 font-medium mb-12 max-w-3xl pointer-events-auto">
+                  Seleccione su destino, fechas y cantidad de personas
+                </p>
+              </div>
+            </div>
             
-            <div className="w-full transform scale-100 transition-transform duration-500 flex justify-center">
-              {/* Using the huge hero scale */}
-              <ModernSearchBar size="hero" onSearch={handleSearchTrigger} className="w-full max-w-[1150px]" />
+            <div className="w-full transform transition-transform duration-500 flex justify-center mt-2">
+              <ModernSearchBar 
+                size="hero" 
+                onSearch={handleSearchTrigger} 
+                className="w-full max-w-[1150px]"
+                onHeroCalendarOpen={() => setHeroCalendarActive(true)}
+              />
             </div>
 
           </div>
@@ -193,7 +221,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-10">
+          <div key={searchKey} className="flex flex-col gap-10">
             {filteredRooms.map((room, index) => {
               const isScarce = room.inventory <= 2;
               

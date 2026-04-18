@@ -4,13 +4,29 @@ import React, { useState, useEffect } from "react";
 
 // --- Subcomponents for Popovers ---
 
-function DestinationPopover({ onSelect }: { onSelect: (name: string) => void }) {
+function DestinationPopover({ onSelect, currentSelection }: { onSelect: (name: string) => void; currentSelection?: string }) {
   const regions = [
-    { name: "Arenal & La Fortuna", desc: "Volcanes, aguas termales, selvas tropicales", icon: "🌋" },
-    { name: "Monteverde", desc: "Bosques nubosos, tirolesas, vida silvestre", icon: "☁️" },
+    { 
+      name: "Arenal & La Fortuna", 
+      desc: "Volcanes, aguas termales, selvas tropicales", 
+      icon: "🌋",
+      image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2062&auto=format&fit=crop",
+      highlights: ["Habitaciones con vista al volcán", "Aguas termales minerales privadas", "Aventuras de senderismo incrustadas"],
+      priceFrom: 180
+    },
+    { 
+      name: "Monteverde", 
+      desc: "Bosques nubosos, tirolesas, vida silvestre", 
+      icon: "☁️",
+      image: "https://images.unsplash.com/photo-1542314831-c6a4d27a6584?q=80&w=2070&auto=format&fit=crop",
+      highlights: ["Inmersión en el bosque nuboso", "Eco-lodges exclusivos y privados", "Avistamiento de fauna exótica"],
+      priceFrom: 145
+    },
   ];
 
-  const [clickedRegion, setClickedRegion] = useState<string | null>(null);
+  const [clickedRegion, setClickedRegion] = useState<string | null>(currentSelection || null);
+  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
+  const [hoverTimer, setHoverTimer] = useState<NodeJS.Timeout | null>(null);
 
   const handleClick = (name: string) => {
     setClickedRegion(name);
@@ -19,60 +35,136 @@ function DestinationPopover({ onSelect }: { onSelect: (name: string) => void }) 
     }, 200);
   };
 
+  const handleMouseEnter = (name: string) => {
+    if (hoverTimer) clearTimeout(hoverTimer);
+    const timer = setTimeout(() => {
+      setHoveredRegion(name);
+    }, 400);
+    setHoverTimer(timer);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimer) clearTimeout(hoverTimer);
+    const timer = setTimeout(() => {
+      setHoveredRegion(null);
+    }, 200);
+    setHoverTimer(timer);
+  };
+
+  const hoveredData = regions.find(r => r.name === hoveredRegion);
+
   return (
-    <div className="absolute top-[100%] mt-4 left-0 w-[400px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-6 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
-      <h3 className="text-sm font-bold text-neutral-800 mb-4 uppercase tracking-wider">Nuestras Sedes</h3>
-      <div className="flex flex-col gap-2">
-        {regions.map((region) => (
-          <button 
-            key={region.name} 
-            onClick={() => handleClick(region.name)}
-            className={`flex items-center gap-4 p-3 rounded-2xl transition text-left group
-              ${clickedRegion === region.name ? "bg-emerald-50 scale-[0.98]" : "hover:bg-neutral-100"}
-            `}
-          >
-            <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-colors shadow-sm
-              ${clickedRegion === region.name ? "bg-emerald-200" : "bg-neutral-100 group-hover:bg-white"}
-            `}>
-              {region.icon}
-            </div>
-            <div>
-              <div className={`text-lg font-bold transition-colors ${clickedRegion === region.name ? "text-emerald-900" : "text-neutral-900"}`}>{region.name}</div>
-              <div className="text-sm text-neutral-500">{region.desc}</div>
-            </div>
-          </button>
-        ))}
+    <>
+      <div 
+        className="absolute top-[100%] mt-4 left-0 w-[400px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-6 z-50 animate-in fade-in slide-in-from-top-4 duration-300"
+        onMouseLeave={handleMouseLeave}
+      >
+        <h3 className="text-sm font-bold text-neutral-800 mb-4 uppercase tracking-wider">Nuestras Sedes</h3>
+        <div className="flex flex-col gap-2">
+          {regions.map((region) => (
+            <button 
+              key={region.name} 
+              onClick={() => handleClick(region.name)}
+              onMouseEnter={() => handleMouseEnter(region.name)}
+              className={`flex items-center gap-4 p-3 rounded-2xl transition text-left group
+                ${clickedRegion === region.name ? "bg-emerald-50 scale-[0.98]" : "hover:bg-neutral-100"}
+                ${hoveredRegion === region.name && clickedRegion !== region.name ? "bg-neutral-100" : ""}
+              `}
+            >
+              <div className={`w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-colors shadow-sm
+                ${clickedRegion === region.name ? "bg-emerald-200" : "bg-neutral-100 group-hover:bg-white"}
+                ${hoveredRegion === region.name && clickedRegion !== region.name ? "bg-white" : ""}
+              `}>
+                {region.icon}
+              </div>
+              <div className="flex-1">
+                <div className={`text-lg font-bold transition-colors ${clickedRegion === region.name ? "text-emerald-900" : "text-neutral-900"}`}>{region.name}</div>
+                <div className="text-sm text-neutral-500">{region.desc}</div>
+              </div>
+              <svg className={`w-5 h-5 transition-transform ${hoveredRegion === region.name || clickedRegion === region.name ? "text-emerald-600 translate-x-1" : "text-neutral-300 group-hover:text-emerald-400 group-hover:translate-x-1"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
+
+      {hoveredData && (
+        <div 
+          className="absolute top-[100%] mt-4 left-[416px] right-0 bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 overflow-hidden z-50 animate-in fade-in slide-in-from-left-4 duration-300 flex"
+          onMouseEnter={() => {
+            if (hoverTimer) clearTimeout(hoverTimer);
+          }}
+          onMouseLeave={handleMouseLeave}
+          style={{ minHeight: '264px' }}
+        >
+          <div className="w-[40%] relative">
+             <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url('${hoveredData.image}')` }} />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+             <div className="absolute bottom-4 left-4 right-4 text-white">
+                <div className="text-xs font-black uppercase tracking-wider mb-1 opacity-90 text-emerald-300">Desde</div>
+                <div className="text-2xl font-black">${hoveredData.priceFrom} <span className="text-sm font-medium opacity-80">USD/noche</span></div>
+             </div>
+          </div>
+          <div className="w-[60%] p-6 flex flex-col justify-center">
+            <h4 className="text-2xl font-black text-emerald-950 mb-4 tracking-tight">{hoveredData.name}</h4>
+            <ul className="flex flex-col gap-3">
+              {hoveredData.highlights.map((h, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm font-bold text-neutral-600">
+                  <div className="w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
+                  </div>
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
-function CalendarPopover({ activeMode, checkIn, checkOut, onPickDate }: any) {
+const parseDateHelper = (dStr: string) => {
+  if (!dStr) return 0;
+  const [d, m] = dStr.split(" ");
+  const monthVal = m === "Oct" ? 10 : 11;
+  return parseInt(d) + (monthVal * 100);
+};
+
+const getAbsoluteDays = (dStr: string) => {
+  if (!dStr) return 0;
+  const [d, m] = dStr.split(" ");
+  const day = parseInt(d);
+  return m === "Oct" ? day : 31 + day;
+};
+
+function CalendarPopover({ activeMode, checkIn, checkOut, invalidState, onPickDate, variant }: any) {
+  const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   const days = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
   const dates = Array.from({ length: 31 }, (_, i) => i + 1);
   const offset = 3; 
 
-  const parseDate = (dStr: string) => {
-    if (!dStr) return 0;
-    const [d, m] = dStr.split(" ");
-    const monthVal = m === "Oct" ? 10 : 11;
-    return parseInt(d) + (monthVal * 100);
-  };
+  const parseDate = parseDateHelper;
 
   const inVal = parseDate(checkIn);
   const outVal = parseDate(checkOut);
+  
+  const isHero = variant === "hero";
+  const cWidth = isHero ? "w-full max-w-[1150px] bg-white/40 backdrop-blur-3xl rounded-[3rem] border border-white/60 shadow-[0_32px_80px_rgba(4,120,87,0.1)] relative z-10" : "w-[650px] absolute top-[100%] mt-4 left-1/2 -translate-x-1/2 bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 z-50 animate-in fade-in slide-in-from-top-4 duration-300";
+  const cPad = isHero ? "p-8 gap-10" : "p-8 gap-8";
 
   return (
-    <div className="absolute top-[100%] mt-4 left-1/2 -translate-x-1/2 w-[650px] bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 p-8 z-50 flex gap-8 animate-in fade-in slide-in-from-top-4 duration-300">
+    <div className={`flex ${cPad} ${cWidth}`}>
       {[0, 1].map((monthIndex) => (
         <div key={monthIndex} className="flex-1">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-neutral-900">{monthIndex === 0 ? "Octubre" : "Noviembre"}</h3>
+          <div className={`flex items-center justify-between ${isHero ? "mb-6" : "mb-6"}`}>
+            <h3 className={`${isHero ? "text-2xl" : "text-lg"} font-bold text-neutral-900`}>{monthIndex === 0 ? "Octubre" : "Noviembre"}</h3>
           </div>
-          <div className="grid grid-cols-7 gap-y-4 gap-x-1 mb-2 text-center text-xs font-bold text-neutral-400">
+          <div className={`grid grid-cols-7 text-center font-bold ${isHero ? "gap-y-4 gap-x-2 mb-4 text-sm uppercase tracking-widest text-neutral-500" : "gap-y-4 gap-x-1 mb-2 text-xs text-neutral-400"}`}>
             {days.map(d => <div key={d}>{d}</div>)}
           </div>
-          <div className="grid grid-cols-7 gap-y-1 gap-x-1 text-center">
+          <div className={`grid grid-cols-7 text-center ${isHero ? "gap-y-2 gap-x-2" : "gap-y-1 gap-x-1"}`}>
             {Array.from({ length: monthIndex === 0 ? offset : 1 }).map((_, i) => (
               <div key={`empty-${i}`} />
             ))}
@@ -87,27 +179,56 @@ function CalendarPopover({ activeMode, checkIn, checkOut, onPickDate }: any) {
               const isSelected = isStart || isEnd || (inVal > 0 && outVal > 0 && currVal > inVal && currVal < outVal);
               const isToday = monthIndex === 0 && d === 9;
               
+              const isInvalid = invalidState?.dayStr === dayStr;
+              const isFading = isInvalid && invalidState?.isFading;
+              
               return (
                 <button 
                   key={d} 
                   onClick={() => onPickDate(dayStr)}
-                  className={`group relative flex items-center justify-center w-full aspect-square text-base font-bold transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]
+                  onMouseEnter={() => setHoveredDay(dayStr)}
+                  onMouseLeave={() => setHoveredDay(null)}
+                  className={`group relative flex items-center justify-center w-full ${isHero ? "h-14 text-xl" : "aspect-square text-base"} font-bold transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]
                     ${isSelected && !isStart && !isEnd ? "bg-emerald-50 text-emerald-900" : "text-neutral-800"}
-                    ${!isSelected && !isStart && !isEnd ? "hover:border-2 hover:border-neutral-900 rounded-full" : ""}
                     ${isStart || isEnd ? "text-white z-10" : ""}
                     ${isToday && !isSelected ? "underline decoration-emerald-500 decoration-4 underline-offset-4" : ""}
+                    ${hoveredDay === dayStr ? "!z-50" : ""}
                   `}
                 >
                   {/* Backdrop connector */}
                   {isStart && outVal > 0 && outVal !== inVal && <div className="absolute inset-y-0 right-0 w-1/2 bg-emerald-50 z-0"></div>}
                   {isEnd && inVal > 0 && outVal !== inVal && <div className="absolute inset-y-0 left-0 w-1/2 bg-emerald-50 z-0"></div>}
                   
+                  {/* Hover interaction circle */}
+                  {!isSelected && !isStart && !isEnd && (
+                     <div className="absolute h-[85%] aspect-square rounded-full border-2 border-transparent group-hover:border-neutral-900 transition-colors pointer-events-none"></div>
+                  )}
+
                   {/* Colored circle */}
-                  {isStart && <div className="absolute w-[85%] h-[85%] bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 group-hover:scale-105"></div>}
-                  {isEnd && !isStart && <div className="absolute w-[75%] h-[75%] bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 ring-2 ring-emerald-700 ring-offset-2 group-hover:scale-105"></div>}
-                  {isStart && isEnd && <div className="absolute w-[85%] h-[85%] bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 group-hover:scale-105"></div>}
+                  {isStart && <div className="absolute h-[85%] aspect-square bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 group-hover:scale-105"></div>}
+                  {isEnd && !isStart && <div className="absolute h-[75%] aspect-square bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 ring-2 ring-emerald-700 ring-offset-2 group-hover:scale-105"></div>}
+                  {isStart && isEnd && <div className="absolute h-[85%] aspect-square bg-emerald-700 rounded-full z-10 shadow-md transition-transform active:scale-95 group-hover:scale-105"></div>}
                   
-                  <span className="relative z-20">{d}</span>
+                  {/* Invalid state indication */}
+                  {isInvalid && (
+                    <div className={`absolute h-[85%] aspect-square bg-red-500 rounded-full z-20 shadow-[0_0_15px_rgba(239,68,68,0.5)] transition-all ease-in-out ${isFading ? 'opacity-0 scale-90 duration-300' : 'opacity-90 scale-100 animate-in zoom-in-75 duration-200'}`}></div>
+                  )}
+
+                  {/* Tooltips */}
+                  {isStart && hoveredDay === dayStr && !isInvalid && (
+                    <div className={`absolute ${isHero ? "-top-12 text-xs px-4 py-2" : "-top-9 text-[10px] px-3 py-1.5"} bg-emerald-950 text-white uppercase font-black tracking-widest rounded-lg z-50 animate-in fade-in slide-in-from-bottom-2 duration-200 shadow-xl whitespace-nowrap pointer-events-none`}>
+                      Llegada
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-emerald-950 rotate-45 rounded-sm"></div>
+                    </div>
+                  )}
+                  {isEnd && !isStart && hoveredDay === dayStr && !isInvalid && (
+                    <div className={`absolute ${isHero ? "-top-12 text-xs px-4 py-2" : "-top-9 text-[10px] px-3 py-1.5"} bg-emerald-950 text-white uppercase font-black tracking-widest rounded-lg z-50 animate-in fade-in slide-in-from-bottom-2 duration-200 shadow-xl whitespace-nowrap pointer-events-none`}>
+                      Salida
+                      <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-emerald-950 rotate-45 rounded-sm"></div>
+                    </div>
+                  )}
+
+                  <span className={`relative z-30 ${isInvalid ? 'text-white' : ''}`}>{d}</span>
                 </button>
               );
             })}
@@ -154,26 +275,61 @@ function GuestsPopover({ adults, setAdults, children, setChildren, pets, setPets
 
 type ActiveSection = "where" | "checkIn" | "checkOut" | "who" | null;
 
-interface SearchBarProps {
-  onSearch?: (destination: string) => void;
-  className?: string; 
-  size?: 'compact' | 'hero';
+export interface SearchState {
+  destination: string;
+  checkIn: string;
+  checkOut: string;
+  adults: number;
+  children: number;
+  pets: number;
 }
 
-export function ModernSearchBar({ onSearch, className = "", size = 'compact' }: SearchBarProps) {
+interface SearchBarProps {
+  onSearch?: (state: SearchState) => void;
+  className?: string; 
+  size?: 'compact' | 'hero';
+  initialState?: Partial<SearchState>;
+  onHeroCalendarOpen?: () => void;
+}
+
+export function ModernSearchBar({ onSearch, className = "", size = 'compact', initialState, onHeroCalendarOpen }: SearchBarProps) {
   const [active, setActive] = useState<ActiveSection>(null);
+  const [invalidState, setInvalidState] = useState<{ dayStr: string, isFading: boolean } | null>(null);
+  const [hasHeroCalendarOpened, setHasHeroCalendarOpened] = useState(false);
+  const timeout1Ref = React.useRef<NodeJS.Timeout | null>(null);
+  const timeout2Ref = React.useRef<NodeJS.Timeout | null>(null);
 
-  const [destination, setDestination] = useState("");
-  const [checkIn, setCheckIn] = useState("15 Oct");
-  const [checkOut, setCheckOut] = useState("21 Oct");
+  const [isSearching, setIsSearching] = useState(false);
+  const [showExpanded, setShowExpanded] = useState(false);
+
+  useEffect(() => {
+    if (active) {
+      setShowExpanded(true);
+    }
+    if (size === 'hero' && (active === 'checkIn' || active === 'checkOut') && !hasHeroCalendarOpened) {
+      setHasHeroCalendarOpened(true);
+      if (onHeroCalendarOpen) onHeroCalendarOpen();
+    }
+  }, [active, size, hasHeroCalendarOpened, onHeroCalendarOpen]);
+
+  const [destination, setDestination] = useState(initialState?.destination && initialState?.destination !== 'Todos' ? initialState.destination : "");
+  const [checkIn, setCheckIn] = useState(initialState?.checkIn || "15 Oct");
+  const [checkOut, setCheckOut] = useState(initialState?.checkOut || "21 Oct");
   
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [pets, setPets] = useState(0);
-
-  const totalGuests = adults + children;
+  const [adults, setAdults] = useState(initialState?.adults || 2);
+  const [children, setChildren] = useState(initialState?.children || 0);
+  const [pets, setPets] = useState(initialState?.pets || 0);
 
   const isHero = size === 'hero';
+
+  let guestsText = `${adults} ${adults === 1 ? 'Adulto' : 'Adultos'}`;
+  if (children > 0 && pets > 0) {
+    guestsText = `${adults} Ad. • ${children} Ni. • ${pets} Mas.`;
+  } else if (children > 0) {
+    guestsText = `${adults} Adult. • ${children} ${children === 1 ? 'Niño' : 'Niños'}`;
+  } else if (pets > 0) {
+    guestsText = `${adults} Adult. • ${pets} ${pets === 1 ? 'Masc.' : 'Masc.'}`;
+  }
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") setActive(null); };
@@ -182,6 +338,12 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact' }: 
   }, []);
 
   const handlePickDate = (dayStr: string) => {
+    let workingActive = active;
+    if (workingActive !== "checkIn" && workingActive !== "checkOut") {
+      workingActive = !checkIn ? "checkIn" : "checkOut";
+      setActive(workingActive);
+    }
+
     // 1. Explicit toggling off to prevent same-date selection and support direct removal
     if (dayStr === checkIn) {
       setCheckIn("");
@@ -190,118 +352,256 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact' }: 
     }
     if (dayStr === checkOut) {
       setCheckOut("");
-      setActive("checkOut");
+      if (!checkIn) {
+        setActive("checkIn");
+      } else {
+        setActive("checkOut");
+      }
+      return;
+    }
+
+    const clickedVal = parseDateHelper(dayStr);
+    const inVal = parseDateHelper(checkIn);
+    const outVal = parseDateHelper(checkOut);
+
+    // If both dates are already selected, allow moving boundaries without errors
+    if (checkIn && checkOut) {
+      const clickedAbs = getAbsoluteDays(dayStr);
+      const inAbs = getAbsoluteDays(checkIn);
+      const outAbs = getAbsoluteDays(checkOut);
+
+      if (clickedAbs < inAbs) {
+        setCheckIn(dayStr);
+      } else if (clickedAbs > outAbs) {
+        setCheckOut(dayStr);
+      } else if (clickedAbs > inAbs && clickedAbs < outAbs) {
+        const distToIn = clickedAbs - inAbs;
+        const distToOut = outAbs - clickedAbs;
+        if (distToIn <= distToOut) {
+          setCheckIn(dayStr);
+        } else {
+          setCheckOut(dayStr);
+        }
+      }
+      return;
+    }
+
+    // Validate boundaries for single selection scenarios
+    if (workingActive === "checkIn" && checkOut && clickedVal > outVal) {
+      if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
+      if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
+      setInvalidState({ dayStr, isFading: false });
+      timeout1Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === dayStr ? { ...old, isFading: true } : old), 400);
+      timeout2Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === dayStr ? null : old), 700);
+      return;
+    }
+
+    if (workingActive === "checkOut" && checkIn && clickedVal < inVal) {
+      if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
+      if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
+      setInvalidState({ dayStr, isFading: false });
+      timeout1Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === dayStr ? { ...old, isFading: true } : old), 400);
+      timeout2Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === dayStr ? null : old), 700);
       return;
     }
 
     // 2. Linear assignment
-    if (active === "checkIn") {
+    if (workingActive === "checkIn") {
       setCheckIn(dayStr);
       setActive("checkOut");
-    } else if (active === "checkOut") {
+    } else if (workingActive === "checkOut") {
       setCheckOut(dayStr);
       if (!checkIn) {
         setActive("checkIn");
+      } else {
+        setActive("checkOut");
       }
+      return;
     }
   };
 
   // Adjustments based on scale
-  const containerPadding = isHero ? "py-[2px]" : "py-0";
-  const sectionPadding = isHero ? "px-10 py-6" : "px-6 py-3";
+  const containerPadding = isHero ? "p-3" : "p-2";
+  const sectionPadding = isHero ? "px-10 py-5" : "px-6 py-2";
+  const whoPadding = isHero ? "pl-2 pr-3 py-1.5" : "pl-2 pr-2 py-1.5";
   const labelText = isHero ? "text-sm" : "text-[11px]";
   const valueText = isHero ? "text-xl" : "text-[15px]";
-  const searchBtnSize = isHero ? "h-20" : "h-12";
-  const searchBtnIconSize = isHero ? "w-8 h-8" : "w-5 h-5";
+  const searchBtnSize = isHero ? "h-16" : "h-10";
+  const searchBtnIconSize = isHero ? "w-6 h-6" : "w-5 h-5";
 
   return (
-    <div className={`relative z-50 w-full transition-all duration-300 ${className}`}>
+    <div className={`relative z-50 w-full flex flex-col items-center ${className}`}>
+      {size === 'hero' && (
+        <div 
+          className="grid w-full z-10"
+          style={{
+            transition: "grid-template-rows 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms",
+            gridTemplateRows: hasHeroCalendarOpened ? '1fr' : '0fr'
+          }}
+        >
+          <div 
+            className="w-full flex justify-center min-h-0"
+            style={{ clipPath: "inset(-200px -200px 0px -200px)" }}
+          >
+            <div 
+              className="w-full flex flex-col items-center pb-6"
+              style={{
+                transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms, opacity 800ms ease 300ms",
+                transform: hasHeroCalendarOpened ? 'translateY(0)' : 'translateY(100%)',
+                opacity: hasHeroCalendarOpened ? 1 : 0
+              }}
+            >
+               <h2 
+                 className="text-xl font-serif font-medium text-emerald-950 mb-4 tracking-tight"
+                 style={{ 
+                   transition: "opacity 800ms ease 1000ms", 
+                   opacity: hasHeroCalendarOpened ? 1 : 0 
+                 }}
+               >
+                 Por favor, seleccione sus fechas de llegada y salida
+               </h2>
+               <CalendarPopover variant="hero" activeMode={active} checkIn={checkIn} checkOut={checkOut} invalidState={invalidState} onPickDate={handlePickDate} />
+            </div>
+          </div>
+        </div>
+      )}
+      
       {active && (
         <div 
-          className="fixed inset-0 z-40 bg-transparent animate-in fade-in duration-500"
+          className="fixed inset-0 -z-10 bg-transparent"
           onClick={() => setActive(null)}
         />
       )}
 
-      <div className={`relative bg-white flex items-stretch rounded-full border border-neutral-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-visible transition-colors z-50 [-webkit-tap-highlight-color:transparent] ${containerPadding} ${active ? 'bg-neutral-100' : 'hover:bg-neutral-50'} ${isHero ? "shadow-2xl" : ""}`}>
+      <div className={`relative flex items-stretch rounded-full border border-neutral-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-visible transition-colors z-50 w-full [-webkit-tap-highlight-color:transparent] ${containerPadding} ${active ? 'bg-neutral-100' : 'bg-white'} ${isHero ? "shadow-2xl" : ""}`}>
+        
+        {/* The Handle Tab */}
+        {size === 'hero' && (
+          <button 
+            type="button"
+            style={{
+              transition: "opacity 300ms ease, transform 300ms ease",
+              opacity: hasHeroCalendarOpened ? 0 : 1,
+              transform: hasHeroCalendarOpened ? 'translate(-50%, 10px)' : 'translate(-50%, 0)',
+              pointerEvents: hasHeroCalendarOpened ? 'none' : 'auto'
+            }}
+            onClick={() => {
+              setHasHeroCalendarOpened(true);
+              if (onHeroCalendarOpen) onHeroCalendarOpen();
+              if (active !== "checkIn" && active !== "checkOut") setActive("checkIn");
+            }}
+            className="absolute -top-[26px] left-1/2 bg-white/90 backdrop-blur-md px-6 py-1.5 rounded-t-xl border-t border-l border-r border-neutral-200/50 shadow-[0_-6px_16px_rgba(0,0,0,0.03)] flex items-center justify-center hover:bg-neutral-50 transition-colors z-20"
+          >
+            <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
+        )}
         
         <div 
           onClick={() => setActive("where")}
-          className={`flex-[1.2] relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
-            ${active === "where" ? "bg-white shadow-[0_12px_36px_rgba(0,0,0,0.15)] z-10 box-border border-2 border-emerald-900/10" : "hover:bg-neutral-200/50"}
+          className={`flex-[1.2] relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
+            ${active === "where" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
           `}
         >
-          <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1`}>Sede</label>
+          <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full`}>Sede</label>
           <input 
             type="text" 
             placeholder="¿A cuál vas?"
-            className={`bg-transparent border-none outline-none focus:outline-none ${valueText} font-bold text-neutral-900 placeholder:text-neutral-400 w-full truncate cursor-pointer`}
+            className={`bg-transparent border-none outline-none focus:outline-none ${valueText} font-bold text-neutral-900 placeholder:text-neutral-400 w-full truncate cursor-pointer text-center`}
             readOnly
             value={destination}
           />
         </div>
 
-        <div className="self-center w-[1px] h-12 bg-neutral-300/80 mx-2" />
+        <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
 
-        <div className="flex-[1.5] flex items-stretch">
+        <div className="flex-[2] flex items-stretch flex-shrink-0 min-w-0">
           <div 
             onClick={() => setActive("checkIn")}
-            className={`flex-1 relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition
-              ${active === "checkIn" ? "bg-white shadow-[0_12px_36px_rgba(0,0,0,0.15)] z-10 box-border border-2 border-emerald-900/10" : "hover:bg-neutral-200/50"}
+            className={`flex-1 relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition min-w-0
+              ${active === "checkIn" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
             `}
           >
-            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1`}>Llegada</label>
-            <span className={`${valueText} font-bold ${checkIn ? 'text-neutral-900' : 'text-neutral-400'}`}>{checkIn || "Fechas"}</span>
+            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full truncate`}>Llegada</label>
+            <span className={`${valueText} font-bold ${checkIn ? 'text-neutral-900' : 'text-neutral-400'} text-center w-full whitespace-nowrap`}>{checkIn || "Fechas"}</span>
           </div>
 
-          <div className="self-center w-[1px] h-12 bg-neutral-300/80 mx-2" />
+          <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
 
           <div 
             onClick={() => setActive("checkOut")}
-            className={`flex-1 relative flex flex-col justify-center ${sectionPadding} rounded-full cursor-pointer transition
-              ${active === "checkOut" ? "bg-white shadow-[0_12px_36px_rgba(0,0,0,0.15)] z-10 box-border border-2 border-emerald-900/10" : "hover:bg-neutral-200/50"}
+            className={`flex-1 relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition min-w-0
+              ${active === "checkOut" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
             `}
           >
-            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1`}>Salida</label>
-            <span className={`${valueText} font-bold ${checkOut ? 'text-neutral-900' : 'text-neutral-400'}`}>{checkOut || "Fechas"}</span>
+            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full truncate`}>Salida</label>
+            <span className={`${valueText} font-bold ${checkOut ? 'text-neutral-900' : 'text-neutral-400'} text-center w-full whitespace-nowrap`}>{checkOut || "Fechas"}</span>
           </div>
         </div>
 
-        <div className="self-center w-[1px] h-12 bg-neutral-300/80 mx-2" />
+        <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
 
         <div 
           onClick={() => setActive("who")}
-          className={`flex-[1.4] relative flex items-center justify-between pl-8 pr-2 py-2 rounded-full cursor-pointer transition
-            ${active === "who" ? "bg-white shadow-[0_12px_36px_rgba(0,0,0,0.15)] z-10 box-border border-2 border-emerald-900/10" : "hover:bg-neutral-200/50"}
+          className={`flex-[1.2] relative flex flex-col items-center justify-center ${sectionPadding} rounded-full cursor-pointer transition flex-shrink-0
+            ${active === "who" ? "bg-white shadow-[0_8px_24px_rgba(0,0,0,0.1)] z-10" : "hover:bg-neutral-200/50"}
           `}
         >
-          <div className={`flex flex-col pointer-events-none mr-4 ${isHero ? 'pl-2' : ''}`}>
-            <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest mb-1`}>Huéspedes</label>
-            <span className={`${valueText} font-bold text-neutral-900 whitespace-nowrap`}>
-              {totalGuests} {totalGuests === 1 ? 'persona' : 'personas'}
-              {pets > 0 ? `, ${pets} mast..` : ''}
-            </span>
-          </div>
-          
+          <label className={`${labelText} font-extrabold text-neutral-800 uppercase tracking-widest pointer-events-none mb-1 text-center w-full`}>Huéspedes</label>
+          <span className={`${valueText} font-bold text-neutral-900 whitespace-nowrap text-center w-full`}>
+            {guestsText}
+          </span>
+        </div>
+
+        <div className="self-center w-[1px] h-10 bg-neutral-300/80 mx-1" />
+
+        <div className={`flex items-center justify-center pl-1 pr-1`}>
           <button 
-            className={`${searchBtnSize} rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]
-              ${active === "who" || isHero ? 'bg-emerald-700 w-auto px-10 gap-3 text-white shadow-[0_8px_20px_rgba(4,120,87,0.4)] hover:bg-emerald-800' : 'bg-emerald-700 aspect-square text-white hover:bg-emerald-800'}
+            className={`${searchBtnSize} rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 outline-none focus:outline-none [-webkit-tap-highlight-color:transparent] overflow-hidden
+              ${(showExpanded || isHero) && !isSearching ? 'bg-emerald-700 w-auto px-10 gap-3 text-white shadow-[0_8px_20px_rgba(4,120,87,0.4)] hover:bg-emerald-800' : 'bg-emerald-700 aspect-square text-white hover:bg-emerald-800'}
             `}
             onClick={(e) => {
               e.stopPropagation();
+              if (isSearching) return;
+
               setActive(null);
-              if (onSearch) onSearch(destination || 'Todos');
+              setShowExpanded(false);
+              setIsSearching(true);
+
+              setTimeout(() => {
+                setIsSearching(false);
+                if (onSearch) {
+                  onSearch({
+                    destination: destination || 'Todos',
+                    checkIn,
+                    checkOut,
+                    adults,
+                    children,
+                    pets
+                  });
+                }
+              }, 800);
             }}
           >
-            <svg className={searchBtnIconSize} fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-            {(active === "who" || isHero) && <span className={`${isHero ? 'text-xl' : 'text-[15px]'} font-extrabold`}>Buscar</span>}
+            {isSearching ? (
+              <svg className={`${searchBtnIconSize} animate-spin`} fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            ) : (
+              <svg className={searchBtnIconSize} fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            )}
+            {((showExpanded || isHero) && !isSearching) && <span className={`${isHero ? 'text-xl' : 'text-[15px]'} font-extrabold`}>Buscar</span>}
           </button>
         </div>
 
-        {active === "where" && <DestinationPopover onSelect={(v) => { setDestination(v); setActive("checkIn"); }} />}
-        {(active === "checkIn" || active === "checkOut") && <CalendarPopover activeMode={active} checkIn={checkIn} checkOut={checkOut} onPickDate={handlePickDate} />}
+        {active === "where" && <DestinationPopover onSelect={(v) => { setDestination(v); setActive("checkIn"); }} currentSelection={destination} />}
+        {(active === "checkIn" || active === "checkOut") && !hasHeroCalendarOpened && (
+          <CalendarPopover activeMode={active} checkIn={checkIn} checkOut={checkOut} invalidState={invalidState} onPickDate={handlePickDate} />
+        )}
         {active === "who" && <GuestsPopover adults={adults} setAdults={setAdults} children={children} setChildren={setChildren} pets={pets} setPets={setPets} />}
 
       </div>
