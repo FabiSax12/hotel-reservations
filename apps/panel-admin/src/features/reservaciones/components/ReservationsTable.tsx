@@ -34,11 +34,11 @@ export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
                   <code className={CELL.CODE_BADGE}>{r.code}</code>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="flex items-center gap-3">
+                  <div className={CELL.GUEST_WRAPPER}>
                     <Avatar size="sm">
                       <Avatar.Fallback>{r.guest.initials}</Avatar.Fallback>
                     </Avatar>
-                    <div className="min-w-0">
+                    <div className={CELL.GUEST_TEXT_WRAPPER}>
                       <p className={CELL.TEXT_PRIMARY}>{r.guest.name}</p>
                       <p className={CELL.TEXT_SECONDARY}>{r.guest.email}</p>
                     </div>

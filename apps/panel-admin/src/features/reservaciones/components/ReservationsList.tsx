@@ -2,6 +2,7 @@
 
 import { useI18n } from "@/locales";
 import type { Reservation } from "../domain/reservation";
+import { PAGE } from "../constants/styles";
 import { EmptyState } from "./EmptyState";
 import { ReservationsTable } from "./ReservationsTable";
 
@@ -12,10 +13,10 @@ interface ReservationsListProps {
 export const ReservationsList = ({ reservations }: ReservationsListProps) => {
   const { t } = useI18n();
   return (
-    <main className="min-h-screen bg-gray-50 p-4 sm:p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900">{t.RESERVATIONS.PAGE.TITLE}</h1>
-        <p className="mt-1 text-sm text-gray-500">{t.RESERVATIONS.PAGE.DESCRIPTION}</p>
+    <main className={PAGE.WRAPPER}>
+      <div className={PAGE.HEADER}>
+        <h1 className={PAGE.TITLE}>{t.RESERVATIONS.PAGE.TITLE}</h1>
+        <p className={PAGE.DESCRIPTION}>{t.RESERVATIONS.PAGE.DESCRIPTION}</p>
       </div>
 
       {reservations.length === 0 ? (
