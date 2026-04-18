@@ -100,7 +100,6 @@ const mockRooms = [
 export default function HomePage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [heroCalendarActive, setHeroCalendarActive] = useState(false);
-  const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [searchKey, setSearchKey] = useState(0);
   const [searchParams, setSearchParams] = useState<any>({
     destination: 'Todos',
@@ -123,14 +122,30 @@ export default function HomePage() {
     : mockRooms;
 
   return (
-    <main className="min-h-screen bg-neutral-50 overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50">
+    <main className="min-h-screen relative overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50">
       
       {/* 
+        PREMIUM GLASSMORPHIC NATURE BACKDROP
+      */}
+      <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
+         {/* Base image with moderate blur so nature is clearly visible */}
+         <div 
+            className="absolute -inset-[2%] bg-cover bg-center"
+            style={{ 
+              backgroundImage: "url('https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=2070&auto=format&fit=crop')",
+              filter: "blur(8px)" 
+            }}
+         />
+         {/* Organic light wash for perfect typography contrast without destroying the image */}
+         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm" />
+         {/* Subtle top-down gradient to ground the header/central UI */}
+         <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-transparent to-transparent" />
+      </div>      {/* 
         HEADER
       */}
       <header className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-neutral-200/40">
         <div className="w-full max-w-[1500px] mx-auto px-6 h-24 flex items-center justify-between">
-          <div className="text-emerald-950 text-2xl font-serif font-black tracking-tighter cursor-pointer hover:opacity-80 transition" onClick={() => setHasSearched(false)}>
+          <div className="text-emerald-950 text-2xl font-serif font-black tracking-tighter cursor-pointer hover:opacity-80 transition" onClick={() => { setHasSearched(false); setHeroCalendarActive(false); }}>
             EcoResorts<span className="text-emerald-600">CR</span>
           </div>
           
@@ -166,38 +181,40 @@ export default function HomePage() {
         STATE A: HERO CENTERPIECE
       */}
       {!hasSearched && (
-        <section className={`relative w-full h-screen flex flex-col items-center px-6 transition-[padding] duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${heroCalendarActive ? 'pt-[14vh] pb-0' : 'pt-[18vh] pb-8'} animate-in fade-in duration-500`}>
+        <section className="relative w-full h-screen flex flex-col items-center px-6 pt-[24vh] pb-8 animate-in fade-in duration-500">
            {/* Background subtle noise/texture */}
-           <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay"></div>
+ 
            
            <div className="w-full max-w-[1150px] mx-auto flex flex-col items-center text-center z-10">
             
             <div 
-              className="grid w-full pointer-events-none"
+              className="w-full flex flex-col items-center min-h-0 pointer-events-none"
               style={{
-                transition: "opacity 300ms ease, transform 300ms ease, grid-template-rows 800ms cubic-bezier(0.22, 1, 0.36, 1) 300ms",
-                opacity: heroCalendarActive ? 0 : ((activeMenu === 'where' || activeMenu === 'who') ? 0.2 : 1),
-                transform: heroCalendarActive ? 'translateY(-10px)' : 'translateY(0)',
-                gridTemplateRows: heroCalendarActive ? '0fr' : '1fr',
+                transition: "opacity 300ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1)",
+                opacity: heroCalendarActive ? 0 : 1,
+                transform: heroCalendarActive ? 'translateY(-20px)' : 'translateY(0)',
               }}
             >
-              <div className="overflow-hidden w-full flex flex-col items-center min-h-0">
                 <h1 className="text-6xl md:text-8xl font-serif font-black text-emerald-950 tracking-tighter leading-[0.9] mb-6 pt-4 pointer-events-auto">
                   ¿Cuándo nos visitas?
                 </h1>
-                <p className="text-xl md:text-2xl text-neutral-600 font-medium mb-12 max-w-3xl pointer-events-auto">
+                <p className="text-xl md:text-2xl text-neutral-600 font-medium max-w-3xl pointer-events-auto">
                   Seleccione su destino, fechas y cantidad de personas
                 </p>
-              </div>
             </div>
             
-            <div className="w-full transform transition-transform duration-500 flex justify-center mt-2">
+            <div 
+              className="w-full flex justify-center relative z-20"
+              style={{
+                transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
+                transform: heroCalendarActive ? 'translateY(-200px)' : 'translateY(48px)',
+              }}
+            >
               <ModernSearchBar 
                 size="hero" 
                 onSearch={handleSearchTrigger} 
                 className="w-full max-w-[1150px]"
                 onHeroCalendarOpen={() => setHeroCalendarActive(true)}
-                onActiveChange={(active) => setActiveMenu(active)}
               />
             </div>
 
