@@ -41,7 +41,9 @@ apps/panel-admin/src/
 │   └── reservaciones/
 │       ├── constants/
 │       │   ├── mock-data.ts                    ← 6 reservaciones mock (cubre los 4 estados)
-│       │   └── styles.ts                       ← Clases Tailwind de celdas extraídas como CELL (Object.freeze)
+│       │   ├── status-color.ts                 ← STATUS_COLOR: ReservationStatus → ChipColor
+│       │   ├── status-i18n.ts                  ← STATUS_I18N_KEY: ReservationStatus → clave i18n
+│       │   └── styles.ts                       ← Clases Tailwind extraídas como PAGE, EMPTY_STATE, CELL (Object.freeze)
 │       ├── domain/
 │       │   └── reservation.ts                  ← Tipos TS: Reservation, Guest, Room, ReservationStatus
 │       ├── i18n/
@@ -73,7 +75,9 @@ apps/panel-admin/src/
 |---|---|
 | `apps/panel-admin/src/features/reservaciones/domain/reservation.ts` | Tipos puros de dominio sin imports de React ni librerías |
 | `apps/panel-admin/src/features/reservaciones/constants/mock-data.ts` | Datos de prueba inmutables (`Object.freeze`) |
-| `apps/panel-admin/src/features/reservaciones/constants/styles.ts` | Clases Tailwind de celdas como constante `CELL` frozen; importada por `ReservationsTable` |
+| `apps/panel-admin/src/features/reservaciones/constants/status-color.ts` | `STATUS_COLOR`: mapeo `ReservationStatus → ChipColor`; concern visual |
+| `apps/panel-admin/src/features/reservaciones/constants/status-i18n.ts` | `STATUS_I18N_KEY`: mapeo `ReservationStatus → clave i18n`; concern de localización |
+| `apps/panel-admin/src/features/reservaciones/constants/styles.ts` | Clases Tailwind como `PAGE`, `EMPTY_STATE`, `CELL` frozen; un grupo por componente |
 | `apps/panel-admin/src/features/reservaciones/i18n/reservationsTexts.type.ts` | Contrato de tipo para los textos del módulo |
 | `apps/panel-admin/src/features/reservaciones/i18n/reservations.texts.ts` | Strings en español e inglés |
 | `apps/panel-admin/src/features/reservaciones/components/StatusBadge.tsx` | Chip con mapeo `ReservationStatus → ChipColor` mediante `Object.freeze` |
@@ -134,26 +138,34 @@ import { CELL } from "../constants/styles";
 
 **Por qué un archivo separado y no en el componente:** Si la constante viviera dentro del archivo del componente, un refactor de estilo obligaría a abrir el componente. Al separarla en `constants/`, un developer puede cambiar todos los estilos de celda de la tabla desde un único archivo sin tocar el JSX.
 
-### §4 — Mapeo de estado → color (StatusBadge)
+### §4 — Mapeo de estado → color (StatusBadge + status-maps.ts)
+
+Los mapeos viven en archivos separados dentro de `constants/`, divididos por concern. `StatusBadge` solo renderiza:
 
 ```ts
-const STATUS_COLOR: Record<ReservationStatus, ChipColor> = Object.freeze({
+// constants/status-color.ts  — concern: visual
+export const STATUS_COLOR: Record<ReservationStatus, ChipColor> = Object.freeze({
   pending:   "warning",   // amber
   approved:  "success",   // green
   cancelled: "danger",    // red
   completed: "accent",    // blue
 } as const);
-```
 
-El mapeo de estado → clave i18n también es un `Object.freeze`, evitando `toUpperCase()` dinámico:
-
-```ts
-const STATUS_I18N_KEY: Record<ReservationStatus, keyof STATUS> = Object.freeze({
+// constants/status-i18n.ts  — concern: localización
+export const STATUS_I18N_KEY: Record<ReservationStatus, keyof STATUS> = Object.freeze({
   pending:   "PENDING",
   approved:  "APPROVED",
   cancelled: "CANCELLED",
   completed: "COMPLETED",
 } as const);
+```
+
+`StatusBadge` importa los mapeos y solo se ocupa del JSX:
+
+```ts
+// components/StatusBadge.tsx
+import { STATUS_COLOR } from "../constants/status-color";
+import { STATUS_I18N_KEY } from "../constants/status-i18n";
 ```
 
 ### §5 — i18n integrada al patrón existente
@@ -258,7 +270,9 @@ reemplazar la importación de `MOCK_RESERVATIONS` por un server action.
 - [x] `config/routes.ts` — agregado `RESERVATIONS`
 - [x] `features/reservaciones/domain/reservation.ts` — tipos TS puros
 - [x] `features/reservaciones/constants/mock-data.ts` — 6 entradas, `Object.freeze`
-- [x] `features/reservaciones/constants/styles.ts` — constante `CELL` con clases Tailwind de celdas
+- [x] `features/reservaciones/constants/status-color.ts` — `STATUS_COLOR` (concern visual)
+- [x] `features/reservaciones/constants/status-i18n.ts` — `STATUS_I18N_KEY` (concern localización)
+- [x] `features/reservaciones/constants/styles.ts` — `PAGE`, `EMPTY_STATE`, `CELL` frozen; un grupo por componente
 - [x] `features/reservaciones/i18n/reservationsTexts.type.ts` — tipo `ReservationsTexts`
 - [x] `features/reservaciones/i18n/reservations.texts.ts` — ES + EN completos
 - [x] `locales/translations.ts` — extendido con `RESERVATIONS`
@@ -271,3 +285,37 @@ reemplazar la importación de `MOCK_RESERVATIONS` por un server action.
 - [ ] Filtros (US-JA-02)
 - [ ] Modal de detalle (US-JA-03)
 - [ ] Cambio de estado (US-JA-04)
+
+---
+
+## Lessons Learned
+
+### SRP en componentes con mapeos de datos
+
+**Error cometido:** `StatusBadge.tsx` contenía en el mismo archivo el tipo `ChipColor`, las constantes `STATUS_COLOR` y `STATUS_I18N_KEY`, y el componente React. Tres responsabilidades en un archivo.
+
+**Por qué es un problema:** Si cambia la paleta de colores de HeroUI, hay que abrir el componente. Si se necesita reutilizar los mapeos en otro componente (ej: un filtro desplegable), no hay dónde importarlos sin duplicar.
+
+**Regla para implementaciones futuras:** Todo componente que necesite mapeos (valor de dominio → color, valor de dominio → clave i18n, valor → label) debe externalizar esos mapeos a `constants/`. El componente solo importa y renderiza.
+
+```
+❌ Mal — mapeos dentro del componente
+components/StatusBadge.tsx
+  ├── type ChipColor
+  ├── const STATUS_COLOR
+  ├── const STATUS_I18N_KEY
+  └── export const StatusBadge
+
+✅ Bien — un archivo por concern
+constants/status-color.ts   ← concern visual
+  ├── type ChipColor (local)
+  └── export const STATUS_COLOR
+
+constants/status-i18n.ts    ← concern localización
+  └── export const STATUS_I18N_KEY
+
+components/StatusBadge.tsx  ← solo JSX
+  ├── import { STATUS_COLOR } from "../constants/status-color"
+  ├── import { STATUS_I18N_KEY } from "../constants/status-i18n"
+  └── export const StatusBadge
+```

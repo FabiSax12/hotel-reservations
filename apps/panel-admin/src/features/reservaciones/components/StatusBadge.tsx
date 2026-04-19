@@ -3,22 +3,8 @@
 import { Chip } from "@heroui/react";
 import { useI18n } from "@/locales";
 import type { ReservationStatus } from "../domain/reservation";
-
-type ChipColor = "warning" | "success" | "danger" | "accent";
-
-const STATUS_COLOR: Record<ReservationStatus, ChipColor> = Object.freeze({
-  pending: "warning",
-  approved: "success",
-  cancelled: "danger",
-  completed: "accent",
-} as const);
-
-const STATUS_I18N_KEY: Record<ReservationStatus, keyof { PENDING: string; APPROVED: string; CANCELLED: string; COMPLETED: string }> = Object.freeze({
-  pending: "PENDING",
-  approved: "APPROVED",
-  cancelled: "CANCELLED",
-  completed: "COMPLETED",
-} as const);
+import { STATUS_COLOR } from "../constants/status-color";
+import { STATUS_I18N_KEY } from "../constants/status-i18n";
 
 interface StatusBadgeProps {
   status: ReservationStatus;
