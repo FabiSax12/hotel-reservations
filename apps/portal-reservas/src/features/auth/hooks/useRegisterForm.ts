@@ -1,3 +1,5 @@
+"use client";
+
 import { useActionState, useState } from "react";
 import { REGISTER_FIELDS, type RegisterField } from "@/features/auth/constants/fields";
 import { registerAction } from "@/features/auth/services/signUp-action";

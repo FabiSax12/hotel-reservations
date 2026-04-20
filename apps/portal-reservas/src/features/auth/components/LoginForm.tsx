@@ -121,7 +121,16 @@ export const LoginForm = ({ action }: LoginFormProps) => {
             <button
               type="button"
               className={S.googleBtn}
-              onClick={() => {/* TODO: Implement Google Login */}}
+              onClick={async () => {
+                const { createSupabaseClient } = await import("@hotel/db/client");
+                const supabase = createSupabaseClient();
+                await supabase.auth.signInWithOAuth({
+                  provider: 'google',
+                  options: {
+                    redirectTo: `${window.location.origin}/auth/callback${callbackUrl ? `?callbackUrl=${callbackUrl}` : ''}`
+                  }
+                });
+              }}
             >
               <GoogleIcon className={S.googleIcon} />
               <span>Continuar con Quecos</span>
