@@ -28,8 +28,10 @@ const MAX_MONTHS = 24;
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
 
 interface CalendarMonthProps {
-  /** 0 = left column, 1 = right column (controls which nav arrow shows). */
-  monthIndexLocal: 0 | 1;
+  /** 0 = left column, 1 = right column, etc. (controls which nav arrow shows). */
+  monthIndexLocal: number;
+  /** Total number of months being displayed. */
+  monthCount: number;
   /** Absolute month offset from today used to compute the target month/year. */
   absoluteMonthOffset: number;
   /** Current scroll position (used to disable the "previous" button at 0). */
@@ -46,6 +48,8 @@ interface CalendarMonthProps {
   hoveredDay: string | null;
   /** Hero vs compact sizing. */
   isHero: boolean;
+  /** Allow selection of dates in the past. Default: false. */
+  allowPast?: boolean;
   /** Callback when a day is picked. */
   onPickDate: (dayStr: string) => void;
   /** Callback when a day is hovered (or null to clear). */
@@ -57,8 +61,8 @@ interface CalendarMonthProps {
 }
 
 export function CalendarMonth({
-  monthIndexLocal, absoluteMonthOffset, currentMonthOffset, today,
-  inVal, outVal, invalidState, hoveredDay, isHero,
+  monthIndexLocal, monthCount, absoluteMonthOffset, currentMonthOffset, today,
+  inVal, outVal, invalidState, hoveredDay, isHero, allowPast = false,
   onPickDate, onHoverDay, onPrev, onNext,
 }: CalendarMonthProps) {
   // Compute the actual Date for the first day of this month column
@@ -82,11 +86,11 @@ export function CalendarMonth({
     <div className={S.monthCol}>
       {/* Month navigation header */}
       <div className={S.monthHeader}>
-        {/* Left chevron — only on the left column */}
-        {monthIndexLocal === 0 ? (
+        {/* Left chevron — show on left column, or always if single month */}
+        {(monthIndexLocal === 0 || monthCount === 1) ? (
           <button
             type="button"
-            disabled={currentMonthOffset === 0}
+            disabled={allowPast ? currentMonthOffset === -12 : currentMonthOffset === 0}
             onClick={(e) => { e.stopPropagation(); onPrev(); }}
             className={S.navBtn}
           >
@@ -98,11 +102,11 @@ export function CalendarMonth({
           {monthHeader} {showYear ? year : ""}
         </h3>
 
-        {/* Right chevron — only on the right column */}
-        {monthIndexLocal === 1 ? (
+        {/* Right chevron — show on right column, or always if single month */}
+        {(monthIndexLocal === monthCount - 1 || monthCount === 1) ? (
           <button
             type="button"
-            disabled={currentMonthOffset >= MAX_MONTHS - 2}
+            disabled={currentMonthOffset >= MAX_MONTHS - monthCount}
             onClick={(e) => { e.stopPropagation(); onNext(); }}
             className={S.navBtn}
           >
@@ -128,7 +132,7 @@ export function CalendarMonth({
           const currVal = currDate.getTime();
 
           // Compute boolean state flags for CalendarDay
-          const isPast = currDate < today;
+          const isPast = !allowPast && currDate < today;
           const isStart = currVal === inVal;
           const isEnd = currVal === outVal;
           const isSelected = isStart || isEnd || (inVal > 0 && outVal > 0 && currVal > inVal && currVal < outVal);

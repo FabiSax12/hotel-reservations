@@ -36,9 +36,21 @@ interface CalendarPopoverProps {
   onPickDate: (dayStr: string) => void;
   /** Visual variant controlling padding and sizing. */
   variant?: "compact" | "hero";
+  /** Number of months to display side-by-side. Default: 2. */
+  monthCount?: number;
+  /** Allow selection of dates in the past. Default: false. */
+  allowPast?: boolean;
 }
 
-export function CalendarPopover({ checkIn, checkOut, invalidState, onPickDate, variant }: CalendarPopoverProps) {
+export function CalendarPopover({ 
+  checkIn, 
+  checkOut, 
+  invalidState, 
+  onPickDate, 
+  variant,
+  monthCount = 2,
+  allowPast = false,
+}: CalendarPopoverProps) {
   /** ISO string of the day currently being hovered, or null. */
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   /** How many months forward from today the left column starts at. */
@@ -51,13 +63,22 @@ export function CalendarPopover({ checkIn, checkOut, invalidState, onPickDate, v
   const inVal = parseDateHelper(checkIn);
   const outVal = parseDateHelper(checkOut);
   const isHero = variant === "hero";
+  const isCompactSingleMonth = !isHero && monthCount === 1;
+
+  // Create array of month indices: [0, 1] for 2 months, [0] for 1 month, etc.
+  const monthIndices = Array.from({ length: monthCount }, (_, i) => i);
+
+  const wrapperClasses = isCompactSingleMonth
+    ? "w-[360px] absolute top-[100%] mt-4 left-1/2 -translate-x-1/2 bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 z-50 animate-in fade-in slide-in-from-top-4 duration-300 p-4"
+    : `flex ${S.padding(isHero)} ${S.wrapper(isHero)}`;
 
   return (
-    <div className={`flex ${S.padding(isHero)} ${S.wrapper(isHero)}`}>
-      {([0, 1] as const).map((monthIndexLocal) => (
+    <div className={wrapperClasses}>
+      {monthIndices.map((monthIndexLocal) => (
         <CalendarMonth
           key={monthIndexLocal}
           monthIndexLocal={monthIndexLocal}
+          monthCount={monthCount}
           absoluteMonthOffset={currentMonthOffset + monthIndexLocal}
           currentMonthOffset={currentMonthOffset}
           today={today}
@@ -66,9 +87,10 @@ export function CalendarPopover({ checkIn, checkOut, invalidState, onPickDate, v
           invalidState={invalidState}
           hoveredDay={hoveredDay}
           isHero={isHero}
+          allowPast={allowPast}
           onPickDate={onPickDate}
           onHoverDay={setHoveredDay}
-          onPrev={() => setCurrentMonthOffset(prev => Math.max(0, prev - 1))}
+          onPrev={() => setCurrentMonthOffset(prev => Math.max(allowPast ? -12 : 0, prev - 1))}
           onNext={() => setCurrentMonthOffset(prev => Math.min(22, prev + 1))}
         />
       ))}

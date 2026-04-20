@@ -7,4 +7,5 @@
  */
 
 export { ModernSearchBar } from "./components/ModernSearchBar";
+export { CalendarPopover } from "./components/CalendarPopover";
 export type { SearchState, SearchBarProps } from "./domain/types";

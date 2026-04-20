@@ -6,6 +6,14 @@ import type { Reservation } from "../domain/reservation";
 import { CELL } from "../constants/styles";
 import { StatusBadge } from "./StatusBadge";
 
+function formatDate(dateStr: string): string {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString("es-CR", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
 interface ReservationsTableProps {
   reservations: readonly Reservation[];
 }
@@ -49,10 +57,10 @@ export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
                   <p className={CELL.TEXT_SECONDARY}>{r.room.location}</p>
                 </Table.Cell>
                 <Table.Cell>
-                  <span className={CELL.TEXT_DEFAULT}>{r.checkIn}</span>
+                  <span className={CELL.TEXT_DEFAULT}>{formatDate(r.checkIn)}</span>
                 </Table.Cell>
                 <Table.Cell>
-                  <span className={CELL.TEXT_DEFAULT}>{r.checkOut}</span>
+                  <span className={CELL.TEXT_DEFAULT}>{formatDate(r.checkOut)}</span>
                 </Table.Cell>
                 <Table.Cell>
                   <span className={CELL.TEXT_DEFAULT}>{r.nights}</span>
