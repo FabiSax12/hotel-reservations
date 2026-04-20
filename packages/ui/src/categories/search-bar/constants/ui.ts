@@ -68,5 +68,7 @@ export const SEARCH_BAR_UI_CONSTANTS = {
     MISSING_BOTH_DATES: "Selecciona las fechas de tu estadía",
     /** Shown when check-in ≥ check-out (defensive — calendar mostly prevents this). */
     INVALID_DATE_RANGE: "La llegada debe ser antes de la salida",
+    /** Shown when sede is not selected and required. */
+    MISSING_SEDE: "Selecciona una sede para buscar",
   }
 } as const;

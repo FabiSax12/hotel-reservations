@@ -57,6 +57,7 @@ import type { SearchBarProps, ActiveSection, ValidationError } from "../domain/t
 import { parseDateHelper } from "../utils/dateUtils";
 import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { REGIONS_CONFIG } from "../constants/regionsConfig";
 
 // Sub-components
 import { HeroCalendarFloat } from "./HeroCalendarFloat";
@@ -74,6 +75,8 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   // ─── State ──────────────────────────────────────────────────────────
   /** Which section's popover/panel is currently expanded (null = all closed). */
   const [active, setActive] = useState<ActiveSection>(null);
+  /** Tracks the last section the user explicitly activated (clicked). */
+  const lastUserActivatedSection = React.useRef<ActiveSection | null>(null);
 
   /** Tracks the flash-and-fade animation for invalid date picks. */
   const [invalidState, setInvalidState] = useState<{ dayStr: string, isFading: boolean } | null>(null);
@@ -117,9 +120,13 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   // ─── Field State ────────────────────────────────────────────────────
-  const [destination, setDestination] = useState(
-    initialState?.destination && initialState?.destination !== 'Todos' ? initialState.destination : ""
-  );
+  // Determine if only one sede is available
+  const onlyOneSede = REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
+  const [destination, setDestination] = useState(() => {
+    if (initialState?.destination && initialState?.destination !== 'Todos') return initialState.destination;
+    if (onlyOneSede) return onlyOneSede;
+    return "";
+  });
   const [checkIn, setCheckIn] = useState(initialState?.checkIn || "");
   const [checkOut, setCheckOut] = useState(initialState?.checkOut || "");
   const [adults, setAdults] = useState(initialState?.adults || 2);
@@ -222,6 +229,15 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     const missingIn  = !checkIn;
     const missingOut = !checkOut;
 
+    // If more than one sede, require selection
+    if (!onlyOneSede && (!destination || !REGIONS_CONFIG.some(r => r.name === destination))) {
+      showError({
+        message: C.VALIDATION.MISSING_SEDE,
+        fields: ["where"],
+      });
+      return false;
+    }
+
     if (missingIn && missingOut) {
       showError({
         message: C.VALIDATION.MISSING_BOTH_DATES,
@@ -257,7 +273,7 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     }
 
     return true;
-  }, [checkIn, checkOut, showError]);
+  }, [checkIn, checkOut, showError, destination, onlyOneSede]);
 
   // ─── Display Helpers ────────────────────────────────────────────────
 
@@ -296,11 +312,17 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
    * three-scenario algorithm description.
    */
   const handlePickDate = (dayStr: string) => {
-    // If no date section is active, auto-detect which field to fill
     let workingActive = active;
-    if (workingActive !== "checkIn" && workingActive !== "checkOut") {
+    // Only treat as explicit focus if the user actually clicked the section (not auto-advance)
+    const explicitFocus = (workingActive === "checkIn" || workingActive === "checkOut") && lastUserActivatedSection.current === workingActive;
+    // Always clear explicit focus at the start of a pick so it only applies to the very next pick
+    lastUserActivatedSection.current = null;
+    let autoAdvanced = false;
+    if (!explicitFocus) {
       workingActive = !checkIn ? "checkIn" : "checkOut";
       setActive(workingActive);
+      autoAdvanced = true;
+      // Do not update lastUserActivatedSection here, since it's not a user click
     }
 
     // Toggle off: clicking the already-selected date clears it
@@ -311,34 +333,115 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     const inVal = parseDateHelper(checkIn);
     const outVal = parseDateHelper(checkOut);
 
-    // Scenario 1: Both dates set → smart-replace nearest endpoint
+    // --- Both dates set ---
     if (checkIn && checkOut) {
-      if (clickedVal < inVal) { setCheckIn(dayStr); }
-      else if (clickedVal > outVal) { setCheckOut(dayStr); }
-      else {
-        const distToIn = clickedVal - inVal;
-        const distToOut = outVal - clickedVal;
-        if (distToIn <= distToOut) { setCheckIn(dayStr); } else { setCheckOut(dayStr); }
+      // Case B: If user explicitly focused a field, always set that field
+      if (explicitFocus) {
+        if (workingActive === "checkIn") {
+          // If salida is before new llegada, swap
+          if (checkOut && clickedVal > outVal) {
+            setCheckIn(checkOut);
+            setCheckOut(dayStr);
+          } else {
+            setCheckIn(dayStr);
+          }
+        } else if (workingActive === "checkOut") {
+          // If llegada is after new salida, swap
+          if (checkIn && clickedVal < inVal) {
+            setCheckOut(checkIn);
+            setCheckIn(dayStr);
+          } else {
+            setCheckOut(dayStr);
+          }
+        }
+        return;
+      }
+      // Case A: move nearest endpoint (llegada or salida)
+      const distToIn = Math.abs(clickedVal - inVal);
+      const distToOut = Math.abs(clickedVal - outVal);
+      if (distToIn <= distToOut) {
+        // Move llegada
+        if (clickedVal > outVal) {
+          setCheckIn(checkOut);
+          setCheckOut(dayStr);
+        } else {
+          setCheckIn(dayStr);
+        }
+      } else {
+        // Move salida
+        if (clickedVal < inVal) {
+          setCheckOut(checkIn);
+          setCheckIn(dayStr);
+        } else {
+          setCheckOut(dayStr);
+        }
       }
       return;
     }
 
-    /**
-     * Triggers a flash-and-fade animation on an invalid date pick.
-     * Phase 1 (0→400ms): red dot appears.
-     * Phase 2 (400→700ms): dot fades out.
-     */
-    const triggerInvalid = (ds: string) => {
-      if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
-      if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
-      setInvalidState({ dayStr: ds, isFading: false });
-      timeout1Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === ds ? { ...old, isFading: true } : old), 400);
-      timeout2Ref.current = setTimeout(() => setInvalidState(old => old?.dayStr === ds ? null : old), 700);
-    };
+    // --- Only one date set ---
+    // If user explicitly focused a field, always set that field, and swap if needed
+    if (explicitFocus) {
+      if (workingActive === "checkIn" && checkOut) {
+        if (clickedVal > outVal) {
+          // User picked llegada after salida: swap
+          setCheckIn(checkOut);
+          setCheckOut(dayStr);
+        } else {
+          setCheckIn(dayStr);
+        }
+        setActive("checkOut");
+        return;
+      }
+      if (workingActive === "checkOut" && checkIn) {
+        if (clickedVal < inVal) {
+          // User picked salida before llegada: swap
+          setCheckOut(checkIn);
+          setCheckIn(dayStr);
+        } else {
+          setCheckOut(dayStr);
+        }
+        setActive(!checkIn ? "checkIn" : "checkOut");
+        return;
+      }
+    }
 
-    // Scenario 2: One date set → validate direction before setting
-    if (workingActive === "checkIn" && checkOut && clickedVal > outVal) { triggerInvalid(dayStr); return; }
-    if (workingActive === "checkOut" && checkIn && clickedVal < inVal) { triggerInvalid(dayStr); return; }
+    // Case A: auto-advance from llegada to salida, always set salida
+    if (autoAdvanced && workingActive === "checkOut" && checkIn) {
+      if (clickedVal < inVal) {
+        // User picked salida before llegada: swap
+        setCheckOut(checkIn);
+        setCheckIn(dayStr);
+      } else {
+        setCheckOut(dayStr);
+      }
+      setActive(!checkIn ? "checkIn" : "checkOut");
+      return;
+    }
+
+    // Previous logic: auto-advance, but swap if inverted
+    if (workingActive === "checkIn" && checkOut) {
+      if (clickedVal > outVal) {
+        // Instead of error, swap
+        setCheckIn(checkOut);
+        setCheckOut(dayStr);
+      } else {
+        setCheckIn(dayStr);
+      }
+      setActive("checkOut");
+      return;
+    }
+    if (workingActive === "checkOut" && checkIn) {
+      if (clickedVal < inVal) {
+        // Instead of error, swap
+        setCheckOut(checkIn);
+        setCheckIn(dayStr);
+      } else {
+        setCheckOut(dayStr);
+      }
+      setActive(!checkIn ? "checkIn" : "checkOut");
+      return;
+    }
 
     // Scenario 3: Set the date and auto-advance to the next field
     if (workingActive === "checkIn") { setCheckIn(dayStr); setActive("checkOut"); }
@@ -376,6 +479,7 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   const activateSection = useCallback((section: ActiveSection) => {
     if (validationError?.fields.includes(section)) clearError();
     setActive(section);
+    lastUserActivatedSection.current = section;
   }, [validationError, clearError]);
 
   // ─── Section Class Helper ───────────────────────────────────────────
