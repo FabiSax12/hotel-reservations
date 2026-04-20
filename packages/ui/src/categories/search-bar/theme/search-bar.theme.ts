@@ -24,6 +24,13 @@ export const SEARCH_BAR_STYLES = {
   sectionActive: "bg-white shadow-lg",
   sectionInactive: "hover:bg-black/5",
   sectionFaded:  "opacity-30",
+  /**
+   * Error ring applied to a section when validation fails — soft red
+   * so it feels helpful, not alarming.
+   */
+  sectionError:  "ring-2 ring-red-400/60 bg-red-50/40",
+  /** CSS class that triggers the shake animation (see globals.css keyframe). */
+  sectionShake:  "animate-search-bar-shake",
 
   // Per-section layout variants
   sectionDestination: "flex-[1.2] pl-10 pr-6 flex-shrink-0",
@@ -62,4 +69,26 @@ export const SEARCH_BAR_STYLES = {
     `flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white rounded-full transition-all duration-300 font-bold shadow-md hover:shadow-lg active:scale-95 ${sizePad} gap-2 whitespace-nowrap`,
   searchBtnSpinner: "animate-spin",
   searchBtnLabel: "md:block mr-1",
+
+  // ─── Validation error tooltip ───────────────────────────────────────
+
+  /**
+   * Outer wrapper: positions the error pill below the bar.
+   * `pointer-events-none` so it never blocks click-through to the bar.
+   */
+  errorTooltipWrapper: "absolute top-full mt-3 left-0 right-0 flex justify-center pointer-events-none z-40",
+
+  /**
+   * The pill itself: slides in from above with a soft entrance.
+   * Red-50 bg + red-200 border keeps it soft and helpful.
+   */
+  errorTooltipPill:
+    "flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-50 border border-red-200 shadow-md " +
+    "animate-in fade-in slide-in-from-top-2 duration-300 pointer-events-auto",
+
+  /** Warning icon inside the pill. */
+  errorTooltipIcon: "w-4 h-4 text-amber-500 flex-shrink-0",
+
+  /** Error message text. */
+  errorTooltipText: "text-sm font-medium text-red-700 whitespace-nowrap",
 } as const;

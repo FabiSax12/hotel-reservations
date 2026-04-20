@@ -7,6 +7,11 @@
  *
  * Clicking the section activates either "checkIn" or "checkOut" in the
  * parent, which opens the CalendarPopover.
+ *
+ * ## Error state
+ * When `hasError` is true, a soft red ring is applied to draw attention.
+ * When `isShaking` is true, a brief CSS shake animation plays — triggered
+ * once on validation failure and cleared by the parent after 400 ms.
  */
 
 "use client";
@@ -26,11 +31,21 @@ interface DateSectionProps {
   sectionClass: string;
   /** Callback to activate this section (open the calendar). */
   onActivate: () => void;
+  /** When true, applies a soft red glow to signal a validation error. */
+  hasError?: boolean;
+  /** When true, plays a brief shake animation (cleared by parent after 400 ms). */
+  isShaking?: boolean;
 }
 
-export function DateSection({ label, placeholder, displayValue, sizing, sectionClass, onActivate }: DateSectionProps) {
+export function DateSection({
+  label, placeholder, displayValue, sizing, sectionClass, onActivate,
+  hasError = false, isShaking = false,
+}: DateSectionProps) {
+  const errorClass = hasError ? S.sectionError : "";
+  const shakeClass = isShaking ? S.sectionShake : "";
+
   return (
-    <div onClick={onActivate} className={sectionClass}>
+    <div onClick={onActivate} className={`${sectionClass} ${errorClass} ${shakeClass}`}>
       <div className={`${sizing.label} ${S.fieldLabel}`}>{label}</div>
       <div className={`${S.fieldValueDate} ${sizing.value}`}>
         {displayValue || placeholder}

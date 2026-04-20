@@ -37,12 +37,23 @@
  *
  *  3. **No dates set** — Sets the clicked date into whichever field
  *     is currently active, then auto-advances to the next field.
+ *
+ * ## Validation (`validateSearch`)
+ *
+ * Before firing `onSearch`, the bar validates that both dates are set and
+ * in the correct order. Failures surface a clear error message (see
+ * `SEARCH_BAR_UI_CONSTANTS.VALIDATION`) via:
+ *  - A floating error pill tooltip below the bar.
+ *  - A soft red ring on the affected field section(s).
+ *  - A brief CSS shake animation on the affected section(s).
+ * Errors auto-dismiss after 4 s, or immediately when the user
+ * activates an errored field.
  */
 
 "use client";
 
-import React, { useState, useEffect } from "react";
-import type { SearchBarProps, ActiveSection } from "../domain/types";
+import React, { useState, useEffect, useCallback } from "react";
+import type { SearchBarProps, ActiveSection, ValidationError } from "../domain/types";
 import { parseDateHelper } from "../utils/dateUtils";
 import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
@@ -77,11 +88,30 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   const [isSearching, setIsSearching] = useState(false);
 
   /**
+   * The current validation error, if any.
+   * `null` means the search state is valid (or has not yet been attempted).
+   */
+  const [validationError, setValidationError] = useState<ValidationError | null>(null);
+
+  /**
+   * When true, the shake animation class is applied to errored sections.
+   * Reset to false after 400 ms so the animation can replay on repeated
+   * failed attempts.
+   */
+  const [isShaking, setIsShaking] = useState(false);
+
+  /**
    * Refs for the invalid-state timeout IDs. Using refs prevents stale
    * closures and allows cleanup when rapid invalid picks overlap.
    */
   const timeout1Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeout2Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** Ref for the validation-error auto-dismiss timeout. */
+  const errorDismissRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  /** Ref for the shake-animation reset timeout. */
+  const shakeResetRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /** Ref for outside-click detection. */
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -130,6 +160,104 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     if (active) window.addEventListener("mousedown", handleOutsideClick);
     return () => window.removeEventListener("mousedown", handleOutsideClick);
   }, [active]);
+
+  /** Cleanup all pending timeouts on unmount. */
+  useEffect(() => {
+    return () => {
+      if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
+      if (timeout2Ref.current) clearTimeout(timeout2Ref.current);
+      if (errorDismissRef.current) clearTimeout(errorDismissRef.current);
+      if (shakeResetRef.current) clearTimeout(shakeResetRef.current);
+    };
+  }, []);
+
+  // ─── Validation Error Helpers ────────────────────────────────────────
+
+  /**
+   * Shows a validation error pill and highlights the affected field(s).
+   * Auto-dismisses after 4 s. Plays a shake animation that resets after
+   * 400 ms so it can replay on repeated failed attempts.
+   */
+  const showError = useCallback((error: ValidationError) => {
+    // Clear any existing dismiss timer before starting a new one
+    if (errorDismissRef.current) clearTimeout(errorDismissRef.current);
+    if (shakeResetRef.current) clearTimeout(shakeResetRef.current);
+
+    setValidationError(error);
+    setIsShaking(true);
+
+    // Reset shake class so it can replay if the user clicks again
+    shakeResetRef.current = setTimeout(() => setIsShaking(false), 400);
+
+    // Auto-dismiss the error tooltip after 4 s
+    errorDismissRef.current = setTimeout(() => setValidationError(null), 4000);
+  }, []);
+
+  /**
+   * Clears the validation error immediately.
+   * Called when the user activates a field that was previously in error.
+   */
+  const clearError = useCallback(() => {
+    if (errorDismissRef.current) clearTimeout(errorDismissRef.current);
+    setValidationError(null);
+  }, []);
+
+  // ─── Validation Logic ────────────────────────────────────────────────
+
+  /**
+   * Validates the current search state before firing `onSearch`.
+   *
+   * Priority order:
+   *  1. Both dates missing → guides the user to pick dates.
+   *  2. Only check-in missing.
+   *  3. Only check-out missing.
+   *  4. Invalid date range (check-in ≥ check-out).
+   *
+   * Destination is NOT validated here — it silently defaults to "Todos",
+   * which is a valid and meaningful search state (show all rooms).
+   *
+   * @returns `true` if valid, `false` if an error was surfaced.
+   */
+  const validateSearch = useCallback((): boolean => {
+    const missingIn  = !checkIn;
+    const missingOut = !checkOut;
+
+    if (missingIn && missingOut) {
+      showError({
+        message: C.VALIDATION.MISSING_BOTH_DATES,
+        fields: ["checkIn", "checkOut"],
+      });
+      return false;
+    }
+
+    if (missingIn) {
+      showError({
+        message: C.VALIDATION.MISSING_CHECK_IN,
+        fields: ["checkIn"],
+      });
+      return false;
+    }
+
+    if (missingOut) {
+      showError({
+        message: C.VALIDATION.MISSING_CHECK_OUT,
+        fields: ["checkOut"],
+      });
+      return false;
+    }
+
+    // Defensive range check — the calendar picker mostly prevents this,
+    // but initialState could theoretically supply an inverted range.
+    if (parseDateHelper(checkIn) >= parseDateHelper(checkOut)) {
+      showError({
+        message: C.VALIDATION.INVALID_DATE_RANGE,
+        fields: ["checkIn", "checkOut"],
+      });
+      return false;
+    }
+
+    return true;
+  }, [checkIn, checkOut, showError]);
 
   // ─── Display Helpers ────────────────────────────────────────────────
 
@@ -220,10 +348,16 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   // ─── Search Trigger ─────────────────────────────────────────────────
 
   /**
-   * Simulates a search with an 800ms loading animation, then fires
-   * the `onSearch` callback with the current field values.
+   * Validates the search state, then — if valid — simulates a search
+   * with an 800 ms loading animation before firing `onSearch`.
+   *
+   * If validation fails, the appropriate error is shown (error pill +
+   * field highlights + shake) and the search is aborted.
    */
   const handleSearchTrigger = () => {
+    if (!validateSearch()) return;
+
+    clearError();
     setActive(null);
     setIsSearching(true);
     setTimeout(() => {
@@ -231,6 +365,18 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       if (onSearch) onSearch({ destination: destination || 'Todos', checkIn, checkOut, adults, children, pets });
     }, 800);
   };
+
+  // ─── Section Activation (with error-clear) ───────────────────────────
+
+  /**
+   * Activates a section and clears any existing validation error on that
+   * field, so the user gets immediate positive feedback when they act on
+   * the error guidance.
+   */
+  const activateSection = useCallback((section: ActiveSection) => {
+    if (validationError?.fields.includes(section)) clearError();
+    setActive(section);
+  }, [validationError, clearError]);
 
   // ─── Section Class Helper ───────────────────────────────────────────
 
@@ -248,6 +394,13 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     active === key ? S.sectionActive : S.sectionInactive,
     ((active === "where" || active === "who") && hasHeroCalendarOpened && (key === "checkIn" || key === "checkOut")) ? S.sectionFaded : "",
   ].filter(Boolean).join(" ");
+
+  /**
+   * Returns true if the given section key is one of the fields
+   * highlighted by the current validation error.
+   */
+  const fieldHasError = (key: ActiveSection): boolean =>
+    validationError?.fields.includes(key) ?? false;
 
   // ─── Render ─────────────────────────────────────────────────────────
 
@@ -288,7 +441,9 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           destination={destination}
           sizing={sizing}
           sectionClass={sectionClass("where", S.sectionDestination)}
-          onActivate={() => setActive("where")}
+          onActivate={() => activateSection("where")}
+          hasError={fieldHasError("where")}
+          isShaking={isShaking && fieldHasError("where")}
         />
 
         <div className={S.divider} />
@@ -299,7 +454,9 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           displayValue={formatUIText(checkIn)}
           sizing={sizing}
           sectionClass={sectionClass("checkIn", S.sectionDate)}
-          onActivate={() => setActive("checkIn")}
+          onActivate={() => activateSection("checkIn")}
+          hasError={fieldHasError("checkIn")}
+          isShaking={isShaking && fieldHasError("checkIn")}
         />
 
         <div className={S.dividerRelative} />
@@ -310,7 +467,9 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           displayValue={formatUIText(checkOut)}
           sizing={sizing}
           sectionClass={sectionClass("checkOut", S.sectionDate)}
-          onActivate={() => setActive("checkOut")}
+          onActivate={() => activateSection("checkOut")}
+          hasError={fieldHasError("checkOut")}
+          isShaking={isShaking && fieldHasError("checkOut")}
         />
 
         <div className={S.divider} />
@@ -325,7 +484,7 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           adults={adults} setAdults={setAdults}
           children={children} setChildren={setChildren}
           pets={pets} setPets={setPets}
-          onActivate={() => setActive("who")}
+          onActivate={() => activateSection("who")}
         />
 
         <SearchButton
@@ -333,6 +492,7 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           iconClass={sizing.searchBtnIcon}
           paddingClass={sizing.searchBtnPad}
           onTrigger={handleSearchTrigger}
+          isShaking={isShaking && validationError !== null}
         />
 
         {/* ── Conditional popovers ── */}
@@ -342,7 +502,7 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           <DestinationPopover
             variant={size}
             hasCalendarExpanded={hasHeroCalendarOpened}
-            onSelect={(v) => { setDestination(v); setActive("checkIn"); }}
+            onSelect={(v) => { setDestination(v); activateSection("checkIn"); }}
             currentSelection={destination}
           />
         )}
@@ -356,6 +516,20 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
             invalidState={invalidState}
             onPickDate={handlePickDate}
           />
+        )}
+
+        {/* ── Validation error tooltip ── */}
+        {validationError && (
+          <div className={S.errorTooltipWrapper}>
+            <div className={S.errorTooltipPill}>
+              {/* Warning icon */}
+              <svg className={S.errorTooltipIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+              <span className={S.errorTooltipText}>{validationError.message}</span>
+            </div>
+          </div>
         )}
 
       </div>

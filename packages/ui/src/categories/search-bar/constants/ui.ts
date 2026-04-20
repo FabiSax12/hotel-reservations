@@ -49,5 +49,24 @@ export const SEARCH_BAR_UI_CONSTANTS = {
   },
   ACTION: {
     SEARCH_BTN: "Buscar"
+  },
+  /**
+   * Validation error messages shown when the user clicks "Buscar"
+   * with incomplete or invalid search data.
+   *
+   * All messages follow /clarify principles:
+   *  - Specific: exactly what's missing.
+   *  - Actionable: tells the user what to do.
+   *  - Non-blaming: "Selecciona…" not "Olvidaste…".
+   */
+  VALIDATION: {
+    /** Shown when only the check-in date is missing. */
+    MISSING_CHECK_IN: "Selecciona una fecha de llegada",
+    /** Shown when only the check-out date is missing. */
+    MISSING_CHECK_OUT: "Selecciona una fecha de salida",
+    /** Shown when both dates are missing. */
+    MISSING_BOTH_DATES: "Selecciona las fechas de tu estadía",
+    /** Shown when check-in ≥ check-out (defensive — calendar mostly prevents this). */
+    INVALID_DATE_RANGE: "La llegada debe ser antes de la salida",
   }
 } as const;

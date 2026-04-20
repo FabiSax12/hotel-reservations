@@ -7,4 +7,4 @@
  */
 
 export { ModernSearchBar } from "./components/ModernSearchBar";
-export type { SearchState, SearchBarProps } from "./domain/types";
+export type { SearchState, SearchBarProps, ValidationError } from "./domain/types";

@@ -28,15 +28,19 @@ interface SearchButtonProps {
   paddingClass: string;
   /** Callback invoked when the button is clicked. */
   onTrigger: () => void;
+  /** When true, plays a brief shake animation (cleared by parent after 400 ms). */
+  isShaking?: boolean;
 }
 
-export function SearchButton({ isSearching, iconClass, paddingClass, onTrigger }: SearchButtonProps) {
+export function SearchButton({ isSearching, iconClass, paddingClass, onTrigger, isShaking = false }: SearchButtonProps) {
+  const shakeClass = isShaking ? S.sectionShake : "";
+
   return (
     <div className={S.searchBtnWrapper}>
       <button
         type="button"
         onClick={(e) => { e.stopPropagation(); onTrigger(); }}
-        className={S.searchBtn(paddingClass)}
+        className={`${S.searchBtn(paddingClass)} ${shakeClass}`}
       >
         {isSearching ? (
           /* SVG spinner: a faded circle track + a rotating arc segment */

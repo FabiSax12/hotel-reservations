@@ -31,6 +31,20 @@ export interface SearchState {
 /**
  * Props accepted by the `<ModernSearchBar>` component.
  */
+/**
+ * Represents a validation error surfaced when the user attempts
+ * to search with incomplete or invalid data.
+ */
+export interface ValidationError {
+  /** Human-readable error message (Spanish UX copy from `VALIDATION` constants). */
+  message: string;
+  /**
+   * Which search bar section(s) this error applies to.
+   * Used to highlight the corresponding field(s) with an error visual state.
+   */
+  fields: ActiveSection[];
+}
+
 export interface SearchBarProps {
   /** Callback fired when the user clicks "Buscar". Receives the full search state. */
   onSearch?: (state: SearchState) => void;

@@ -7,13 +7,16 @@
  *
  * The value text styling dynamically switches between a muted placeholder
  * appearance and a bold selected appearance via `S.fieldValue(!!destination)`.
+ *
+ * ## Error state
+ * `hasError` and `isShaking` are available for future validation rules
+ * (currently destination defaults gracefully to "Todos" so no error is shown).
  */
 
 "use client";
 
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { SEARCH_BAR_UI_CONSTANTS } from "../../constants/ui";
-import type { ActiveSection } from "../../domain/types";
 
 const C = SEARCH_BAR_UI_CONSTANTS.DESTINATION;
 
@@ -28,11 +31,21 @@ interface DestinationSectionProps {
   sectionClass: string;
   /** Callback to activate this section (open the destination popover). */
   onActivate: () => void;
+  /** When true, applies a soft red glow to signal a validation error. */
+  hasError?: boolean;
+  /** When true, plays a brief shake animation (cleared by parent after 400 ms). */
+  isShaking?: boolean;
 }
 
-export function DestinationSection({ isActive, destination, sizing, sectionClass, onActivate }: DestinationSectionProps) {
+export function DestinationSection({
+  isActive, destination, sizing, sectionClass, onActivate,
+  hasError = false, isShaking = false,
+}: DestinationSectionProps) {
+  const errorClass = hasError ? S.sectionError : "";
+  const shakeClass = isShaking ? S.sectionShake : "";
+
   return (
-    <div onClick={onActivate} className={sectionClass}>
+    <div onClick={onActivate} className={`${sectionClass} ${errorClass} ${shakeClass}`}>
       <div className={`${sizing.label} ${S.fieldLabel}`}>{C.LABEL}</div>
       <div className={S.fieldValueWrapper}>
         <div className={`${S.fieldValue(!!destination)} ${sizing.value}`}>

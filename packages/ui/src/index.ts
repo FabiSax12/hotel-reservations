@@ -6,4 +6,4 @@
  * `SearchState`, and `SearchBarProps`.
  */
 
-export * from "./search-bar";
+export * from "./categories/search-bar";
