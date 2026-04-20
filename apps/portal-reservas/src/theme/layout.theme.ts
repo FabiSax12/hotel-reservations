@@ -20,5 +20,6 @@ export const HEADER_STYLES = {
   myReservationsText: "text-neutral-900 leading-none mb-0.5",
   avatarWrapper: "w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100",
   avatarIcon: "w-5 h-5 text-emerald-800",
-  stickySearchBar: "w-full bg-white pb-6 pt-2 shadow-[0_12px_40px_rgba(0,0,0,0.06)] border-t border-neutral-100 animate-in fade-in slide-in-from-top-4 duration-500 flex justify-center px-6",
+  stickySearchBar: "w-full bg-white pb-6 pt-2 shadow-[0_12px_40px_rgba(0,0_0,0.06)] border-t border-neutral-100 animate-in fade-in slide-in-from-top-4 duration-500 flex justify-center px-6",
+  loginBtn: "px-6 py-2.5 rounded-xl bg-emerald-700 text-white font-black text-[11px] uppercase tracking-widest shadow-lg shadow-emerald-900/20 hover:bg-emerald-800 transition-all active:scale-95",
 } as const;

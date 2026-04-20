@@ -16,6 +16,21 @@ export type AuthTexts = {
     SUBMIT_BUTTON: string;
     SUBMITTING_BUTTON: string;
   };
+  LOGIN: {
+    TITLE: string;
+    EMAIL_LABEL: string;
+    EMAIL_PLACEHOLDER: string;
+    PASSWORD_LABEL: string;
+    PASSWORD_PLACEHOLDER: string;
+    PASSWORD_HINT: string;
+    SUBMIT_BUTTON: string;
+    SUBMITTING_BUTTON: string;
+    REGISTER_LINK: string;
+    SHOW_PASSWORD: string;
+    HIDE_PASSWORD: string;
+    OR: string;
+  };
+
   VERIFY_EMAIL: {
     TITLE: string;
     DESCRIPTION: string;
@@ -30,5 +45,8 @@ export type AuthTexts = {
   ERRORS: {
     EMAIL_ALREADY_REGISTERED: string;
     UNKNOWN_ERROR: string;
+    INVALID_CREDENTIALS: string;
+    EMAIL_NOT_CONFIRMED: string;
   };
 };
+
