@@ -7,7 +7,7 @@ import type { ReservationFilters } from "../domain/reservation-filters";
 import { DEFAULT_FILTERS } from "../domain/reservation-filters";
 import { STATUS_I18N_KEY } from "../constants/status-i18n";
 import { ROOM_LIST } from "../constants/room-list";
-import { FILTERS as S } from "../constants/styles";
+import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
 import { DateRangePicker } from "./DateRangePicker";
 
 const STATUSES: readonly ReservationStatus[] = [
@@ -70,18 +70,18 @@ export const ReservationsFilters = ({
   };
 
   return (
-    <div className={S.WRAPPER}>
-      <div className={S.BAR}>
+    <div className={S.wrapper}>
+      <div className={S.bar}>
         {/* Status pills — left side */}
-        <div className="flex flex-wrap items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             aria-pressed={filters.statuses.length === 0}
-            className={`${S.PILL} ${filters.statuses.length === 0 ? S.PILL_ON : S.PILL_OFF}`}
+            className={`${S.pill} ${filters.statuses.length === 0 ? S.pillActive : S.pillInactive}`}
             onClick={() => update({ statuses: [] })}
           >
             {t.RESERVATIONS.FILTERS.ALL}
-            <span className={S.PILL_COUNT}>{totalCount}</span>
+            <span className={S.pillCount}>{totalCount}</span>
           </button>
 
           {STATUSES.map((status) => {
@@ -91,23 +91,26 @@ export const ReservationsFilters = ({
                 key={status}
                 type="button"
                 aria-pressed={isOn}
-                className={`${S.PILL} ${isOn ? S.PILL_ON : S.PILL_OFF}`}
+                className={`${S.pill} ${isOn ? S.pillActive : S.pillInactive}`}
                 onClick={() => toggleStatus(status)}
               >
-                <span className={`${S.PILL_DOT} ${STATUS_DOT_COLOR[status]}`} />
+                <span className={`${S.pillStatusDot} ${STATUS_DOT_COLOR[status]}`} />
                 {t.RESERVATIONS.STATUS[STATUS_I18N_KEY[status]]}
-                <span className={S.PILL_COUNT}>{statusCounts[status]}</span>
+                <span className={S.pillCount}>{statusCounts[status]}</span>
               </button>
             );
           })}
         </div>
 
-        <div className={S.SPACER} />
+        <div className={S.spacer} />
 
         {/* Right filters */}
-        <div className={S.RIGHT}>
-          <Select value={selectedRoomKey} onChange={handleRoomChange}>
-            <Select.Trigger>
+        <div className={S.rightSection}>
+          <Select
+            value={selectedRoomKey}
+            onChange={handleRoomChange}
+          >
+            <Select.Trigger className={`${S.pill} ${S.pillInactive} min-w-48 justify-between gap-2`}>
               <Select.Value />
               <Select.Indicator />
             </Select.Trigger>
@@ -137,6 +140,7 @@ export const ReservationsFilters = ({
           <Button
             variant="ghost"
             size="sm"
+            className={`${S.pill} ${S.pillInactive}`}
             isDisabled={!isFiltered}
             onPress={() => onFiltersChange({ ...DEFAULT_FILTERS })}
           >
@@ -146,8 +150,8 @@ export const ReservationsFilters = ({
       </div>
 
       {isFiltered && (
-        <p className={S.RESULTS}>
-          <span className={S.RESULTS_COUNT}>{filteredCount}</span>
+        <p className={S.resultsText}>
+          <span className={S.resultsCount}>{filteredCount}</span>
           {` ${t.RESERVATIONS.FILTERS.RESULTS_OF} ${totalCount} ${t.RESERVATIONS.FILTERS.RESULTS_SUFFIX}`}
         </p>
       )}
