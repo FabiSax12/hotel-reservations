@@ -62,6 +62,10 @@ export async function signUp(
     throw { code: "UNKNOWN_ERROR", message: "User creation returned no ID" } satisfies AuthError;
   }
 
+  if (!data.user?.identities || data.user.identities.length === 0) {
+    throw { code: "EMAIL_ALREADY_REGISTERED" } satisfies AuthError;
+  }
+
   return { success: true };
 }
 
