@@ -1,6 +1,8 @@
 // ─── Portal Reservas – Auth Feature Styles ───────────────────────────────────
 // These styles mirror the premium, natural aesthetic of the project.
 
+export const AUTH_BACKGROUND_IMAGE = "url('/images/auth-bg.png')" as const;
+
 export const AUTH_STYLES = {
   // Main container with an immersive background image
   main: "relative flex min-h-screen items-center justify-center px-4 overflow-hidden",

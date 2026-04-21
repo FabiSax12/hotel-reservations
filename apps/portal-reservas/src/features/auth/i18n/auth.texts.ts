@@ -22,6 +22,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
     },
     LOGIN: {
       TITLE: "Iniciar sesión",
+      SUBTITLE: "Ingresá tus credenciales para continuar con tu reserva",
       EMAIL_LABEL: "Correo electrónico",
       EMAIL_PLACEHOLDER: "juan@ejemplo.com",
       PASSWORD_LABEL: "Contraseña",
@@ -33,6 +34,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       SHOW_PASSWORD: "Mostrar contraseña",
       HIDE_PASSWORD: "Ocultar contraseña",
       OR: "O continuar con",
+      CONTINUE_WITH_GOOGLE: "Continuar con Quecos",
     },
 
     VERIFY_EMAIL: {
@@ -53,6 +55,9 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       UNKNOWN_ERROR: "Ocurrió un error inesperado. Intentá de nuevo.",
       INVALID_CREDENTIALS: "Email o contraseña incorrectos.",
       EMAIL_NOT_CONFIRMED: "Verificá tu correo antes de iniciar sesión.",
+      AUTH_ERROR_TITLE: "Error de autenticación",
+      AUTH_ERROR_CODE: "Código de error:",
+      BACK_TO_LOGIN: "Volver al inicio de sesión",
     },
   },
   en: {
@@ -75,6 +80,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
     },
     LOGIN: {
       TITLE: "Sign in",
+      SUBTITLE: "Enter your credentials to continue with your reservation",
       EMAIL_LABEL: "Email address",
       EMAIL_PLACEHOLDER: "john@example.com",
       PASSWORD_LABEL: "Password",
@@ -86,6 +92,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       SHOW_PASSWORD: "Show password",
       HIDE_PASSWORD: "Hide password",
       OR: "Or continue with",
+      CONTINUE_WITH_GOOGLE: "Continue with Quecos",
     },
 
     VERIFY_EMAIL: {
@@ -105,6 +112,9 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       UNKNOWN_ERROR: "An unexpected error occurred. Please try again.",
       INVALID_CREDENTIALS: "Invalid email or password.",
       EMAIL_NOT_CONFIRMED: "Please verify your email before signing in.",
+      AUTH_ERROR_TITLE: "Authentication Error",
+      AUTH_ERROR_CODE: "Error Code:",
+      BACK_TO_LOGIN: "Back to sign in",
     },
   },
 } as const;

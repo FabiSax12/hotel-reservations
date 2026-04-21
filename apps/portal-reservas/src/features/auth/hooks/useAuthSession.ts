@@ -1,21 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createSupabaseClient } from "@hotel/db/client";
 import type { User } from "@supabase/supabase-js";
+import { getSession, subscribeToAuthChanges } from "../services/authSessionService";
 
 export function useAuthSession() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const supabase = createSupabaseClient();
-
-    // Fetch initial session
     const fetchSession = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        setUser(session?.user ?? null);
+        const currentUser = await getSession();
+        setUser(currentUser);
       } catch (error) {
         console.error("Error fetching session:", error);
       } finally {
@@ -25,12 +22,9 @@ export function useAuthSession() {
 
     fetchSession();
 
-    // Listen for auth state changes (login, logout, token refresh)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
+    const subscription = subscribeToAuthChanges((currentUser) => {
+      setUser(currentUser);
+    });
 
     return () => {
       subscription.unsubscribe();

@@ -17,15 +17,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Agent/AI tooling (per-developer, not application code)
-.agents/
-.claude/
-.gemini/
-.impeccable.md
-skills-lock.json
-skills.lock.json
-.docs/
-
 # Logs
 npm-debug.log*
 yarn-debug.log*

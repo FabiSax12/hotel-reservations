@@ -14,4 +14,4 @@ export const createEmailValidator =
 export const createPasswordValidator =
   (errorMessage: string) =>
   (value: string): string | null =>
-    value.length >= MIN_PASSWORD_LENGTH ? null : errorMessage;
+    value.trim().length >= MIN_PASSWORD_LENGTH ? null : errorMessage;

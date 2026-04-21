@@ -1,23 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
+import { useI18n } from "@/locales";
 
 export default function AuthErrorPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const error = searchParams.error || "unknown_error";
-  const description = searchParams.error_description || "An unexpected error occurred during authentication.";
+  const { t } = useI18n();
+  const error = searchParams?.error || "unknown_error";
+  const description = searchParams?.error_description || t.AUTH.ERRORS.UNKNOWN_ERROR;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-neutral-50 px-4 text-center">
       <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-neutral-200">
-        <h1 className="text-2xl font-bold text-neutral-900 mb-2">Authentication Error</h1>
+        <h1 className="text-2xl font-bold text-neutral-900 mb-2">{t.AUTH.ERRORS.AUTH_ERROR_TITLE}</h1>
         <p className="text-neutral-600 mb-6">{description}</p>
         
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 text-left">
           <p className="text-xs font-mono text-amber-800">
-            <strong>Error Code:</strong> {error}
+            <strong>{t.AUTH.ERRORS.AUTH_ERROR_CODE}</strong> {error}
           </p>
         </div>
 
@@ -25,7 +29,7 @@ export default function AuthErrorPage({
           href={ROUTES.AUTH.LOGIN}
           className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 transition-colors w-full"
         >
-          Back to Login
+          {t.AUTH.ERRORS.BACK_TO_LOGIN}
         </Link>
       </div>
     </div>

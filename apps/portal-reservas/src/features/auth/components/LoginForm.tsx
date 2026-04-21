@@ -11,7 +11,7 @@ import type { LoginActionState } from "../domain/credentials";
 import { useLoginForm } from "../hooks/useLoginForm";
 import { useI18n } from "@/locales";
 import { GoogleIcon } from "./icons/GoogleIcon";
-import { AUTH_STYLES as S } from "../theme/auth.theme";
+import { AUTH_STYLES as S, AUTH_BACKGROUND_IMAGE } from "../theme/auth.theme";
 
 interface LoginFormProps {
   action: (prevState: LoginActionState, formData: FormData) => Promise<LoginActionState>;
@@ -20,7 +20,7 @@ interface LoginFormProps {
 export const LoginForm = ({ action }: LoginFormProps) => {
   const [state, formAction, isPending] = useActionState<LoginActionState, FormData>(action, null);
   const { t } = useI18n();
-  const { callbackUrl, showPassword, handleTogglePassword } = useLoginForm();
+  const { callbackUrl, showPassword, handleTogglePassword, handleGoogleLogin } = useLoginForm();
 
   return (
     <main className={S.main}>
@@ -28,7 +28,7 @@ export const LoginForm = ({ action }: LoginFormProps) => {
       <div className={S.background}>
         <div 
           className={S.bgImage} 
-          style={{ backgroundImage: "url('/images/auth-bg.png')" }} 
+          style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }} 
         />
         <div className={S.bgOverlay} />
         <div className={S.bgGradient} />
@@ -37,7 +37,7 @@ export const LoginForm = ({ action }: LoginFormProps) => {
       <div className={S.card}>
         <div className="mb-10">
           <h1 className={S.title}>{t.AUTH.LOGIN.TITLE}</h1>
-          <p className={S.subtitle}>Ingresá tus credenciales para continuar con tu reserva</p>
+          <p className={S.subtitle}>{t.AUTH.LOGIN.SUBTITLE}</p>
         </div>
 
         <Form className={S.form} action={formAction}>
@@ -121,19 +121,10 @@ export const LoginForm = ({ action }: LoginFormProps) => {
             <button
               type="button"
               className={S.googleBtn}
-              onClick={async () => {
-                const { createSupabaseClient } = await import("@hotel/db/client");
-                const supabase = createSupabaseClient();
-                await supabase.auth.signInWithOAuth({
-                  provider: 'google',
-                  options: {
-                    redirectTo: `${window.location.origin}/auth/callback${callbackUrl ? `?callbackUrl=${callbackUrl}` : ''}`
-                  }
-                });
-              }}
+              onClick={handleGoogleLogin}
             >
               <GoogleIcon className={S.googleIcon} />
-              <span>Continuar con Quecos</span>
+              <span>{t.AUTH.LOGIN.CONTINUE_WITH_GOOGLE}</span>
             </button>
           </div>
 

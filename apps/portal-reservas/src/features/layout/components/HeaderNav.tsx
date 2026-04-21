@@ -24,7 +24,7 @@ export function HeaderNav() {
         <div className="w-24 h-10 animate-pulse bg-neutral-200 rounded-full hidden sm:block" />
       ) : user ? (
         <span className="text-sm font-medium text-neutral-800 px-4">
-          {user.user_metadata?.full_name || user.email}
+          {user.user_metadata?.full_name ?? user.email}
         </span>
       ) : (
         <Link href={ROUTES.AUTH.LOGIN} className={S.loginBtn}>

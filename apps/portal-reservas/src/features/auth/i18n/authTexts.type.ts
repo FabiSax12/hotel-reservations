@@ -18,6 +18,7 @@ export type AuthTexts = {
   };
   LOGIN: {
     TITLE: string;
+    SUBTITLE: string;
     EMAIL_LABEL: string;
     EMAIL_PLACEHOLDER: string;
     PASSWORD_LABEL: string;
@@ -29,6 +30,7 @@ export type AuthTexts = {
     SHOW_PASSWORD: string;
     HIDE_PASSWORD: string;
     OR: string;
+    CONTINUE_WITH_GOOGLE: string;
   };
 
   VERIFY_EMAIL: {
@@ -47,6 +49,9 @@ export type AuthTexts = {
     UNKNOWN_ERROR: string;
     INVALID_CREDENTIALS: string;
     EMAIL_NOT_CONFIRMED: string;
+    AUTH_ERROR_TITLE: string;
+    AUTH_ERROR_CODE: string;
+    BACK_TO_LOGIN: string;
   };
 };
 

@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { LOGIN_FIELDS } from "../constants/fields";
+import { SUPABASE_ERROR_CODES } from "../constants/supabaseErrors";
 import type { LoginActionState } from "../domain/credentials";
 
 export async function loginAction(
@@ -21,7 +22,7 @@ export async function loginAction(
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    if (error.code === "email_not_confirmed") {
+    if (error.code === SUPABASE_ERROR_CODES.EMAIL_NOT_CONFIRMED) {
       return { error: "EMAIL_NOT_CONFIRMED" };
     }
     return { error: "INVALID_CREDENTIALS" };
