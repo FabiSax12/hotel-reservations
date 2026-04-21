@@ -3,9 +3,9 @@
 import { completeAdminActivation } from "@hotel/core/auth";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/config/routes";
-import { ACTIVATION_FORM_FIELDS } from "@/features/auth/config/activationParams";
-import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
+import { ACTIVATION_FORM_FIELDS } from "@/features/auth/constants/activationFormFields";
 import type { ActivateAdminState } from "@/features/auth/domain/adminActivation";
+import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
 
 export async function activateAdminAction(
   _prevState: ActivateAdminState,

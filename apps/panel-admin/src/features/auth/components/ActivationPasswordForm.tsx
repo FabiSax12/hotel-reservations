@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import { ACTIVATION_FORM_FIELDS } from "@/features/auth/config/activationParams";
+import { ACTIVATION_FORM_FIELDS } from "@/features/auth/constants/activationFormFields";
 import type { ActivateAdminState } from "@/features/auth/domain/adminActivation";
 import { useI18n } from "@/locales";
 

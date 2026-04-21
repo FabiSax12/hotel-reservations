@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import {
   ACTIVATION_HASH_PARAMS,
   ACTIVATION_INVITE_TYPE,
-} from "@/features/auth/config/activationParams";
+} from "@/features/auth/constants/activationSearchParams";
 import type { VerifyTokenState } from "@/features/auth/domain/adminActivation";
 import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
 import { verifyTokenAction } from "@/features/auth/services/verifyTokenAction";
