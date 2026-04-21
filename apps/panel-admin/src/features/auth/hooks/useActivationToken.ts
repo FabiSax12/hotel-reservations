@@ -5,8 +5,8 @@ import {
   ACTIVATION_HASH_PARAMS,
   ACTIVATION_INVITE_TYPE,
 } from "@/features/auth/config/activationParams";
-import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
 import type { VerifyTokenState } from "@/features/auth/domain/adminActivation";
+import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
 import { verifyTokenAction } from "@/features/auth/services/verifyTokenAction";
 
 type ActivationTokens = { accessToken: string; refreshToken: string };
