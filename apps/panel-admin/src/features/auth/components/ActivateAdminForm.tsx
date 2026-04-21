@@ -2,53 +2,19 @@
 
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import Link from "next/link";
-import { useActionState, useEffect, useState, useTransition } from "react";
 import { ROUTES } from "@/config/routes";
-import {
-  ACTIVATION_HASH_PARAMS,
-  ACTIVATION_INVITE_TYPE,
-} from "@/features/auth/config/activationParams";
-import {
-  ACTIVATION_ERRORS,
-  isActivateSuccess,
-  isVerifySuccess,
-} from "@/features/auth/domain/adminActivation";
-import type { ActivateAdminState, VerifyTokenState } from "@/features/auth/domain/adminActivation";
-import { activateAdminAction } from "@/features/auth/services/activateAdminAction";
-import { verifyTokenAction } from "@/features/auth/services/verifyTokenAction";
+import { ACTIVATION_FORM_FIELDS } from "@/features/auth/config/activationParams";
+import { isActivateSuccess, isVerifySuccess } from "@/features/auth/domain/adminActivation";
+import { useActivationToken } from "@/features/auth/hooks/useActivationToken";
+import { useAdminActivation } from "@/features/auth/hooks/useAdminActivation";
 import { useI18n } from "@/locales";
 
 export const ActivateAdminForm = () => {
   const { t } = useI18n();
   const { ACTIVATE, VALIDATION } = t.AUTH;
 
-  const [tokens, setTokens] = useState<{ accessToken: string; refreshToken: string } | null>(null);
-  const [verifyState, setVerifyState] = useState<VerifyTokenState>(null);
-  const [isVerifying, startVerifying] = useTransition();
-
-  const [activateState, activateFormAction, isPending] = useActionState<ActivateAdminState, FormData>(
-    activateAdminAction,
-    null,
-  );
-
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get(ACTIVATION_HASH_PARAMS.ACCESS_TOKEN) ?? "";
-    const refreshToken = params.get(ACTIVATION_HASH_PARAMS.REFRESH_TOKEN) ?? "";
-    const type = params.get(ACTIVATION_HASH_PARAMS.TYPE);
-
-    if (!accessToken || type !== ACTIVATION_INVITE_TYPE) {
-      setVerifyState({ error: ACTIVATION_ERRORS.INVALID_TOKEN });
-      return;
-    }
-
-    setTokens({ accessToken, refreshToken });
-    startVerifying(async () => {
-      const result = await verifyTokenAction(accessToken, refreshToken);
-      setVerifyState(result);
-    });
-  }, []);
+  const { tokens, verifyState, isVerifying } = useActivationToken();
+  const { activateState, activateFormAction, isPending } = useAdminActivation();
 
   if (isVerifying || verifyState === null) {
     return (
@@ -102,12 +68,12 @@ export const ActivateAdminForm = () => {
         <p className="mb-6 text-sm text-gray-500">{ACTIVATE.SUBTITLE}</p>
 
         <Form className="flex flex-col gap-4" action={activateFormAction}>
-          <input type="hidden" name="access_token" value={tokens?.accessToken ?? ""} />
-          <input type="hidden" name="refresh_token" value={tokens?.refreshToken ?? ""} />
+          <input type="hidden" name={ACTIVATION_FORM_FIELDS.ACCESS_TOKEN} value={tokens?.accessToken ?? ""} />
+          <input type="hidden" name={ACTIVATION_FORM_FIELDS.REFRESH_TOKEN} value={tokens?.refreshToken ?? ""} />
 
           <TextField
             isRequired
-            name="password"
+            name={ACTIVATION_FORM_FIELDS.PASSWORD}
             type="password"
             validate={(v) => (v.length >= 8 ? null : VALIDATION.PASSWORD_TOO_SHORT)}
           >
@@ -118,7 +84,7 @@ export const ActivateAdminForm = () => {
 
           <TextField
             isRequired
-            name="confirm_password"
+            name={ACTIVATION_FORM_FIELDS.CONFIRM_PASSWORD}
             type="password"
             validate={(v) => (v.length >= 8 ? null : VALIDATION.PASSWORD_TOO_SHORT)}
           >
