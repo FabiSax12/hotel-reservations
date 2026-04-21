@@ -1,6 +1,6 @@
 # Design & Implementation: Reservaciones — Visual Refactor + DateRangePicker (US-JA-02 visual)
 
-**Date:** 2026-04-19 (updated 2026-04-20)
+**Date:** 2026-04-19 (updated 2026-04-20, rev. 2026-04-20 SRP ReservationsFilters)
 **Scope:** Refactor visual de la lista de reservaciones: alineación al design system del portal, layout de 3 cards, eliminación de elementos no requeridos, reemplazo del date picker por el componente nativo del portal, corrección de Tailwind para paquetes externos, migración del sistema de estilos a `src/themes/`, separación de responsabilidades (SRP) en componentes/hooks/utilidades, y descomposición interna de `DateRangePicker` en tipos/lógica pura/hook/JSX.
 
 ---
@@ -47,7 +47,8 @@ apps/panel-admin/src/
         │   ├── status-color.ts
         │   └── status-i18n.ts
         ├── hooks/                                     ← NUEVO
-        │   └── useReservationsFiltering.ts            ← NUEVO: estado de filtros + derivados
+        │   ├── useReservationsFiltering.ts            ← NUEVO: estado de filtros + derivados
+        │   └── useReservationFilters.ts               ← NUEVO: lógica SRP de ReservationsFilters
         ├── utils/                                     ← NUEVO
         │   ├── format-reservation-date.ts             ← NUEVO: formatTableDate, formatPickerDate
         │   ├── filter-reservations.ts                 ← NUEVO: función pura de filtrado
@@ -59,9 +60,13 @@ apps/panel-admin/src/
         │   ├── DateRangePicker.tsx                    ← MODIFICADO: solo JSX; delega lógica al hook
         │   ├── EmptyState.tsx                         ← MODIFICADO: importa desde themes
         │   ├── ReservationsList.tsx                   ← MODIFICADO: usa hook + ReservationsPageHeader
-        │   ├── ReservationsFilters.tsx                ← MODIFICADO: importa desde themes
+        │   ├── ReservationsFilters.tsx                ← MODIFICADO: orchestrator puro; delega a sub-componentes y hook
         │   ├── ReservationsPageHeader.tsx             ← NUEVO: header + stat cards extraídos de ReservationsList
         │   ├── ReservationsTable.tsx                  ← MODIFICADO: usa formatTableDate de utils
+        │   ├── StatusPillGroup.tsx                    ← NUEVO: pills de estado + botón "All"
+        │   ├── RoomSelector.tsx                       ← NUEVO: <Select> de habitaciones encapsulado
+        │   ├── FilterResultsSummary.tsx               ← NUEVO: texto "X results of Y"
+        │   ├── ClearFiltersButton.tsx                 ← NUEVO: botón con isDisabled encapsulado
         │   └── StatusBadge.tsx
         └── i18n/
             ├── reservations.texts.ts
@@ -81,7 +86,7 @@ packages/ui/src/search-bar/
 |---|---|
 | `apps/panel-admin/src/app/globals.css` | Agregado `@source "../../../../packages/ui/src"` para que Tailwind escanee `@hotel/ui` |
 | `apps/panel-admin/src/features/reservaciones/components/ReservationsList.tsx` | Usa `useReservationsFiltering` + `ReservationsPageHeader`; solo orquesta layout |
-| `apps/panel-admin/src/features/reservaciones/components/ReservationsFilters.tsx` | Eliminado "Más filtros"; usa `DateRangePicker`; importa desde `@/themes/reservations-filters.theme` |
+| `apps/panel-admin/src/features/reservaciones/components/ReservationsFilters.tsx` | Eliminado "Más filtros"; usa `DateRangePicker`; importa desde `@/themes/reservations-filters.theme`; refactorizado a orchestrator puro (SRP) |
 | `apps/panel-admin/src/features/reservaciones/components/ReservationsTable.tsx` | Usa `formatTableDate` de utils; importa desde `@/themes/reservations-table.theme` |
 | `apps/panel-admin/src/features/reservaciones/components/DateRangePicker.tsx` | Reducido a solo JSX; delega todo al hook `useDateRangePicker` |
 | `apps/panel-admin/src/features/reservaciones/components/EmptyState.tsx` | Importa `EMPTY_STATE_STYLES` desde `@/themes/reservations-empty-state.theme` |
@@ -98,6 +103,11 @@ packages/ui/src/search-bar/
 | `apps/panel-admin/src/themes/reservations-table.theme.ts` | Estilos de la tabla y sus celdas |
 | `apps/panel-admin/src/themes/reservations-empty-state.theme.ts` | Estilos del estado vacío |
 | `apps/panel-admin/src/features/reservaciones/hooks/useReservationsFiltering.ts` | Estado de filtros, `statusCounts` y `filtered` extraídos de `ReservationsList` |
+| `apps/panel-admin/src/features/reservaciones/hooks/useReservationFilters.ts` | Lógica SRP de `ReservationsFilters`: `toggleStatus`, `update`, `clearFilters`, `isFiltered`, `selectedRoomKey`, `handleRoomChange` |
+| `apps/panel-admin/src/features/reservaciones/components/StatusPillGroup.tsx` | Pills de estado (botón "All" + pills por status); desconoce fechas y habitaciones |
+| `apps/panel-admin/src/features/reservaciones/components/RoomSelector.tsx` | `<Select>` de habitaciones con `ROOM_ALL_KEY` encapsulado; recibe `value` y `onChange` |
+| `apps/panel-admin/src/features/reservaciones/components/FilterResultsSummary.tsx` | Texto "X results of Y"; retorna `null` si `!isFiltered`; cero lógica |
+| `apps/panel-admin/src/features/reservaciones/components/ClearFiltersButton.tsx` | Botón "Clear" con `isDisabled={!isFiltered}` encapsulado |
 | `apps/panel-admin/src/features/reservaciones/utils/format-reservation-date.ts` | `formatTableDate` (para tabla) y `formatPickerDate` (para picker) |
 | `apps/panel-admin/src/features/reservaciones/utils/filter-reservations.ts` | Función pura `filterReservations(reservations, filters)` |
 | `apps/panel-admin/src/features/reservaciones/utils/count-reservation-statuses.ts` | Función pura `countReservationStatuses(reservations)` |
@@ -228,6 +238,25 @@ useDateRangePicker(checkIn: string, checkOut: string, onChange: (ci, co) => void
 ```
 El hook llama `computeNextActive(...)` e invoca `setActive(nextActive)`.
 
+### §10 — SRP interno de ReservationsFilters: hook + 4 sub-componentes
+
+`ReservationsFilters` mezclaba estado, lógica de mutación y JSX de tres áreas diferentes (pills, room select, fecha, resumen). Se descompone en:
+
+| Pieza | Archivo | Responsabilidad |
+|---|---|---|
+| Hook | `hooks/useReservationFilters.ts` | `toggleStatus`, `update`, `clearFilters`, `isFiltered`, `selectedRoomKey`, `handleRoomChange` |
+| Componente | `components/StatusPillGroup.tsx` | Botón "All" + pills por status; recibe `statuses`, `statusCounts`, `totalCount`, `onAllClick`, `onStatusToggle` |
+| Componente | `components/RoomSelector.tsx` | `<Select>` con `ROOM_ALL_KEY` encapsulado; recibe `value` y `onChange` |
+| Componente | `components/FilterResultsSummary.tsx` | Texto "X results of Y"; retorna `null` si `!isFiltered`; cero lógica |
+| Componente | `components/ClearFiltersButton.tsx` | Botón con `isDisabled={!isFiltered}` encapsulado; recibe `isFiltered` y `onClear` |
+| Orquestador | `components/ReservationsFilters.tsx` | Solo layout: importa sub-componentes, llama al hook, compone JSX; cero lógica inline |
+
+La API pública (`ReservationsFiltersProps`) no cambia.
+
+`ROOM_ALL_KEY = "__ALL__"` se define localmente en `useReservationFilters` y en `RoomSelector` por separado — ambos usan la misma constante sin exportarla globalmente, ya que es un detalle de implementación interno del selector.
+
+---
+
 ### §8 — SRP: separación en hooks, utils y componentes
 
 `ReservationsList` concentraba estado, lógica de negocio y layout. Se separa en:
@@ -318,7 +347,12 @@ La animación de fecha inválida usa dos timeouts encadenados: `isFading: false`
 
 - [x] `globals.css` — `@source` para `@hotel/ui`
 - [x] `components/ReservationsList.tsx` — 3 cards, sin badge, sin botón nueva reservación; usa hook + header component
-- [x] `components/ReservationsFilters.tsx` — `DateRangePicker` integrado, sin "Más filtros", Select API corregido; importa desde themes
+- [x] `components/ReservationsFilters.tsx` — `DateRangePicker` integrado, sin "Más filtros", Select API corregido; importa desde themes; refactorizado a orchestrator puro (SRP)
+- [x] `hooks/useReservationFilters.ts` — lógica SRP de ReservationsFilters creada
+- [x] `components/StatusPillGroup.tsx` — creado
+- [x] `components/RoomSelector.tsx` — creado
+- [x] `components/FilterResultsSummary.tsx` — creado
+- [x] `components/ClearFiltersButton.tsx` — creado
 - [x] `components/ReservationsTable.tsx` — `formatTableDate` sin año, importa desde themes
 - [x] `components/date-range.types.ts` — tipo `ActiveField` creado
 - [x] `components/date-range.logic.ts` — `handlePickDate` puro, retorna `ActiveField`

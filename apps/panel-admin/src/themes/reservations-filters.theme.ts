@@ -1,8 +1,11 @@
 // ─── Panel Admin – Reservations Filters Styles ───────────────────────────────
 
+import type { ReservationStatus } from "@/features/reservaciones/domain/reservation";
+
 export const FILTER_BAR_STYLES = {
   wrapper:       "",
   bar:           "flex flex-wrap items-center gap-2",
+  leftSection:   "flex flex-wrap items-center gap-2",
   spacer:        "flex-1",
   rightSection:  "flex flex-wrap items-center gap-2",
 
@@ -12,11 +15,19 @@ export const FILTER_BAR_STYLES = {
   pillStatusDot: "h-2 w-2 flex-shrink-0 rounded-full",
   pillCount:     "text-[0.8em] tabular-nums opacity-60",
 
+  selectTrigger: "min-w-48 justify-between gap-2",
   datePanel:     "flex flex-col gap-3 p-3 sm:flex-row",
 
   resultsText:   "mt-2 text-sm text-gray-500",
   resultsCount:  "font-semibold text-gray-900 tabular-nums",
 } as const;
+
+export const STATUS_DOT_COLOR: Record<ReservationStatus, string> = Object.freeze({
+  pending:   "bg-amber-400",
+  approved:  "bg-green-500",
+  cancelled: "bg-red-500",
+  completed: "bg-blue-500",
+} as const);
 
 // ─── Date Range Picker ────────────────────────────────────────────────────────
 

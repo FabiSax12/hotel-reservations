@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { ActiveField } from "./date-range.types";
-import { handlePickDate as computeNextActive } from "./date-range.logic";
+import type { ActiveField } from "../domain/date-range.types";
+import { handlePickDate as computeNextActive } from "../domain/date-range.logic";
 
 export function useDateRangePicker(
   checkIn: string,
