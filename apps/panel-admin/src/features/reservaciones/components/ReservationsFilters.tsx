@@ -4,11 +4,11 @@ import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
 import type { ReservationStatus } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
 import { useReservationFilters } from "../hooks/useReservationFilters";
-import { StatusPillGroup } from "./StatusPillGroup";
-import { RoomSelector } from "./RoomSelector";
-import { FilterResultsSummary } from "./FilterResultsSummary";
-import { ClearFiltersButton } from "./ClearFiltersButton";
-import { DateRangePicker } from "./DateRangePicker";
+import { StatusPillGroup } from "./filters/StatusPillGroup";
+import { RoomSelector } from "./filters/RoomSelector";
+import { FilterResultsSummary } from "./filters/FilterResultsSummary";
+import { ClearFiltersButton } from "./filters/ClearFiltersButton";
+import { DateRangePicker } from "./filters/DateRangePicker";
 
 interface ReservationsFiltersProps {
   filters: ReservationFilters;

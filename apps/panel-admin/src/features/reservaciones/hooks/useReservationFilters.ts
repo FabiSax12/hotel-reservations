@@ -1,8 +1,7 @@
 import type { ReservationStatus } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
 import { DEFAULT_FILTERS } from "../domain/reservation-filters";
-
-const ROOM_ALL_KEY = "__ALL__";
+import { ROOM_ALL_KEY } from "../constants/room-list";
 
 interface UseReservationFiltersReturn {
   toggleStatus: (status: ReservationStatus) => void;

@@ -4,12 +4,9 @@ import type { ReservationsTexts } from "./reservationsTexts.type";
 export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
   es: {
     PAGE: {
-      BADGE: "BOOKINGS · LIVE",
-      TITLE: "Gestión de Reservaciones",
       TITLE_PREFIX: "Gestión de",
       TITLE_ACCENT: "Reservaciones",
       DESCRIPTION: "Lista total de las reservaciones del hotel:",
-      PENDING_ALERT: "pendientes de aprobación necesitan tu atención.",
       NEW_RESERVATION: "Nueva reservación",
     },
     TABLE: {
@@ -47,30 +44,18 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     },
     FILTERS: {
       ALL: "Todo",
-      LABEL_STATUS: "Estado",
-      LABEL_ROOM: "Habitación",
-      LABEL_DATE_FROM: "Llegada",
-      LABEL_DATE_TO: "Salida",
       PLACEHOLDER_ROOM: "Todas las habitaciones",
-      DATE_LABEL: "Check-in",
-      DATE_PLACEHOLDER: "Agregar fecha",
       DATE_RANGE_PICKER_LABEL: "Fecha",
-      DATE_RANGE_PICKER_LABEL_RANGE: "Rango",
-      MORE_FILTERS: "Más filtros",
       CLEAR: "Limpiar filtros",
       RESULTS_SUFFIX: "reservaciones",
       RESULTS_OF: "de",
-      DAYS_SUFFIX: "días",
     },
   },
   en: {
     PAGE: {
-      BADGE: "BOOKINGS · LIVE",
-      TITLE: "Reservations Management",
       TITLE_PREFIX: "Reservations",
       TITLE_ACCENT: "Management",
       DESCRIPTION: "List of all hotel reservations.",
-      PENDING_ALERT: "pending approvals need your attention.",
       NEW_RESERVATION: "New reservation",
     },
     TABLE: {
@@ -108,20 +93,11 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     },
     FILTERS: {
       ALL: "All",
-      LABEL_STATUS: "Status",
-      LABEL_ROOM: "Room",
-      LABEL_DATE_FROM: "Check-in",
-      LABEL_DATE_TO: "Check-out",
       PLACEHOLDER_ROOM: "All rooms",
-      DATE_LABEL: "Check-in",
-      DATE_PLACEHOLDER: "Add date",
       DATE_RANGE_PICKER_LABEL: "Date",
-      DATE_RANGE_PICKER_LABEL_RANGE: "Range",
-      MORE_FILTERS: "More filters",
       CLEAR: "Clear filters",
       RESULTS_SUFFIX: "reservations",
       RESULTS_OF: "of",
-      DAYS_SUFFIX: "days",
     },
   },
 } as const;

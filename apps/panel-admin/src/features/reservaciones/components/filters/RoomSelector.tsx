@@ -3,9 +3,7 @@
 import { ListBox, Select } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
-import { ROOM_LIST } from "../constants/room-list";
-
-const ROOM_ALL_KEY = "__ALL__";
+import { ROOM_ALL_KEY, ROOM_LIST } from "../../constants/room-list";
 
 interface RoomSelectorProps {
   value: string;

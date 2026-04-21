@@ -1,11 +1,8 @@
 export type ReservationsTexts = {
   PAGE: {
-    BADGE: string;
-    TITLE: string;
     TITLE_PREFIX: string;
     TITLE_ACCENT: string;
     DESCRIPTION: string;
-    PENDING_ALERT: string;
     NEW_RESERVATION: string;
   };
   TABLE: {
@@ -43,19 +40,10 @@ export type ReservationsTexts = {
   };
   FILTERS: {
     ALL: string;
-    LABEL_STATUS: string;
-    LABEL_ROOM: string;
-    LABEL_DATE_FROM: string;
-    LABEL_DATE_TO: string;
     PLACEHOLDER_ROOM: string;
-    DATE_LABEL: string;
-    DATE_PLACEHOLDER: string;
     DATE_RANGE_PICKER_LABEL: string;
-    DATE_RANGE_PICKER_LABEL_RANGE: string;
-    MORE_FILTERS: string;
     CLEAR: string;
     RESULTS_SUFFIX: string;
     RESULTS_OF: string;
-    DAYS_SUFFIX: string;
   };
 };

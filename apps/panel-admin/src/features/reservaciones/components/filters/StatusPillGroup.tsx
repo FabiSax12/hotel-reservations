@@ -2,9 +2,9 @@
 
 import { useI18n } from "@/locales";
 import { FILTER_BAR_STYLES as S, STATUS_DOT_COLOR } from "@/themes/reservations-filters.theme";
-import type { ReservationStatus } from "../domain/reservation";
-import { RESERVATION_STATUSES } from "../constants/reservation-statuses";
-import { STATUS_I18N_KEY } from "../constants/status-i18n";
+import type { ReservationStatus } from "../../domain/reservation";
+import { RESERVATION_STATUSES } from "../../constants/reservation-statuses";
+import { STATUS_I18N_KEY } from "../../constants/status-i18n";
 
 interface StatusPillGroupProps {
   statuses: ReservationStatus[];

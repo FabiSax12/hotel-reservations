@@ -3,8 +3,8 @@
 import { CalendarPopover } from "@hotel/ui";
 import { useI18n } from "@/locales";
 import { DATE_RANGE_PICKER_STYLES as S } from "@/themes/reservations-filters.theme";
-import { formatPickerDate } from "../utils/format-reservation-date";
-import { useDateRangePicker } from "../hooks/useDateRangePicker";
+import { formatPickerDate } from "../../utils/format-reservation-date";
+import { useDateRangePicker } from "../../hooks/useDateRangePicker";
 
 interface DateRangePickerProps {
   checkIn: string;

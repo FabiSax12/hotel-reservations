@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/filters)",
+      "Bash(mv c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/ClearFiltersButton.tsx c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/filters/)",
+      "Bash(mv c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/FilterResultsSummary.tsx c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/filters/)",
+      "Bash(mv c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/DateRangePicker.tsx c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/filters/)",
+      "Bash(mv c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/RoomSelector.tsx c:/Users/Usuario/Documents/ProyectosTecProgra/2026Sem1/WEB/Proyecto/hotel-reservations/apps/panel-admin/src/features/reservaciones/components/filters/)"
+    ]
+  }
+}
