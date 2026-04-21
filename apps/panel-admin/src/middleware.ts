@@ -18,8 +18,9 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isLoginPage = request.nextUrl.pathname === ROUTES.ADMIN.LOGIN;
+  const isActivatePage = request.nextUrl.pathname === ROUTES.ADMIN.ACTIVATE;
 
-  if (!user && !isLoginPage) {
+  if (!user && !isLoginPage && !isActivatePage) {
     return NextResponse.redirect(new URL(ROUTES.ADMIN.LOGIN, request.url));
   }
 
