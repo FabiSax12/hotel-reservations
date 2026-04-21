@@ -1,8 +1,8 @@
 "use server";
 
 import { verifyActivationToken } from "@hotel/core/auth";
-import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
 import type { VerifyTokenState } from "@/features/auth/domain/adminActivation";
+import { ACTIVATION_ERRORS } from "@/features/auth/domain/adminActivation";
 
 export async function verifyTokenAction(
   accessToken: string,

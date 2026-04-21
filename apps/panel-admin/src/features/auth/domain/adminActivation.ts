@@ -15,15 +15,11 @@ export type VerifyTokenState =
   | { success: true; email: string }
   | { error: ActivateAdminErrorKey };
 
-export type ActivateAdminState =
-  | null
-  | { success: true }
-  | { error: ActivateAdminErrorKey };
+export type ActivateAdminState = null | { success: true } | { error: ActivateAdminErrorKey };
 
 export const isVerifySuccess = (
   state: VerifyTokenState,
 ): state is { success: true; email: string } => state !== null && "success" in state;
 
-export const isActivateSuccess = (
-  state: ActivateAdminState,
-): state is { success: true } => state !== null && "success" in state;
+export const isActivateSuccess = (state: ActivateAdminState): state is { success: true } =>
+  state !== null && "success" in state;
