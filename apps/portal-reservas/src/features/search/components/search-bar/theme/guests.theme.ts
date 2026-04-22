@@ -1,4 +1,4 @@
-// ─── @hotel/ui – Stepper & GuestsPopover Styles ──────────────────────────────
+// ─── portal-reservas – Stepper & GuestsPopover Styles (local copy) ───────
 
 export const STEPPER_STYLES = {
   row:          "flex items-center justify-between py-6 border-b border-neutral-100 last:border-0",

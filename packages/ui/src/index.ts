@@ -1,9 +1,9 @@
 /**
  * @file index.ts — Public API barrel for the @hotel/ui package.
  *
- * Re-exports everything from the search-bar feature module.
- * Consumers import from "@hotel/ui" and get `ModernSearchBar`,
- * `SearchState`, and `SearchBarProps`.
+ * NOTE: The `search-bar` feature was moved into the `portal-reservas`
+ * app because it is app-specific. This barrel is intentionally left
+ * empty so future shared components can be exported here.
  */
 
-export * from "./categories/search-bar";
+// Intentionally no exports for now.

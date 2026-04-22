@@ -11,7 +11,7 @@
  * easing (`0.22, 1, 0.36, 1`) for a smooth, cinematic feel.
  */
 
-import { ModernSearchBar } from "@hotel/ui";
+import { ModernSearchBar } from "./search-bar";
 import { UI_CONSTANTS } from "../../../shared/constants/ui";
 import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 

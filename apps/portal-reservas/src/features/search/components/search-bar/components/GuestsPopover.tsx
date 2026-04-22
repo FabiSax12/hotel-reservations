@@ -1,13 +1,5 @@
 /**
  * @file GuestsPopover.tsx — Dropdown panel for selecting guest counts.
- *
- * Renders three {@link Stepper} rows (Adults, Children, Pets) inside an
- * absolutely-positioned popover panel. The panel position shifts depending
- * on the search bar variant (hero vs compact) and whether the hero calendar
- * has already been expanded.
- *
- * Clicking inside the panel calls `e.stopPropagation()` to prevent
- * the parent section's click handler from toggling it closed.
  */
 
 "use client";
@@ -25,9 +17,7 @@ interface GuestsPopoverProps {
   setChildren: (v: number) => void;
   pets: number;
   setPets: (v: number) => void;
-  /** Visual variant governing the popover's vertical position. */
   variant?: "compact" | "hero";
-  /** Whether the hero calendar is already open (shifts the popover down). */
   hasCalendarExpanded?: boolean;
 }
 

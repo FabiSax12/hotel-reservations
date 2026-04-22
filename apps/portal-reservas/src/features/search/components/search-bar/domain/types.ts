@@ -29,9 +29,6 @@ export interface SearchState {
 }
 
 /**
- * Props accepted by the `<ModernSearchBar>` component.
- */
-/**
  * Represents a validation error surfaced when the user attempts
  * to search with incomplete or invalid data.
  */

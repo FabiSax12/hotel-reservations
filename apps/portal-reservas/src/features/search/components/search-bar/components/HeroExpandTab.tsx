@@ -1,13 +1,5 @@
 /**
  * @file HeroExpandTab.tsx — Calendar expansion trigger tab (hero mode only).
- *
- * Renders a small downward-chevron button anchored to the outer bottom edge
- * of the hero search bar. Clicking it opens the floating calendar for the
- * first time and activates the "checkIn" section.
- *
- * Once the calendar has been opened, this tab fades out and becomes
- * non-interactive (via `pointerEvents: 'none'`), because the calendar
- * can then be toggled by clicking the date fields directly.
  */
 
 "use client";
@@ -16,11 +8,8 @@ import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import type { ActiveSection } from "../domain/types";
 
 interface HeroExpandTabProps {
-  /** Whether the calendar has been opened at least once. */
   hasHeroCalendarOpened: boolean;
-  /** Currently active section (unused directly, but required for type consistency). */
   active: ActiveSection;
-  /** Callback to trigger the first calendar expansion. */
   onExpand: () => void;
 }
 

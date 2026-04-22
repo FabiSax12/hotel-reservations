@@ -7,7 +7,7 @@
  * re-triggers the results with updated filters.
  */
 
-import { ModernSearchBar } from "@hotel/ui";
+import { ModernSearchBar } from "../../search/components/search-bar";
 import type { SearchParams } from "../../search/domain/types";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 

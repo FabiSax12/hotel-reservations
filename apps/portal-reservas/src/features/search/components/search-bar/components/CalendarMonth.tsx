@@ -1,16 +1,5 @@
 /**
  * @file CalendarMonth.tsx — One month column inside the dual-month calendar.
- *
- * Receives a month offset from `today` and renders:
- *  - A navigation row with left/right chevron buttons (only the left
- *    appears on month 0, only the right on month 1).
- *  - A 7-column day-of-week header (Do–Sa, Spanish abbreviations).
- *  - A day grid with empty spacer cells for the first-day offset, then
- *    one {@link CalendarDay} per day in the month.
- *
- * Date state computation (isPast, isStart, isEnd, isSelected, etc.)
- * happens here and is passed down as boolean props to CalendarDay,
- * keeping CalendarDay purely presentational.
  */
 
 "use client";
@@ -18,41 +7,24 @@
 import { CALENDAR_STYLES as S } from "../theme/calendar.theme";
 import { CalendarDay } from "./CalendarDay";
 
-/** Day-of-week header labels in Costa Rican Spanish. */
 const DAYS_HEADER = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
-
-/** Maximum number of months the user can scroll forward. */
 const MAX_MONTHS = 24;
 
-/** Shared invalid-state shape used by the calendar family of components. */
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
 
 interface CalendarMonthProps {
-  /** 0 = left column, 1 = right column (controls which nav arrow shows). */
   monthIndexLocal: 0 | 1;
-  /** Absolute month offset from today used to compute the target month/year. */
   absoluteMonthOffset: number;
-  /** Current scroll position (used to disable the "previous" button at 0). */
   currentMonthOffset: number;
-  /** Today's date with time zeroed out (midnight local). */
   today: Date;
-  /** Timestamp of the current check-in date (0 if unset). */
   inVal: number;
-  /** Timestamp of the current check-out date (0 if unset). */
   outVal: number;
-  /** Active invalid-pick animation state, if any. */
   invalidState: CalendarInvalidState | null;
-  /** ISO string of the day currently being hovered. */
   hoveredDay: string | null;
-  /** Hero vs compact sizing. */
   isHero: boolean;
-  /** Callback when a day is picked. */
   onPickDate: (dayStr: string) => void;
-  /** Callback when a day is hovered (or null to clear). */
   onHoverDay: (dayStr: string | null) => void;
-  /** Navigate one month backward. */
   onPrev: () => void;
-  /** Navigate one month forward. */
   onNext: () => void;
 }
 
@@ -61,28 +33,22 @@ export function CalendarMonth({
   inVal, outVal, invalidState, hoveredDay, isHero,
   onPickDate, onHoverDay, onPrev, onNext,
 }: CalendarMonthProps) {
-  // Compute the actual Date for the first day of this month column
   const targetDate = new Date(today.getFullYear(), today.getMonth() + absoluteMonthOffset, 1);
   const year = targetDate.getFullYear();
   const month = targetDate.getMonth();
 
-  // Format the month name in Spanish (e.g. "octubre") then capitalize
   const monthStr = new Intl.DateTimeFormat('es-CR', { month: 'long' }).format(targetDate);
   const monthHeader = monthStr.charAt(0).toUpperCase() + monthStr.slice(1);
 
-  // Show the year suffix when it differs from today, or on January of a future year
   const showYear = year !== today.getFullYear() || (absoluteMonthOffset > 0 && month === 0);
 
-  // getDay() returns 0-6 (Sun-Sat), used for leading empty grid cells
   const firstDayOfWeek = targetDate.getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
     <div className={S.monthCol}>
-      {/* Month navigation header */}
       <div className={S.monthHeader}>
-        {/* Left chevron — only on the left column */}
         {monthIndexLocal === 0 ? (
           <button
             type="button"
@@ -98,7 +64,6 @@ export function CalendarMonth({
           {monthHeader} {showYear ? year : ""}
         </h3>
 
-        {/* Right chevron — only on the right column */}
         {monthIndexLocal === 1 ? (
           <button
             type="button"
@@ -111,23 +76,19 @@ export function CalendarMonth({
         ) : <div className="w-8"></div>}
       </div>
 
-      {/* Day-of-week header row */}
       <div className={S.daysHeader(isHero)}>
         {DAYS_HEADER.map(d => <div key={d}>{d}</div>)}
       </div>
 
-      {/* Day grid: empty spacers + CalendarDay for each day */}
       <div className={S.daysGrid(isHero)}>
         {Array.from({ length: firstDayOfWeek }).map((_, i) => (
           <div key={`empty-${i}`} />
         ))}
         {dates.map((d) => {
-          // Build ISO string "YYYY-MM-DD" for this specific day
           const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
           const currDate = new Date(year, month, d);
           const currVal = currDate.getTime();
 
-          // Compute boolean state flags for CalendarDay
           const isPast = currDate < today;
           const isStart = currVal === inVal;
           const isEnd = currVal === outVal;

@@ -1,4 +1,4 @@
-// ─── @hotel/ui – CalendarPopover Styles ──────────────────────────────────────
+// ─── portal-reservas – CalendarPopover Styles (local copy) ───────────────
 
 export const CALENDAR_STYLES = {
   wrapper: (isHero: boolean) =>

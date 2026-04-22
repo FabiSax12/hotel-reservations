@@ -1,53 +1,5 @@
 /**
  * @file ModernSearchBar.tsx — Top-level search bar orchestrator.
- *
- * This is the **only** component exported by the `@hotel/ui` package.
- * It manages all search state (destination, dates, guests) and the
- * currently active UI section, then delegates rendering to atomic
- * sub-components:
- *
- *  - {@link HeroCalendarFloat} — Floating calendar for hero mode.
- *  - {@link HeroExpandTab}     — Chevron tab to open the calendar.
- *  - {@link DestinationSection} / {@link DateSection} / {@link GuestsSection}
- *    — Individual field sections within the bar.
- *  - {@link SearchButton}      — The "Buscar" CTA.
- *  - {@link DestinationPopover} / {@link CalendarPopover}
- *    — Dropdown panels shown when the corresponding section is active.
- *
- * ## Two visual modes
- *
- *  - **`hero`**: Full-width bar on the cinematic landing page. Calendar
- *    floats above the bar. An expand-tab offers first-time calendar entry.
- *  - **`compact`**: Smaller bar pinned in the sticky header. Calendar
- *    drops below the bar as a standard popover.
- *
- * ## Date-picking algorithm (`handlePickDate`)
- *
- * The algorithm handles three scenarios:
- *
- *  1. **Both dates already set** — "Smart replace": the clicked date
- *     replaces whichever existing endpoint is closer, producing
- *     two intuitive results: clicking before the range moves check-in,
- *     clicking after moves check-out, clicking inside replaces the
- *     nearest boundary.
- *
- *  2. **One date set** — Fills the other slot, but validates direction
- *     (check-in must be ≤ check-out). Invalid picks trigger a
- *     flash-and-fade red dot animation via `triggerInvalid()`.
- *
- *  3. **No dates set** — Sets the clicked date into whichever field
- *     is currently active, then auto-advances to the next field.
- *
- * ## Validation (`validateSearch`)
- *
- * Before firing `onSearch`, the bar validates that both dates are set and
- * in the correct order. Failures surface a clear error message (see
- * `SEARCH_BAR_UI_CONSTANTS.VALIDATION`) via:
- *  - A floating error pill tooltip below the bar.
- *  - A soft red ring on the affected field section(s).
- *  - A brief CSS shake animation on the affected section(s).
- * Errors auto-dismiss after 4 s, or immediately when the user
- * activates an errored field.
  */
 
 "use client";
@@ -72,55 +24,21 @@ import { CalendarPopover } from "./CalendarPopover";
 const C = SEARCH_BAR_UI_CONSTANTS;
 
 export function ModernSearchBar({ onSearch, className = "", size = 'compact', initialState, onHeroCalendarOpen }: SearchBarProps) {
-  // ─── State ──────────────────────────────────────────────────────────
-  /** Which section's popover/panel is currently expanded (null = all closed). */
   const [active, setActive] = useState<ActiveSection>(null);
-  /** Tracks the last section the user explicitly activated (clicked). */
   const lastUserActivatedSection = React.useRef<ActiveSection | null>(null);
-
-  /** Tracks the flash-and-fade animation for invalid date picks. */
   const [invalidState, setInvalidState] = useState<{ dayStr: string, isFading: boolean } | null>(null);
-
-  /** True once the hero title has been dismissed (prevents re-animation). */
   const [hasHeroTitleDismissed, setHasHeroTitleDismissed] = useState(false);
-
-  /** True once the hero calendar has been opened at least once. */
   const [hasHeroCalendarOpened, setHasHeroCalendarOpened] = useState(false);
-
-  /** True during the 800ms simulated search animation. */
   const [isSearching, setIsSearching] = useState(false);
-
-  /**
-   * The current validation error, if any.
-   * `null` means the search state is valid (or has not yet been attempted).
-   */
   const [validationError, setValidationError] = useState<ValidationError | null>(null);
-
-  /**
-   * When true, the shake animation class is applied to errored sections.
-   * Reset to false after 400 ms so the animation can replay on repeated
-   * failed attempts.
-   */
   const [isShaking, setIsShaking] = useState(false);
 
-  /**
-   * Refs for the invalid-state timeout IDs. Using refs prevents stale
-   * closures and allows cleanup when rapid invalid picks overlap.
-   */
   const timeout1Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const timeout2Ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /** Ref for the validation-error auto-dismiss timeout. */
   const errorDismissRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /** Ref for the shake-animation reset timeout. */
   const shakeResetRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  /** Ref for outside-click detection. */
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  // ─── Field State ────────────────────────────────────────────────────
-  // Determine if only one sede is available
   const onlyOneSede = REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
   const [destination, setDestination] = useState(() => {
     if (initialState?.destination && initialState?.destination !== 'Todos') return initialState.destination;
@@ -134,16 +52,8 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
   const [pets, setPets] = useState(initialState?.pets || 0);
 
   const isHero = size === 'hero';
-  /** Sizing tokens (padding, label/value text sizes, button sizes) for the current variant. */
   const sizing = S.sizing[size];
 
-  // ─── Side Effects ───────────────────────────────────────────────────
-
-  /**
-   * Hero-mode title & calendar effects:
-   *  - Dismiss the title on first section activation.
-   *  - Expand the floating calendar on first date-section activation.
-   */
   useEffect(() => {
     if (size === 'hero' && active && !hasHeroTitleDismissed) setHasHeroTitleDismissed(true);
     if (size === 'hero' && (active === 'checkIn' || active === 'checkOut') && !hasHeroCalendarOpened) {
@@ -152,14 +62,12 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     }
   }, [active, size, hasHeroCalendarOpened, hasHeroTitleDismissed, onHeroCalendarOpen]);
 
-  /** Close all sections when the user presses Escape. */
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") setActive(null); };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
 
-  /** Close all sections when the user clicks outside the search bar container. */
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) setActive(null);
@@ -168,7 +76,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     return () => window.removeEventListener("mousedown", handleOutsideClick);
   }, [active]);
 
-  /** Cleanup all pending timeouts on unmount. */
   useEffect(() => {
     return () => {
       if (timeout1Ref.current) clearTimeout(timeout1Ref.current);
@@ -178,58 +85,26 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     };
   }, []);
 
-  // ─── Validation Error Helpers ────────────────────────────────────────
-
-  /**
-   * Shows a validation error pill and highlights the affected field(s).
-   * Auto-dismisses after 4 s. Plays a shake animation that resets after
-   * 400 ms so it can replay on repeated failed attempts.
-   */
   const showError = useCallback((error: ValidationError) => {
-    // Clear any existing dismiss timer before starting a new one
     if (errorDismissRef.current) clearTimeout(errorDismissRef.current);
     if (shakeResetRef.current) clearTimeout(shakeResetRef.current);
 
     setValidationError(error);
     setIsShaking(true);
 
-    // Reset shake class so it can replay if the user clicks again
     shakeResetRef.current = setTimeout(() => setIsShaking(false), 400);
-
-    // Auto-dismiss the error tooltip after 4 s
     errorDismissRef.current = setTimeout(() => setValidationError(null), 4000);
   }, []);
 
-  /**
-   * Clears the validation error immediately.
-   * Called when the user activates a field that was previously in error.
-   */
   const clearError = useCallback(() => {
     if (errorDismissRef.current) clearTimeout(errorDismissRef.current);
     setValidationError(null);
   }, []);
 
-  // ─── Validation Logic ────────────────────────────────────────────────
-
-  /**
-   * Validates the current search state before firing `onSearch`.
-   *
-   * Priority order:
-   *  1. Both dates missing → guides the user to pick dates.
-   *  2. Only check-in missing.
-   *  3. Only check-out missing.
-   *  4. Invalid date range (check-in ≥ check-out).
-   *
-   * Destination is NOT validated here — it silently defaults to "Todos",
-   * which is a valid and meaningful search state (show all rooms).
-   *
-   * @returns `true` if valid, `false` if an error was surfaced.
-   */
   const validateSearch = useCallback((): boolean => {
     const missingIn  = !checkIn;
     const missingOut = !checkOut;
 
-    // If more than one sede, require selection
     if (!onlyOneSede && (!destination || !REGIONS_CONFIG.some(r => r.name === destination))) {
       showError({
         message: C.VALIDATION.MISSING_SEDE,
@@ -239,48 +114,21 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     }
 
     if (missingIn && missingOut) {
-      showError({
-        message: C.VALIDATION.MISSING_BOTH_DATES,
-        fields: ["checkIn", "checkOut"],
-      });
+      showError({ message: C.VALIDATION.MISSING_BOTH_DATES, fields: ["checkIn", "checkOut"] });
       return false;
     }
 
-    if (missingIn) {
-      showError({
-        message: C.VALIDATION.MISSING_CHECK_IN,
-        fields: ["checkIn"],
-      });
-      return false;
-    }
+    if (missingIn) { showError({ message: C.VALIDATION.MISSING_CHECK_IN, fields: ["checkIn"] }); return false; }
+    if (missingOut) { showError({ message: C.VALIDATION.MISSING_CHECK_OUT, fields: ["checkOut"] }); return false; }
 
-    if (missingOut) {
-      showError({
-        message: C.VALIDATION.MISSING_CHECK_OUT,
-        fields: ["checkOut"],
-      });
-      return false;
-    }
-
-    // Defensive range check — the calendar picker mostly prevents this,
-    // but initialState could theoretically supply an inverted range.
     if (parseDateHelper(checkIn) >= parseDateHelper(checkOut)) {
-      showError({
-        message: C.VALIDATION.INVALID_DATE_RANGE,
-        fields: ["checkIn", "checkOut"],
-      });
+      showError({ message: C.VALIDATION.INVALID_DATE_RANGE, fields: ["checkIn", "checkOut"] });
       return false;
     }
 
     return true;
   }, [checkIn, checkOut, showError, destination, onlyOneSede]);
 
-  // ─── Display Helpers ────────────────────────────────────────────────
-
-  /**
-   * Formats an ISO date string (e.g. "2026-10-15") into a short
-   * locale-friendly display string (e.g. "15 oct").
-   */
   const formatUIText = (isoStr: string) => {
     if (!isoStr) return "";
     const [y, m, d] = isoStr.split('-');
@@ -288,11 +136,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     return new Intl.DateTimeFormat('es-CR', { day: 'numeric', month: 'short' }).format(dt).replace('.', '');
   };
 
-  /**
-   * Builds the summary string for the guests field.
-   * Uses abbreviated labels when multiple guest types are active
-   * to prevent text overflow in the compact bar.
-   */
   const formatGuests = () => {
     let text = `${adults} ${adults === 1 ? C.GUESTS.SINGLE_ADULT : C.GUESTS.PLURAL_ADULTS}`;
     if (children > 0 && pets > 0) {
@@ -305,27 +148,17 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     return text;
   };
 
-  // ─── Date Picker Logic ──────────────────────────────────────────────
-
-  /**
-   * Core date-pick handler. See the file-level JSDoc for the full
-   * three-scenario algorithm description.
-   */
   const handlePickDate = (dayStr: string) => {
     let workingActive = active;
-    // Only treat as explicit focus if the user actually clicked the section (not auto-advance)
     const explicitFocus = (workingActive === "checkIn" || workingActive === "checkOut") && lastUserActivatedSection.current === workingActive;
-    // Always clear explicit focus at the start of a pick so it only applies to the very next pick
     lastUserActivatedSection.current = null;
     let autoAdvanced = false;
     if (!explicitFocus) {
       workingActive = !checkIn ? "checkIn" : "checkOut";
       setActive(workingActive);
       autoAdvanced = true;
-      // Do not update lastUserActivatedSection here, since it's not a user click
     }
 
-    // Toggle off: clicking the already-selected date clears it
     if (dayStr === checkIn) { setCheckIn(""); setActive("checkIn"); return; }
     if (dayStr === checkOut) { setCheckOut(""); setActive(!checkIn ? "checkIn" : "checkOut"); return; }
 
@@ -333,130 +166,61 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     const inVal = parseDateHelper(checkIn);
     const outVal = parseDateHelper(checkOut);
 
-    // --- Both dates set ---
     if (checkIn && checkOut) {
-      // Case B: If user explicitly focused a field, always set that field
       if (explicitFocus) {
         if (workingActive === "checkIn") {
-          // If salida is before new llegada, swap
-          if (checkOut && clickedVal > outVal) {
-            setCheckIn(checkOut);
-            setCheckOut(dayStr);
-          } else {
-            setCheckIn(dayStr);
-          }
+          if (checkOut && clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); }
+          else { setCheckIn(dayStr); }
         } else if (workingActive === "checkOut") {
-          // If llegada is after new salida, swap
-          if (checkIn && clickedVal < inVal) {
-            setCheckOut(checkIn);
-            setCheckIn(dayStr);
-          } else {
-            setCheckOut(dayStr);
-          }
+          if (checkIn && clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); }
+          else { setCheckOut(dayStr); }
         }
         return;
       }
-      // Case A: move nearest endpoint (llegada or salida)
       const distToIn = Math.abs(clickedVal - inVal);
       const distToOut = Math.abs(clickedVal - outVal);
       if (distToIn <= distToOut) {
-        // Move llegada
-        if (clickedVal > outVal) {
-          setCheckIn(checkOut);
-          setCheckOut(dayStr);
-        } else {
-          setCheckIn(dayStr);
-        }
+        if (clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); } else { setCheckIn(dayStr); }
       } else {
-        // Move salida
-        if (clickedVal < inVal) {
-          setCheckOut(checkIn);
-          setCheckIn(dayStr);
-        } else {
-          setCheckOut(dayStr);
-        }
+        if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
       }
       return;
     }
 
-    // --- Only one date set ---
-    // If user explicitly focused a field, always set that field, and swap if needed
     if (explicitFocus) {
       if (workingActive === "checkIn" && checkOut) {
-        if (clickedVal > outVal) {
-          // User picked llegada after salida: swap
-          setCheckIn(checkOut);
-          setCheckOut(dayStr);
-        } else {
-          setCheckIn(dayStr);
-        }
+        if (clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); } else { setCheckIn(dayStr); }
         setActive("checkOut");
         return;
       }
       if (workingActive === "checkOut" && checkIn) {
-        if (clickedVal < inVal) {
-          // User picked salida before llegada: swap
-          setCheckOut(checkIn);
-          setCheckIn(dayStr);
-        } else {
-          setCheckOut(dayStr);
-        }
+        if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
         setActive(!checkIn ? "checkIn" : "checkOut");
         return;
       }
     }
 
-    // Case A: auto-advance from llegada to salida, always set salida
     if (autoAdvanced && workingActive === "checkOut" && checkIn) {
-      if (clickedVal < inVal) {
-        // User picked salida before llegada: swap
-        setCheckOut(checkIn);
-        setCheckIn(dayStr);
-      } else {
-        setCheckOut(dayStr);
-      }
+      if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
       setActive(!checkIn ? "checkIn" : "checkOut");
       return;
     }
 
-    // Previous logic: auto-advance, but swap if inverted
     if (workingActive === "checkIn" && checkOut) {
-      if (clickedVal > outVal) {
-        // Instead of error, swap
-        setCheckIn(checkOut);
-        setCheckOut(dayStr);
-      } else {
-        setCheckIn(dayStr);
-      }
+      if (clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); } else { setCheckIn(dayStr); }
       setActive("checkOut");
       return;
     }
     if (workingActive === "checkOut" && checkIn) {
-      if (clickedVal < inVal) {
-        // Instead of error, swap
-        setCheckOut(checkIn);
-        setCheckIn(dayStr);
-      } else {
-        setCheckOut(dayStr);
-      }
+      if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
       setActive(!checkIn ? "checkIn" : "checkOut");
       return;
     }
 
-    // Scenario 3: Set the date and auto-advance to the next field
     if (workingActive === "checkIn") { setCheckIn(dayStr); setActive("checkOut"); }
     else if (workingActive === "checkOut") { setCheckOut(dayStr); setActive(!checkIn ? "checkIn" : "checkOut"); }
   };
 
-  // ─── Search Trigger ─────────────────────────────────────────────────
-
-  /**
-   * Validates the search state, then — if valid — simulates a search
-   * with an 800 ms loading animation before firing `onSearch`.
-   *
-   * If validation fails, the appropriate error is shown (error pill +
-   * field highlights + shake) and the search is aborted.
-   */
   const handleSearchTrigger = () => {
     if (!validateSearch()) return;
 
@@ -469,49 +233,23 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
     }, 800);
   };
 
-  // ─── Section Activation (with error-clear) ───────────────────────────
-
-  /**
-   * Activates a section and clears any existing validation error on that
-   * field, so the user gets immediate positive feedback when they act on
-   * the error guidance.
-   */
   const activateSection = useCallback((section: ActiveSection) => {
     if (validationError?.fields.includes(section)) clearError();
     setActive(section);
     lastUserActivatedSection.current = section;
   }, [validationError, clearError]);
 
-  // ─── Section Class Helper ───────────────────────────────────────────
-
-  /**
-   * Builds the full CSS class string for a bar section, combining:
-   *  - Base layout classes
-   *  - Variant-specific padding
-   *  - Section-specific width classes
-   *  - Active/inactive visual state
-   *  - Faded state (date sections dim when a non-date popover is open
-   *    and the hero calendar is already visible)
-   */
   const sectionClass = (key: ActiveSection, extra: string) => [
     S.sectionBase, sizing.padding, extra,
     active === key ? S.sectionActive : S.sectionInactive,
     ((active === "where" || active === "who") && hasHeroCalendarOpened && (key === "checkIn" || key === "checkOut")) ? S.sectionFaded : "",
   ].filter(Boolean).join(" ");
 
-  /**
-   * Returns true if the given section key is one of the fields
-   * highlighted by the current validation error.
-   */
   const fieldHasError = (key: ActiveSection): boolean =>
     validationError?.fields.includes(key) ?? false;
 
-  // ─── Render ─────────────────────────────────────────────────────────
-
   return (
     <div ref={containerRef} className={`${S.container} ${className}`}>
-
-      {/* Hero-only: floating calendar above the bar */}
       {isHero && (
         <HeroCalendarFloat
           active={active}
@@ -524,8 +262,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
       )}
 
       <div className={S.bar(isHero)}>
-
-        {/* Hero-only: chevron tab to open the calendar for the first time */}
         {isHero && (
           <HeroExpandTab
             hasHeroCalendarOpened={hasHeroCalendarOpened}
@@ -537,8 +273,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
             }}
           />
         )}
-
-        {/* ── Bar sections: Destination → Dates → Guests ── */}
 
         <DestinationSection
           isActive={active === "where"}
@@ -599,9 +333,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           isShaking={isShaking && validationError !== null}
         />
 
-        {/* ── Conditional popovers ── */}
-
-        {/* Destination popover (absolute-positioned inside the bar) */}
         {active === "where" && (
           <DestinationPopover
             variant={size}
@@ -611,7 +342,6 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           />
         )}
 
-        {/* Compact-mode calendar (hero uses HeroCalendarFloat instead) */}
         {(active === "checkIn" || active === "checkOut") && !isHero && (
           <CalendarPopover
             activeMode={active}
@@ -622,11 +352,9 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
           />
         )}
 
-        {/* ── Validation error tooltip ── */}
         {validationError && (
           <div className={S.errorTooltipWrapper}>
             <div className={S.errorTooltipPill}>
-              {/* Warning icon */}
               <svg className={S.errorTooltipIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round"
                   d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
