@@ -4,7 +4,7 @@
 
 "use client";
 
-import { Stepper } from "./Stepper";
+import { Stepper } from "@hotel/ui";
 import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { GUESTS_POPOVER_STYLES as S } from "../theme/guests.theme";
 
