@@ -14,8 +14,16 @@ export type AppTranslations = {
 };
 
 export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
-  [LOCALES.ES]: { COMMON: COMMON_TEXTS.es, AUTH: AUTH_TEXTS.es, RESERVATIONS: RESERVATIONS_TEXTS.es },
-  [LOCALES.EN]: { COMMON: COMMON_TEXTS.en, AUTH: AUTH_TEXTS.en, RESERVATIONS: RESERVATIONS_TEXTS.en },
+  [LOCALES.ES]: {
+    COMMON: COMMON_TEXTS.es,
+    AUTH: AUTH_TEXTS.es,
+    RESERVATIONS: RESERVATIONS_TEXTS.es,
+  },
+  [LOCALES.EN]: {
+    COMMON: COMMON_TEXTS.en,
+    AUTH: AUTH_TEXTS.en,
+    RESERVATIONS: RESERVATIONS_TEXTS.en,
+  },
 };
 
 export const defaultLocale = LOCALES.ES;

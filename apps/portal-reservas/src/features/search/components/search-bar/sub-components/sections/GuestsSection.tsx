@@ -27,22 +27,34 @@ interface GuestsSectionProps {
 }
 
 export function GuestsSection({
-  isActive, guestsText, sizing, sectionClass, size,
-  hasCalendarExpanded, adults, setAdults, children, setChildren, pets, setPets, onActivate
+  isActive,
+  guestsText,
+  sizing,
+  sectionClass,
+  size,
+  hasCalendarExpanded,
+  adults,
+  setAdults,
+  children,
+  setChildren,
+  pets,
+  setPets,
+  onActivate,
 }: GuestsSectionProps) {
   return (
     <div onClick={onActivate} className={sectionClass}>
       <div className={`${sizing.label} ${S.fieldLabel}`}>{C.LABEL}</div>
-      <div className={`${S.fieldValueGuests} ${sizing.value}`}>
-        {guestsText}
-      </div>
+      <div className={`${S.fieldValueGuests} ${sizing.value}`}>{guestsText}</div>
       {isActive && (
         <GuestsPopover
           variant={size}
           hasCalendarExpanded={hasCalendarExpanded}
-          adults={adults} setAdults={setAdults}
-          children={children} setChildren={setChildren}
-          pets={pets} setPets={setPets}
+          adults={adults}
+          setAdults={setAdults}
+          children={children}
+          setChildren={setChildren}
+          pets={pets}
+          setPets={setPets}
         />
       )}
     </div>

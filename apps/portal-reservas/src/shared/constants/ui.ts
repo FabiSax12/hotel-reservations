@@ -37,5 +37,5 @@ export const UI_CONSTANTS = {
     CURRENCY: "USD",
     AVAILABLE_DATES: "disponibles para sus fechas",
     SELECT_ACTION: "Seleccionar y Continuar",
-  }
+  },
 } as const;

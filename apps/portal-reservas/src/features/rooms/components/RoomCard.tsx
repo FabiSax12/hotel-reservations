@@ -10,11 +10,11 @@
  * "scarce" when inventory ≤ 2, which triggers a red urgency badge.
  */
 
-import type { Room } from '../domain/types';
-import { UI_CONSTANTS } from '../../../shared/constants/ui';
-import { ROOM_CARD_STYLES as S } from '../../../theme/rooms.theme';
-import { RoomImagePanel } from './RoomImagePanel';
-import { RoomPriceTier } from './RoomPriceTier';
+import type { Room } from "../domain/types";
+import { UI_CONSTANTS } from "../../../shared/constants/ui";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { RoomImagePanel } from "./RoomImagePanel";
+import { RoomPriceTier } from "./RoomPriceTier";
 
 interface RoomCardProps {
   /** Room data to render. */
@@ -32,16 +32,15 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   return (
     <div
       className={S.card}
-      style={{ animationDelay: `${index * 150}ms`, animationDuration: '600ms' }}
+      style={{ animationDelay: `${index * 150}ms`, animationDuration: "600ms" }}
     >
       <RoomImagePanel image={room.image} inventory={room.inventory} isScarce={isScarce} />
 
       <div className={S.body}>
-
         <div className={S.bodyHeader}>
           <div>
             {/* Show the location label when browsing "all destinations" */}
-            {(!selectedDest || selectedDest === 'Todos') && (
+            {(!selectedDest || selectedDest === "Todos") && (
               <p className={S.locationLabel}>{room.location}</p>
             )}
             <h3 className={S.title}>{room.title}</h3>
@@ -55,7 +54,12 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
           </span>
           <span className={S.sqftLabel}>
             <svg className={S.sqftIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+              />
             </svg>
             {room.sqft} {UI_CONSTANTS.ROOMS.SQFT_LABEL}
           </span>
@@ -64,7 +68,6 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
         <p className={S.description}>{room.description}</p>
 
         <RoomPriceTier price={room.price} inventory={room.inventory} isScarce={isScarce} />
-
       </div>
     </div>
   );

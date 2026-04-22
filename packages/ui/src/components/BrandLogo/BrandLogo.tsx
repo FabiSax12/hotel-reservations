@@ -14,12 +14,12 @@ interface BrandLogoProps {
   highlightClassName?: string;
 }
 
-export function BrandLogo({ 
-  name, 
-  highlight, 
-  onClick, 
+export function BrandLogo({
+  name,
+  highlight,
+  onClick,
   className = S.root,
-  highlightClassName = S.highlight
+  highlightClassName = S.highlight,
 }: BrandLogoProps) {
   return (
     <div className={className} onClick={onClick}>

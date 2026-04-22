@@ -42,12 +42,12 @@ export default function HomePage() {
 
   /** The current search parameters, shared between the hero and compact bars. */
   const [searchParams, setSearchParams] = useState<SearchParams>({
-    destination: 'Todos',
-    checkIn: '15 Oct',
-    checkOut: '21 Oct',
+    destination: "Todos",
+    checkIn: "15 Oct",
+    checkOut: "21 Oct",
     adults: 2,
     children: 0,
-    pets: 0
+    pets: 0,
   });
 
   /**
@@ -57,7 +57,7 @@ export default function HomePage() {
   const handleSearchTrigger = (params: any) => {
     setSearchParams(params);
     setHasSearched(true);
-    setSearchKey(prev => prev + 1);
+    setSearchKey((prev) => prev + 1);
   };
 
   /** Resets the page back to State A (hero search). */
@@ -71,10 +71,9 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen relative overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50">
-      
       <Background />
-      
-      <Header 
+
+      <Header
         hasSearched={hasSearched}
         searchParams={searchParams}
         onReset={handleReset}
@@ -83,7 +82,7 @@ export default function HomePage() {
 
       {/* State A: Full-screen hero with cinematic search */}
       {!hasSearched && (
-        <HeroSearch 
+        <HeroSearch
           onSearch={handleSearchTrigger}
           heroCalendarActive={heroCalendarActive}
           setHeroCalendarActive={setHeroCalendarActive}
@@ -92,13 +91,8 @@ export default function HomePage() {
 
       {/* State B: Scrollable room results */}
       {hasSearched && (
-        <RoomList 
-          rooms={filteredRooms}
-          selectedDest={selectedDest}
-          searchKey={searchKey}
-        />
+        <RoomList rooms={filteredRooms} selectedDest={selectedDest} searchKey={searchKey} />
       )}
-
     </main>
   );
 }

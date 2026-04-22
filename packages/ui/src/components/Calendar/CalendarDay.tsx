@@ -32,10 +32,22 @@ interface CalendarDayProps {
 }
 
 export function CalendarDay({
-  d, dayStr, isPast, isStart, isEnd, isSelected, isToday,
-  isHovered, isInvalid, isFading, isHero,
-  inVal, outVal,
-  onPickDate, onMouseEnter, onMouseLeave,
+  d,
+  dayStr,
+  isPast,
+  isStart,
+  isEnd,
+  isSelected,
+  isToday,
+  isHovered,
+  isInvalid,
+  isFading,
+  isHero,
+  inVal,
+  outVal,
+  onPickDate,
+  onMouseEnter,
+  onMouseLeave,
   startLabel = L.CHECK_IN,
   endLabel = L.CHECK_OUT,
 }: CalendarDayProps) {
@@ -43,7 +55,10 @@ export function CalendarDay({
     <button
       key={d}
       disabled={isPast}
-      onClick={(e) => { e.stopPropagation(); onPickDate(dayStr); }}
+      onClick={(e) => {
+        e.stopPropagation();
+        onPickDate(dayStr);
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={S.dayBtn(isHero, isPast, isStart, isEnd, isSelected, isToday, isHovered)}
@@ -53,17 +68,13 @@ export function CalendarDay({
       {isEnd && inVal > 0 && outVal !== inVal && <div className={S.rangeHighlightEnd}></div>}
       {isSelected && !isStart && !isEnd && <div className={S.rangeHighlightMid}></div>}
 
-      {!isSelected && !isStart && !isEnd && !isPast && (
-        <div className={S.hoverRing}></div>
-      )}
+      {!isSelected && !isStart && !isEnd && !isPast && <div className={S.hoverRing}></div>}
 
       {isStart && <div className={S.selectedStart}></div>}
       {isEnd && !isStart && <div className={S.selectedEnd}></div>}
       {isStart && isEnd && <div className={S.selectedStart}></div>}
 
-      {isInvalid && (
-        <div className={S.invalidDot(isFading)}></div>
-      )}
+      {isInvalid && <div className={S.invalidDot(isFading)}></div>}
 
       {isStart && isHovered && !isInvalid && (
         <div className={S.tooltip(isHero)}>

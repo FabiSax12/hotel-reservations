@@ -8,7 +8,7 @@ export const SEARCH_BAR_UI_CONSTANTS = {
     PLACEHOLDER: "¿A cuál vas?",
     POPOVER_TITLE: "Nuestras Sedes",
     FROM: "Desde",
-    USD_NIGHT: "USD/noche"
+    USD_NIGHT: "USD/noche",
   },
   DATES: {
     CHECK_IN_LABEL: "Llegada",
@@ -34,7 +34,7 @@ export const SEARCH_BAR_UI_CONSTANTS = {
     SHORT_PET_1: "Mas.",
   },
   ACTION: {
-    SEARCH_BTN: "Buscar"
+    SEARCH_BTN: "Buscar",
   },
   VALIDATION: {
     MISSING_CHECK_IN: "Selecciona una fecha de llegada",
@@ -42,5 +42,5 @@ export const SEARCH_BAR_UI_CONSTANTS = {
     MISSING_BOTH_DATES: "Selecciona las fechas de tu estadía",
     INVALID_DATE_RANGE: "La llegada debe ser antes de la salida",
     MISSING_SEDE: "Selecciona una sede para buscar",
-  }
+  },
 } as const;

@@ -20,8 +20,13 @@ interface DestinationSectionProps {
 }
 
 export function DestinationSection({
-  isActive, destination, sizing, sectionClass, onActivate,
-  hasError = false, isShaking = false,
+  isActive,
+  destination,
+  sizing,
+  sectionClass,
+  onActivate,
+  hasError = false,
+  isShaking = false,
 }: DestinationSectionProps) {
   const errorClass = hasError ? S.sectionError : "";
   const shakeClass = isShaking ? S.sectionShake : "";

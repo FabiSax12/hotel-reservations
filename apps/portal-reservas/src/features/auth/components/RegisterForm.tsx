@@ -29,12 +29,16 @@ export const RegisterForm = () => {
           <TextField name="fullName" autoComplete="name" isInvalid={!!fullNameError} fullWidth>
             <Label>{t.AUTH.REGISTER.FULL_NAME_LABEL}</Label>
             <Input placeholder={t.AUTH.REGISTER.FULL_NAME_PLACEHOLDER} />
-            {fullNameError && (
-              <FieldError>{t.AUTH.VALIDATION[fullNameError]}</FieldError>
-            )}
+            {fullNameError && <FieldError>{t.AUTH.VALIDATION[fullNameError]}</FieldError>}
           </TextField>
 
-          <TextField name="email" type="email" autoComplete="email" isInvalid={!!emailError} fullWidth>
+          <TextField
+            name="email"
+            type="email"
+            autoComplete="email"
+            isInvalid={!!emailError}
+            fullWidth
+          >
             <Label>{t.AUTH.REGISTER.EMAIL_LABEL}</Label>
             <Input placeholder={t.AUTH.REGISTER.EMAIL_PLACEHOLDER} />
             {emailError && <FieldError>{t.AUTH.VALIDATION[emailError]}</FieldError>}
@@ -54,7 +58,9 @@ export const RegisterForm = () => {
                 isIconOnly
                 variant="ghost"
                 size="sm"
-                aria-label={showPassword ? t.AUTH.REGISTER.HIDE_PASSWORD : t.AUTH.REGISTER.SHOW_PASSWORD}
+                aria-label={
+                  showPassword ? t.AUTH.REGISTER.HIDE_PASSWORD : t.AUTH.REGISTER.SHOW_PASSWORD
+                }
                 onPress={handleTogglePassword}
                 className="absolute inset-y-0 right-0 h-full"
               >

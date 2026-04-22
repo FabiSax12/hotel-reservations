@@ -41,44 +41,54 @@ export function useSearchValidation() {
     errorDismissRef.current = setTimeout(() => setValidationError(null), TIMEOUTS.ERROR_DISMISS);
   }, []);
 
-  const validateSearch = useCallback((
-    destination: string, 
-    checkIn: string, 
-    checkOut: string, 
-    onlyOneSede: string | null
-  ): boolean => {
-    const missingIn = !checkIn;
-    const missingOut = !checkOut;
+  const validateSearch = useCallback(
+    (
+      destination: string,
+      checkIn: string,
+      checkOut: string,
+      onlyOneSede: string | null,
+    ): boolean => {
+      const missingIn = !checkIn;
+      const missingOut = !checkOut;
 
-    // 1. Destination validation
-    if (!onlyOneSede && (!destination || !REGIONS_CONFIG.some(r => r.name === destination))) {
-      showError({
-        message: C.VALIDATION.MISSING_SEDE,
-        fields: ["where"],
-      });
-      return false;
-    }
+      // 1. Destination validation
+      if (!onlyOneSede && (!destination || !REGIONS_CONFIG.some((r) => r.name === destination))) {
+        showError({
+          message: C.VALIDATION.MISSING_SEDE,
+          fields: ["where"],
+        });
+        return false;
+      }
 
-    // 2. Dates presence validation
-    if (missingIn && missingOut) {
-      showError({ message: C.VALIDATION.MISSING_BOTH_DATES, fields: ["checkIn", "checkOut"] });
-      return false;
-    }
-    if (missingIn) { showError({ message: C.VALIDATION.MISSING_CHECK_IN, fields: ["checkIn"] }); return false; }
-    if (missingOut) { showError({ message: C.VALIDATION.MISSING_CHECK_OUT, fields: ["checkOut"] }); return false; }
+      // 2. Dates presence validation
+      if (missingIn && missingOut) {
+        showError({ message: C.VALIDATION.MISSING_BOTH_DATES, fields: ["checkIn", "checkOut"] });
+        return false;
+      }
+      if (missingIn) {
+        showError({ message: C.VALIDATION.MISSING_CHECK_IN, fields: ["checkIn"] });
+        return false;
+      }
+      if (missingOut) {
+        showError({ message: C.VALIDATION.MISSING_CHECK_OUT, fields: ["checkOut"] });
+        return false;
+      }
 
-    // 3. Date range logic validation
-    if (parseDateHelper(checkIn) >= parseDateHelper(checkOut)) {
-      showError({ message: C.VALIDATION.INVALID_DATE_RANGE, fields: ["checkIn", "checkOut"] });
-      return false;
-    }
+      // 3. Date range logic validation
+      if (parseDateHelper(checkIn) >= parseDateHelper(checkOut)) {
+        showError({ message: C.VALIDATION.INVALID_DATE_RANGE, fields: ["checkIn", "checkOut"] });
+        return false;
+      }
 
-    return true;
-  }, [showError]);
+      return true;
+    },
+    [showError],
+  );
 
-  const fieldHasError = useCallback((key: string): boolean =>
-    validationError?.fields.includes(key as any) ?? false,
-  [validationError]);
+  const fieldHasError = useCallback(
+    (key: string): boolean => validationError?.fields.includes(key as any) ?? false,
+    [validationError],
+  );
 
   return {
     validationError,
@@ -86,6 +96,6 @@ export function useSearchValidation() {
     showError,
     clearError,
     validateSearch,
-    fieldHasError
+    fieldHasError,
   };
 }

@@ -18,7 +18,7 @@ const C = SEARCH_BAR_UI_CONSTANTS;
 
 interface SearchBarBarProps {
   isHero: boolean;
-  size: 'hero' | 'compact';
+  size: "hero" | "compact";
   active: any;
   setActive: (s: any) => void;
   activateSection: (s: any, cb?: any) => void;
@@ -46,13 +46,33 @@ interface SearchBarBarProps {
 }
 
 export function SearchBarBar(props: SearchBarBarProps) {
-  const { 
-    isHero, size, active, setActive, activateSection, 
-    hasHeroCalendarOpened, setHasHeroCalendarOpened, onHeroCalendarOpen,
-    destination, setDestination, checkIn, checkOut,
-    adults, setAdults, children, setChildren, pets, setPets,
-    isSearching, handleSearchTrigger, fieldHasError, isShaking,
-    validationError, clearError, handlePickDate, invalidState
+  const {
+    isHero,
+    size,
+    active,
+    setActive,
+    activateSection,
+    hasHeroCalendarOpened,
+    setHasHeroCalendarOpened,
+    onHeroCalendarOpen,
+    destination,
+    setDestination,
+    checkIn,
+    checkOut,
+    adults,
+    setAdults,
+    children,
+    setChildren,
+    pets,
+    setPets,
+    isSearching,
+    handleSearchTrigger,
+    fieldHasError,
+    isShaking,
+    validationError,
+    clearError,
+    handlePickDate,
+    invalidState,
   } = props;
 
   return (
@@ -72,21 +92,35 @@ export function SearchBarBar(props: SearchBarBarProps) {
       )}
 
       <SearchBarFields
-        size={size} active={active} hasHeroCalendarOpened={hasHeroCalendarOpened}
-        destination={destination} checkIn={checkIn} checkOut={checkOut}
-        adults={adults} children={children} pets={pets}
-        isSearching={isSearching} handleSearchTrigger={handleSearchTrigger}
-        fieldHasError={fieldHasError} isShaking={isShaking}
-        validationError={validationError} activateSection={activateSection}
-        clearError={clearError} setAdults={setAdults}
-        setChildren={setChildren} setPets={setPets}
+        size={size}
+        active={active}
+        hasHeroCalendarOpened={hasHeroCalendarOpened}
+        destination={destination}
+        checkIn={checkIn}
+        checkOut={checkOut}
+        adults={adults}
+        children={children}
+        pets={pets}
+        isSearching={isSearching}
+        handleSearchTrigger={handleSearchTrigger}
+        fieldHasError={fieldHasError}
+        isShaking={isShaking}
+        validationError={validationError}
+        activateSection={activateSection}
+        clearError={clearError}
+        setAdults={setAdults}
+        setChildren={setChildren}
+        setPets={setPets}
       />
 
       {active === SEARCH_SECTIONS.WHERE && (
         <DestinationPopover
           variant={size}
           hasCalendarExpanded={hasHeroCalendarOpened}
-          onSelect={(v) => { setDestination(v); activateSection(SEARCH_SECTIONS.CHECK_IN, clearError); }}
+          onSelect={(v) => {
+            setDestination(v);
+            activateSection(SEARCH_SECTIONS.CHECK_IN, clearError);
+          }}
           currentSelection={destination}
         />
       )}

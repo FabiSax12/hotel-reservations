@@ -16,10 +16,10 @@ interface HeaderBrandProps {
 
 export function HeaderBrand({ onReset }: HeaderBrandProps) {
   return (
-    <BrandLogo 
-      name={UI_CONSTANTS.HEADER.BRAND} 
-      highlight={UI_CONSTANTS.HEADER.BRAND_HIGHLIGHT} 
-      onClick={onReset} 
+    <BrandLogo
+      name={UI_CONSTANTS.HEADER.BRAND}
+      highlight={UI_CONSTANTS.HEADER.BRAND_HIGHLIGHT}
+      onClick={onReset}
     />
   );
 }

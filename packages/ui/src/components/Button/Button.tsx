@@ -34,7 +34,7 @@ export function Button({
 }: ButtonProps) {
   const variantClass = S.variants[variant];
   const sizeClass = S.sizes[size];
-  
+
   return (
     <button
       type={type}
@@ -43,26 +43,24 @@ export function Button({
       className={`${S.base} ${variantClass} ${sizeClass} ${className}`}
     >
       {isLoading && (
-        <svg 
-          className={S.spinner} 
-          fill="none" 
-          viewBox={S.icons.spinner.viewBox}
-        >
-          <circle 
-            className="opacity-25" 
-            cx={S.icons.spinner.circle.cx} 
-            cy={S.icons.spinner.circle.cy} 
-            r={S.icons.spinner.circle.r} 
-            stroke="currentColor" 
+        <svg className={S.spinner} fill="none" viewBox={S.icons.spinner.viewBox}>
+          <circle
+            className="opacity-25"
+            cx={S.icons.spinner.circle.cx}
+            cy={S.icons.spinner.circle.cy}
+            r={S.icons.spinner.circle.r}
+            stroke="currentColor"
             strokeWidth={S.icons.spinner.circle.strokeWidth}
           />
           <path className="opacity-75" fill="currentColor" d={S.icons.spinner.path} />
         </svg>
       )}
-      
+
       {!isLoading && icon && iconPosition === "left" && <span className={S.iconLeft}>{icon}</span>}
       <span>{children}</span>
-      {!isLoading && icon && iconPosition === "right" && <span className={S.iconRight}>{icon}</span>}
+      {!isLoading && icon && iconPosition === "right" && (
+        <span className={S.iconRight}>{icon}</span>
+      )}
     </button>
   );
 }

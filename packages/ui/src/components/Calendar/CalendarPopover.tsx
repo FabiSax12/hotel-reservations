@@ -9,7 +9,10 @@ import { parseDateHelper } from "../../utils/date.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
 
-interface CalendarInvalidState { dayStr: string; isFading: boolean; }
+interface CalendarInvalidState {
+  dayStr: string;
+  isFading: boolean;
+}
 
 interface CalendarPopoverProps {
   checkIn: string;
@@ -21,9 +24,14 @@ interface CalendarPopoverProps {
   endLabel?: string;
 }
 
-export function CalendarPopover({ 
-  checkIn, checkOut, invalidState, onPickDate, variant,
-  startLabel, endLabel
+export function CalendarPopover({
+  checkIn,
+  checkOut,
+  invalidState,
+  onPickDate,
+  variant,
+  startLabel,
+  endLabel,
 }: CalendarPopoverProps) {
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
@@ -51,8 +59,8 @@ export function CalendarPopover({
           isHero={isHero}
           onPickDate={onPickDate}
           onHoverDay={setHoveredDay}
-          onPrev={() => setCurrentMonthOffset(prev => Math.max(0, prev - 1))}
-          onNext={() => setCurrentMonthOffset(prev => Math.min(22, prev + 1))}
+          onPrev={() => setCurrentMonthOffset((prev) => Math.max(0, prev - 1))}
+          onNext={() => setCurrentMonthOffset((prev) => Math.min(22, prev + 1))}
           startLabel={startLabel}
           endLabel={endLabel}
         />

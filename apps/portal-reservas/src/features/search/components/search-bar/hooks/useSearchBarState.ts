@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import type { ActiveSection } from "../domain/types";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 
-export function useSearchBarState(size: 'hero' | 'compact', onHeroCalendarOpen?: () => void) {
+export function useSearchBarState(size: "hero" | "compact", onHeroCalendarOpen?: () => void) {
   const [active, setActive] = useState<ActiveSection>(null);
   const [hasHeroTitleDismissed, setHasHeroTitleDismissed] = useState(false);
   const [hasHeroCalendarOpened, setHasHeroCalendarOpened] = useState(false);
@@ -21,8 +21,12 @@ export function useSearchBarState(size: 'hero' | 'compact', onHeroCalendarOpen?:
     if (isHero && active && !hasHeroTitleDismissed) {
       setHasHeroTitleDismissed(true);
     }
-    
-    if (isHero && (active === SEARCH_SECTIONS.CHECK_IN || active === SEARCH_SECTIONS.CHECK_OUT) && !hasHeroCalendarOpened) {
+
+    if (
+      isHero &&
+      (active === SEARCH_SECTIONS.CHECK_IN || active === SEARCH_SECTIONS.CHECK_OUT) &&
+      !hasHeroCalendarOpened
+    ) {
       setHasHeroCalendarOpened(true);
       if (onHeroCalendarOpen) onHeroCalendarOpen();
     }
@@ -30,8 +34,8 @@ export function useSearchBarState(size: 'hero' | 'compact', onHeroCalendarOpen?:
 
   // Global ESC key listener
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => { 
-      if (e.key === "Escape") setActive(null); 
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActive(null);
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
@@ -66,6 +70,6 @@ export function useSearchBarState(size: 'hero' | 'compact', onHeroCalendarOpen?:
     lastUserActivatedSection,
     containerRef,
     activateSection,
-    isHero
+    isHero,
   };
 }

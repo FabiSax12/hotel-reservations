@@ -17,18 +17,18 @@ import { BACKGROUND_STYLES as S } from "../../../theme/layout.theme";
 export function Background() {
   return (
     <div className={S.wrapper}>
-       {/* Layer 1: Blurred nature photograph */}
-       <div 
-          className={S.image}
-          style={{ 
-            backgroundImage: S.config.imageUrl,
-            filter: S.config.blur 
-          }}
-       />
-       {/* Layer 2: Semi-transparent white wash for text contrast */}
-       <div className={S.wash} />
-       {/* Layer 3: Top-down gradient to brighten the header area */}
-       <div className={S.gradient} />
+      {/* Layer 1: Blurred nature photograph */}
+      <div
+        className={S.image}
+        style={{
+          backgroundImage: S.config.imageUrl,
+          filter: S.config.blur,
+        }}
+      />
+      {/* Layer 2: Semi-transparent white wash for text contrast */}
+      <div className={S.wash} />
+      {/* Layer 3: Top-down gradient to brighten the header area */}
+      <div className={S.gradient} />
     </div>
   );
 }

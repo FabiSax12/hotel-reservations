@@ -7,9 +7,9 @@
 import { useState } from "react";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
-import { 
+import {
   DESTINATION_POPOVER_STYLES as S,
-  getDestinationPositionClass
+  getDestinationPositionClass,
 } from "../theme/destination.theme";
 import { useDestinationPreview } from "../hooks/useDestinationPreview";
 import { SEARCH_VARIANTS } from "../constants/search.constants";
@@ -23,13 +23,14 @@ interface DestinationPopoverProps {
   hasCalendarExpanded?: boolean;
 }
 
-export function DestinationPopover({ onSelect, currentSelection, variant, hasCalendarExpanded }: DestinationPopoverProps) {
-  const { 
-    hoveredRegion, 
-    hoveredData, 
-    handleMouseEnter, 
-    handleMouseLeave 
-  } = useDestinationPreview();
+export function DestinationPopover({
+  onSelect,
+  currentSelection,
+  variant,
+  hasCalendarExpanded,
+}: DestinationPopoverProps) {
+  const { hoveredRegion, hoveredData, handleMouseEnter, handleMouseLeave } =
+    useDestinationPreview();
 
   const isHero = variant === SEARCH_VARIANTS.HERO;
   const positionClasses = getDestinationPositionClass(isHero, !!hasCalendarExpanded);
@@ -39,7 +40,7 @@ export function DestinationPopover({ onSelect, currentSelection, variant, hasCal
       <div
         className={S.panel(positionClasses)}
         onMouseLeave={handleMouseLeave}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <h3 className={S.panelTitle}>{C.POPOVER_TITLE}</h3>
         <div className={S.list}>
@@ -60,11 +61,11 @@ export function DestinationPopover({ onSelect, currentSelection, variant, hasCal
                   <div className={S.regionName(isSelected)}>{region.name}</div>
                   <div className={S.regionDesc}>{region.desc}</div>
                 </div>
-                <svg 
-                  className={S.regionArrow(isHovered || isSelected)} 
-                  fill="none" 
-                  viewBox={S.icons.arrow.viewBox} 
-                  stroke="currentColor" 
+                <svg
+                  className={S.regionArrow(isHovered || isSelected)}
+                  fill="none"
+                  viewBox={S.icons.arrow.viewBox}
+                  stroke="currentColor"
                   strokeWidth={S.icons.arrow.strokeWidth}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.arrow.path} />
@@ -82,12 +83,17 @@ export function DestinationPopover({ onSelect, currentSelection, variant, hasCal
           style={{ height: S.layout.previewHeight }}
         >
           <div className={S.previewImageCol}>
-             <div className={S.previewImageBg} style={{ backgroundImage: `url('${hoveredData.image}')` }} />
-             <div className={S.previewImageGrad} />
-             <div className={S.previewPriceBlock}>
-                <div className={S.previewFromLabel}>{C.FROM}</div>
-                <div className={S.previewPrice}>${hoveredData.priceFrom} <span className={S.previewPriceUnit}>{C.USD_NIGHT}</span></div>
-             </div>
+            <div
+              className={S.previewImageBg}
+              style={{ backgroundImage: `url('${hoveredData.image}')` }}
+            />
+            <div className={S.previewImageGrad} />
+            <div className={S.previewPriceBlock}>
+              <div className={S.previewFromLabel}>{C.FROM}</div>
+              <div className={S.previewPrice}>
+                ${hoveredData.priceFrom} <span className={S.previewPriceUnit}>{C.USD_NIGHT}</span>
+              </div>
+            </div>
           </div>
           <div className={S.previewInfoCol}>
             <h4 className={S.previewTitle}>{hoveredData.name}</h4>
@@ -95,11 +101,11 @@ export function DestinationPopover({ onSelect, currentSelection, variant, hasCal
               {hoveredData.highlights.map((h, i) => (
                 <li key={i} className={S.previewHighlightItem}>
                   <div className={S.previewHighlightDot}>
-                    <svg 
-                      className={S.previewHighlightIcon} 
-                      fill="none" 
-                      viewBox={S.icons.check.viewBox} 
-                      stroke="currentColor" 
+                    <svg
+                      className={S.previewHighlightIcon}
+                      fill="none"
+                      viewBox={S.icons.check.viewBox}
+                      stroke="currentColor"
                       strokeWidth={S.icons.check.strokeWidth}
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.check.path} />

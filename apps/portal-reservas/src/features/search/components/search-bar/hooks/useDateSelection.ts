@@ -8,19 +8,21 @@ import type { ActiveSection } from "../domain/types";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 
 export function useDateSelection(
-  initialCheckIn: string, 
+  initialCheckIn: string,
   initialCheckOut: string,
   active: ActiveSection,
   setActive: (s: ActiveSection) => void,
-  lastUserActivatedSection: React.MutableRefObject<ActiveSection | null>
+  lastUserActivatedSection: React.MutableRefObject<ActiveSection | null>,
 ) {
   const [checkIn, setCheckIn] = useState(initialCheckIn);
   const [checkOut, setCheckOut] = useState(initialCheckOut);
-  const [invalidState, setInvalidState] = useState<{ dayStr: string, isFading: boolean } | null>(null);
+  const [invalidState, setInvalidState] = useState<{ dayStr: string; isFading: boolean } | null>(
+    null,
+  );
 
   /**
    * The core logic for picking a date in a dual-date range picker.
-   * 
+   *
    * It handles:
    * 1. Auto-advancement from check-in to check-out.
    * 2. Swapping dates if check-out is selected before check-in.
@@ -29,11 +31,12 @@ export function useDateSelection(
    */
   const handlePickDate = (dayStr: string) => {
     let workingActive = active;
-    
+
     // Determine if the user explicitly clicked a section or if we are in auto-advance mode
-    const explicitFocus = (workingActive === SEARCH_SECTIONS.CHECK_IN || workingActive === SEARCH_SECTIONS.CHECK_OUT) && 
-                         lastUserActivatedSection.current === workingActive;
-    
+    const explicitFocus =
+      (workingActive === SEARCH_SECTIONS.CHECK_IN || workingActive === SEARCH_SECTIONS.CHECK_OUT) &&
+      lastUserActivatedSection.current === workingActive;
+
     lastUserActivatedSection.current = null;
     let autoAdvanced = false;
 
@@ -44,15 +47,15 @@ export function useDateSelection(
     }
 
     // Toggle logic: clicking the same date deselects it
-    if (dayStr === checkIn) { 
-      setCheckIn(""); 
-      setActive(SEARCH_SECTIONS.CHECK_IN); 
-      return; 
+    if (dayStr === checkIn) {
+      setCheckIn("");
+      setActive(SEARCH_SECTIONS.CHECK_IN);
+      return;
     }
-    if (dayStr === checkOut) { 
-      setCheckOut(""); 
-      setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT); 
-      return; 
+    if (dayStr === checkOut) {
+      setCheckOut("");
+      setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
+      return;
     }
 
     const clickedVal = parseDateHelper(dayStr);
@@ -63,11 +66,19 @@ export function useDateSelection(
     if (checkIn && checkOut) {
       if (explicitFocus) {
         if (workingActive === SEARCH_SECTIONS.CHECK_IN) {
-          if (checkOut && clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); }
-          else { setCheckIn(dayStr); }
+          if (checkOut && clickedVal > outVal) {
+            setCheckIn(checkOut);
+            setCheckOut(dayStr);
+          } else {
+            setCheckIn(dayStr);
+          }
         } else if (workingActive === SEARCH_SECTIONS.CHECK_OUT) {
-          if (checkIn && clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); }
-          else { setCheckOut(dayStr); }
+          if (checkIn && clickedVal < inVal) {
+            setCheckOut(checkIn);
+            setCheckIn(dayStr);
+          } else {
+            setCheckOut(dayStr);
+          }
         }
         return;
       }
@@ -75,9 +86,19 @@ export function useDateSelection(
       const distToIn = Math.abs(clickedVal - inVal);
       const distToOut = Math.abs(clickedVal - outVal);
       if (distToIn <= distToOut) {
-        if (clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); } else { setCheckIn(dayStr); }
+        if (clickedVal > outVal) {
+          setCheckIn(checkOut);
+          setCheckOut(dayStr);
+        } else {
+          setCheckIn(dayStr);
+        }
       } else {
-        if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
+        if (clickedVal < inVal) {
+          setCheckOut(checkIn);
+          setCheckIn(dayStr);
+        } else {
+          setCheckOut(dayStr);
+        }
       }
       return;
     }
@@ -85,12 +106,22 @@ export function useDateSelection(
     // Case: One date exists and we have explicit focus
     if (explicitFocus) {
       if (workingActive === SEARCH_SECTIONS.CHECK_IN && checkOut) {
-        if (clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); } else { setCheckIn(dayStr); }
+        if (clickedVal > outVal) {
+          setCheckIn(checkOut);
+          setCheckOut(dayStr);
+        } else {
+          setCheckIn(dayStr);
+        }
         setActive(SEARCH_SECTIONS.CHECK_OUT);
         return;
       }
       if (workingActive === SEARCH_SECTIONS.CHECK_OUT && checkIn) {
-        if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
+        if (clickedVal < inVal) {
+          setCheckOut(checkIn);
+          setCheckIn(dayStr);
+        } else {
+          setCheckOut(dayStr);
+        }
         setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
         return;
       }
@@ -98,37 +129,55 @@ export function useDateSelection(
 
     // Case: Auto-advancement from check-in to check-out
     if (autoAdvanced && workingActive === SEARCH_SECTIONS.CHECK_OUT && checkIn) {
-      if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
+      if (clickedVal < inVal) {
+        setCheckOut(checkIn);
+        setCheckIn(dayStr);
+      } else {
+        setCheckOut(dayStr);
+      }
       setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
       return;
     }
 
     // Basic selection logic
     if (workingActive === SEARCH_SECTIONS.CHECK_IN && checkOut) {
-      if (clickedVal > outVal) { setCheckIn(checkOut); setCheckOut(dayStr); } else { setCheckIn(dayStr); }
+      if (clickedVal > outVal) {
+        setCheckIn(checkOut);
+        setCheckOut(dayStr);
+      } else {
+        setCheckIn(dayStr);
+      }
       setActive(SEARCH_SECTIONS.CHECK_OUT);
       return;
     }
     if (workingActive === SEARCH_SECTIONS.CHECK_OUT && checkIn) {
-      if (clickedVal < inVal) { setCheckOut(checkIn); setCheckIn(dayStr); } else { setCheckOut(dayStr); }
+      if (clickedVal < inVal) {
+        setCheckOut(checkIn);
+        setCheckIn(dayStr);
+      } else {
+        setCheckOut(dayStr);
+      }
       setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
       return;
     }
 
     // Fallback simple selection
-    if (workingActive === SEARCH_SECTIONS.CHECK_IN) { 
-      setCheckIn(dayStr); 
-      setActive(SEARCH_SECTIONS.CHECK_OUT); 
-    } else if (workingActive === SEARCH_SECTIONS.CHECK_OUT) { 
-      setCheckOut(dayStr); 
-      setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT); 
+    if (workingActive === SEARCH_SECTIONS.CHECK_IN) {
+      setCheckIn(dayStr);
+      setActive(SEARCH_SECTIONS.CHECK_OUT);
+    } else if (workingActive === SEARCH_SECTIONS.CHECK_OUT) {
+      setCheckOut(dayStr);
+      setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
     }
   };
 
   return {
-    checkIn, setCheckIn,
-    checkOut, setCheckOut,
-    invalidState, setInvalidState,
-    handlePickDate
+    checkIn,
+    setCheckIn,
+    checkOut,
+    setCheckOut,
+    invalidState,
+    setInvalidState,
+    handlePickDate,
   };
 }

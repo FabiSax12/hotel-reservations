@@ -19,11 +19,11 @@ export function HeaderNav() {
         </div>
         {/* Circular avatar placeholder */}
         <div className={S.avatarWrapper}>
-          <svg 
-            className={S.avatarIcon} 
-            fill="none" 
-            viewBox={S.icons.avatar.viewBox} 
-            stroke="currentColor" 
+          <svg
+            className={S.avatarIcon}
+            fill="none"
+            viewBox={S.icons.avatar.viewBox}
+            stroke="currentColor"
             strokeWidth={S.icons.avatar.strokeWidth}
           >
             <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.avatar.path} />

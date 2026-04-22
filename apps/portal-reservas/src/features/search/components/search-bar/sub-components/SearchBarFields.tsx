@@ -16,7 +16,7 @@ import { SearchButton } from "./sections/SearchButton";
 const C = SEARCH_BAR_UI_CONSTANTS;
 
 interface SearchBarFieldsProps {
-  size: 'hero' | 'compact';
+  size: "hero" | "compact";
   active: any;
   hasHeroCalendarOpened: boolean;
   destination: string;
@@ -38,21 +38,42 @@ interface SearchBarFieldsProps {
 }
 
 export function SearchBarFields({
-  size, active, hasHeroCalendarOpened, destination, checkIn, checkOut,
-  adults, children, pets, isSearching, handleSearchTrigger,
-  fieldHasError, isShaking, validationError, activateSection, clearError,
-  setAdults, setChildren, setPets
+  size,
+  active,
+  hasHeroCalendarOpened,
+  destination,
+  checkIn,
+  checkOut,
+  adults,
+  children,
+  pets,
+  isSearching,
+  handleSearchTrigger,
+  fieldHasError,
+  isShaking,
+  validationError,
+  activateSection,
+  clearError,
+  setAdults,
+  setChildren,
+  setPets,
 }: SearchBarFieldsProps) {
-  
   const sizing = S.sizing[size];
 
-  const sectionClass = (key: any, extra: string) => [
-    S.sectionBase, sizing.padding, extra,
-    active === key ? S.sectionActive : S.sectionInactive,
-    ((active === SEARCH_SECTIONS.WHERE || active === SEARCH_SECTIONS.WHO) && 
-     hasHeroCalendarOpened && 
-     (key === SEARCH_SECTIONS.CHECK_IN || key === SEARCH_SECTIONS.CHECK_OUT)) ? S.sectionFaded : "",
-  ].filter(Boolean).join(" ");
+  const sectionClass = (key: any, extra: string) =>
+    [
+      S.sectionBase,
+      sizing.padding,
+      extra,
+      active === key ? S.sectionActive : S.sectionInactive,
+      (active === SEARCH_SECTIONS.WHERE || active === SEARCH_SECTIONS.WHO) &&
+      hasHeroCalendarOpened &&
+      (key === SEARCH_SECTIONS.CHECK_IN || key === SEARCH_SECTIONS.CHECK_OUT)
+        ? S.sectionFaded
+        : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
 
   return (
     <>
@@ -101,9 +122,12 @@ export function SearchBarFields({
         size={size}
         hasCalendarExpanded={hasHeroCalendarOpened}
         sectionClass={sectionClass(SEARCH_SECTIONS.WHO, S.sectionGuests)}
-        adults={adults} setAdults={setAdults}
-        children={children} setChildren={setChildren}
-        pets={pets} setPets={setPets}
+        adults={adults}
+        setAdults={setAdults}
+        children={children}
+        setChildren={setChildren}
+        pets={pets}
+        setPets={setPets}
         onActivate={() => activateSection(SEARCH_SECTIONS.WHO, clearError)}
       />
 

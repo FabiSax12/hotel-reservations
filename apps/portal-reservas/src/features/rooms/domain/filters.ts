@@ -5,7 +5,7 @@
  * Each function is pure (no side effects) and unit-tested in `filters.test.ts`.
  */
 
-import type { Room } from './types';
+import type { Room } from "./types";
 
 /**
  * Filters a list of rooms by destination name.
@@ -17,8 +17,8 @@ import type { Room } from './types';
  *   the given destination, or the entire array if no filter is applied.
  */
 export const filterRoomsByDestination = (rooms: Room[], destination: string | null): Room[] => {
-  if (!destination || destination === 'Todos') {
+  if (!destination || destination === "Todos") {
     return rooms;
   }
-  return rooms.filter(r => r.location === destination);
+  return rooms.filter((r) => r.location === destination);
 };

@@ -18,8 +18,14 @@ interface DateSectionProps {
 }
 
 export function DateSection({
-  label, placeholder, displayValue, sizing, sectionClass, onActivate,
-  hasError = false, isShaking = false,
+  label,
+  placeholder,
+  displayValue,
+  sizing,
+  sectionClass,
+  onActivate,
+  hasError = false,
+  isShaking = false,
 }: DateSectionProps) {
   const errorClass = hasError ? S.sectionError : "";
   const shakeClass = isShaking ? S.sectionShake : "";
@@ -27,9 +33,7 @@ export function DateSection({
   return (
     <div onClick={onActivate} className={`${sectionClass} ${errorClass} ${shakeClass}`}>
       <div className={`${sizing.label} ${S.fieldLabel}`}>{label}</div>
-      <div className={`${S.fieldValueDate} ${sizing.value}`}>
-        {displayValue || placeholder}
-      </div>
+      <div className={`${S.fieldValueDate} ${sizing.value}`}>{displayValue || placeholder}</div>
     </div>
   );
 }

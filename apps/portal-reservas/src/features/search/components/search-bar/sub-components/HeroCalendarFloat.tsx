@@ -8,7 +8,10 @@ import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { CalendarPopover } from "@hotel/ui";
 import type { ActiveSection } from "../domain/types";
 
-interface CalendarInvalidState { dayStr: string; isFading: boolean; }
+interface CalendarInvalidState {
+  dayStr: string;
+  isFading: boolean;
+}
 
 interface HeroCalendarFloatProps {
   active: ActiveSection;
@@ -19,7 +22,14 @@ interface HeroCalendarFloatProps {
   onPickDate: (dayStr: string) => void;
 }
 
-export function HeroCalendarFloat({ active, hasHeroCalendarOpened, checkIn, checkOut, invalidState, onPickDate }: HeroCalendarFloatProps) {
+export function HeroCalendarFloat({
+  active,
+  hasHeroCalendarOpened,
+  checkIn,
+  checkOut,
+  invalidState,
+  onPickDate,
+}: HeroCalendarFloatProps) {
   const isDimmed = active === "where" || active === "who";
 
   return (

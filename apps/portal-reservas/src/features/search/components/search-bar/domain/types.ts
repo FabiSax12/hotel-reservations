@@ -46,13 +46,13 @@ export interface SearchBarProps {
   /** Callback fired when the user clicks "Buscar". Receives the full search state. */
   onSearch?: (state: SearchState) => void;
   /** Additional CSS class(es) for the outermost container. */
-  className?: string; 
+  className?: string;
   /**
    * Visual variant:
    *  - `"hero"` — Large size for the full-viewport landing page.
    *  - `"compact"` — Smaller size for the sticky header bar.
    */
-  size?: 'compact' | 'hero';
+  size?: "compact" | "hero";
   /** Optional initial field values (used to restore state in the compact bar). */
   initialState?: Partial<SearchState>;
   /**

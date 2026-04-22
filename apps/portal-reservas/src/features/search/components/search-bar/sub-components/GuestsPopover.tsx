@@ -21,16 +21,33 @@ interface GuestsPopoverProps {
   hasCalendarExpanded?: boolean;
 }
 
-export function GuestsPopover({ adults, setAdults, children, setChildren, pets, setPets, variant, hasCalendarExpanded }: GuestsPopoverProps) {
+export function GuestsPopover({
+  adults,
+  setAdults,
+  children,
+  setChildren,
+  pets,
+  setPets,
+  variant,
+  hasCalendarExpanded,
+}: GuestsPopoverProps) {
   const isHero = variant === "hero";
 
   return (
-    <div 
-      className={S.panel(isHero, !!hasCalendarExpanded)}
-      onClick={e => e.stopPropagation()}
-    >
-      <Stepper title={C.ADULTS_TITLE} subtitle={C.ADULTS_SUBTITLE} value={adults} setter={setAdults} min={1} />
-      <Stepper title={C.CHILDREN_TITLE} subtitle={C.CHILDREN_SUBTITLE} value={children} setter={setChildren} />
+    <div className={S.panel(isHero, !!hasCalendarExpanded)} onClick={(e) => e.stopPropagation()}>
+      <Stepper
+        title={C.ADULTS_TITLE}
+        subtitle={C.ADULTS_SUBTITLE}
+        value={adults}
+        setter={setAdults}
+        min={1}
+      />
+      <Stepper
+        title={C.CHILDREN_TITLE}
+        subtitle={C.CHILDREN_SUBTITLE}
+        value={children}
+        setter={setChildren}
+      />
       <Stepper title={C.PETS_TITLE} subtitle={C.PETS_SUBTITLE} value={pets} setter={setPets} />
     </div>
   );

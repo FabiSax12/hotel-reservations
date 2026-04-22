@@ -9,11 +9,11 @@ export const UI_PACKAGE_CONSTANTS = {
     LABELS: {
       CHECK_IN: "Llegada",
       CHECK_OUT: "Salida",
-    }
+    },
   },
   DATE_FORMATS: {
     MONTH_LONG: "long",
     DAY_NUMERIC: "numeric",
     MONTH_SHORT: "short",
-  }
+  },
 } as const;
