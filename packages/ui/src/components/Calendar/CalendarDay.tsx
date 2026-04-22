@@ -4,12 +4,7 @@
 
 "use client";
 
-import { CALENDAR_STYLES as S } from "../theme/calendar.theme";
-import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
-
-const C = SEARCH_BAR_UI_CONSTANTS.DATES;
-
-interface CalendarInvalidState { dayStr: string; isFading: boolean; }
+import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
 interface CalendarDayProps {
   d: number;
@@ -28,6 +23,8 @@ interface CalendarDayProps {
   onPickDate: (dayStr: string) => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  startLabel?: string;
+  endLabel?: string;
 }
 
 export function CalendarDay({
@@ -35,6 +32,8 @@ export function CalendarDay({
   isHovered, isInvalid, isFading, isHero,
   inVal, outVal,
   onPickDate, onMouseEnter, onMouseLeave,
+  startLabel = "Llegada",
+  endLabel = "Salida",
 }: CalendarDayProps) {
   return (
     <button
@@ -44,6 +43,7 @@ export function CalendarDay({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className={S.dayBtn(isHero, isPast, isStart, isEnd, isSelected, isToday, isHovered)}
+      type="button"
     >
       {isStart && outVal > 0 && outVal !== inVal && <div className={S.rangeHighlightStart}></div>}
       {isEnd && inVal > 0 && outVal !== inVal && <div className={S.rangeHighlightEnd}></div>}
@@ -63,13 +63,13 @@ export function CalendarDay({
 
       {isStart && isHovered && !isInvalid && (
         <div className={S.tooltip(isHero)}>
-          {C.CHECK_IN_LABEL}
+          {startLabel}
           <div className={S.tooltipArrow}></div>
         </div>
       )}
       {isEnd && !isStart && isHovered && !isInvalid && (
         <div className={S.tooltip(isHero)}>
-          {C.CHECK_OUT_LABEL}
+          {endLabel}
           <div className={S.tooltipArrow}></div>
         </div>
       )}

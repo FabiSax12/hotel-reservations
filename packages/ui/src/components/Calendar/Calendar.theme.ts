@@ -1,4 +1,6 @@
-// ─── portal-reservas – CalendarPopover Styles (local copy) ───────────────
+/**
+ * @file Calendar.theme.ts — Component-specific styles for the Calendar.
+ */
 
 export const CALENDAR_STYLES = {
   wrapper: (isHero: boolean) =>

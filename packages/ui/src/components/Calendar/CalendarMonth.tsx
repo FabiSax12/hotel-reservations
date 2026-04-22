@@ -1,10 +1,10 @@
 /**
- * @file CalendarMonth.tsx — One month column inside the dual-month calendar.
+ * @file CalendarMonth.tsx — One month column inside the grid.
  */
 
 "use client";
 
-import { CALENDAR_STYLES as S } from "../theme/calendar.theme";
+import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarDay } from "./CalendarDay";
 
 const DAYS_HEADER = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
@@ -26,12 +26,15 @@ interface CalendarMonthProps {
   onHoverDay: (dayStr: string | null) => void;
   onPrev: () => void;
   onNext: () => void;
+  startLabel?: string;
+  endLabel?: string;
 }
 
 export function CalendarMonth({
   monthIndexLocal, absoluteMonthOffset, currentMonthOffset, today,
   inVal, outVal, invalidState, hoveredDay, isHero,
   onPickDate, onHoverDay, onPrev, onNext,
+  startLabel, endLabel,
 }: CalendarMonthProps) {
   const targetDate = new Date(today.getFullYear(), today.getMonth() + absoluteMonthOffset, 1);
   const year = targetDate.getFullYear();
@@ -117,6 +120,8 @@ export function CalendarMonth({
               onPickDate={onPickDate}
               onMouseEnter={() => !isPast && onHoverDay(dayStr)}
               onMouseLeave={() => !isPast && onHoverDay(null)}
+              startLabel={startLabel}
+              endLabel={endLabel}
             />
           );
         })}

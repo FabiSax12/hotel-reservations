@@ -1,5 +1,5 @@
 /**
- * @file dateUtils.ts — Pure date helper functions for the calendar.
+ * @file date.utils.ts — Pure date helper functions.
  */
 
 export const parseDateHelper = (isoStr: string) => {

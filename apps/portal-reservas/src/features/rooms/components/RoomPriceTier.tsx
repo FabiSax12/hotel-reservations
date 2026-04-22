@@ -9,6 +9,7 @@
  *  - "Seleccionar y Continuar" CTA button.
  */
 
+import { Button } from '@hotel/ui';
 import { UI_CONSTANTS } from '../../../shared/constants/ui';
 import { ROOM_CARD_STYLES as S } from '../../../theme/rooms.theme';
 
@@ -41,12 +42,13 @@ export function RoomPriceTier({ price, inventory, isScarce }: RoomPriceTierProps
       </div>
 
       {/* Primary CTA */}
-      <button className={S.selectBtn}>
+      <Button 
+        size="lg" 
+        className="w-full sm:w-auto"
+        icon={<svg className={S.selectBtnIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>}
+      >
         {UI_CONSTANTS.ROOMS.SELECT_ACTION}
-        <svg className={S.selectBtnIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
+      </Button>
 
     </div>
   );

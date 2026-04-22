@@ -5,22 +5,26 @@
 "use client";
 
 import { useState } from "react";
-import { parseDateHelper } from "../utils/dateUtils";
-import { CALENDAR_STYLES as S } from "../theme/calendar.theme";
+import { parseDateHelper } from "../../utils/date.utils";
+import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
 
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
 
 interface CalendarPopoverProps {
-  activeMode: string | null;
   checkIn: string;
   checkOut: string;
   invalidState: CalendarInvalidState | null;
   onPickDate: (dayStr: string) => void;
   variant?: "compact" | "hero";
+  startLabel?: string;
+  endLabel?: string;
 }
 
-export function CalendarPopover({ checkIn, checkOut, invalidState, onPickDate, variant }: CalendarPopoverProps) {
+export function CalendarPopover({ 
+  checkIn, checkOut, invalidState, onPickDate, variant,
+  startLabel, endLabel
+}: CalendarPopoverProps) {
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
 
@@ -49,6 +53,8 @@ export function CalendarPopover({ checkIn, checkOut, invalidState, onPickDate, v
           onHoverDay={setHoveredDay}
           onPrev={() => setCurrentMonthOffset(prev => Math.max(0, prev - 1))}
           onNext={() => setCurrentMonthOffset(prev => Math.min(22, prev + 1))}
+          startLabel={startLabel}
+          endLabel={endLabel}
         />
       ))}
     </div>

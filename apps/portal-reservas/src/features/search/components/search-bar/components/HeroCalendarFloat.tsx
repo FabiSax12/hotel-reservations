@@ -5,7 +5,7 @@
 "use client";
 
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import { CalendarPopover } from "./CalendarPopover";
+import { CalendarPopover } from "@hotel/ui";
 import type { ActiveSection } from "../domain/types";
 
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
@@ -35,7 +35,6 @@ export function HeroCalendarFloat({ active, hasHeroCalendarOpened, checkIn, chec
       >
         <CalendarPopover
           variant="hero"
-          activeMode={active}
           checkIn={checkIn}
           checkOut={checkOut}
           invalidState={invalidState}

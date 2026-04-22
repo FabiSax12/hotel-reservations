@@ -6,7 +6,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import type { SearchBarProps, ActiveSection, ValidationError } from "../domain/types";
-import { parseDateHelper } from "../utils/dateUtils";
+import { parseDateHelper } from "@hotel/ui";
 import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
@@ -19,7 +19,7 @@ import { DateSection } from "./sections/DateSection";
 import { GuestsSection } from "./sections/GuestsSection";
 import { SearchButton } from "./sections/SearchButton";
 import { DestinationPopover } from "./DestinationPopover";
-import { CalendarPopover } from "./CalendarPopover";
+import { CalendarPopover } from "@hotel/ui";
 
 const C = SEARCH_BAR_UI_CONSTANTS;
 
@@ -344,11 +344,13 @@ export function ModernSearchBar({ onSearch, className = "", size = 'compact', in
 
         {(active === "checkIn" || active === "checkOut") && !isHero && (
           <CalendarPopover
-            activeMode={active}
+            variant="compact"
             checkIn={checkIn}
             checkOut={checkOut}
             invalidState={invalidState}
             onPickDate={handlePickDate}
+            startLabel={C.DATES.CHECK_IN_LABEL}
+            endLabel={C.DATES.CHECK_OUT_LABEL}
           />
         )}
 
