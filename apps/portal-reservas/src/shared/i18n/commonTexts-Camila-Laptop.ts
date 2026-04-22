@@ -20,13 +20,17 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       SESSION_EXPIRED: "Tu sesión expiró. Ingresá nuevamente.",
     },
     STATUS: {
+      NOT_FOUND: {
+        TITLE: "Página no encontrada",
+        MESSAGE: "La página que buscás no existe. Quizás la URL esté mal escrita.",
+        RETURN_LINK: "Volver al inicio",
+      },
+      ERROR: {
+        TITLE: "¡Ups! Algo salió mal",
+        MESSAGE: "Tuvimos un problema procesando tu solicitud.",
+        RETRY: "Reintentar",
+      },
       LOADING: "Cargando...",
-      ERROR_TITLE: "Ocurrió un error",
-      ERROR_MESSAGE: "Hubo un problema al cargar esta página.",
-      TRY_AGAIN: "Intentar de nuevo",
-      NOT_FOUND_TITLE: "Página no encontrada",
-      NOT_FOUND_MESSAGE: "La página que buscas no existe o fue movida.",
-      RETURN_HOME: "Volver al inicio",
     },
   },
   en: {
@@ -47,13 +51,17 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       SESSION_EXPIRED: "Your session expired. Please sign in again.",
     },
     STATUS: {
+      NOT_FOUND: {
+        TITLE: "Page not found",
+        MESSAGE: "The page you are looking for does not exist. Maybe the URL is typed incorrectly.",
+        RETURN_LINK: "Return home",
+      },
+      ERROR: {
+        TITLE: "Oops! Something went wrong",
+        MESSAGE: "We had a problem processing your request.",
+        RETRY: "Retry",
+      },
       LOADING: "Loading...",
-      ERROR_TITLE: "An error occurred",
-      ERROR_MESSAGE: "There was a problem loading this page.",
-      TRY_AGAIN: "Try again",
-      NOT_FOUND_TITLE: "Page not found",
-      NOT_FOUND_MESSAGE: "The page you are looking for does not exist or has been moved.",
-      RETURN_HOME: "Return home",
     },
   },
 } as const;

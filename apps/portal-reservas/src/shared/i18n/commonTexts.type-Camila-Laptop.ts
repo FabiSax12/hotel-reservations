@@ -16,12 +16,16 @@ export type CommonTexts = {
     SESSION_EXPIRED: string;
   };
   STATUS: {
+    NOT_FOUND: {
+      TITLE: string;
+      MESSAGE: string;
+      RETURN_LINK: string;
+    };
+    ERROR: {
+      TITLE: string;
+      MESSAGE: string;
+      RETRY: string;
+    };
     LOADING: string;
-    ERROR_TITLE: string;
-    ERROR_MESSAGE: string;
-    TRY_AGAIN: string;
-    NOT_FOUND_TITLE: string;
-    NOT_FOUND_MESSAGE: string;
-    RETURN_HOME: string;
   };
 };

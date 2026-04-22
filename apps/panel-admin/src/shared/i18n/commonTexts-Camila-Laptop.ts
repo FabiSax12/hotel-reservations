@@ -21,13 +21,17 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       UNAUTHORIZED: "No tenés permiso para realizar esta acción.",
     },
     STATUS: {
-      LOADING: "Cargando...",
-      ERROR_TITLE: "Ocurrió un error",
-      ERROR_MESSAGE: "Hubo un problema al cargar esta página.",
-      TRY_AGAIN: "Intentar de nuevo",
-      NOT_FOUND_TITLE: "Página no encontrada",
-      NOT_FOUND_MESSAGE: "La página que buscas no existe o fue movida.",
-      RETURN_HOME: "Volver al inicio",
+      NOT_FOUND: {
+        TITLE: "Página no encontrada",
+        MESSAGE: "La ruta que estás buscando no existe o fue movida.",
+        RETURN_LINK: "Volver al inicio",
+      },
+      ERROR: {
+        TITLE: "¡Ups! Algo salió mal",
+        MESSAGE: "Ocurrió un error inesperado al procesar tu solicitud.",
+        RETRY: "Intentar de nuevo",
+      },
+      LOADING: "Cargando datos...",
     },
   },
   en: {
@@ -49,13 +53,17 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       UNAUTHORIZED: "You don't have permission to perform this action.",
     },
     STATUS: {
-      LOADING: "Loading...",
-      ERROR_TITLE: "An error occurred",
-      ERROR_MESSAGE: "There was a problem loading this page.",
-      TRY_AGAIN: "Try again",
-      NOT_FOUND_TITLE: "Page not found",
-      NOT_FOUND_MESSAGE: "The page you are looking for does not exist or has been moved.",
-      RETURN_HOME: "Return home",
+      NOT_FOUND: {
+        TITLE: "Page not found",
+        MESSAGE: "The route you are looking for does not exist or was moved.",
+        RETURN_LINK: "Return home",
+      },
+      ERROR: {
+        TITLE: "Oops! Something went wrong",
+        MESSAGE: "An unexpected error occurred while processing your request.",
+        RETRY: "Try again",
+      },
+      LOADING: "Loading data...",
     },
   },
 } as const;
