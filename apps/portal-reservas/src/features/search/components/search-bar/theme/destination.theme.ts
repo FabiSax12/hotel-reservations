@@ -29,6 +29,26 @@ export const DESTINATION_POPOVER_STYLES = {
   previewHighlightItem: "flex items-center gap-3 text-sm font-bold text-neutral-600",
   previewHighlightDot:  "w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 shadow-sm border border-emerald-100",
   previewHighlightIcon: "w-3.5 h-3.5 text-emerald-600 font-bold",
+
+  icons: {
+    arrow: {
+      viewBox: "0 0 24 24",
+      strokeWidth: 3,
+      path: "M9 5l7 7-7 7"
+    },
+    check: {
+      viewBox: "0 0 24 24",
+      strokeWidth: 3,
+      path: "M5 13l4 4L19 7"
+    }
+  },
+
+  layout: {
+    previewHeight: "260px",
+    previewWidth: "650px",
+    panelWidth: "400px",
+    previewOffset: "416px",
+  }
 } as const;
 
 export const getDestinationPositionClass = (isHero: boolean, hasCalendarExpanded: boolean) =>

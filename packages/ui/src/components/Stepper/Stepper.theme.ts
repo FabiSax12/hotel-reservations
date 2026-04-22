@@ -12,4 +12,17 @@ export const STEPPER_STYLES = {
   btnDisabled:  "border-neutral-200 text-neutral-300 cursor-not-allowed",
   count:        "w-6 text-center text-xl font-bold text-neutral-900",
   icon:         "w-5 h-5 font-bold",
+
+  icons: {
+    minus: {
+      viewBox: "0 0 24 24",
+      strokeWidth: 3,
+      path: "M20 12H4"
+    },
+    plus: {
+      viewBox: "0 0 24 24",
+      strokeWidth: 3,
+      path: "M12 4v16m8-8H4"
+    }
+  }
 } as const;

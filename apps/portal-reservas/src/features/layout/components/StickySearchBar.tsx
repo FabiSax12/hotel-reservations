@@ -23,7 +23,7 @@ export function StickySearchBar({ searchParams, onSearch }: StickySearchBarProps
     <div className={S.stickySearchBar}>
       <ModernSearchBar
         size="compact"
-        className="w-full max-w-5xl"
+        className={S.compactSearchContainer}
         onSearch={onSearch}
         initialState={searchParams}
       />

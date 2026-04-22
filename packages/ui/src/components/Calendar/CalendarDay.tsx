@@ -6,6 +6,10 @@
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
+import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
+
+const L = UI_PACKAGE_CONSTANTS.CALENDAR.LABELS;
+
 interface CalendarDayProps {
   d: number;
   dayStr: string;
@@ -32,8 +36,8 @@ export function CalendarDay({
   isHovered, isInvalid, isFading, isHero,
   inVal, outVal,
   onPickDate, onMouseEnter, onMouseLeave,
-  startLabel = "Llegada",
-  endLabel = "Salida",
+  startLabel = L.CHECK_IN,
+  endLabel = L.CHECK_OUT,
 }: CalendarDayProps) {
   return (
     <button

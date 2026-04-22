@@ -4,6 +4,8 @@
 
 "use client";
 
+import { BRAND_LOGO_STYLES as S } from "./BrandLogo.theme";
+
 interface BrandLogoProps {
   name: string;
   highlight: string;
@@ -16,8 +18,8 @@ export function BrandLogo({
   name, 
   highlight, 
   onClick, 
-  className = "text-2xl font-black text-emerald-950 tracking-tighter cursor-pointer select-none",
-  highlightClassName = "text-emerald-600"
+  className = S.root,
+  highlightClassName = S.highlight
 }: BrandLogoProps) {
   return (
     <div className={className} onClick={onClick}>

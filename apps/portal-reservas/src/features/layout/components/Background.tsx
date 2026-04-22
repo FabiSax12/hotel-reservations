@@ -21,8 +21,8 @@ export function Background() {
        <div 
           className={S.image}
           style={{ 
-            backgroundImage: "url('https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=2070&auto=format&fit=crop')",
-            filter: "blur(8px)" 
+            backgroundImage: S.config.imageUrl,
+            filter: S.config.blur 
           }}
        />
        {/* Layer 2: Semi-transparent white wash for text contrast */}

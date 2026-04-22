@@ -27,7 +27,15 @@ export function Stepper({ title, subtitle, value, setter, min = 0 }: StepperProp
           className={`${S.btnBase} ${value <= min ? S.btnDisabled : S.btnEnabled}`}
           type="button"
         >
-          <svg className={S.icon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" /></svg>
+          <svg 
+            className={S.icon} 
+            fill="none" 
+            viewBox={S.icons.minus.viewBox} 
+            stroke="currentColor" 
+            strokeWidth={S.icons.minus.strokeWidth}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.minus.path} />
+          </svg>
         </button>
         <span className={S.count}>{value}</span>
         <button 
@@ -35,7 +43,15 @@ export function Stepper({ title, subtitle, value, setter, min = 0 }: StepperProp
           className={`${S.btnBase} ${S.btnEnabled}`}
           type="button"
         >
-          <svg className={S.icon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+          <svg 
+            className={S.icon} 
+            fill="none" 
+            viewBox={S.icons.plus.viewBox} 
+            stroke="currentColor" 
+            strokeWidth={S.icons.plus.strokeWidth}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.plus.path} />
+          </svg>
         </button>
       </div>
     </div>

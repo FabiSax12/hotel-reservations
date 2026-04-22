@@ -7,8 +7,10 @@
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarDay } from "./CalendarDay";
 
+import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
+
+const C = UI_PACKAGE_CONSTANTS.CALENDAR;
 const DAYS_HEADER = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
-const MAX_MONTHS = 24;
 
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
 
@@ -40,7 +42,7 @@ export function CalendarMonth({
   const year = targetDate.getFullYear();
   const month = targetDate.getMonth();
 
-  const monthStr = new Intl.DateTimeFormat('es-CR', { month: 'long' }).format(targetDate);
+  const monthStr = new Intl.DateTimeFormat(C.DEFAULT_LOCALE, { month: UI_PACKAGE_CONSTANTS.DATE_FORMATS.MONTH_LONG as any }).format(targetDate);
   const monthHeader = monthStr.charAt(0).toUpperCase() + monthStr.slice(1);
 
   const showYear = year !== today.getFullYear() || (absoluteMonthOffset > 0 && month === 0);
@@ -59,7 +61,19 @@ export function CalendarMonth({
             onClick={(e) => { e.stopPropagation(); onPrev(); }}
             className={S.navBtn}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="20" 
+              height="20" 
+              viewBox={S.icons.prev.viewBox} 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth={S.icons.prev.strokeWidth} 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d={S.icons.prev.path}/>
+            </svg>
           </button>
         ) : <div className="w-8"></div>}
 
@@ -70,11 +84,23 @@ export function CalendarMonth({
         {monthIndexLocal === 1 ? (
           <button
             type="button"
-            disabled={currentMonthOffset >= MAX_MONTHS - 2}
+            disabled={currentMonthOffset >= C.MAX_MONTHS - 2}
             onClick={(e) => { e.stopPropagation(); onNext(); }}
             className={S.navBtn}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="20" 
+              height="20" 
+              viewBox={S.icons.next.viewBox} 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth={S.icons.next.strokeWidth} 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d={S.icons.next.path}/>
+            </svg>
           </button>
         ) : <div className="w-8"></div>}
       </div>

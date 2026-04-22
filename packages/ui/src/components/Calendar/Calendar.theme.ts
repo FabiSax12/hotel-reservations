@@ -49,4 +49,22 @@ export const CALENDAR_STYLES = {
   tooltipArrow: "absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-emerald-950 rotate-45 rounded-sm",
 
   dayNumber: (isInvalid: boolean) => `relative z-30 ${isInvalid ? "text-white" : ""}`,
+
+  icons: {
+    prev: {
+      viewBox: "0 0 24 24",
+      strokeWidth: 2.5,
+      path: "m15 18-6-6 6-6"
+    },
+    next: {
+      viewBox: "0 0 24 24",
+      strokeWidth: 2.5,
+      path: "m9 18 6-6-6-6"
+    }
+  },
+
+  layout: {
+    heroMaxWidth: "1150px",
+    compactWidth: "650px",
+  }
 } as const;

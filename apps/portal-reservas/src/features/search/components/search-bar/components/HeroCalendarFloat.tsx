@@ -26,12 +26,7 @@ export function HeroCalendarFloat({ active, hasHeroCalendarOpened, checkIn, chec
     <div className={S.heroCalendarFloat}>
       <div
         className={S.heroCalendarInner}
-        style={{
-          transition: `transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 150ms, opacity ${isDimmed ? '200ms ease-out' : '800ms ease 100ms'}`,
-          transform: hasHeroCalendarOpened ? 'translateY(0)' : 'translateY(-40px)',
-          opacity: hasHeroCalendarOpened ? (isDimmed ? 0.30 : 1) : 0,
-          pointerEvents: hasHeroCalendarOpened && !isDimmed ? 'auto' : 'none'
-        }}
+        style={S.transitions.heroCalendar(hasHeroCalendarOpened, isDimmed)}
       >
         <CalendarPopover
           variant="hero"
