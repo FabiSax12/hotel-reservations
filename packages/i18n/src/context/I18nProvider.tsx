@@ -7,7 +7,7 @@ import type { I18nProviderProps } from "./I18nProvider.interface";
 
 export function I18nProvider<T>({ defaultLocale, translations, storage, children }: I18nProviderProps<T>) {
   const [locale, setLocale] = useState<SupportedLocale>(defaultLocale);
-  const t = translations[locale] ?? translations[defaultLocale];
+  const t = (translations[locale] ?? translations[defaultLocale]) as T;
 
   useEffect(() => {
     const saved = storage?.get();
