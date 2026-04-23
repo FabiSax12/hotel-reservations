@@ -1,6 +1,6 @@
 // ─── Panel Admin – Reservations Filters Styles ───────────────────────────────
 
-import type { ReservationStatus } from "@/features/reservaciones/domain/reservation";
+import type { ReservationStatus } from "@/features/reservations/domain/reservation";
 
 export const FILTER_BAR_STYLES = {
   wrapper:       "",

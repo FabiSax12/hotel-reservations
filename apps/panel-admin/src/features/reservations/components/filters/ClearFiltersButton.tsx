@@ -1,4 +1,4 @@
-"use client";
+      "use client";
 
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";

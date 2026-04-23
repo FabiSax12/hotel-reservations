@@ -8,11 +8,11 @@ import { ReservationsFilters } from "./ReservationsFilters";
 import { ReservationsPageHeader } from "./ReservationsPageHeader";
 import { ReservationsTable } from "./ReservationsTable";
 
-interface ReservationsListProps {
+interface ReservationsViewProps {
   reservations: readonly Reservation[];
 }
 
-export const ReservationsList = ({ reservations }: ReservationsListProps) => {
+export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);
 
   return (
