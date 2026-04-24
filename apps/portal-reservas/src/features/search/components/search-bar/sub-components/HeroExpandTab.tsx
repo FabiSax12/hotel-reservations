@@ -1,5 +1,6 @@
 /**
  * @file HeroExpandTab.tsx — Calendar expansion trigger tab (hero mode only).
+ * Important! This file is a placeholder before the next feature (preview of rooms) is implemented.
  */
 
 "use client";
@@ -25,6 +26,10 @@ export function HeroExpandTab() {
     }
   };
 
+  /**
+ * Styling here is not moved to constants because this file is subject
+ * to change in the future when we implement the "preview of rooms" feature.
+ */
   return (
     <button
       type="button"
