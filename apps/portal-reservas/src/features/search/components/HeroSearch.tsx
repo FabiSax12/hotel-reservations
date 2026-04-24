@@ -12,8 +12,8 @@
  */
 
 import { ModernSearchBar } from "./search-bar";
-import { UI_CONSTANTS } from "../../../shared/constants/ui";
 import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
+import { useI18n } from "@/locales";
 
 interface HeroSearchProps {
   /** Callback when the user submits a search. */
@@ -29,6 +29,8 @@ export function HeroSearch({
   heroCalendarActive,
   setHeroCalendarActive,
 }: HeroSearchProps) {
+  const { t } = useI18n();
+
   return (
     <section className={S.section}>
       <div className={S.contentWrapper}>
@@ -44,8 +46,8 @@ export function HeroSearch({
             transform: heroCalendarActive ? "translateY(-20px)" : "translateY(0)",
           }}
         >
-          <h1 className={S.heading}>{UI_CONSTANTS.HERO.TITLE}</h1>
-          <p className={S.subtitle}>{UI_CONSTANTS.HERO.SUBTITLE}</p>
+          <h1 className={S.heading}>{t.SEARCH.HERO.TITLE}</h1>
+          <p className={S.subtitle}>{t.SEARCH.HERO.SUBTITLE}</p>
         </div>
 
         {/*

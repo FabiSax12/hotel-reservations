@@ -25,6 +25,7 @@ import { Header } from "../features/layout/components/Header";
 import { HeroSearch } from "../features/search/components/HeroSearch";
 import { RoomList } from "../features/rooms/components/RoomList";
 import { filterRoomsByDestination } from "../features/rooms/domain/filters";
+import { SEARCH_VALS } from "../features/search/components/search-bar/constants/search.constants";
 
 export default function HomePage() {
   /** Whether the user has triggered at least one search (switches to State B). */
@@ -42,7 +43,7 @@ export default function HomePage() {
 
   /** The current search parameters, shared between the hero and compact bars. */
   const [searchParams, setSearchParams] = useState<SearchParams>({
-    destination: "Todos",
+    destination: SEARCH_VALS.DESTINATION_ALL,
     checkIn: "15 Oct",
     checkOut: "21 Oct",
     adults: 2,

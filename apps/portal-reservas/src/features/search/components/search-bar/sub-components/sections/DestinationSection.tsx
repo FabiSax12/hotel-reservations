@@ -5,9 +5,7 @@
 "use client";
 
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
-import { SEARCH_BAR_UI_CONSTANTS } from "../../constants/ui";
-
-const C = SEARCH_BAR_UI_CONSTANTS.DESTINATION;
+import { useI18n } from "@/locales";
 
 interface DestinationSectionProps {
   isActive: boolean;
@@ -30,6 +28,8 @@ export function DestinationSection({
 }: DestinationSectionProps) {
   const errorClass = hasError ? S.sectionError : "";
   const shakeClass = isShaking ? S.sectionShake : "";
+  const { t } = useI18n();
+  const C = t.SEARCH.SEARCH_BAR.DESTINATION;
 
   return (
     <div onClick={onActivate} className={`${sectionClass} ${errorClass} ${shakeClass}`}>

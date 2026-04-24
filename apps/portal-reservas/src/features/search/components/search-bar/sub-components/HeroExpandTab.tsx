@@ -5,15 +5,26 @@
 "use client";
 
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import type { ActiveSection } from "../domain/types";
+import { SEARCH_SECTIONS } from "../constants/search.constants";
+import { useSearchBarContext } from "../context/SearchBarContext";
 
-interface HeroExpandTabProps {
-  hasHeroCalendarOpened: boolean;
-  active: ActiveSection;
-  onExpand: () => void;
-}
+export function HeroExpandTab() {
+  const {
+    hasHeroCalendarOpened,
+    active,
+    setActive,
+    setHasHeroCalendarOpened,
+    onHeroCalendarOpen,
+  } = useSearchBarContext();
 
-export function HeroExpandTab({ hasHeroCalendarOpened, active, onExpand }: HeroExpandTabProps) {
+  const handleExpand = () => {
+    setHasHeroCalendarOpened(true);
+    if (onHeroCalendarOpen) onHeroCalendarOpen();
+    if (active !== SEARCH_SECTIONS.CHECK_IN && active !== SEARCH_SECTIONS.CHECK_OUT) {
+      setActive(SEARCH_SECTIONS.CHECK_IN);
+    }
+  };
+
   return (
     <button
       type="button"
@@ -25,7 +36,7 @@ export function HeroExpandTab({ hasHeroCalendarOpened, active, onExpand }: HeroE
       }}
       onClick={(e) => {
         e.stopPropagation();
-        onExpand();
+        handleExpand();
       }}
       className={S.expandTab}
     >

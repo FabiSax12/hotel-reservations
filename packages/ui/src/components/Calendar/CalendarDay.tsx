@@ -6,9 +6,7 @@
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
-import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
 
-const L = UI_PACKAGE_CONSTANTS.CALENDAR.LABELS;
 
 interface CalendarDayProps {
   d: number;
@@ -48,8 +46,8 @@ export function CalendarDay({
   onPickDate,
   onMouseEnter,
   onMouseLeave,
-  startLabel = L.CHECK_IN,
-  endLabel = L.CHECK_OUT,
+  startLabel,
+  endLabel,
 }: CalendarDayProps) {
   return (
     <button

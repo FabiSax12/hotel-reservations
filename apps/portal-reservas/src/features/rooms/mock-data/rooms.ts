@@ -5,6 +5,10 @@
  * (Monteverde and Arenal & La Fortuna) spanning all four room types
  * (Standard, Suite, Family, Villa) for a realistic demonstration.
  *
+ * NOTE: This mock data is currently not internationalized (i18n). In a real
+ * scenario, this content would be fetched from a backend API that serves
+ * localized strings based on the user's selected language.
+ *
  * This file should be replaced by an API fetch in a future iteration.
  * The `inventory` values intentionally include scarce rooms (≤ 2) to
  * exercise the urgency badge logic in {@link RoomImagePanel}.

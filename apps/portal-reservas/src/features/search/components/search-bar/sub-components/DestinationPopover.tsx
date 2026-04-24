@@ -4,36 +4,38 @@
 
 "use client";
 
-import { useState } from "react";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
-import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import {
   DESTINATION_POPOVER_STYLES as S,
   getDestinationPositionClass,
 } from "../theme/destination.theme";
 import { useDestinationPreview } from "../hooks/useDestinationPreview";
-import { SEARCH_VARIANTS } from "../constants/search.constants";
+import { SEARCH_VARIANTS, SEARCH_SECTIONS } from "../constants/search.constants";
+import { useI18n } from "@/locales";
+import { useSearchBarContext } from "../context/SearchBarContext";
 
-const C = SEARCH_BAR_UI_CONSTANTS.DESTINATION;
+export function DestinationPopover() {
+  const {
+    size,
+    hasHeroCalendarOpened,
+    destination,
+    setDestination,
+    activateSection,
+    clearError,
+  } = useSearchBarContext();
 
-interface DestinationPopoverProps {
-  onSelect: (v: string) => void;
-  currentSelection: string;
-  variant?: "compact" | "hero";
-  hasCalendarExpanded?: boolean;
-}
-
-export function DestinationPopover({
-  onSelect,
-  currentSelection,
-  variant,
-  hasCalendarExpanded,
-}: DestinationPopoverProps) {
   const { hoveredRegion, hoveredData, handleMouseEnter, handleMouseLeave } =
     useDestinationPreview();
 
-  const isHero = variant === SEARCH_VARIANTS.HERO;
-  const positionClasses = getDestinationPositionClass(isHero, !!hasCalendarExpanded);
+  const isHero = size === SEARCH_VARIANTS.HERO;
+  const positionClasses = getDestinationPositionClass(isHero, !!hasHeroCalendarOpened);
+  const { t } = useI18n();
+  const C = t.SEARCH.SEARCH_BAR.DESTINATION;
+
+  const handleSelect = (v: string) => {
+    setDestination(v);
+    activateSection(SEARCH_SECTIONS.CHECK_IN, clearError);
+  };
 
   return (
     <>
@@ -45,12 +47,12 @@ export function DestinationPopover({
         <h3 className={S.panelTitle}>{C.POPOVER_TITLE}</h3>
         <div className={S.list}>
           {REGIONS_CONFIG.map((region) => {
-            const isSelected = currentSelection === region.name;
+            const isSelected = destination === region.name;
             const isHovered = hoveredRegion === region.name;
             return (
               <button
                 key={region.name}
-                onClick={() => onSelect(region.name)}
+                onClick={() => handleSelect(region.name)}
                 onMouseEnter={() => handleMouseEnter(region.name)}
                 className={S.regionBtn(isSelected, isHovered && !isSelected)}
               >

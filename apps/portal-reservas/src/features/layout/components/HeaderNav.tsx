@@ -6,16 +6,18 @@
  * be wired to navigation routes in a future iteration.
  */
 
-import { UI_CONSTANTS } from "../../../shared/constants/ui";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
+import { useI18n } from "@/locales";
 
 export function HeaderNav() {
+  const { t } = useI18n();
+
   return (
     <div className={S.nav}>
-      <button className={S.helpBtn}>{UI_CONSTANTS.HEADER.HELP}</button>
+      <button className={S.helpBtn}>{t.LAYOUT.HEADER.HELP}</button>
       <button className={S.myReservationsBtn}>
         <div className={S.myReservationsLabel}>
-          <div className={S.myReservationsText}>{UI_CONSTANTS.HEADER.MY_RESERVATIONS}</div>
+          <div className={S.myReservationsText}>{t.LAYOUT.HEADER.MY_RESERVATIONS}</div>
         </div>
         {/* Circular avatar placeholder */}
         <div className={S.avatarWrapper}>

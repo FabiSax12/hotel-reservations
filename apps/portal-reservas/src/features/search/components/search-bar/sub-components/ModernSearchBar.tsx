@@ -21,7 +21,8 @@ import { useGuestsSelection } from "../hooks/useGuestsSelection";
 
 // Sub-components
 import { HeroCalendarFloat } from "./HeroCalendarFloat";
-import { SearchBarBar } from "./SearchBarBar";
+import { SearchBarFrame } from "./SearchBarFrame";
+import { SearchBarProvider } from "../context/SearchBarContext";
 
 export function ModernSearchBar({
   onSearch,
@@ -66,7 +67,7 @@ export function ModernSearchBar({
     lastUserActivatedSection,
   );
 
-  const { adults, setAdults, children, setChildren, pets, setPets } = useGuestsSelection(
+  const { adults, setAdults, children: childrenCount, setChildren, pets, setPets } = useGuestsSelection(
     initialState?.adults,
     initialState?.children,
     initialState?.pets,
@@ -86,53 +87,52 @@ export function ModernSearchBar({
           checkIn,
           checkOut,
           adults,
-          children,
+          children: childrenCount,
           pets,
         });
     }, TIMEOUTS.SEARCH_TRIGGER_DELAY);
   };
 
-  return (
-    <div ref={containerRef} className={`${S.container} ${className}`}>
-      {isHero && (
-        <HeroCalendarFloat
-          active={active}
-          hasHeroCalendarOpened={hasHeroCalendarOpened}
-          checkIn={checkIn}
-          checkOut={checkOut}
-          invalidState={invalidState}
-          onPickDate={handlePickDate}
-        />
-      )}
+  // 3. Construct Context Value
+  const contextValue = {
+    size,
+    isHero,
+    active,
+    setActive,
+    hasHeroCalendarOpened,
+    setHasHeroCalendarOpened,
+    isSearching,
+    setIsSearching,
+    lastUserActivatedSection,
+    activateSection,
+    onHeroCalendarOpen,
+    validationError,
+    isShaking,
+    clearError,
+    validateSearch,
+    fieldHasError,
+    destination,
+    setDestination,
+    onlyOneSede,
+    checkIn,
+    checkOut,
+    invalidState,
+    handlePickDate,
+    adults,
+    setAdults,
+    children: childrenCount,
+    setChildren,
+    pets,
+    setPets,
+    handleSearchTrigger,
+  };
 
-      <SearchBarBar
-        isHero={isHero}
-        size={size}
-        active={active}
-        setActive={setActive}
-        activateSection={activateSection}
-        hasHeroCalendarOpened={hasHeroCalendarOpened}
-        setHasHeroCalendarOpened={setHasHeroCalendarOpened}
-        onHeroCalendarOpen={onHeroCalendarOpen}
-        destination={destination}
-        setDestination={setDestination}
-        checkIn={checkIn}
-        checkOut={checkOut}
-        adults={adults}
-        setAdults={setAdults}
-        children={children}
-        setChildren={setChildren}
-        pets={pets}
-        setPets={setPets}
-        isSearching={isSearching}
-        handleSearchTrigger={handleSearchTrigger}
-        fieldHasError={fieldHasError}
-        isShaking={isShaking}
-        validationError={validationError}
-        clearError={clearError}
-        handlePickDate={handlePickDate}
-        invalidState={invalidState}
-      />
-    </div>
+  return (
+    <SearchBarProvider value={contextValue}>
+      <div ref={containerRef} className={`${S.container} ${className}`}>
+        {isHero && <HeroCalendarFloat />}
+        <SearchBarFrame />
+      </div>
+    </SearchBarProvider>
   );
 }

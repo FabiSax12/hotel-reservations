@@ -5,9 +5,7 @@
 "use client";
 
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
-import { SEARCH_BAR_UI_CONSTANTS } from "../../constants/ui";
-
-const C = SEARCH_BAR_UI_CONSTANTS.ACTION;
+import { useI18n } from "@/locales";
 
 interface SearchButtonProps {
   isSearching: boolean;
@@ -25,6 +23,7 @@ export function SearchButton({
   isShaking = false,
 }: SearchButtonProps) {
   const shakeClass = isShaking ? S.sectionShake : "";
+  const { t } = useI18n();
 
   return (
     <div className={S.searchBtnWrapper}>
@@ -63,7 +62,7 @@ export function SearchButton({
             <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.search.path} />
           </svg>
         )}
-        <span className={S.searchBtnLabel}>{C.SEARCH_BTN}</span>
+        <span className={S.searchBtnLabel}>{t.SEARCH.SEARCH_BAR.ACTION.SEARCH_BTN}</span>
       </button>
     </div>
   );

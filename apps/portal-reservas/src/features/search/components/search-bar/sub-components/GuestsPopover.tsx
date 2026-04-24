@@ -5,36 +5,29 @@
 "use client";
 
 import { Stepper } from "@hotel/ui";
-import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { GUESTS_POPOVER_STYLES as S } from "../theme/guests.theme";
+import { SEARCH_VARIANTS } from "../constants/search.constants";
+import { useI18n } from "@/locales";
+import { useSearchBarContext } from "../context/SearchBarContext";
 
-const C = SEARCH_BAR_UI_CONSTANTS.GUESTS;
+export function GuestsPopover() {
+  const {
+    adults,
+    setAdults,
+    children,
+    setChildren,
+    pets,
+    setPets,
+    size,
+    hasHeroCalendarOpened,
+  } = useSearchBarContext();
 
-interface GuestsPopoverProps {
-  adults: number;
-  setAdults: (v: number) => void;
-  children: number;
-  setChildren: (v: number) => void;
-  pets: number;
-  setPets: (v: number) => void;
-  variant?: "compact" | "hero";
-  hasCalendarExpanded?: boolean;
-}
-
-export function GuestsPopover({
-  adults,
-  setAdults,
-  children,
-  setChildren,
-  pets,
-  setPets,
-  variant,
-  hasCalendarExpanded,
-}: GuestsPopoverProps) {
-  const isHero = variant === "hero";
+  const isHero = size === SEARCH_VARIANTS.HERO;
+  const { t } = useI18n();
+  const C = t.SEARCH.SEARCH_BAR.GUESTS;
 
   return (
-    <div className={S.panel(isHero, !!hasCalendarExpanded)} onClick={(e) => e.stopPropagation()}>
+    <div className={S.panel(isHero, !!hasHeroCalendarOpened)} onClick={(e) => e.stopPropagation()}>
       <Stepper
         title={C.ADULTS_TITLE}
         subtitle={C.ADULTS_SUBTITLE}

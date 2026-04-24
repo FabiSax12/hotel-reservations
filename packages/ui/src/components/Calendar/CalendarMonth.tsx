@@ -8,9 +8,9 @@ import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarDay } from "./CalendarDay";
 
 import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
+import { useI18n } from "@hotel/i18n";
 
 const C = UI_PACKAGE_CONSTANTS.CALENDAR;
-const DAYS_HEADER = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
 
 interface CalendarInvalidState {
   dayStr: string;
@@ -56,7 +56,15 @@ export function CalendarMonth({
   const year = targetDate.getFullYear();
   const month = targetDate.getMonth();
 
-  const monthStr = new Intl.DateTimeFormat(C.DEFAULT_LOCALE, {
+  const { locale } = useI18n();
+
+  const DAYS_HEADER = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date(1970, 0, 4 + i); // Jan 4, 1970 was a Sunday
+    const dayStr = new Intl.DateTimeFormat(locale, { weekday: "short" }).format(d);
+    return dayStr.slice(0, 2).toUpperCase();
+  });
+
+  const monthStr = new Intl.DateTimeFormat(locale, {
     month: UI_PACKAGE_CONSTANTS.DATE_FORMATS.MONTH_LONG as any,
   }).format(targetDate);
   const monthHeader = monthStr.charAt(0).toUpperCase() + monthStr.slice(1);

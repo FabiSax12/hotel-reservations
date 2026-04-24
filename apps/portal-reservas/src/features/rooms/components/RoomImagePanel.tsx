@@ -8,8 +8,8 @@
  */
 
 import type { Room } from "../domain/types";
-import { UI_CONSTANTS } from "../../../shared/constants/ui";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { useI18n } from "@/locales";
 
 interface RoomImagePanelProps {
   /** URL for the room's hero image. */
@@ -21,6 +21,8 @@ interface RoomImagePanelProps {
 }
 
 export function RoomImagePanel({ image, inventory, isScarce }: RoomImagePanelProps) {
+  const { t } = useI18n();
+
   return (
     <div className={S.imageWrapper}>
       <div className={S.image} style={{ backgroundImage: `url('${image}')` }} />
@@ -42,8 +44,8 @@ export function RoomImagePanel({ image, inventory, isScarce }: RoomImagePanelPro
             />
           </svg>
           {inventory === 1
-            ? UI_CONSTANTS.ROOMS.LAST_ROOM
-            : `${UI_CONSTANTS.ROOMS.ONLY_REMAINING} ${inventory} ${UI_CONSTANTS.ROOMS.ROOMS_PLURAL}`}
+            ? t.ROOMS.LAST_ROOM
+            : `${t.ROOMS.ONLY_REMAINING} ${inventory} ${t.ROOMS.ROOMS_PLURAL}`}
         </div>
       )}
     </div>

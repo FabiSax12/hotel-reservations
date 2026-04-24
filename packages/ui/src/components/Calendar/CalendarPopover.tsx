@@ -8,6 +8,7 @@ import { useState } from "react";
 import { parseDateHelper } from "../../utils/date.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
+import { UI_VARIANTS } from "../../constants/ui.constants";
 
 interface CalendarInvalidState {
   dayStr: string;
@@ -19,7 +20,7 @@ interface CalendarPopoverProps {
   checkOut: string;
   invalidState: CalendarInvalidState | null;
   onPickDate: (dayStr: string) => void;
-  variant?: "compact" | "hero";
+  variant?: (typeof UI_VARIANTS)[keyof typeof UI_VARIANTS];
   startLabel?: string;
   endLabel?: string;
 }
@@ -41,7 +42,7 @@ export function CalendarPopover({
 
   const inVal = parseDateHelper(checkIn);
   const outVal = parseDateHelper(checkOut);
-  const isHero = variant === "hero";
+  const isHero = variant === UI_VARIANTS.HERO;
 
   return (
     <div className={`flex ${S.padding(isHero)} ${S.wrapper(isHero)}`}>

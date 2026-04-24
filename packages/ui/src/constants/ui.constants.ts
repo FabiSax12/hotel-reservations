@@ -17,3 +17,8 @@ export const UI_PACKAGE_CONSTANTS = {
     MONTH_SHORT: "short",
   },
 } as const;
+
+export const UI_VARIANTS = {
+  HERO: "hero",
+  COMPACT: "compact",
+} as const;

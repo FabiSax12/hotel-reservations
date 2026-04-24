@@ -4,16 +4,16 @@
 
 import { useState, useCallback, useRef, useEffect } from "react";
 import type { ValidationError } from "../domain/types";
-import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { TIMEOUTS } from "../constants/search.constants";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { parseDateHelper } from "@hotel/ui";
-
-const C = SEARCH_BAR_UI_CONSTANTS;
+import { useI18n } from "@/locales";
 
 export function useSearchValidation() {
   const [validationError, setValidationError] = useState<ValidationError | null>(null);
   const [isShaking, setIsShaking] = useState(false);
+  const { t } = useI18n();
+  const C = t.SEARCH.SEARCH_BAR.VALIDATION;
 
   const errorDismissRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const shakeResetRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -54,7 +54,7 @@ export function useSearchValidation() {
       // 1. Destination validation
       if (!onlyOneSede && (!destination || !REGIONS_CONFIG.some((r) => r.name === destination))) {
         showError({
-          message: C.VALIDATION.MISSING_SEDE,
+          message: C.MISSING_SEDE,
           fields: ["where"],
         });
         return false;
@@ -62,27 +62,27 @@ export function useSearchValidation() {
 
       // 2. Dates presence validation
       if (missingIn && missingOut) {
-        showError({ message: C.VALIDATION.MISSING_BOTH_DATES, fields: ["checkIn", "checkOut"] });
+        showError({ message: C.MISSING_BOTH_DATES, fields: ["checkIn", "checkOut"] });
         return false;
       }
       if (missingIn) {
-        showError({ message: C.VALIDATION.MISSING_CHECK_IN, fields: ["checkIn"] });
+        showError({ message: C.MISSING_CHECK_IN, fields: ["checkIn"] });
         return false;
       }
       if (missingOut) {
-        showError({ message: C.VALIDATION.MISSING_CHECK_OUT, fields: ["checkOut"] });
+        showError({ message: C.MISSING_CHECK_OUT, fields: ["checkOut"] });
         return false;
       }
 
       // 3. Date range logic validation
       if (parseDateHelper(checkIn) >= parseDateHelper(checkOut)) {
-        showError({ message: C.VALIDATION.INVALID_DATE_RANGE, fields: ["checkIn", "checkOut"] });
+        showError({ message: C.INVALID_DATE_RANGE, fields: ["checkIn", "checkOut"] });
         return false;
       }
 
       return true;
     },
-    [showError],
+    [showError, C],
   );
 
   const fieldHasError = useCallback(
@@ -99,3 +99,4 @@ export function useSearchValidation() {
     fieldHasError,
   };
 }
+

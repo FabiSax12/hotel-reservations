@@ -4,61 +4,39 @@
 
 import React from "react";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import { SEARCH_BAR_UI_CONSTANTS } from "../constants/ui";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { formatUIText, formatGuests } from "../utils/search-bar.utils";
+import { useI18n } from "@/locales";
+import { useSearchBarContext } from "../context/SearchBarContext";
 
 import { DestinationSection } from "./sections/DestinationSection";
 import { DateSection } from "./sections/DateSection";
 import { GuestsSection } from "./sections/GuestsSection";
 import { SearchButton } from "./sections/SearchButton";
 
-const C = SEARCH_BAR_UI_CONSTANTS;
+export function SearchBarFields() {
+  const {
+    size,
+    active,
+    hasHeroCalendarOpened,
+    destination,
+    checkIn,
+    checkOut,
+    adults,
+    children,
+    pets,
+    isSearching,
+    handleSearchTrigger,
+    fieldHasError,
+    isShaking,
+    validationError,
+    activateSection,
+    clearError,
+  } = useSearchBarContext();
 
-interface SearchBarFieldsProps {
-  size: "hero" | "compact";
-  active: any;
-  hasHeroCalendarOpened: boolean;
-  destination: string;
-  checkIn: string;
-  checkOut: string;
-  adults: number;
-  children: number;
-  pets: number;
-  isSearching: boolean;
-  handleSearchTrigger: () => void;
-  fieldHasError: (k: string) => boolean;
-  isShaking: boolean;
-  validationError: any;
-  activateSection: (s: any, cb?: any) => void;
-  clearError: () => void;
-  setAdults: (v: number) => void;
-  setChildren: (v: number) => void;
-  setPets: (v: number) => void;
-}
-
-export function SearchBarFields({
-  size,
-  active,
-  hasHeroCalendarOpened,
-  destination,
-  checkIn,
-  checkOut,
-  adults,
-  children,
-  pets,
-  isSearching,
-  handleSearchTrigger,
-  fieldHasError,
-  isShaking,
-  validationError,
-  activateSection,
-  clearError,
-  setAdults,
-  setChildren,
-  setPets,
-}: SearchBarFieldsProps) {
   const sizing = S.sizing[size];
+  const { t, locale } = useI18n();
+  const C = t.SEARCH.SEARCH_BAR;
 
   const sectionClass = (key: any, extra: string) =>
     [
@@ -92,7 +70,7 @@ export function SearchBarFields({
       <DateSection
         label={C.DATES.CHECK_IN_LABEL}
         placeholder={C.DATES.PLACEHOLDER}
-        displayValue={formatUIText(checkIn)}
+        displayValue={formatUIText(checkIn, locale)}
         sizing={sizing}
         sectionClass={sectionClass(SEARCH_SECTIONS.CHECK_IN, S.sectionDate)}
         onActivate={() => activateSection(SEARCH_SECTIONS.CHECK_IN, clearError)}
@@ -105,7 +83,7 @@ export function SearchBarFields({
       <DateSection
         label={C.DATES.CHECK_OUT_LABEL}
         placeholder={C.DATES.PLACEHOLDER}
-        displayValue={formatUIText(checkOut)}
+        displayValue={formatUIText(checkOut, locale)}
         sizing={sizing}
         sectionClass={sectionClass(SEARCH_SECTIONS.CHECK_OUT, S.sectionDate)}
         onActivate={() => activateSection(SEARCH_SECTIONS.CHECK_OUT, clearError)}
@@ -117,17 +95,9 @@ export function SearchBarFields({
 
       <GuestsSection
         isActive={active === SEARCH_SECTIONS.WHO}
-        guestsText={formatGuests(adults, children, pets)}
+        guestsText={formatGuests(adults, children, pets, C.GUESTS)}
         sizing={sizing}
-        size={size}
-        hasCalendarExpanded={hasHeroCalendarOpened}
         sectionClass={sectionClass(SEARCH_SECTIONS.WHO, S.sectionGuests)}
-        adults={adults}
-        setAdults={setAdults}
-        children={children}
-        setChildren={setChildren}
-        pets={pets}
-        setPets={setPets}
         onActivate={() => activateSection(SEARCH_SECTIONS.WHO, clearError)}
       />
 

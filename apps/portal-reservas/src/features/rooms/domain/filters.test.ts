@@ -11,6 +11,7 @@
 import { describe, it, expect } from "vitest";
 import { filterRoomsByDestination } from "./filters";
 import type { Room } from "./types";
+import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
 
 describe("filterRoomsByDestination", () => {
   /** Minimal stub rooms — only `id` and `location` are needed by the filter. */
@@ -25,8 +26,8 @@ describe("filterRoomsByDestination", () => {
     expect(result.length).toBe(3);
   });
 
-  it("should return all rooms if destination is Todos", () => {
-    const result = filterRoomsByDestination(mockRooms, "Todos");
+  it(`should return all rooms if destination is ${SEARCH_VALS.DESTINATION_ALL}`, () => {
+    const result = filterRoomsByDestination(mockRooms, SEARCH_VALS.DESTINATION_ALL);
     expect(result.length).toBe(3);
   });
 
