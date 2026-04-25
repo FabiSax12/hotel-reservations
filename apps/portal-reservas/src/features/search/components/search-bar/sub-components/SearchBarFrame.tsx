@@ -6,7 +6,7 @@ import React from "react";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 import { useI18n } from "@/locales";
-import { useSearchBarContext } from "../context/SearchBarContext";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 // Sub-components
 import { HeroExpandTab } from "./HeroExpandTab";

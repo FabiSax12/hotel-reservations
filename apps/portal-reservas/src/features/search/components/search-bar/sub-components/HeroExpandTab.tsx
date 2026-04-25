@@ -7,7 +7,7 @@
 
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
-import { useSearchBarContext } from "../context/SearchBarContext";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 export function HeroExpandTab() {
   const {

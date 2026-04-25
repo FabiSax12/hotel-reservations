@@ -10,7 +10,7 @@
 import React, { useMemo } from "react";
 import type { SearchBarProps } from "../domain/types";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import { REGIONS_CONFIG } from "../constants/regionsConfig";
+import { REGIONS_CONFIG } from "../constants/regionsMock";
 import { SEARCH_VARIANTS, SEARCH_VALS, TIMEOUTS } from "../constants/search.constants";
 
 // Custom Hooks

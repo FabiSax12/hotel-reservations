@@ -9,6 +9,11 @@
 export type ActiveSection = "where" | "checkIn" | "checkOut" | "who" | null;
 
 /**
+ * Variant type for the search bar visual mode.
+ */
+export type SearchBarVariant = "hero" | "compact";
+
+/**
  * The data payload emitted by the search bar when the user triggers a search.
  * Mirrors the portal's `SearchParams` but lives in the UI package so the
  * component can define its own contract independently.
@@ -52,7 +57,7 @@ export interface SearchBarProps {
    *  - `"hero"` — Large size for the full-viewport landing page.
    *  - `"compact"` — Smaller size for the sticky header bar.
    */
-  size?: "compact" | "hero";
+  size?: SearchBarVariant;
   /** Optional initial field values (used to restore state in the compact bar). */
   initialState?: Partial<SearchState>;
   /**

@@ -3,10 +3,10 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import type { ActiveSection } from "../domain/types";
+import type { ActiveSection, SearchBarVariant } from "../domain/types";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 
-export function useSearchBarState(size: "hero" | "compact", onHeroCalendarOpen?: () => void) {
+export function useSearchBarState(size: SearchBarVariant, onHeroCalendarOpen?: () => void) {
   const [active, setActive] = useState<ActiveSection>(null);
   const [hasHeroTitleDismissed, setHasHeroTitleDismissed] = useState(false);
   const [hasHeroCalendarOpened, setHasHeroCalendarOpened] = useState(false);

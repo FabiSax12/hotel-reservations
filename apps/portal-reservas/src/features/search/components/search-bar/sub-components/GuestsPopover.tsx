@@ -8,7 +8,7 @@ import { Stepper } from "@hotel/ui";
 import { GUESTS_POPOVER_STYLES as S } from "../theme/guests.theme";
 import { SEARCH_VARIANTS } from "../constants/search.constants";
 import { useI18n } from "@/locales";
-import { useSearchBarContext } from "../context/SearchBarContext";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 export function GuestsPopover() {
   const {

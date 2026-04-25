@@ -3,8 +3,13 @@
  */
 
 import { useState } from "react";
+import { INITIAL_GUEST_SELECTIONS } from "../constants/guests.constants";
 
-export function useGuestsSelection(initialAdults = 2, initialChildren = 0, initialPets = 0) {
+export function useGuestsSelection(
+  initialAdults = INITIAL_GUEST_SELECTIONS.ADULTS,
+  initialChildren = INITIAL_GUEST_SELECTIONS.CHILDREN,
+  initialPets = INITIAL_GUEST_SELECTIONS.PETS,
+) {
   const [adults, setAdults] = useState(initialAdults);
   const [children, setChildren] = useState(initialChildren);
   const [pets, setPets] = useState(initialPets);

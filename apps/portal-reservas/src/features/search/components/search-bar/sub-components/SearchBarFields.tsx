@@ -7,7 +7,7 @@ import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { formatUIText, formatGuests } from "../utils/search-bar.utils";
 import { useI18n } from "@/locales";
-import { useSearchBarContext } from "../context/SearchBarContext";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 import { DestinationSection } from "./sections/DestinationSection";
 import { DateSection } from "./sections/DateSection";

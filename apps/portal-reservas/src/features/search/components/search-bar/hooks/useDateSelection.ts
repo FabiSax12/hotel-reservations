@@ -37,6 +37,7 @@ export function useDateSelection(
       (workingActive === SEARCH_SECTIONS.CHECK_IN || workingActive === SEARCH_SECTIONS.CHECK_OUT) &&
       lastUserActivatedSection.current === workingActive;
 
+    // Clear the transient marker — next interaction will be evaluated anew
     lastUserActivatedSection.current = null;
     let autoAdvanced = false;
 
@@ -46,17 +47,22 @@ export function useDateSelection(
       autoAdvanced = true;
     }
 
-    // Toggle logic: clicking the same date deselects it
-    if (dayStr === checkIn) {
-      setCheckIn("");
-      setActive(SEARCH_SECTIONS.CHECK_IN);
-      return;
-    }
-    if (dayStr === checkOut) {
-      setCheckOut("");
-      setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
-      return;
-    }
+    // Small helper: clicking the same date toggles (deselects)
+    const tryToggleDeselect = () => {
+      if (dayStr === checkIn) {
+        setCheckIn("");
+        setActive(SEARCH_SECTIONS.CHECK_IN);
+        return true;
+      }
+      if (dayStr === checkOut) {
+        setCheckOut("");
+        setActive(!checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT);
+        return true;
+      }
+      return false;
+    };
+
+    if (tryToggleDeselect()) return;
 
     const clickedVal = parseDateHelper(dayStr);
     const inVal = parseDateHelper(checkIn);
@@ -64,6 +70,7 @@ export function useDateSelection(
 
     // Case: Both dates already exist
     if (checkIn && checkOut) {
+      // If the user explicitly focused a field, replace within that field's logic
       if (explicitFocus) {
         if (workingActive === SEARCH_SECTIONS.CHECK_IN) {
           if (checkOut && clickedVal > outVal) {
@@ -72,7 +79,7 @@ export function useDateSelection(
           } else {
             setCheckIn(dayStr);
           }
-        } else if (workingActive === SEARCH_SECTIONS.CHECK_OUT) {
+        } else {
           if (checkIn && clickedVal < inVal) {
             setCheckOut(checkIn);
             setCheckIn(dayStr);
@@ -82,7 +89,8 @@ export function useDateSelection(
         }
         return;
       }
-      // Smart replacement based on proximity if no explicit focus
+
+      // Smart replacement based on proximity when no explicit focus is present
       const distToIn = Math.abs(clickedVal - inVal);
       const distToOut = Math.abs(clickedVal - outVal);
       if (distToIn <= distToOut) {
@@ -139,7 +147,7 @@ export function useDateSelection(
       return;
     }
 
-    // Basic selection logic
+    // Basic selection logic (one field present / no special case reached)
     if (workingActive === SEARCH_SECTIONS.CHECK_IN && checkOut) {
       if (clickedVal > outVal) {
         setCheckIn(checkOut);

@@ -4,7 +4,7 @@
 
 "use client";
 
-import { REGIONS_CONFIG } from "../constants/regionsConfig";
+import { REGIONS_CONFIG } from "../constants/regionsMock";
 import {
   DESTINATION_POPOVER_STYLES as S,
   getDestinationPositionClass,
@@ -12,7 +12,7 @@ import {
 import { useDestinationPreview } from "../hooks/useDestinationPreview";
 import { SEARCH_VARIANTS, SEARCH_SECTIONS } from "../constants/search.constants";
 import { useI18n } from "@/locales";
-import { useSearchBarContext } from "../context/SearchBarContext";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 export function DestinationPopover() {
   const {

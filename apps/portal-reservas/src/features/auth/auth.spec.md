@@ -26,8 +26,8 @@ Scaffolding / placeholder for user registration and authentication workflows to 
 * UI must be fully localized using the `@hotel/i18n` package standard.
 
 ## 4. Acceptance Criteria
-* [ ] Condition 1: UI form correctly renders inputs for email, password, and confirmation.
-* [ ] Condition 2: Client-side validation triggers appropriately on malformed inputs.
+* [ ] UI form correctly renders inputs for email, password, and confirmation.
+* [ ] Client-side validation triggers appropriately on malformed inputs.
 
 ## 5. Handoff & Status Notes
 * **Current State:** Scaffolding complete. Folder structure exists but backend logic is entirely mocked/absent.

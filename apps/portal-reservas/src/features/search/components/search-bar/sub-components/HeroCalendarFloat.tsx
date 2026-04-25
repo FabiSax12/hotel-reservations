@@ -8,7 +8,7 @@ import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 import { CalendarPopover } from "@hotel/ui";
 import { useI18n } from "@/locales";
-import { useSearchBarContext } from "../context/SearchBarContext";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 export function HeroCalendarFloat() {
   const {
