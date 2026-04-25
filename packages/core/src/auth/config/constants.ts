@@ -6,6 +6,7 @@ export const AUTH_ROLES = Object.freeze({
 export const ACTIVATION_ERROR_CODES = Object.freeze({
   INVALID_TOKEN: "INVALID_TOKEN",
   EXPIRED_TOKEN: "EXPIRED_TOKEN",
+  INVALID_OR_EXPIRED_TOKEN: "INVALID_OR_EXPIRED_TOKEN",
 } as const);
 
 export type ActivationErrorCode =

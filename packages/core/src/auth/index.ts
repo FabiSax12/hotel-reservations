@@ -110,7 +110,7 @@ export async function completeAdminActivation(
   });
 
   if (sessionError || !sessionData.user) {
-    throw new Error("Invalid or expired activation token");
+    throw new Error(ACTIVATION_ERROR_CODES.INVALID_OR_EXPIRED_TOKEN);
   }
 
   const { error: updateError } = await supabase.auth.updateUser({ password });
