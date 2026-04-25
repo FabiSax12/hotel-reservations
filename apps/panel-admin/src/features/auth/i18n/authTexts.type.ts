@@ -8,7 +8,7 @@ export type AuthTexts = {
     PASSWORD_HINT: string;
     SUBMIT_BUTTON: string;
   };
-  STAFF: {
+  ADMIN: {
     CREATE_ADMIN: {
       TITLE: string;
       NAME_LABEL: string;

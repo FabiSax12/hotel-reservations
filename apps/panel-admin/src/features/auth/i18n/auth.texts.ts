@@ -12,7 +12,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       PASSWORD_HINT: "Mínimo 8 caracteres",
       SUBMIT_BUTTON: "Iniciar sesión",
     },
-    STAFF: {
+    ADMIN: {
       CREATE_ADMIN: {
         TITLE: "Crear administrador",
         NAME_LABEL: "Nombre completo",
@@ -72,7 +72,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       PASSWORD_HINT: "At least 8 characters",
       SUBMIT_BUTTON: "Sign in",
     },
-    STAFF: {
+    ADMIN: {
       CREATE_ADMIN: {
         TITLE: "Create administrator",
         NAME_LABEL: "Full name",

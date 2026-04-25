@@ -17,7 +17,7 @@ export const CreateAdminForm = ({ action }: CreateAdminFormProps) => {
     null,
   );
   const { t } = useI18n();
-  const { CREATE_ADMIN, VALIDATION, ERRORS } = t.AUTH.STAFF;
+  const { CREATE_ADMIN, VALIDATION, ERRORS } = t.AUTH.ADMIN;
 
   if (state !== null && "success" in state) {
     return (
