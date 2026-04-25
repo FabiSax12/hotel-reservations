@@ -26,6 +26,7 @@ import { HeroSearch } from "../features/search/components/HeroSearch";
 import { RoomList } from "../features/rooms/components/RoomList";
 import { filterRoomsByDestination } from "../features/rooms/domain/filters";
 import { SEARCH_VALS } from "../features/search/components/search-bar/constants/search.constants";
+import { PAGE_STYLES as S } from "../theme/layout.theme";
 
 export default function HomePage() {
   /** Whether the user has triggered at least one search (switches to State B). */
@@ -71,7 +72,7 @@ export default function HomePage() {
   const filteredRooms = filterRoomsByDestination(mockRooms, selectedDest);
 
   return (
-    <main className="min-h-screen relative overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50">
+    <main className={S.main}>
       <Background />
 
       <Header

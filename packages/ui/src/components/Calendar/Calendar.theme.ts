@@ -14,6 +14,8 @@ export const CALENDAR_STYLES = {
   monthHeader: "flex items-center justify-between mb-6",
   navBtn:
     "p-1.5 rounded-full hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-neutral-600",
+  /** Invisible spacer that occupies the same space as a navBtn on the opposite side */
+  navSpacer: "w-8",
   monthTitle: (isHero: boolean) => `${isHero ? "text-2xl" : "text-lg"} font-bold text-neutral-900`,
 
   daysHeader: (isHero: boolean) =>

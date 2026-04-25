@@ -59,7 +59,7 @@ export function DestinationPopover() {
                 <div className={S.regionIcon(isSelected, isHovered && !isSelected)}>
                   {region.icon}
                 </div>
-                <div className="flex-1">
+                <div className={S.regionTextWrapper}>
                   <div className={S.regionName(isSelected)}>{region.name}</div>
                   <div className={S.regionDesc}>{region.desc}</div>
                 </div>
@@ -113,7 +113,7 @@ export function DestinationPopover() {
                       <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.check.path} />
                     </svg>
                   </div>
-                  <span className="leading-snug">{h}</span>
+                  <span className={S.highlightText}>{h}</span>
                 </li>
               ))}
             </ul>

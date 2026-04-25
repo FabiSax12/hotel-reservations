@@ -20,6 +20,8 @@ export const BUTTON_STYLES = {
   },
 
   spinner: "animate-spin mr-2",
+  spinnerCircle: "opacity-25",
+  spinnerPath: "opacity-75",
   iconLeft: "mr-2",
   iconRight: "ml-2",
 

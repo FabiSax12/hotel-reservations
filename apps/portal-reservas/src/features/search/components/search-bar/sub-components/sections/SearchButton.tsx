@@ -42,14 +42,14 @@ export function SearchButton({
             viewBox={S.icons.spinner.viewBox}
           >
             <circle
-              className="opacity-25"
+              className={S.searchBtnSpinnerCircle}
               cx={S.icons.spinner.circle.cx}
               cy={S.icons.spinner.circle.cy}
               r={S.icons.spinner.circle.r}
               stroke="currentColor"
               strokeWidth={S.icons.spinner.circle.strokeWidth}
             />
-            <path className="opacity-75" fill="currentColor" d={S.icons.spinner.path} />
+            <path className={S.searchBtnSpinnerPath} fill="currentColor" d={S.icons.spinner.path} />
           </svg>
         ) : (
           <svg

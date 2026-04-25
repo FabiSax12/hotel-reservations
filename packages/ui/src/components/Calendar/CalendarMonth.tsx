@@ -103,7 +103,7 @@ export function CalendarMonth({
             </svg>
           </button>
         ) : (
-          <div className="w-8"></div>
+          <div className={S.navSpacer} />
         )}
 
         <h3 className={S.monthTitle(isHero)}>
@@ -135,7 +135,7 @@ export function CalendarMonth({
             </svg>
           </button>
         ) : (
-          <div className="w-8"></div>
+          <div className={S.navSpacer} />
         )}
       </div>
 

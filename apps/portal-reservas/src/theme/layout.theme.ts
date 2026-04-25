@@ -1,5 +1,14 @@
 // ─── Portal Reservas – Layout Feature Styles ─────────────────────────────────
-// All Tailwind class strings for Background and Header, kept out of JSX.
+// All Tailwind class strings for Background, Header, root layout, and pages.
+
+export const ROOT_LAYOUT_STYLES = {
+  body: "min-h-screen bg-white antialiased",
+} as const;
+
+export const PAGE_STYLES = {
+  main: "min-h-screen relative overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50",
+} as const;
+
 
 export const BACKGROUND_STYLES = {
   wrapper: "fixed inset-0 z-[-1] overflow-hidden pointer-events-none",

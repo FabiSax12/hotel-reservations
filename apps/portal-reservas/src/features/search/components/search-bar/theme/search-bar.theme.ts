@@ -58,6 +58,8 @@ export const SEARCH_BAR_STYLES = {
   searchBtn: (sizePad: string) =>
     `flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white rounded-full transition-all duration-300 font-bold shadow-md hover:shadow-lg active:scale-95 ${sizePad} gap-2 whitespace-nowrap`,
   searchBtnSpinner: "animate-spin",
+  searchBtnSpinnerCircle: "opacity-25",
+  searchBtnSpinnerPath: "opacity-75",
   searchBtnLabel: "md:block mr-1",
 
   icons: {

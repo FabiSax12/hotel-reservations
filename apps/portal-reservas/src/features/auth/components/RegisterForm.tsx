@@ -3,6 +3,7 @@
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 import { useI18n } from "@/locales";
+import { AUTH_FORM_STYLES as S } from "@/features/auth/theme/auth.theme";
 
 export const RegisterForm = () => {
   const { t } = useI18n();
@@ -21,11 +22,11 @@ export const RegisterForm = () => {
   } = useRegisterForm();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900">{t.AUTH.REGISTER.TITLE}</h1>
+    <div className={S.pageWrapper}>
+      <div className={S.card}>
+        <h1 className={S.heading}>{t.AUTH.REGISTER.TITLE}</h1>
 
-        <Form action={formAction} className="flex flex-col gap-5">
+        <Form action={formAction} className={S.form}>
           <TextField name="fullName" autoComplete="name" isInvalid={!!fullNameError} fullWidth>
             <Label>{t.AUTH.REGISTER.FULL_NAME_LABEL}</Label>
             <Input placeholder={t.AUTH.REGISTER.FULL_NAME_PLACEHOLDER} />
@@ -52,8 +53,8 @@ export const RegisterForm = () => {
             fullWidth
           >
             <Label>{t.AUTH.REGISTER.PASSWORD_LABEL}</Label>
-            <div className="relative w-full">
-              <Input placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER} className="pr-10" />
+            <div className={S.passwordFieldWrapper}>
+              <Input placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER} className={S.passwordInput} />
               <Button
                 isIconOnly
                 variant="ghost"
@@ -62,7 +63,7 @@ export const RegisterForm = () => {
                   showPassword ? t.AUTH.REGISTER.HIDE_PASSWORD : t.AUTH.REGISTER.SHOW_PASSWORD
                 }
                 onPress={handleTogglePassword}
-                className="absolute inset-y-0 right-0 h-full"
+                className={S.passwordToggleBtn}
               >
                 {showPassword ? "🙈" : "👁"}
               </Button>
@@ -78,8 +79,8 @@ export const RegisterForm = () => {
             fullWidth
           >
             <Label>{t.AUTH.REGISTER.CONFIRM_PASSWORD_LABEL}</Label>
-            <div className="relative w-full">
-              <Input placeholder={t.AUTH.REGISTER.CONFIRM_PASSWORD_PLACEHOLDER} className="pr-10" />
+            <div className={S.passwordFieldWrapper}>
+              <Input placeholder={t.AUTH.REGISTER.CONFIRM_PASSWORD_PLACEHOLDER} className={S.passwordInput} />
               <Button
                 isIconOnly
                 variant="ghost"
@@ -90,7 +91,7 @@ export const RegisterForm = () => {
                     : t.AUTH.REGISTER.SHOW_CONFIRM_PASSWORD
                 }
                 onPress={handleToggleConfirmPassword}
-                className="absolute inset-y-0 right-0 h-full"
+                className={S.passwordToggleBtn}
               >
                 {showConfirmPassword ? "🙈" : "👁"}
               </Button>
@@ -101,12 +102,12 @@ export const RegisterForm = () => {
           </TextField>
 
           {globalError && (
-            <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p role="alert" className={S.globalError}>
               {t.AUTH.ERRORS[globalError]}
             </p>
           )}
 
-          <Button type="submit" variant="primary" fullWidth isPending={isPending} className="mt-1">
+          <Button type="submit" variant="primary" fullWidth isPending={isPending} className={S.submitBtn}>
             {isPending ? t.AUTH.REGISTER.SUBMITTING_BUTTON : t.AUTH.REGISTER.SUBMIT_BUTTON}
           </Button>
         </Form>

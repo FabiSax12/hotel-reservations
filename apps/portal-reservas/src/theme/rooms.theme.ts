@@ -44,4 +44,6 @@ export const ROOM_CARD_STYLES = {
   selectBtn:
     "w-full sm:w-auto h-16 bg-emerald-950 hover:bg-emerald-900 text-white font-bold text-lg px-8 rounded-xl shadow-[0_8px_20px_rgba(2,44,34,0.3)] transition-all active:scale-[0.98] flex items-center justify-center gap-2",
   selectBtnIcon: "w-5 h-5",
+  /** Width constraint passed as className to the shared Button component */
+  selectBtnWidth: "w-full sm:w-auto",
 } as const;

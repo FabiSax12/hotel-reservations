@@ -45,7 +45,7 @@ export function RoomPriceTier({ price, inventory, isScarce }: RoomPriceTierProps
       {/* Primary CTA */}
       <Button
         size="lg"
-        className="w-full sm:w-auto"
+        className={S.selectBtnWidth}
         icon={
           <svg
             className={S.selectBtnIcon}

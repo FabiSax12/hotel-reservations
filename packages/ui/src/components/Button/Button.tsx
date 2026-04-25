@@ -45,14 +45,14 @@ export function Button({
       {isLoading && (
         <svg className={S.spinner} fill="none" viewBox={S.icons.spinner.viewBox}>
           <circle
-            className="opacity-25"
+            className={S.spinnerCircle}
             cx={S.icons.spinner.circle.cx}
             cy={S.icons.spinner.circle.cy}
             r={S.icons.spinner.circle.r}
             stroke="currentColor"
             strokeWidth={S.icons.spinner.circle.strokeWidth}
           />
-          <path className="opacity-75" fill="currentColor" d={S.icons.spinner.path} />
+          <path className={S.spinnerPath} fill="currentColor" d={S.icons.spinner.path} />
         </svg>
       )}
 

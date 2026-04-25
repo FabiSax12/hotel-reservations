@@ -14,6 +14,8 @@ export const DESTINATION_POPOVER_STYLES = {
   regionDesc: "text-sm text-neutral-500",
   regionArrow: (isActive: boolean) =>
     `w-5 h-5 transition-transform ${isActive ? "text-emerald-600 translate-x-1" : "text-neutral-300 group-hover:text-emerald-400 group-hover:translate-x-1"}`,
+  /** Flex-grow wrapper around the region name + description text */
+  regionTextWrapper: "flex-1",
   previewPanel: (isHero: boolean, positionClasses: string) =>
     `absolute left-[416px] ${isHero ? "right-0" : "w-[650px] right-auto"} bg-white rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-200 overflow-hidden z-50 animate-in fade-in slide-in-from-left-2 duration-200 ease-out flex flex-row text-left ${positionClasses}`,
   previewImageCol: "w-[45%] relative shrink-0 bg-neutral-100 flex flex-col",
@@ -31,6 +33,8 @@ export const DESTINATION_POPOVER_STYLES = {
   previewHighlightDot:
     "w-6 h-6 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0 shadow-sm border border-emerald-100",
   previewHighlightIcon: "w-3.5 h-3.5 text-emerald-600 font-bold",
+  /** Inline text of a single highlight bullet */
+  highlightText: "leading-snug",
 
   icons: {
     arrow: {
