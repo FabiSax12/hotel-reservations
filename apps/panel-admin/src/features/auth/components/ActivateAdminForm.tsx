@@ -1,6 +1,6 @@
 "use client";
 
-import { isActivateSuccess, isVerifySuccess } from "@/features/auth/domain/adminActivation";
+import { ACTIVATION_ERRORS, isActivateSuccess, isVerifySuccess } from "@/features/auth/domain/adminActivation";
 import { useActivationToken } from "@/features/auth/hooks/useActivationToken";
 import { useAdminActivation } from "@/features/auth/hooks/useAdminActivation";
 import { ActivationLoading } from "./ActivationLoading";
@@ -17,6 +17,8 @@ export const ActivateAdminForm = () => {
   if (!isVerifySuccess(verifyState)) return <ActivationTokenError errorKey={verifyState.error} />;
 
   if (isActivateSuccess(activateState)) return <ActivationSuccess />;
+
+  if (tokens === null) return <ActivationTokenError errorKey={ACTIVATION_ERRORS.INVALID_TOKEN} />;
 
   return (
     <ActivationPasswordForm

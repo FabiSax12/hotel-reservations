@@ -8,7 +8,7 @@ import { validatePassword } from "../utils/validatePassword";
 import { PASSWORD_VALIDATION_ERRORS } from "../constants/passwordValidationErrors";
 
 interface ActivationPasswordFormProps {
-  tokens: { accessToken: string; refreshToken: string } | null;
+  tokens: { accessToken: string; refreshToken: string };
   action: (payload: FormData) => void;
   isPending: boolean;
   activateState: ActivateAdminState;
@@ -41,8 +41,8 @@ export const ActivationPasswordForm = ({
         <p className="mb-6 text-sm text-gray-500">{ACTIVATE.SUBTITLE}</p>
 
         <Form className="flex flex-col gap-4" action={action}>
-          <input type="hidden" name={ACTIVATION_FORM_FIELDS.ACCESS_TOKEN} value={tokens?.accessToken ?? ""} />
-          <input type="hidden" name={ACTIVATION_FORM_FIELDS.REFRESH_TOKEN} value={tokens?.refreshToken ?? ""} />
+          <input type="hidden" name={ACTIVATION_FORM_FIELDS.ACCESS_TOKEN} value={tokens.accessToken} />
+          <input type="hidden" name={ACTIVATION_FORM_FIELDS.REFRESH_TOKEN} value={tokens.refreshToken} />
 
           <TextField
             isRequired
