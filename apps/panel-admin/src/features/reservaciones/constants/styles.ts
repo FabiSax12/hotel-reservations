@@ -6,7 +6,8 @@ export const PAGE = Object.freeze({
 } as const);
 
 export const EMPTY_STATE = Object.freeze({
-  WRAPPER: "flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-white py-16 text-center",
+  WRAPPER:
+    "flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-white py-16 text-center",
   ICON: "mb-4 h-12 w-12 text-gray-300",
   TITLE: "text-base font-semibold text-gray-700",
   DESCRIPTION: "mt-1 text-sm text-gray-400",

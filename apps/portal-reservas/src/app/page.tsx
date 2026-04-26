@@ -25,6 +25,8 @@ import { Header } from "../features/layout/components/Header";
 import { HeroSearch } from "../features/search/components/HeroSearch";
 import { RoomList } from "../features/rooms/components/RoomList";
 import { filterRoomsByDestination } from "../features/rooms/domain/filters";
+import { SEARCH_VALS } from "../features/search/components/search-bar/constants/search.constants";
+import { PAGE_STYLES as S } from "../theme/layout.theme";
 
 export default function HomePage() {
   /** Whether the user has triggered at least one search (switches to State B). */
@@ -42,12 +44,12 @@ export default function HomePage() {
 
   /** The current search parameters, shared between the hero and compact bars. */
   const [searchParams, setSearchParams] = useState<SearchParams>({
-    destination: 'Todos',
-    checkIn: '15 Oct',
-    checkOut: '21 Oct',
+    destination: SEARCH_VALS.DESTINATION_ALL,
+    checkIn: "15 Oct",
+    checkOut: "21 Oct",
     adults: 2,
     children: 0,
-    pets: 0
+    pets: 0,
   });
 
   /**
@@ -57,7 +59,7 @@ export default function HomePage() {
   const handleSearchTrigger = (params: any) => {
     setSearchParams(params);
     setHasSearched(true);
-    setSearchKey(prev => prev + 1);
+    setSearchKey((prev) => prev + 1);
   };
 
   /** Resets the page back to State A (hero search). */
@@ -70,11 +72,10 @@ export default function HomePage() {
   const filteredRooms = filterRoomsByDestination(mockRooms, selectedDest);
 
   return (
-    <main className="min-h-screen relative overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50">
-      
+    <main className={S.main}>
       <Background />
-      
-      <Header 
+
+      <Header
         hasSearched={hasSearched}
         searchParams={searchParams}
         onReset={handleReset}
@@ -83,7 +84,7 @@ export default function HomePage() {
 
       {/* State A: Full-screen hero with cinematic search */}
       {!hasSearched && (
-        <HeroSearch 
+        <HeroSearch
           onSearch={handleSearchTrigger}
           heroCalendarActive={heroCalendarActive}
           setHeroCalendarActive={setHeroCalendarActive}
@@ -92,13 +93,8 @@ export default function HomePage() {
 
       {/* State B: Scrollable room results */}
       {hasSearched && (
-        <RoomList 
-          rooms={filteredRooms}
-          selectedDest={selectedDest}
-          searchKey={searchKey}
-        />
+        <RoomList rooms={filteredRooms} selectedDest={selectedDest} searchKey={searchKey} />
       )}
-
     </main>
   );
 }

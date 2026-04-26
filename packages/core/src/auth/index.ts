@@ -1,7 +1,8 @@
 import type { SupabaseServerClient } from "@hotel/db";
 import { createSupabaseServerActionClient, createSupabaseServiceClient } from "@hotel/db";
 import type { AdminUser } from "@hotel/db/types";
-import { AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
+import type { ActivationErrorCode } from "./config/constants";
+import { ACTIVATION_ERROR_CODES, AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
 
 export type RegisterPayload = {
   email: string;
@@ -62,7 +63,66 @@ export async function signUp(
     throw { code: "UNKNOWN_ERROR", message: "User creation returned no ID" } satisfies AuthError;
   }
 
+  if (!data.user?.identities || data.user.identities.length === 0) {
+    throw { code: "EMAIL_ALREADY_REGISTERED" } satisfies AuthError;
+  }
+
   return { success: true };
+}
+
+export async function inviteAdminByEmail(email: string, redirectTo: string): Promise<void> {
+  const supabase = createSupabaseServiceClient();
+  const { error } = await supabase.auth.admin.inviteUserByEmail(email, { redirectTo });
+  if (error) throw new Error(error.message);
+}
+
+export type ActivationTokenResult =
+  | { userId: string; email: string }
+  | { error: ActivationErrorCode };
+
+export async function verifyActivationToken(
+  accessToken: string,
+  refreshToken: string,
+): Promise<ActivationTokenResult> {
+  const supabase = createSupabaseServerActionClient();
+  const { data, error } = await supabase.auth.setSession({
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+
+  if (error || !data.user) {
+    return { error: ACTIVATION_ERROR_CODES.INVALID_TOKEN };
+  }
+
+  return { userId: data.user.id, email: data.user.email ?? "" };
+}
+
+export async function completeAdminActivation(
+  accessToken: string,
+  refreshToken: string,
+  password: string,
+): Promise<void> {
+  const supabase = createSupabaseServerActionClient();
+
+  const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+
+  if (sessionError || !sessionData.user) {
+    throw new Error(ACTIVATION_ERROR_CODES.INVALID_OR_EXPIRED_TOKEN);
+  }
+
+  const { error: updateError } = await supabase.auth.updateUser({ password });
+  if (updateError) throw new Error(updateError.message);
+
+  const serviceClient = createSupabaseServiceClient();
+  const { error: roleError } = await serviceClient
+    .from(AUTH_TABLE)
+    .update({ [AUTH_COLUMNS.ROLE]: AUTH_ROLES.ADMIN, [AUTH_COLUMNS.IS_ACTIVE]: true })
+    .eq(AUTH_COLUMNS.ID, sessionData.user.id);
+
+  if (roleError) throw new Error(roleError.message);
 }
 
 export async function verifyAdminRole(userId: string): Promise<AdminUser | null> {
