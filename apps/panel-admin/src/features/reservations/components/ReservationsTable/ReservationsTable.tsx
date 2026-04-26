@@ -2,14 +2,10 @@
 
 import { Avatar, Button, Table } from "@heroui/react";
 import { useI18n } from "@/locales";
-import type { Reservation } from "../domain/reservation";
-import { RESERVATIONS_TABLE_STYLES as T, TABLE_CELL_STYLES as C } from "@/themes/reservations-table.theme";
-import { formatTableDate } from "../utils/format-reservation-date";
-import { StatusBadge } from "./StatusBadge";
-
-interface ReservationsTableProps {
-  reservations: readonly Reservation[];
-}
+import { RESERVATIONS_TABLE_STYLES as T, TABLE_CELL_STYLES as C } from "./ReservationsTable.styles";
+import { formatTableDate } from "../../utils/format-reservation-date";
+import { StatusBadge } from "../StatusBadge/StatusBadge";
+import type { ReservationsTableProps } from "./ReservationsTable.interface";
 
 export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
   const { t } = useI18n();

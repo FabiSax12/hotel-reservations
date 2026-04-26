@@ -1,22 +1,13 @@
 "use client";
 
-import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
-import type { ReservationStatus } from "../domain/reservation";
-import type { ReservationFilters } from "../domain/reservation-filters";
-import { useReservationFilters } from "../hooks/useReservationFilters";
-import { StatusPillGroup } from "./filters/StatusPillGroup";
-import { RoomSelector } from "./filters/RoomSelector";
-import { FilterResultsSummary } from "./filters/FilterResultsSummary";
-import { ClearFiltersButton } from "./filters/ClearFiltersButton";
-import { DateRangePicker } from "./filters/DateRangePicker";
-
-interface ReservationsFiltersProps {
-  filters: ReservationFilters;
-  onFiltersChange: (filters: ReservationFilters) => void;
-  totalCount: number;
-  filteredCount: number;
-  statusCounts: Record<ReservationStatus, number>;
-}
+import { FILTER_BAR_STYLES as S } from "./ReservationsFilters.styles";
+import { useReservationFilters } from "../../hooks/useReservationFilters";
+import { StatusPillGroup } from "../StatusPillGroup/StatusPillGroup";
+import { RoomSelector } from "../RoomSelector/RoomSelector";
+import { FilterResultsSummary } from "../FilterResultsSummary/FilterResultsSummary";
+import { ClearFiltersButton } from "../ClearFiltersButton/ClearFiltersButton";
+import { DateRangePicker } from "../DateRangePicker/DateRangePicker";
+import type { ReservationsFiltersProps } from "./ReservationsFilters.interface";
 
 export const ReservationsFilters = ({
   filters,

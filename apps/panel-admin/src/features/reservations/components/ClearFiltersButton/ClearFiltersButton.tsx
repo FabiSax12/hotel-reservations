@@ -1,13 +1,9 @@
-      "use client";
+"use client";
 
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
-
-interface ClearFiltersButtonProps {
-  isFiltered: boolean;
-  onClear: () => void;
-}
+import { CLEAR_FILTERS_BUTTON_STYLES as S } from "./ClearFiltersButton.styles";
+import type { ClearFiltersButtonProps } from "./ClearFiltersButton.interface";
 
 export const ClearFiltersButton = ({ isFiltered, onClear }: ClearFiltersButtonProps) => {
   const { t } = useI18n();

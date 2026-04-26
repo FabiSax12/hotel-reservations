@@ -2,18 +2,10 @@
 
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { FILTER_BAR_STYLES as S, STATUS_DOT_COLOR } from "@/themes/reservations-filters.theme";
-import type { ReservationStatus } from "../../domain/reservation";
+import { STATUS_PILL_GROUP_STYLES as S, STATUS_DOT_COLOR } from "./StatusPillGroup.styles";
 import { RESERVATION_STATUSES } from "../../constants/reservation-statuses";
 import { STATUS_I18N_KEY } from "../../constants/status-i18n";
-
-interface StatusPillGroupProps {
-  statuses: ReservationStatus[];
-  statusCounts: Record<ReservationStatus, number>;
-  totalCount: number;
-  onAllClick: () => void;
-  onStatusToggle: (status: ReservationStatus) => void;
-}
+import type { StatusPillGroupProps } from "./StatusPillGroup.interface";
 
 export const StatusPillGroup = ({
   statuses,

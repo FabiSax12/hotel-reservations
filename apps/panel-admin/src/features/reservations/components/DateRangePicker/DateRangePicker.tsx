@@ -4,7 +4,7 @@ import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from
 import { parseDate } from "@internationalized/date";
 import type { DateValue } from "@internationalized/date";
 import { useI18n } from "@/locales";
-import { DATE_RANGE_PICKER_STYLES as S } from "@/themes/reservations-filters.theme";
+import { DATE_RANGE_PICKER_STYLES as S } from "./DateRangePicker.styles";
 
 type DateRange = { start: DateValue; end: DateValue } | null;
 
@@ -43,6 +43,10 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
       <HeroDateRangePicker.Popover>
         <RangeCalendar aria-label={t.RESERVATIONS.FILTERS.DATE_RANGE_PICKER_LABEL}>
           <RangeCalendar.Header>
+            <RangeCalendar.YearPickerTrigger>
+              <RangeCalendar.YearPickerTriggerHeading />
+              <RangeCalendar.YearPickerTriggerIndicator />
+            </RangeCalendar.YearPickerTrigger>
             <RangeCalendar.NavButton slot="previous" />
             <RangeCalendar.NavButton slot="next" />
           </RangeCalendar.Header>
@@ -51,7 +55,7 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
               {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
             </RangeCalendar.GridHeader>
             <RangeCalendar.GridBody>
-              {(date) => <RangeCalendar.Cell date={date} />}
+              {(date) => <RangeCalendar.Cell date={date} className={S.calendarCell} />}
             </RangeCalendar.GridBody>
           </RangeCalendar.Grid>
         </RangeCalendar>

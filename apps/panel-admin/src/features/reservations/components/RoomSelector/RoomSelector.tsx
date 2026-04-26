@@ -2,13 +2,9 @@
 
 import { ListBox, Select } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
+import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
 import { ROOM_ALL_KEY, ROOM_LIST } from "../../constants/room-list";
-
-interface RoomSelectorProps {
-  value: string;
-  onChange: (key: string | number | null) => void;
-}
+import type { RoomSelectorProps } from "./RoomSelector.interface";
 
 export const RoomSelector = ({ value, onChange }: RoomSelectorProps) => {
   const { t } = useI18n();

@@ -1,16 +1,12 @@
 "use client";
 
-import type { Reservation } from "../domain/reservation";
-import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "@/themes/reservations-page.theme";
-import { useReservationsFiltering } from "../hooks/useReservationsFiltering";
-import { EmptyState } from "./EmptyState";
-import { ReservationsFilters } from "./ReservationsFilters";
-import { ReservationsPageHeader } from "./ReservationsPageHeader";
-import { ReservationsTable } from "./ReservationsTable";
-
-interface ReservationsViewProps {
-  reservations: readonly Reservation[];
-}
+import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
+import { useReservationsFiltering } from "../../hooks/useReservationsFiltering";
+import { EmptyState } from "../EmptyState/EmptyState";
+import { ReservationsFilters } from "../ReservationsFilters/ReservationsFilters";
+import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
+import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
+import type { ReservationsViewProps } from "./ReservationsView.interface";
 
 export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);

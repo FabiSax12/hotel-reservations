@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
-import { EMPTY_STATE_STYLES as S } from "@/themes/reservations-empty-state.theme";
+import { EMPTY_STATE_STYLES as S } from "./EmptyState.styles";
 
 export const EmptyState = () => {
   const { t } = useI18n();

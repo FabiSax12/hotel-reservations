@@ -2,13 +2,9 @@
 
 import { Chip } from "@heroui/react";
 import { useI18n } from "@/locales";
-import type { ReservationStatus } from "../domain/reservation";
-import { STATUS_COLOR } from "../constants/status-color";
-import { STATUS_I18N_KEY } from "../constants/status-i18n";
-
-interface StatusBadgeProps {
-  status: ReservationStatus;
-}
+import { STATUS_COLOR } from "../../constants/status-color";
+import { STATUS_I18N_KEY } from "../../constants/status-i18n";
+import type { StatusBadgeProps } from "./StatusBadge.interface";
 
 export const StatusBadge = ({ status }: StatusBadgeProps) => {
   const { t } = useI18n();

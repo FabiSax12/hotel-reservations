@@ -1,5 +1,3 @@
-// ─── Panel Admin – Reservations Table Styles ─────────────────────────────────
-
 export const RESERVATIONS_TABLE_STYLES = {
   columnHeader: "text-[10px] font-bold uppercase tracking-widest text-gray-400",
 } as const;

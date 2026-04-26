@@ -1,13 +1,8 @@
 "use client";
 
 import { useI18n } from "@/locales";
-import { FILTER_BAR_STYLES as S } from "@/themes/reservations-filters.theme";
-
-interface FilterResultsSummaryProps {
-  filteredCount: number;
-  totalCount: number;
-  isFiltered: boolean;
-}
+import { FILTER_RESULTS_SUMMARY_STYLES as S } from "./FilterResultsSummary.styles";
+import type { FilterResultsSummaryProps } from "./FilterResultsSummary.interface";
 
 export const FilterResultsSummary = ({
   filteredCount,
