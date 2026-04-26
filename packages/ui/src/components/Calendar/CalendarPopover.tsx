@@ -23,6 +23,10 @@ interface CalendarPopoverProps {
   variant?: (typeof UI_VARIANTS)[keyof typeof UI_VARIANTS];
   startLabel?: string;
   endLabel?: string;
+  /** Optional array of allowed ISO dates. If provided, all other dates are unselectable. */
+  availableDates?: string[];
+  /** Optional content to render below the calendar (e.g., a confirm button). */
+  bottomContent?: React.ReactNode;
 }
 
 export function CalendarPopover({
@@ -33,6 +37,8 @@ export function CalendarPopover({
   variant,
   startLabel,
   endLabel,
+  availableDates,
+  bottomContent,
 }: CalendarPopoverProps) {
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
@@ -64,8 +70,14 @@ export function CalendarPopover({
           onNext={() => setCurrentMonthOffset((prev) => Math.min(22, prev + 1))}
           startLabel={startLabel}
           endLabel={endLabel}
+          availableDates={availableDates}
         />
       ))}
+      {bottomContent && (
+        <div className="col-span-full w-full mt-4 pt-4 border-t border-neutral-100">
+          {bottomContent}
+        </div>
+      )}
     </div>
   );
 }

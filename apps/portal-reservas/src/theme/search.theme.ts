@@ -1,8 +1,10 @@
 // ─── Portal Reservas – Search Feature Styles ─────────────────────────────────
 
 export const HERO_SEARCH_STYLES = {
-  section:
-    "relative w-full h-screen flex flex-col items-center px-6 pt-[24vh] pb-8 animate-in fade-in duration-500",
+  section: (hasLocation: boolean) =>
+    `relative w-full flex flex-col items-center px-6 pb-8 transition-all duration-700 ease-in-out ${
+      hasLocation ? "pt-[15vh] min-h-[40vh]" : "h-screen pt-[24vh]"
+    } animate-in fade-in duration-500`,
   contentWrapper: "w-full max-w-[1150px] mx-auto flex flex-col items-center text-center z-10",
   titleBlock: "w-full flex flex-col items-center min-h-0 pointer-events-none",
   heading:

@@ -215,6 +215,7 @@ function RoomsInnerPage({
             onDestinationChange={onDestinationChange}
             heroCalendarActive={heroCalendarActive}
             setHeroCalendarActive={setHeroCalendarActive}
+            hasLocation={!!selectedLocation}
           />
         )}
 

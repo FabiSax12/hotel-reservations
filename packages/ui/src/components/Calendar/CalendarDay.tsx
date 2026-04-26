@@ -27,6 +27,7 @@ interface CalendarDayProps {
   onMouseLeave: () => void;
   startLabel?: string;
   endLabel?: string;
+  isAvailable?: boolean;
 }
 
 export function CalendarDay({
@@ -48,18 +49,19 @@ export function CalendarDay({
   onMouseLeave,
   startLabel,
   endLabel,
+  isAvailable = true,
 }: CalendarDayProps) {
   return (
     <button
       key={d}
-      disabled={isPast}
+      disabled={isPast || !isAvailable}
       onClick={(e) => {
         e.stopPropagation();
         onPickDate(dayStr);
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={S.dayBtn(isHero, isPast, isStart, isEnd, isSelected, isToday, isHovered)}
+      className={`${S.dayBtn(isHero, isPast, isStart, isEnd, isSelected, isToday, isHovered)} ${!isAvailable && !isPast ? "opacity-30 cursor-not-allowed" : ""}`}
       type="button"
     >
       {isStart && outVal > 0 && outVal !== inVal && <div className={S.rangeHighlightStart}></div>}

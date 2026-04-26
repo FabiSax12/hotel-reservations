@@ -24,6 +24,8 @@ interface HeroSearchProps {
   heroCalendarActive: boolean;
   /** Setter to mark the calendar as active, triggered by the search bar. */
   setHeroCalendarActive: (active: boolean) => void;
+  /** Whether a location has been selected. */
+  hasLocation: boolean;
 }
 
 export function HeroSearch({
@@ -31,11 +33,12 @@ export function HeroSearch({
   onDestinationChange,
   heroCalendarActive,
   setHeroCalendarActive,
+  hasLocation,
 }: HeroSearchProps) {
   const { t } = useI18n();
 
   return (
-    <section className={S.section}>
+    <section className={S.section(hasLocation)}>
       <div className={S.contentWrapper}>
         {/*
          * Title block: fades out (opacity 0) and slides up (-20px) when
@@ -73,6 +76,20 @@ export function HeroSearch({
             onHeroCalendarOpen={() => setHeroCalendarActive(true)}
           />
         </div>
+
+        {/* Scroll indicator when destination is selected */}
+        {hasLocation && !heroCalendarActive && (
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-in fade-in slide-in-from-top-4 duration-700 delay-300 pointer-events-none">
+            <span className="text-xs font-bold text-emerald-900/60 uppercase tracking-widest">
+              Explorar habitaciones
+            </span>
+            <div className="w-8 h-8 rounded-full bg-white/50 backdrop-blur-sm border border-emerald-900/10 flex items-center justify-center animate-bounce">
+              <svg className="w-4 h-4 text-emerald-900/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

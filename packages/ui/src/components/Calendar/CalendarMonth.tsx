@@ -33,6 +33,7 @@ interface CalendarMonthProps {
   onNext: () => void;
   startLabel?: string;
   endLabel?: string;
+  availableDates?: string[];
 }
 
 export function CalendarMonth({
@@ -51,6 +52,7 @@ export function CalendarMonth({
   onNext,
   startLabel,
   endLabel,
+  availableDates,
 }: CalendarMonthProps) {
   const targetDate = new Date(today.getFullYear(), today.getMonth() + absoluteMonthOffset, 1);
   const year = targetDate.getFullYear();
@@ -185,6 +187,7 @@ export function CalendarMonth({
               onMouseLeave={() => !isPast && onHoverDay(null)}
               startLabel={startLabel}
               endLabel={endLabel}
+              isAvailable={availableDates ? availableDates.includes(dayStr) : true}
             />
           );
         })}

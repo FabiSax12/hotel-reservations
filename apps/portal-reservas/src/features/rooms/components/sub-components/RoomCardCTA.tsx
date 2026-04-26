@@ -24,7 +24,7 @@ import { useRoomsContext } from "../../context/RoomsContext";
 import { useRoomAvailability } from "../../hooks/useRoomAvailability";
 import { useI18n } from "@/locales";
 import { ROOM_MOCK } from "../../constants/rooms.constants";
-import { RoomAvailabilityCalendar } from "./RoomAvailabilityCalendar";
+import { RoomRangeCalendar } from "./RoomRangeCalendar";
 import type { Room } from "../../domain/types";
 
 interface RoomCardCTAProps {
@@ -69,7 +69,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
     <div ref={wrapperRef} className={`${S.ctaWrapper} relative`}>
       {/* ── Room availability calendar (shared by both no-dates and unavailable states) */}
       {isCalendarOpen && (
-        <RoomAvailabilityCalendar
+        <RoomRangeCalendar
           availableDates={room.availableDates}
           location={room.location}
           onClose={() => setIsCalendarOpen(false)}
