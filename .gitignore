@@ -1,4 +1,3 @@
-# next js
 node_modules/
 .next/
 dist/
@@ -9,19 +8,20 @@ dist/
 *.tsbuildinfo
 next-env.d.ts
 
-# OS files
+# OS files (prevents platform-specific conflicts)
 .DS_Store
 Thumbs.db
 
-# IDEs
+# IDEs (prevents settings.json and workspace conflicts)
 .vscode/
 .idea/
+
+# Agent/AI tooling (per-developer, not application code)
+skills-lock.json
+.agents/
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
-# Workspace
-.npmrc
