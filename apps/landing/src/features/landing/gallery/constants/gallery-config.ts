@@ -1,6 +1,6 @@
 import type { GalleryTexts } from "@/features/landing/gallery/i18n/galleryTexts.type";
 
-export type GalleryItemId = keyof Omit<GalleryTexts, "EYEBROW" | "HEADLINE" | "SUBHEADLINE">;
+export type GalleryItemId = keyof Omit<GalleryTexts, "EYEBROW" | "HEADLINE" | "SUBHEADLINE" | "DOT_LABEL">;
 
 export type GalleryItem = {
   id: GalleryItemId;

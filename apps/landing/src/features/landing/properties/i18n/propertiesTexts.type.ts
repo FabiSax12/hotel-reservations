@@ -16,6 +16,9 @@ export type PropertiesTexts = {
   HEADLINE: string;
   SUBHEADLINE: string;
   DRAG_HINT: string;
+  DOT_LABEL: string;
+  NAV_PREV: string;
+  NAV_NEXT: string;
   ARENAL: PropertyItemTexts;
   MONTEVERDE: PropertyItemTexts;
 };

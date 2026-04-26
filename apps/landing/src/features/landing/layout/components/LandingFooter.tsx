@@ -13,10 +13,10 @@ export function LandingFooter() {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-12">
           <div className="flex flex-col gap-3">
             <span className="font-serif text-2xl tracking-[0.35em] uppercase text-stone-50">
-              ALTAVERDE
+              {t.COMMON.LAYOUT.HOTEL_NAME}
             </span>
             <span className="text-xs tracking-[0.25em] uppercase text-stone-500">
-              Luxury Nature Retreats · Costa Rica
+              {t.COMMON.LAYOUT.TAGLINE}
             </span>
           </div>
 
@@ -45,12 +45,12 @@ export function LandingFooter() {
 
         <div className="mt-12 pt-8 border-t border-forest-900 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
           <p className="text-xs text-stone-700 tracking-wide">
-            © 2024 ALTAVERDE. Todos los derechos reservados.
+            {t.COMMON.LAYOUT.COPYRIGHT}
           </p>
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-gold-500 opacity-60" />
             <p className="text-xs text-stone-700 tracking-wide">
-              Arenal & La Fortuna · Monteverde · Costa Rica
+              {t.COMMON.LAYOUT.LOCATIONS_FOOTER}
             </p>
           </div>
         </div>

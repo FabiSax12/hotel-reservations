@@ -9,6 +9,9 @@ export type AboutTexts = {
   BODY: string;
   QUOTE: string;
   QUOTE_ATTRIBUTION: string;
+  MOSAIC_ALT_1: string;
+  MOSAIC_ALT_2: string;
+  MOSAIC_ALT_3: string;
   STATS: {
     SUITES: AboutStats;
     YEARS: AboutStats;

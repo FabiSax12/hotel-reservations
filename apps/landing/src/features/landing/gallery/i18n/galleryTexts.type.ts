@@ -7,6 +7,7 @@ export type GalleryTexts = {
   EYEBROW: string;
   HEADLINE: string;
   SUBHEADLINE: string;
+  DOT_LABEL: string;
   THERMAL: GalleryItemTexts;
   CANOPY: GalleryItemTexts;
   SPA: GalleryItemTexts;

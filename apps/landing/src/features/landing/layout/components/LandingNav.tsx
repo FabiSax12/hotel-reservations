@@ -31,7 +31,7 @@ export function LandingNav() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: EXPO_OUT }}
         >
-          ALTAVERDE
+          {t.COMMON.LAYOUT.HOTEL_NAME}
         </motion.a>
 
         <motion.ul

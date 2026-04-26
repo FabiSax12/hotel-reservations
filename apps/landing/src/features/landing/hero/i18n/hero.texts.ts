@@ -13,6 +13,9 @@ export const HERO_TEXTS: Record<SupportedLocale, HeroTexts> = {
     CTA_SECONDARY: "Descubrir más",
     SCROLL_CUE: "Explorar",
     LOCATIONS: "Arenal & La Fortuna · Monteverde",
+    IMAGE_ALT: "ALTAVERDE Resort",
+    FEATURED_LABEL: "Propiedad destacada",
+    FEATURED_PROPERTY: "Arenal Thermal Suites · La Fortuna",
   },
   en: {
     EYEBROW: "Luxury Nature Retreats · Costa Rica",
@@ -25,5 +28,8 @@ export const HERO_TEXTS: Record<SupportedLocale, HeroTexts> = {
     CTA_SECONDARY: "Discover more",
     SCROLL_CUE: "Explore",
     LOCATIONS: "Arenal & La Fortuna · Monteverde",
+    IMAGE_ALT: "ALTAVERDE Resort",
+    FEATURED_LABEL: "Featured property",
+    FEATURED_PROPERTY: "Arenal Thermal Suites · La Fortuna",
   },
 };

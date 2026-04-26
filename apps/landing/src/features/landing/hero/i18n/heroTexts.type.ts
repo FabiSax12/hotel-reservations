@@ -8,4 +8,7 @@ export type HeroTexts = {
   CTA_SECONDARY: string;
   SCROLL_CUE: string;
   LOCATIONS: string;
+  IMAGE_ALT: string;
+  FEATURED_LABEL: string;
+  FEATURED_PROPERTY: string;
 };

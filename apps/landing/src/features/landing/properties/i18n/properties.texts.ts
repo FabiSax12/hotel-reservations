@@ -7,6 +7,9 @@ export const PROPERTIES_TEXTS: Record<SupportedLocale, PropertiesTexts> = {
     HEADLINE: "Dos destinos, una visión",
     SUBHEADLINE: "Cada propiedad es una puerta a un ecosistema único de Costa Rica.",
     DRAG_HINT: "Deslizá para explorar",
+    DOT_LABEL: "Propiedad",
+    NAV_PREV: "Anterior",
+    NAV_NEXT: "Siguiente",
     ARENAL: {
       NAME: "ALTAVERDE ARENAL",
       LOCATION: "Arenal & La Fortuna · Costa Rica",
@@ -39,6 +42,9 @@ export const PROPERTIES_TEXTS: Record<SupportedLocale, PropertiesTexts> = {
     HEADLINE: "Two destinations, one vision",
     SUBHEADLINE: "Each property is a gateway to a unique Costa Rican ecosystem.",
     DRAG_HINT: "Drag to explore",
+    DOT_LABEL: "Property",
+    NAV_PREV: "Previous",
+    NAV_NEXT: "Next",
     ARENAL: {
       NAME: "ALTAVERDE ARENAL",
       LOCATION: "Arenal & La Fortuna · Costa Rica",
