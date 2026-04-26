@@ -14,6 +14,7 @@ interface ReservationsViewProps {
 
 export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);
+  const hasResults = filtered.length > 0;
 
   return (
     <main className={RESERVATIONS_PAGE_STYLES.wrapper}>
@@ -30,10 +31,10 @@ export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
       </div>
 
       <div className={CARD_STYLES.bodyWithOverflow}>
-        {filtered.length === 0 ? (
-          <EmptyState />
-        ) : (
+        {hasResults ? (
           <ReservationsTable reservations={filtered} />
+        ) : (
+          <EmptyState />
         )}
       </div>
     </main>

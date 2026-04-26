@@ -32,13 +32,5 @@ export const STATUS_DOT_COLOR: Record<ReservationStatus, string> = Object.freeze
 // ─── Date Range Picker ────────────────────────────────────────────────────────
 
 export const DATE_RANGE_PICKER_STYLES = {
-  wrapper:          "relative",
-  container:        "flex items-stretch rounded-full border border-gray-200 shadow-sm bg-white hover:shadow-md transition-shadow",
-  fieldBase:        "flex flex-col justify-center px-3 py-1.5 rounded-full cursor-pointer transition min-w-[110px]",
-  fieldActive:      "bg-white shadow-sm",
-  fieldInactive:    "hover:bg-gray-50",
-  fieldFlex:        "flex-1",
-  label:            "text-[10px] font-bold tracking-widest text-gray-700 uppercase mb-0.5",
-  valuePlaceholder: "text-sm font-medium text-gray-400",
-  valueFilled:      "text-sm font-semibold text-gray-900",
+  group: "rounded-full border border-gray-200 shadow-sm bg-white hover:shadow-md transition-shadow px-3 py-1.5 text-sm",
 } as const;

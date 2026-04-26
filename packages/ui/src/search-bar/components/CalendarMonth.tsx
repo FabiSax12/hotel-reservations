@@ -17,12 +17,12 @@
 
 import { CALENDAR_STYLES as S } from "../theme/calendar.theme";
 import { CalendarDay } from "./CalendarDay";
+import {
+  CALENDAR_MAX_MONTHS,
+  CALENDAR_MIN_PAST_OFFSET,
+} from "../constants/calendar.constants";
 
-/** Day-of-week header labels in Costa Rican Spanish. */
 const DAYS_HEADER = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
-
-/** Maximum number of months the user can scroll forward. */
-const MAX_MONTHS = 24;
 
 /** Shared invalid-state shape used by the calendar family of components. */
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
@@ -82,15 +82,20 @@ export function CalendarMonth({
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
+  const isSingleMonth = monthCount === 1;
+  const isFirstColumn = monthIndexLocal === 0;
+  const isLastColumn = monthIndexLocal === monthCount - 1;
+  const atPastBoundary = allowPast ? currentMonthOffset === CALENDAR_MIN_PAST_OFFSET : currentMonthOffset === 0;
+  const atFutureBoundary = currentMonthOffset >= CALENDAR_MAX_MONTHS - monthCount;
+
   return (
     <div className={S.monthCol}>
       {/* Month navigation header */}
       <div className={S.monthHeader}>
-        {/* Left chevron — show on left column, or always if single month */}
-        {(monthIndexLocal === 0 || monthCount === 1) ? (
+        {(isFirstColumn || isSingleMonth) ? (
           <button
             type="button"
-            disabled={allowPast ? currentMonthOffset === -12 : currentMonthOffset === 0}
+            disabled={atPastBoundary}
             onClick={(e) => { e.stopPropagation(); onPrev(); }}
             className={S.navBtn}
           >
@@ -102,11 +107,10 @@ export function CalendarMonth({
           {monthHeader} {showYear ? year : ""}
         </h3>
 
-        {/* Right chevron — show on right column, or always if single month */}
-        {(monthIndexLocal === monthCount - 1 || monthCount === 1) ? (
+        {(isLastColumn || isSingleMonth) ? (
           <button
             type="button"
-            disabled={currentMonthOffset >= MAX_MONTHS - monthCount}
+            disabled={atFutureBoundary}
             onClick={(e) => { e.stopPropagation(); onNext(); }}
             className={S.navBtn}
           >

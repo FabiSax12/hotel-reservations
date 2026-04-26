@@ -1,6 +1,6 @@
 import type { ReservationStatus } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
-import { DEFAULT_FILTERS } from "../domain/reservation-filters";
+import { DEFAULT_FILTERS } from "../constants/reservation-filters";
 import { ROOM_ALL_KEY } from "../constants/room-list";
 
 interface UseReservationFiltersReturn {

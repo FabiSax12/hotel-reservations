@@ -1,10 +1,12 @@
 "use client";
 
-import { CalendarPopover } from "@hotel/ui";
+import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from "@heroui/react";
+import { parseDate } from "@internationalized/date";
+import type { DateValue } from "@internationalized/date";
 import { useI18n } from "@/locales";
 import { DATE_RANGE_PICKER_STYLES as S } from "@/themes/reservations-filters.theme";
-import { formatPickerDate } from "../../utils/format-reservation-date";
-import { useDateRangePicker } from "../../hooks/useDateRangePicker";
+
+type DateRange = { start: DateValue; end: DateValue } | null;
 
 interface DateRangePickerProps {
   checkIn: string;
@@ -14,42 +16,46 @@ interface DateRangePickerProps {
 
 export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePickerProps) {
   const { t } = useI18n();
-  const { active, setActive, invalidState, containerRef, handlePickDate } =
-    useDateRangePicker(checkIn, checkOut, onChange);
 
-  const displayText =
-    checkIn || checkOut
-      ? `${formatPickerDate(checkIn)}${checkOut ? ` → ${formatPickerDate(checkOut)}` : ""}`
-      : t.RESERVATIONS.FILTERS.DATE_RANGE_PICKER_LABEL;
+  const value: DateRange =
+    checkIn && checkOut ? { start: parseDate(checkIn), end: parseDate(checkOut) } : null;
 
-  const isEmpty = displayText === t.RESERVATIONS.FILTERS.DATE_RANGE_PICKER_LABEL;
+  const handleChange = (range: DateRange) => {
+    onChange(range?.start.toString() ?? "", range?.end.toString() ?? "");
+  };
 
   return (
-    <div ref={containerRef} className={S.wrapper}>
-      <div className={S.container}>
-        <div
-          onClick={() => setActive("checkIn")}
-          className={`${S.fieldBase} ${S.fieldFlex} ${active ? S.fieldActive : S.fieldInactive}`}
-        >
-          <div className={S.label} />
-          <div className={isEmpty ? S.valuePlaceholder : S.valueFilled}>
-            {displayText}
-          </div>
-        </div>
-      </div>
-
-      {(active === "checkIn" || active === "checkOut") && (
-        <CalendarPopover
-          activeMode={active}
-          checkIn={checkIn}
-          checkOut={checkOut}
-          invalidState={invalidState}
-          onPickDate={handlePickDate}
-          variant="compact"
-          monthCount={1}
-          allowPast={true}
-        />
-      )}
-    </div>
+    <HeroDateRangePicker value={value} onChange={handleChange}>
+      <DateField.Group fullWidth className={S.group}>
+        <DateField.Input slot="start">
+          {(segment) => <DateField.Segment segment={segment} />}
+        </DateField.Input>
+        <HeroDateRangePicker.RangeSeparator />
+        <DateField.Input slot="end">
+          {(segment) => <DateField.Segment segment={segment} />}
+        </DateField.Input>
+        <DateField.Suffix>
+          <HeroDateRangePicker.Trigger>
+            <HeroDateRangePicker.TriggerIndicator />
+          </HeroDateRangePicker.Trigger>
+        </DateField.Suffix>
+      </DateField.Group>
+      <HeroDateRangePicker.Popover>
+        <RangeCalendar aria-label={t.RESERVATIONS.FILTERS.DATE_RANGE_PICKER_LABEL}>
+          <RangeCalendar.Header>
+            <RangeCalendar.NavButton slot="previous" />
+            <RangeCalendar.NavButton slot="next" />
+          </RangeCalendar.Header>
+          <RangeCalendar.Grid>
+            <RangeCalendar.GridHeader>
+              {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
+            </RangeCalendar.GridHeader>
+            <RangeCalendar.GridBody>
+              {(date) => <RangeCalendar.Cell date={date} />}
+            </RangeCalendar.GridBody>
+          </RangeCalendar.Grid>
+        </RangeCalendar>
+      </HeroDateRangePicker.Popover>
+    </HeroDateRangePicker>
   );
 }

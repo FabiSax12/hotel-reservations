@@ -6,10 +6,3 @@ export interface ReservationFilters {
   dateFrom: string;
   dateTo: string;
 }
-
-export const DEFAULT_FILTERS: ReservationFilters = {
-  statuses: [],
-  roomName: "",
-  dateFrom: "",
-  dateTo: "",
-};

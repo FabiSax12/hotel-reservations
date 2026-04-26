@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { FILTER_BAR_STYLES as S, STATUS_DOT_COLOR } from "@/themes/reservations-filters.theme";
 import type { ReservationStatus } from "../../domain/reservation";
@@ -25,30 +26,30 @@ export const StatusPillGroup = ({
 
   return (
     <div className={S.leftSection}>
-      <button
-        type="button"
+      <Button
+        variant="ghost"
         aria-pressed={statuses.length === 0}
         className={`${S.pill} ${statuses.length === 0 ? S.pillActive : S.pillInactive}`}
-        onClick={onAllClick}
+        onPress={onAllClick}
       >
         {t.RESERVATIONS.FILTERS.ALL}
         <span className={S.pillCount}>{totalCount}</span>
-      </button>
+      </Button>
 
       {RESERVATION_STATUSES.map((status) => {
         const isOn = statuses.includes(status);
         return (
-          <button
+          <Button
             key={status}
-            type="button"
+            variant="ghost"
             aria-pressed={isOn}
             className={`${S.pill} ${isOn ? S.pillActive : S.pillInactive}`}
-            onClick={() => onStatusToggle(status)}
+            onPress={() => onStatusToggle(status)}
           >
             <span className={`${S.pillStatusDot} ${STATUS_DOT_COLOR[status]}`} />
             {t.RESERVATIONS.STATUS[STATUS_I18N_KEY[status]]}
             <span className={S.pillCount}>{statusCounts[status]}</span>
-          </button>
+          </Button>
         );
       })}
     </div>

@@ -19,6 +19,11 @@ import { useState } from "react";
 import { parseDateHelper } from "../utils/dateUtils";
 import { CALENDAR_STYLES as S } from "../theme/calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
+import {
+  CALENDAR_MAX_MONTHS,
+  CALENDAR_MIN_PAST_OFFSET,
+  CALENDAR_DEFAULT_MONTH_COUNT,
+} from "../constants/calendar.constants";
 
 /** Shared invalid-state shape used by the calendar family of components. */
 interface CalendarInvalidState { dayStr: string; isFading: boolean; }
@@ -48,7 +53,7 @@ export function CalendarPopover({
   invalidState, 
   onPickDate, 
   variant,
-  monthCount = 2,
+  monthCount = CALENDAR_DEFAULT_MONTH_COUNT,
   allowPast = false,
 }: CalendarPopoverProps) {
   /** ISO string of the day currently being hovered, or null. */
@@ -90,8 +95,8 @@ export function CalendarPopover({
           allowPast={allowPast}
           onPickDate={onPickDate}
           onHoverDay={setHoveredDay}
-          onPrev={() => setCurrentMonthOffset(prev => Math.max(allowPast ? -12 : 0, prev - 1))}
-          onNext={() => setCurrentMonthOffset(prev => Math.min(22, prev + 1))}
+          onPrev={() => setCurrentMonthOffset(prev => Math.max(allowPast ? CALENDAR_MIN_PAST_OFFSET : 0, prev - 1))}
+          onNext={() => setCurrentMonthOffset(prev => Math.min(CALENDAR_MAX_MONTHS - monthCount, prev + 1))}
         />
       ))}
     </div>

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Reservation } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
-import { DEFAULT_FILTERS } from "../domain/reservation-filters";
+import { DEFAULT_FILTERS } from "../constants/reservation-filters";
 import { countReservationStatuses } from "../utils/count-reservation-statuses";
 import { filterReservations } from "../utils/filter-reservations";
 
