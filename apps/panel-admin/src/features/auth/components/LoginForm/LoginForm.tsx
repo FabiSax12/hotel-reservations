@@ -1,14 +1,12 @@
 "use client";
 
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import { useActionState } from "react";
+import { useActionState, useId } from "react";
 import type { LoginActionState } from "@/features/auth/domain/credentials";
 import { createEmailValidator, createPasswordValidator } from "@/features/auth/domain/credentials";
 import { useI18n } from "@/locales";
-
-interface LoginFormProps {
-  action: (prevState: LoginActionState, formData: FormData) => Promise<LoginActionState>;
-}
+import type { LoginFormProps } from "./LoginForm.interface";
+import { LOGIN_FORM_STYLES as S } from "./LoginForm.styles";
 
 export const LoginForm = ({ action }: LoginFormProps) => {
   const [state, formAction, isPending] = useActionState<LoginActionState, FormData>(action, null);
@@ -17,22 +15,25 @@ export const LoginForm = ({ action }: LoginFormProps) => {
   const validateEmail = createEmailValidator(t.AUTH.VALIDATION.INVALID_EMAIL);
   const validatePassword = createPasswordValidator(t.AUTH.VALIDATION.PASSWORD_TOO_SHORT);
 
-  return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-sm rounded-xl bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-2xl font-semibold text-gray-900">{t.AUTH.LOGIN.TITLE}</h1>
+  const emailInputId = useId();
+  const passwordInputId = useId();
 
-        <Form className="flex flex-col gap-4" action={formAction}>
+  return (
+    <main className={S.wrapper}>
+      <div className={S.card}>
+        <h1 className={S.title}>{t.AUTH.LOGIN.TITLE}</h1>
+
+        <Form className={S.form} action={formAction}>
           <TextField isRequired name="email" type="email" validate={validateEmail}>
-            <Label htmlFor="email">{t.AUTH.LOGIN.EMAIL_LABEL}</Label>
-            <Input id="email" placeholder={t.AUTH.LOGIN.EMAIL_PLACEHOLDER} autoComplete="email" />
+            <Label htmlFor={emailInputId}>{t.AUTH.LOGIN.EMAIL_LABEL}</Label>
+            <Input id={emailInputId} placeholder={t.AUTH.LOGIN.EMAIL_PLACEHOLDER} autoComplete="email" />
             <FieldError />
           </TextField>
 
           <TextField isRequired name="password" type="password" validate={validatePassword}>
-            <Label htmlFor="password">{t.AUTH.LOGIN.PASSWORD_LABEL}</Label>
+            <Label htmlFor={passwordInputId}>{t.AUTH.LOGIN.PASSWORD_LABEL}</Label>
             <Input
-              id="password"
+              id={passwordInputId}
               placeholder={t.AUTH.LOGIN.PASSWORD_PLACEHOLDER}
               autoComplete="current-password"
             />
@@ -41,10 +42,7 @@ export const LoginForm = ({ action }: LoginFormProps) => {
           </TextField>
 
           {state?.error && (
-            <p
-              role="alert"
-              className="rounded-md border border-danger bg-danger-soft px-3 py-2 text-sm text-danger"
-            >
+            <p role="alert" className={S.errorAlert}>
               {t.AUTH.ERRORS[state.error]}
             </p>
           )}

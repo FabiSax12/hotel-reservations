@@ -4,12 +4,10 @@ import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react
 import { useActionState } from "react";
 import type { CreateAdminActionState } from "@/features/auth/domain/adminInvite";
 import { useI18n } from "@/locales";
+import type { CreateAdminFormProps } from "./CreateAdminForm.interface";
+import { CREATE_ADMIN_FORM_STYLES as S } from "./CreateAdminForm.styles";
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-interface CreateAdminFormProps {
-  action: (prevState: CreateAdminActionState, formData: FormData) => Promise<CreateAdminActionState>;
-}
 
 export const CreateAdminForm = ({ action }: CreateAdminFormProps) => {
   const [state, formAction, isPending] = useActionState<CreateAdminActionState, FormData>(
@@ -21,21 +19,18 @@ export const CreateAdminForm = ({ action }: CreateAdminFormProps) => {
 
   if (state !== null && "success" in state) {
     return (
-      <div
-        role="alert"
-        className="rounded-md border border-success bg-success-soft px-4 py-3 text-sm text-success"
-      >
+      <div role="alert" className={S.successAlert}>
         {CREATE_ADMIN.SUCCESS_PREFIX} <strong>{state.email}</strong>.
       </div>
     );
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-sm rounded-xl bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-2xl font-semibold text-gray-900">{CREATE_ADMIN.TITLE}</h1>
+    <main className={S.wrapper}>
+      <div className={S.card}>
+        <h1 className={S.title}>{CREATE_ADMIN.TITLE}</h1>
 
-        <Form className="flex flex-col gap-4" action={formAction}>
+        <Form className={S.form} action={formAction}>
           <TextField
             isRequired
             name="name"
@@ -59,10 +54,7 @@ export const CreateAdminForm = ({ action }: CreateAdminFormProps) => {
           </TextField>
 
           {state !== null && "error" in state && (
-            <p
-              role="alert"
-              className="rounded-md border border-danger bg-danger-soft px-3 py-2 text-sm text-danger"
-            >
+            <p role="alert" className={S.errorAlert}>
               {ERRORS[state.error]}
             </p>
           )}

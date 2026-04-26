@@ -1,13 +1,14 @@
 "use client";
 
 import { useI18n } from "@/locales";
+import { ACTIVATION_LOADING_STYLES as S } from "./ActivationLoading.styles";
 
 export const ActivationLoading = () => {
   const { t } = useI18n();
 
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <p className="text-sm text-gray-500" aria-live="polite">
+    <main className={S.wrapper}>
+      <p className={S.text} aria-live="polite">
         {t.AUTH.ACTIVATE.LOADING}
       </p>
     </main>
