@@ -34,9 +34,7 @@ export function Header({ hasSearched, searchParams, onReset, onSearch }: HeaderP
       </div>
 
       {/* Pinned compact search bar — only visible after the first search */}
-      {hasSearched && (
-        <StickySearchBar searchParams={searchParams} onSearch={onSearch} />
-      )}
+      {hasSearched && <StickySearchBar searchParams={searchParams} onSearch={onSearch} />}
     </header>
   );
 }

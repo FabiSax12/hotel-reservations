@@ -7,7 +7,7 @@
  * re-triggers the results with updated filters.
  */
 
-import { ModernSearchBar } from "@hotel/ui";
+import { ModernSearchBar } from "../../search/components/search-bar";
 import type { SearchParams } from "../../search/domain/types";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 
@@ -23,7 +23,7 @@ export function StickySearchBar({ searchParams, onSearch }: StickySearchBarProps
     <div className={S.stickySearchBar}>
       <ModernSearchBar
         size="compact"
-        className="w-full max-w-5xl"
+        className={S.compactSearchContainer}
         onSearch={onSearch}
         initialState={searchParams}
       />
