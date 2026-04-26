@@ -65,4 +65,10 @@ export interface SearchBarProps {
    * The parent (HeroSearch) uses this to trigger the title fade-out animation.
    */
   onHeroCalendarOpen?: () => void;
+  /**
+   * Callback fired whenever the user selects a destination.
+   * Used by the page orchestrator to activate the rooms section without
+   * requiring a full search submission.
+   */
+  onDestinationChange?: (destination: string) => void;
 }

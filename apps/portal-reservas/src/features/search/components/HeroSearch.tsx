@@ -16,6 +16,8 @@ import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 import { useI18n } from "@/locales";
 
 interface HeroSearchProps {
+  /** Callback when the user selects a destination (before full search submission). */
+  onDestinationChange?: (dest: string) => void;
   /** Callback when the user submits a search. */
   onSearch: (params: any) => void;
   /** Whether the hero calendar has been expanded (controls title fade-out). */
@@ -26,6 +28,7 @@ interface HeroSearchProps {
 
 export function HeroSearch({
   onSearch,
+  onDestinationChange,
   heroCalendarActive,
   setHeroCalendarActive,
 }: HeroSearchProps) {
@@ -65,6 +68,7 @@ export function HeroSearch({
           <ModernSearchBar
             size="hero"
             onSearch={onSearch}
+            onDestinationChange={onDestinationChange}
             className={S.searchBarWidth}
             onHeroCalendarOpen={() => setHeroCalendarActive(true)}
           />

@@ -11,3 +11,4 @@ next-env.d.ts
 # Agent/AI tooling (per-developer, not application code)
 skills-lock.json
 .agents/
+.claude/

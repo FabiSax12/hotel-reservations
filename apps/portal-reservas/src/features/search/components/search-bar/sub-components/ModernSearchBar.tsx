@@ -3,6 +3,10 @@
  *
  * This component acts as the high-level manager, connecting data-fetching
  * (initial state), custom hooks (logic blocks), and the presentation layer.
+ *
+ * FIX (US-DM-02): `onDestinationChange` is now fired via `useEffect` watching
+ * the `destination` state, avoiding the "setState during render" error that
+ * occurred when `onDestinationChange` was called inside the state setter.
  */
 
 "use client";
@@ -30,6 +34,7 @@ export function ModernSearchBar({
   size = SEARCH_VARIANTS.COMPACT,
   initialState,
   onHeroCalendarOpen,
+  onDestinationChange,
 }: SearchBarProps) {
   // 1. Logic Hooks
   const {
@@ -58,6 +63,24 @@ export function ModernSearchBar({
       return initialState.destination;
     return onlyOneSede || "";
   });
+
+  /**
+   * Notify the parent when destination changes.
+   * Uses useEffect (post-render) to avoid the React "setState during render"
+   * violation that occurs when calling parent setters inside a child's state setter.
+   * Skip the first render to avoid double-firing during initialization.
+   */
+  const isFirstRenderRef = React.useRef(true);
+  React.useEffect(() => {
+    if (isFirstRenderRef.current) {
+      isFirstRenderRef.current = false;
+      // Notify parent of the initial (auto-selected) destination on mount
+      if (destination) onDestinationChange?.(destination);
+      return;
+    }
+    if (destination) onDestinationChange?.(destination);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination]);
 
   const { checkIn, checkOut, invalidState, handlePickDate } = useDateSelection(
     initialState?.checkIn || "",

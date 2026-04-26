@@ -1,21 +1,30 @@
 /**
- * @file RoomCard.tsx — Individual room result card.
+ * @file RoomCard.tsx — Individual room result card orchestrator.
  *
- * Orchestrates two sub-components:
- *  - {@link RoomImagePanel} — The left-side photo with optional urgency badge.
- *  - {@link RoomPriceTier}  — The bottom price block with availability and CTA.
+ * Refactored in US-DM-02 to:
+ *  - Consume `RoomsContext` for expansion state and unavailability styling.
+ *  - Delegate image panel to `RoomImagePanel` (which now has adminTip + expand button).
+ *  - Delegate header/meta to new sub-components `RoomCardHeader` and `RoomCardMeta`.
+ *  - Animate the expansion panel using `grid-template-rows` CSS transition.
+ *  - Apply opacity reduction when dates are set but the room is unavailable.
  *
- * Uses staggered animation delays (`index * 150ms`) so cards cascade in
- * from the bottom when the results list mounts. A room is considered
- * "scarce" when inventory ≤ 2, which triggers a red urgency badge.
+ * Expansion state is managed via `useRoomExpansion` which reads from the shared
+ * `RoomsContext`, enforcing the "only one card open at a time" rule.
  */
+
+"use client";
 
 import type { Room } from "../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { useRoomsContext } from "../context/RoomsContext";
+import { useRoomExpansion } from "../hooks/useRoomExpansion";
+import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { RoomImagePanel } from "./RoomImagePanel";
+import { RoomCardHeader } from "./sub-components/RoomCardHeader";
+import { RoomCardMeta } from "./sub-components/RoomCardMeta";
+import { RoomCardGallery } from "./sub-components/RoomCardGallery";
 import { RoomPriceTier } from "./RoomPriceTier";
-import { useI18n } from "@/locales";
-import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
+import { ROOM_ANIMATION } from "../constants/rooms.constants";
 
 interface RoomCardProps {
   /** Room data to render. */
@@ -27,51 +36,50 @@ interface RoomCardProps {
 }
 
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
-  const { t } = useI18n();
+  const { hasDates, searchDates } = useRoomsContext();
+  const { isExpanded, handleToggle } = useRoomExpansion(room.id);
+  const { isAvailable, isLoading } = useRoomAvailability(
+    room.id,
+    searchDates?.checkIn,
+    room.availableDates,
+  );
 
-  /** Rooms with ≤ 2 available show an urgency badge on the image. */
-  const isScarce = room.inventory <= 2;
+  // A room is visually unavailable when dates are set, loading is done, and it's not free
+  const isUnavailable = hasDates && !isLoading && !isAvailable;
 
   return (
-    <div
-      className={S.card}
-      style={{ animationDelay: `${index * 150}ms`, animationDuration: "600ms" }}
+    <article
+      className={S.card(isUnavailable)}
+      style={{
+        animationDelay: `${index * ROOM_ANIMATION.CASCADE_DELAY_MS}ms`,
+        animationDuration: `${ROOM_ANIMATION.ENTRANCE_DURATION_MS}ms`,
+      }}
+      aria-label={room.title}
     >
-      <RoomImagePanel image={room.image} inventory={room.inventory} isScarce={isScarce} />
+      {/* Left: image panel with urgency badge, admin tip, and expand toggle */}
+      <RoomImagePanel room={room} isExpanded={isExpanded} onToggleExpand={handleToggle} />
 
+      {/* Right: card body */}
       <div className={S.body}>
         <div className={S.bodyHeader}>
-          <div>
-            {/* Show the location label when browsing "all destinations" */}
-            {(!selectedDest || selectedDest === SEARCH_VALS.DESTINATION_ALL) && (
-              <p className={S.locationLabel}>{room.location}</p>
-            )}
-            <h3 className={S.title}>{room.title}</h3>
+          <RoomCardHeader room={room} selectedDest={selectedDest} />
+        </div>
+
+        <RoomCardMeta room={room} />
+
+        {/* Expansion panel — animated via grid-template-rows */}
+        <div
+          className={`${S.expansionGrid} ${isExpanded ? S.expansionGridOpen : S.expansionGridClosed}`}
+          aria-hidden={!isExpanded}
+        >
+          <div className={S.expansionInner}>
+            <RoomCardGallery room={room} />
           </div>
         </div>
 
-        {/* Room type chip + square-meter measurement */}
-        <div className={S.metaRow}>
-          <span className={S.typeChip}>
-            {room.type} {t.ROOMS.TYPE_LABEL}
-          </span>
-          <span className={S.sqftLabel}>
-            <svg className={S.sqftIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-              />
-            </svg>
-            {room.sqft} {t.ROOMS.SQFT_LABEL}
-          </span>
-        </div>
-
-        <p className={S.description}>{room.description}</p>
-
-        <RoomPriceTier price={room.price} inventory={room.inventory} isScarce={isScarce} />
+        {/* Price tier + conditional CTA */}
+        <RoomPriceTier room={room} />
       </div>
-    </div>
+    </article>
   );
 }

@@ -1,8 +1,17 @@
 /**
  * @file regionsConfig.ts — Destination data for the DestinationPopover.
+ *
+ * ─── DEBUG VARIABLE ──────────────────────────────────────────────────────────
+ * Change `DEBUG_SEDE_COUNT` to `1` to simulate a single-sede hotel
+ * (the first region in the list will be auto-selected on load).
+ * Change to `2` to test the full multi-sede selection flow.
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 
-export const REGIONS_CONFIG = [
+/** Set to 1 or 2 to control how many sedes are exposed for testing. */
+export const DEBUG_SEDE_COUNT: 1 | 2 = 2;
+
+const ALL_REGIONS = [
   {
     name: "Arenal & La Fortuna",
     desc: "Volcanes, aguas termales, selvas tropicales",
@@ -30,3 +39,5 @@ export const REGIONS_CONFIG = [
     priceFrom: 145,
   },
 ];
+
+export const REGIONS_CONFIG = ALL_REGIONS.slice(0, DEBUG_SEDE_COUNT);

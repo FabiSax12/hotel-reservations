@@ -34,7 +34,9 @@ export function DestinationPopover() {
 
   const handleSelect = (v: string) => {
     setDestination(v);
-    activateSection(SEARCH_SECTIONS.CHECK_IN, clearError);
+    clearError();
+    // Do NOT auto-advance to checkIn — the calendar only opens when the
+    // user explicitly clicks the Check In or Check Out field.
   };
 
   return (

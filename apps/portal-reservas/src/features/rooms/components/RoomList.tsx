@@ -1,13 +1,11 @@
 /**
  * @file RoomList.tsx — Scrollable list of room results.
  *
- * Displayed in State B after the user searches. Shows a summary header
- * (destination name + room count) and renders a vertically stacked
- * list of {@link RoomCard} components.
- *
- * The `searchKey` prop is used as a React `key` on the grid container,
- * so that switching searches re-mounts the list and replays entrance
- * animations.
+ * Updated in US-DM-02:
+ *  - No longer gated behind `hasSearched`. Renders whenever `selectedLocation`
+ *    has a value (rooms section activates as soon as a destination is chosen).
+ *  - `searchKey` is still used as a React key to re-trigger entrance animations
+ *    when a new search is submitted.
  */
 
 import type { Room } from "../domain/types";
@@ -16,11 +14,11 @@ import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 
 interface RoomListProps {
-  /** Filtered array of rooms to display. */
+  /** Filtered array of rooms to display for the selected location. */
   rooms: Room[];
-  /** The currently selected destination, or null for "all". */
-  selectedDest: string | null;
-  /** Monotonic counter used as a React key to force re-mount animations. */
+  /** The currently selected destination name. */
+  selectedDest: string;
+  /** Monotonic counter used as a React key to force re-mount and replay entrance animations. */
   searchKey: number;
 }
 
@@ -28,23 +26,23 @@ export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
   const { t } = useI18n();
 
   return (
-    <section className={S.section}>
-      {/* Summary header: destination name + live count badge */}
+    <section id="rooms-section" className={S.section} aria-label="Listado de habitaciones">
+      {/* Summary header */}
       <div className={S.header}>
         <div>
           <div className={S.badge}>{t.ROOMS.REALTIME_AVAIL}</div>
           <h2 className={S.heading}>
-            {t.ROOMS.OPTIONS_IN} {selectedDest || t.ROOMS.ALL_DESTINATIONS}
+            {t.ROOMS.OPTIONS_IN} {selectedDest}
           </h2>
         </div>
 
-        <div className={S.countBadge}>
+        <div className={S.countBadge} role="status" aria-live="polite">
           <span className={S.countDot} />
           {rooms.length} {t.ROOMS.ROOMS_FOUND}
         </div>
       </div>
 
-      {/* Stacked card grid — key forces re-mount for staggered animations */}
+      {/* Card grid — key forces re-mount for staggered animations on new search */}
       <div key={searchKey} className={S.grid}>
         {rooms.map((room, index) => (
           <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />

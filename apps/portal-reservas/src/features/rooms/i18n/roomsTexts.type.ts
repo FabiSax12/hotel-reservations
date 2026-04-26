@@ -12,4 +12,21 @@ export type RoomsTexts = {
   CURRENCY: string;
   AVAILABLE_DATES: string;
   SELECT_ACTION: string;
+  // US-DM-02 additions
+  CAPACITY_LABEL: string;
+  AMENITIES_TITLE: string;
+  ADMIN_TIP_LABEL: string;
+  EXPAND_DETAILS: string;
+  COLLAPSE_DETAILS: string;
+  RESERVE_ACTION: string;
+  LOADING_RESERVE: string;
+  CHECK_DATES_ACTION: string;
+  SEE_FREE_DATES: string;
+  UNAVAILABLE_LABEL: string;
+  QUICK_SEARCH_TITLE: string;
+  AVAIL_CALENDAR_TITLE: string;
+  GUESTS_LABEL: string;
+  CONFIRM_SEARCH: string;
+  NO_LOCATION_HINT: string;
+  BROWSE_ROOMS: string;
 };
