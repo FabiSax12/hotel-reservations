@@ -79,15 +79,45 @@ export function HeroSearch({
 
         {/* Scroll indicator when destination is selected */}
         {hasLocation && !heroCalendarActive && (
-          <div className="relative mt-24 flex flex-col items-center gap-3 animate-in fade-in duration-1000 pointer-events-none">
-            <span className="px-4 py-1.5 rounded-full bg-emerald-950/40 backdrop-blur-md border border-white/20 text-xs font-bold text-white uppercase tracking-widest shadow-sm">
+          <div className="relative mt-24 flex flex-col items-center gap-2 animate-in fade-in duration-1000 pointer-events-none">
+            <style>
+              {`
+                @keyframes scrollArrow {
+                  0% { opacity: 0; transform: translateY(-4px); }
+                  50% { opacity: 0.8; }
+                  100% { opacity: 0; transform: translateY(4px); }
+                }
+                .animate-scroll-arrow {
+                  animation: scrollArrow 2s infinite;
+                }
+              `}
+            </style>
+            
+            <span className="px-5 py-2 rounded-full bg-emerald-950/30 backdrop-blur-md border border-white/10 text-[10px] font-black text-white uppercase tracking-[0.2em] shadow-sm mb-4">
               Explorar habitaciones
             </span>
-            <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center shadow-sm text-white">
-              <svg className="w-5 h-5 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            
+            <div className="flex flex-col items-center text-white/70">
+              <svg className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <rect x="7" y="3" width="10" height="18" rx="5" ry="5"></rect>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v4" />
               </svg>
+              
+              <div className="flex flex-col items-center gap-0.5">
+                {[0, 1, 2].map((i) => (
+                  <svg
+                    key={i}
+                    className="w-4 h-4 animate-scroll-arrow"
+                    style={{ animationDelay: `${i * 400}ms` }}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={3}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                ))}
+              </div>
             </div>
           </div>
         )}
