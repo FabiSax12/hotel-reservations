@@ -1,4 +1,4 @@
-import type { PasswordCriteria } from "../../utils/checkPasswordCriteria";
+import type { PasswordCriteria } from "../../domain/passwordCriteria";
 
 export interface PasswordInputProps {
   name: string;
