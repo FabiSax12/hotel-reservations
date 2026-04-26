@@ -33,7 +33,7 @@ export function MosaicPanel({
   return (
     <motion.div
       variants={MOSAIC_ITEM}
-      className={`${ABOUT.MOSAIC_ITEM} ${tall ? `${ABOUT.MOSAIC_TALL} row-span-2` : ""} overflow-hidden`}
+      className={`${ABOUT.MOSAIC_ITEM} ${tall ? ABOUT.MOSAIC_TALL : ""} overflow-hidden`}
       style={{ minHeight }}
     >
       <motion.div className="w-full h-full relative" style={{ transform: parallaxTransform }}>

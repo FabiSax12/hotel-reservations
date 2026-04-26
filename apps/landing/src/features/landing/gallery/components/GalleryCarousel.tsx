@@ -9,7 +9,6 @@ import { GALLERY_CONFIG } from "@/features/landing/gallery/constants/gallery-con
 const CARD_W = 310;
 const CARD_H = 420;
 const SPREAD = 255;
-const ANGLE = 0;
 const SCALE_STEP = 0.08;
 const OPACITY_STEP = 0.22;
 const VISIBLE_RANGE = 2;
@@ -55,7 +54,7 @@ export function GalleryCarousel({ current, onSelect, onHoverChange }: GalleryCar
                 animate={
                   prefersReducedMotion
                     ? { x: offset * SPREAD, opacity: isVisible ? Math.max(0, 1 - absOff * OPACITY_STEP) : 0 }
-                    : { x: offset * SPREAD, rotateY: offset * ANGLE, scale: 1 - absOff * SCALE_STEP, opacity: isVisible ? Math.max(0, 1 - absOff * OPACITY_STEP) : 0 }
+                    : { x: offset * SPREAD, scale: 1 - absOff * SCALE_STEP, opacity: isVisible ? Math.max(0, 1 - absOff * OPACITY_STEP) : 0 }
                 }
                 transition={{ type: "spring", duration: 0.7, bounce: 0.06 }}
                 onClick={() => offset !== 0 && onSelect(i)}
