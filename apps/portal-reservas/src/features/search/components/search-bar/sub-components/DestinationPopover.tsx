@@ -20,7 +20,7 @@ export function DestinationPopover() {
     hasHeroCalendarOpened,
     destination,
     setDestination,
-    activateSection,
+    setActive,
     clearError,
   } = useSearchBarContext();
 
@@ -35,8 +35,7 @@ export function DestinationPopover() {
   const handleSelect = (v: string) => {
     setDestination(v);
     clearError();
-    // Do NOT auto-advance to checkIn — the calendar only opens when the
-    // user explicitly clicks the Check In or Check Out field.
+    setActive(null); // Close the popover immediately
   };
 
   return (

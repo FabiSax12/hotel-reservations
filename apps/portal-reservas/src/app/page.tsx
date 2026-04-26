@@ -221,11 +221,13 @@ function RoomsInnerPage({
 
         {/* Rooms section — visible once a location is selected, regardless of State A/B */}
         {selectedLocation && (
-          <RoomList
-            rooms={filteredRooms}
-            selectedDest={selectedLocation}
-            searchKey={searchKey}
-          />
+          <div className={hasSearched ? "pt-48" : ""}>
+            <RoomList
+              rooms={filteredRooms}
+              selectedDest={selectedLocation}
+              searchKey={searchKey}
+            />
+          </div>
         )}
       </main>
     </RoomsProvider>

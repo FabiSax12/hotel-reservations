@@ -77,11 +77,9 @@ export function RoomRangeCalendar({
     }
   };
 
-  // We reuse availCalWrapper from rooms.theme.ts, but because CalendarPopover
-  // is quite wide (2 months), we override its width to be auto or wider.
   return (
     <div 
-      className={`${S.availCalWrapper} w-[700px] max-w-[95vw] -right-2 sm:-right-4`} 
+      className={`${S.availCalWrapper} -right-4 sm:-right-8`} 
       role="dialog" 
       aria-label={t.ROOMS.AVAIL_CALENDAR_TITLE}
     >
@@ -95,6 +93,8 @@ export function RoomRangeCalendar({
       </div>
 
       <CalendarPopover
+        variant="compact"
+        className="w-full bg-transparent shadow-none !p-0"
         checkIn={checkIn}
         checkOut={checkOut}
         invalidState={invalidState}

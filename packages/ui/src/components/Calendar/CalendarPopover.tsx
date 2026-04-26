@@ -27,6 +27,8 @@ interface CalendarPopoverProps {
   availableDates?: string[];
   /** Optional content to render below the calendar (e.g., a confirm button). */
   bottomContent?: React.ReactNode;
+  /** Optional override for the root container classes */
+  className?: string;
 }
 
 export function CalendarPopover({
@@ -39,6 +41,7 @@ export function CalendarPopover({
   endLabel,
   availableDates,
   bottomContent,
+  className,
 }: CalendarPopoverProps) {
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
@@ -51,7 +54,7 @@ export function CalendarPopover({
   const isHero = variant === UI_VARIANTS.HERO;
 
   return (
-    <div className={`flex ${S.padding(isHero)} ${S.wrapper(isHero)}`}>
+    <div className={`flex ${S.padding(isHero)} ${className ?? S.wrapper(isHero)}`}>
       {([0, 1] as const).map((monthIndexLocal) => (
         <CalendarMonth
           key={monthIndexLocal}

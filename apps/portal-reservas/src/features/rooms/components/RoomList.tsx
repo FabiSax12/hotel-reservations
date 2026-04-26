@@ -30,9 +30,9 @@ export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
       {/* Summary header */}
       <div className={S.header}>
         <div>
-          <div className={S.badge}>{t.ROOMS.REALTIME_AVAIL}</div>
+          <div className={S.badge}>Explorar Habitaciones</div>
           <h2 className={S.heading}>
-            {t.ROOMS.OPTIONS_IN} {selectedDest}
+            Opciones en {selectedDest}
           </h2>
         </div>
 

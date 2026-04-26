@@ -4,13 +4,13 @@
 
 export const ROOM_LIST_STYLES = {
   section:
-    "relative w-full max-w-5xl mx-auto px-6 pb-20 pt-12 animate-in fade-in slide-in-from-bottom-12 duration-700 fill-mode-both",
+    "relative w-full max-w-5xl mx-auto px-6 sm:px-10 pb-20 pt-12 mt-8 mb-24 bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-white/40 animate-in fade-in slide-in-from-bottom-12 duration-700 fill-mode-both",
   header:
-    "flex flex-col md:flex-row md:items-end justify-between mb-12 pb-6 border-b border-emerald-900/10",
-  badge: "text-emerald-600 font-bold tracking-widest uppercase mb-2 text-xs",
-  heading: "text-4xl font-black text-emerald-950 tracking-tight",
+    "flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-emerald-900/10",
+  badge: "text-emerald-700 font-bold tracking-widest uppercase mb-2 text-xs",
+  heading: "text-4xl sm:text-5xl font-black text-emerald-950 tracking-tight",
   countBadge:
-    "mt-6 md:mt-0 px-4 py-2 bg-neutral-100 rounded-lg text-neutral-600 font-bold flex items-center gap-2 text-sm",
+    "mt-6 md:mt-0 px-4 py-2 bg-emerald-50/80 rounded-xl text-emerald-800 font-bold flex items-center gap-2 text-sm border border-emerald-100",
   countDot: "w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0",
   grid: "flex flex-col gap-8",
 } as const;
@@ -18,12 +18,12 @@ export const ROOM_LIST_STYLES = {
 export const ROOM_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row bg-white rounded-[2rem] overflow-hidden border border-neutral-200 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all duration-500 animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row bg-white rounded-[2rem] border border-neutral-200 shadow-sm hover:shadow-md hover:border-emerald-200 transition-all duration-500 animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
 
   // ─── Image Panel ────────────────────────────────────────────────────────────
-  imageWrapper: "relative w-full lg:w-[380px] h-[260px] lg:h-auto overflow-hidden flex-shrink-0",
+  imageWrapper: "relative w-full lg:w-[380px] h-[260px] lg:h-auto overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
   image: "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
   urgencyBadge:
     "absolute top-4 left-4 bg-[#7a1313] text-white px-3 py-1.5 rounded-xl font-bold text-xs shadow-lg flex items-center gap-1.5 animate-in slide-in-from-top-2",
@@ -98,7 +98,7 @@ export const ROOM_CARD_STYLES = {
 
   // ─── Room Availability Calendar (inline popover below CTA button) ────────────
   availCalWrapper:
-    "absolute z-50 bottom-full mb-3 right-0 bg-white rounded-2xl shadow-xl border border-neutral-100 w-[340px] p-5 animate-in fade-in slide-in-from-bottom-3 duration-200",
+    "absolute z-[9999] bottom-full mb-3 right-0 bg-white rounded-[2rem] shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-100 p-2 sm:p-5 animate-in fade-in slide-in-from-bottom-3 duration-200 w-[95vw] sm:w-[650px] max-w-full",
   availCalHeader: "flex items-center justify-between mb-4",
   availCalTitle: "text-sm font-bold text-emerald-950 uppercase tracking-wider",
   availCalClose:
