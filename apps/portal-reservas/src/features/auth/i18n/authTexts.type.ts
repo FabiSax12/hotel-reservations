@@ -31,6 +31,7 @@ export type AuthTexts = {
     HIDE_PASSWORD: string;
     OR: string;
     CONTINUE_WITH_GOOGLE: string;
+    LOADING: string;
   };
 
   VERIFY_EMAIL: {
@@ -54,4 +55,3 @@ export type AuthTexts = {
     BACK_TO_LOGIN: string;
   };
 };
-

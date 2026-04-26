@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { LOGIN_FIELDS } from "../constants/fields";
 import { SUPABASE_ERROR_CODES } from "../constants/supabaseErrors";
+import { ERROR_KEYS, AUTH_ERRORS } from "../constants/errors";
 import type { LoginActionState } from "../domain/credentials";
 
 export async function loginAction(
@@ -23,9 +24,9 @@ export async function loginAction(
 
   if (error) {
     if (error.code === SUPABASE_ERROR_CODES.EMAIL_NOT_CONFIRMED) {
-      return { error: "EMAIL_NOT_CONFIRMED" };
+      return { error: ERROR_KEYS[AUTH_ERRORS.EMAIL_NOT_CONFIRMED] };
     }
-    return { error: "INVALID_CREDENTIALS" };
+    return { error: ERROR_KEYS[AUTH_ERRORS.INVALID_CREDENTIALS] };
   }
 
   redirect(callbackUrl || ROUTES.HOME);

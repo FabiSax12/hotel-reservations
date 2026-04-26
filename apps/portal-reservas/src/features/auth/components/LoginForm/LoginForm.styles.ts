@@ -1,0 +1,7 @@
+export const LOGIN_FORM_STYLES = {
+  header: "mb-10",
+  passwordHeader: "flex items-center justify-between",
+  actionsWrapper: "flex flex-col gap-4 pt-2",
+  inputIcon: "text-neutral-400 hover:text-emerald-700 transition-colors pointer-events-none",
+  googleIcon: "w-5 h-5",
+} as const;

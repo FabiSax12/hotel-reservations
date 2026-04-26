@@ -1,36 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "@heroui/react";
 import { ROUTES } from "@/config/routes";
 import { useI18n } from "@/locales";
+import { AUTH_ERROR_STYLES as S } from "./page.styles";
+import type { AuthErrorPageProps } from "./page.interface";
 
 export default function AuthErrorPage({
   searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+}: AuthErrorPageProps) {
   const { t } = useI18n();
   const error = searchParams?.error || "unknown_error";
   const description = searchParams?.error_description || t.AUTH.ERRORS.UNKNOWN_ERROR;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-neutral-50 px-4 text-center">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-sm border border-neutral-200">
-        <h1 className="text-2xl font-bold text-neutral-900 mb-2">{t.AUTH.ERRORS.AUTH_ERROR_TITLE}</h1>
-        <p className="text-neutral-600 mb-6">{description}</p>
+    <div className={S.root}>
+      <div className={S.card}>
+        <h1 className={S.title}>{t.AUTH.ERRORS.AUTH_ERROR_TITLE}</h1>
+        <p className={S.description}>{description}</p>
         
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 text-left">
-          <p className="text-xs font-mono text-amber-800">
+        <div className={S.codeWrapper}>
+          <p className={S.codeText}>
             <strong>{t.AUTH.ERRORS.AUTH_ERROR_CODE}</strong> {error}
           </p>
         </div>
 
-        <Link
-          href={ROUTES.AUTH.LOGIN}
-          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 transition-colors w-full"
+        <Button
+          render={(props: any) => <Link {...props} href={ROUTES.AUTH.LOGIN} />}
+          variant="primary"
+          className={S.button}
         >
           {t.AUTH.ERRORS.BACK_TO_LOGIN}
-        </Link>
+        </Button>
       </div>
     </div>
   );

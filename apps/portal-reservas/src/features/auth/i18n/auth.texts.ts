@@ -34,7 +34,8 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       SHOW_PASSWORD: "Mostrar contraseña",
       HIDE_PASSWORD: "Ocultar contraseña",
       OR: "O continuar con",
-      CONTINUE_WITH_GOOGLE: "Continuar con Quecos",
+      CONTINUE_WITH_GOOGLE: "Continuar con Google",
+      LOADING: "Cargando...",
     },
 
     VERIFY_EMAIL: {
@@ -92,7 +93,8 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       SHOW_PASSWORD: "Show password",
       HIDE_PASSWORD: "Hide password",
       OR: "Or continue with",
-      CONTINUE_WITH_GOOGLE: "Continue with Quecos",
+      CONTINUE_WITH_GOOGLE: "Continue with Google",
+      LOADING: "Loading...",
     },
 
     VERIFY_EMAIL: {
