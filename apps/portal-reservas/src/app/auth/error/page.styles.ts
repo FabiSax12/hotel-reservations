@@ -6,4 +6,5 @@ export const AUTH_ERROR_STYLES = {
   codeWrapper: "bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 text-left",
   codeText: "text-xs font-mono text-amber-800",
   button: "w-full py-6 text-base font-medium rounded-xl",
+  buttonVariant: "primary",
 } as const;

@@ -33,7 +33,7 @@ export type AuthTexts = {
     CONTINUE_WITH_GOOGLE: string;
     LOADING: string;
   };
-
+ 
   VERIFY_EMAIL: {
     TITLE: string;
     DESCRIPTION: string;
@@ -53,5 +53,7 @@ export type AuthTexts = {
     AUTH_ERROR_TITLE: string;
     AUTH_ERROR_CODE: string;
     BACK_TO_LOGIN: string;
+    ERROR_BOUNDARY_TITLE: string;
+    TRY_AGAIN: string;
   };
 };

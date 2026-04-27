@@ -1,9 +1,11 @@
 "use client";
-
+ 
 import { useEffect } from "react";
-import { AUTH_STYLES as S, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
+import { AUTH_STYLES as AS, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
 import { Button } from "@heroui/react";
-
+import { useI18n } from "@/locales";
+import { LOGIN_ERROR_STYLES as S } from "./error.styles";
+ 
 export default function LoginError({
   error,
   reset,
@@ -11,28 +13,37 @@ export default function LoginError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { t } = useI18n();
+ 
   useEffect(() => {
     console.error(error);
   }, [error]);
-
+ 
   return (
-    <main className={S.main}>
-      <div className={S.background}>
+    <main className={AS.main}>
+      <div className={AS.background}>
         <div 
-          className={S.bgImage} 
+          className={AS.bgImage} 
           style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }} 
         />
-        <div className={S.bgOverlay} />
-        <div className={S.bgGradient} />
+        <div className={AS.bgOverlay} />
+        <div className={AS.bgGradient} />
       </div>
-      <div className="flex flex-col items-center justify-center min-h-screen relative z-10 w-full px-4 text-center text-white">
-        <h2 className="text-2xl font-semibold mb-4">¡Ups! Algo salió mal.</h2>
-        <p className="text-white/70 mb-8">{error.message || "Ocurrió un error inesperado al cargar la página de inicio de sesión."}</p>
+ 
+      <div className={S.contentWrapper}>
+        <h2 className={S.title}>
+          {t.AUTH.ERRORS.ERROR_BOUNDARY_TITLE}
+        </h2>
+        
+        <p className={S.description}>
+          {error.message || t.AUTH.ERRORS.UNKNOWN_ERROR}
+        </p>
+ 
         <Button
           onPress={() => reset()}
-          className="font-medium bg-emerald-600 hover:bg-emerald-700 text-white"
+          className={S.button}
         >
-          Intentar de nuevo
+          {t.AUTH.ERRORS.TRY_AGAIN}
         </Button>
       </div>
     </main>

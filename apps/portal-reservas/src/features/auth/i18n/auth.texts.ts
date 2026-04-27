@@ -59,6 +59,8 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       AUTH_ERROR_TITLE: "Error de autenticación",
       AUTH_ERROR_CODE: "Código de error:",
       BACK_TO_LOGIN: "Volver al inicio de sesión",
+      ERROR_BOUNDARY_TITLE: "¡Ups! Algo salió mal.",
+      TRY_AGAIN: "Intentar de nuevo",
     },
   },
   en: {
@@ -117,6 +119,8 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       AUTH_ERROR_TITLE: "Authentication Error",
       AUTH_ERROR_CODE: "Error Code:",
       BACK_TO_LOGIN: "Back to sign in",
+      ERROR_BOUNDARY_TITLE: "Oops! Something went wrong.",
+      TRY_AGAIN: "Try again",
     },
   },
 } as const;

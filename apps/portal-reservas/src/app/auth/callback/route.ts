@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      const callbackUrl = searchParams.get("callbackUrl") || ROUTES.HOME;
+      const callbackUrl =
+        searchParams.get(CALLBACK_SEARCH_PARAMS.CALLBACK_URL) || ROUTES.HOME;
       return NextResponse.redirect(new URL(callbackUrl, origin));
     }
   }
