@@ -33,12 +33,21 @@ export async function registerAction(
   _prevState: ActionResult,
   formData: FormData,
 ): Promise<ActionResult> {
+  console.log("Register action called with:", {
+    fullName: formData.get(REGISTER_FIELDS.FULL_NAME),
+    email: formData.get(REGISTER_FIELDS.EMAIL),
+    password: formData.get(REGISTER_FIELDS.PASSWORD) ? "******" : null,
+    confirmPassword: formData.get(REGISTER_FIELDS.CONFIRM_PASSWORD) ? "******" : null,
+  });
+
   const result = RegisterSchema.safeParse({
     fullName: formData.get(REGISTER_FIELDS.FULL_NAME),
     email: formData.get(REGISTER_FIELDS.EMAIL),
     password: formData.get(REGISTER_FIELDS.PASSWORD),
     confirmPassword: formData.get(REGISTER_FIELDS.CONFIRM_PASSWORD),
   });
+
+  console.log("Validation result:", result);
 
   if (!result.success) {
     return {

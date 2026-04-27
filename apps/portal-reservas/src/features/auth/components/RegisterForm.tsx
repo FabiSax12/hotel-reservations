@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { Eye, EyeClosed } from "lucide-react";
 import { PasswordStrengthChecklist } from "@/features/auth/components/PasswordStrengthChecklist/PasswordStrengthChecklist";
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 import { AUTH_FORM_STYLES as S } from "@/features/auth/theme/auth.theme";
@@ -16,8 +17,9 @@ export const RegisterForm = () => {
     handleTogglePassword,
     handleToggleConfirmPassword,
     password,
-    setPassword,
+    handlePasswordChange,
     criteria,
+    markDirty,
     fullNameError,
     emailError,
     passwordError,
@@ -42,6 +44,7 @@ export const RegisterForm = () => {
             type="email"
             autoComplete="email"
             isInvalid={!!emailError}
+            onChange={markDirty}
             fullWidth
           >
             <Label>{t.AUTH.REGISTER.EMAIL_LABEL}</Label>
@@ -56,7 +59,7 @@ export const RegisterForm = () => {
               autoComplete="new-password"
               isInvalid={!!passwordError}
               value={password}
-              onChange={setPassword}
+              onChange={handlePasswordChange}
               fullWidth
             >
               <Label>{t.AUTH.REGISTER.PASSWORD_LABEL}</Label>
@@ -72,7 +75,7 @@ export const RegisterForm = () => {
                   onPress={handleTogglePassword}
                   className={S.passwordToggleBtn}
                 >
-                  {showPassword ? "🙈" : "👁"}
+                  {showPassword ? <EyeClosed /> : <Eye />}
                 </Button>
               </div>
               {passwordError && <FieldError>{t.AUTH.VALIDATION[passwordError]}</FieldError>}
@@ -85,6 +88,7 @@ export const RegisterForm = () => {
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"
             isInvalid={!!confirmPasswordError}
+            onChange={markDirty}
             fullWidth
           >
             <Label>{t.AUTH.REGISTER.CONFIRM_PASSWORD_LABEL}</Label>
@@ -102,7 +106,7 @@ export const RegisterForm = () => {
                 onPress={handleToggleConfirmPassword}
                 className={S.passwordToggleBtn}
               >
-                {showConfirmPassword ? "🙈" : "👁"}
+                {showConfirmPassword ? <EyeClosed /> : <Eye />}
               </Button>
             </div>
             {confirmPasswordError && (
