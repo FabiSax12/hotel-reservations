@@ -5,8 +5,9 @@
  * Clicking the brand resets the entire page back to the hero search (State A).
  */
 
-import { UI_CONSTANTS } from "../../../shared/constants/ui";
+import { BrandLogo } from "@hotel/ui";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
+import { useI18n } from "@/locales";
 
 interface HeaderBrandProps {
   /** Callback invoked on click to reset the page to the hero landing state. */
@@ -14,10 +15,13 @@ interface HeaderBrandProps {
 }
 
 export function HeaderBrand({ onReset }: HeaderBrandProps) {
+  const { t } = useI18n();
+
   return (
-    <div className={S.brand} onClick={onReset}>
-      {UI_CONSTANTS.HEADER.BRAND}
-      <span className={S.brandHighlight}>{UI_CONSTANTS.HEADER.BRAND_HIGHLIGHT}</span>
-    </div>
+    <BrandLogo
+      name={t.LAYOUT.HEADER.BRAND}
+      highlight={t.LAYOUT.HEADER.BRAND_HIGHLIGHT}
+      onClick={onReset}
+    />
   );
 }

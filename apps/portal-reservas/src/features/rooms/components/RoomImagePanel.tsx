@@ -7,9 +7,9 @@
  * or "Solo quedan N habitaciones".
  */
 
-import type { Room } from '../domain/types';
-import { UI_CONSTANTS } from '../../../shared/constants/ui';
-import { ROOM_CARD_STYLES as S } from '../../../theme/rooms.theme';
+import type { Room } from "../domain/types";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { useI18n } from "@/locales";
 
 interface RoomImagePanelProps {
   /** URL for the room's hero image. */
@@ -21,6 +21,8 @@ interface RoomImagePanelProps {
 }
 
 export function RoomImagePanel({ image, inventory, isScarce }: RoomImagePanelProps) {
+  const { t } = useI18n();
+
   return (
     <div className={S.imageWrapper}>
       <div className={S.image} style={{ backgroundImage: `url('${image}')` }} />
@@ -28,12 +30,22 @@ export function RoomImagePanel({ image, inventory, isScarce }: RoomImagePanelPro
       {/* Red urgency badge — only visible for scarce rooms */}
       {isScarce && (
         <div className={S.urgencyBadge}>
-          <svg className={S.urgencyIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className={S.urgencyIcon}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           {inventory === 1
-            ? UI_CONSTANTS.ROOMS.LAST_ROOM
-            : `${UI_CONSTANTS.ROOMS.ONLY_REMAINING} ${inventory} ${UI_CONSTANTS.ROOMS.ROOMS_PLURAL}`}
+            ? t.ROOMS.LAST_ROOM
+            : `${t.ROOMS.ONLY_REMAINING} ${inventory} ${t.ROOMS.ROOMS_PLURAL}`}
         </div>
       )}
     </div>

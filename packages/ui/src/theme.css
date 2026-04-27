@@ -1,4 +1,10 @@
 /*
+ * Points to the rest of the UI to import all UI components
+ */
+
+@source "./**/*.{ts,tsx}";
+
+/*
  * HeroUI Theme Customization
  * Add this to your global.css after importing @heroui/styles
  * Only includes base variables from variables.css

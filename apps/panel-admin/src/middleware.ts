@@ -4,13 +4,16 @@ import { NextResponse } from "next/server";
 import { ROUTES } from "@/config/routes";
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next({
-    request: { headers: request.headers },
+  const supabaseResponse = NextResponse.next({
+    request,
   });
 
   const supabase = createSupabaseServerClient({
     getAll: () => request.cookies.getAll(),
-    set: (name, value, options) => response.cookies.set(name, value, options),
+    set: (name, value, options) => {
+      request.cookies.set(name, value);
+      supabaseResponse.cookies.set(name, value, options);
+    },
   });
 
   const {
@@ -18,12 +21,13 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const isLoginPage = request.nextUrl.pathname === ROUTES.ADMIN.LOGIN;
+  const isActivatePage = request.nextUrl.pathname === ROUTES.ADMIN.ACTIVATE;
 
-  if (!user && !isLoginPage) {
+  if (!user && !isLoginPage && !isActivatePage) {
     return NextResponse.redirect(new URL(ROUTES.ADMIN.LOGIN, request.url));
   }
 
-  return response;
+  return supabaseResponse;
 }
 
 export const config = {

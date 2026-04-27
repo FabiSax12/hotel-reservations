@@ -10,6 +10,7 @@
 import { I18nProvider } from "@hotel/i18n";
 import type { Metadata } from "next";
 import { defaultLocale, TRANSLATIONS } from "@/locales";
+import { ROOT_LAYOUT_STYLES as S } from "@/theme/layout.theme";
 import "./globals.css";
 
 /** SEO metadata for the application. */
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang={defaultLocale}>
-      <body className="min-h-screen bg-white antialiased">
+      <body className={S.body}>
         <I18nProvider defaultLocale={defaultLocale} translations={TRANSLATIONS}>
           {children}
         </I18nProvider>

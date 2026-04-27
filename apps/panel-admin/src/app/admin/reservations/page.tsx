@@ -1,6 +1,6 @@
-import { MOCK_RESERVATIONS } from "@/features/reservaciones/constants/mock-data";
-import { ReservationsList } from "@/features/reservaciones/components/ReservationsList";
+import { MOCK_RESERVATIONS } from "@/features/reservations/constants/mock-data";
+import { ReservationsView } from "@/features/reservations/components/ReservationsView/ReservationsView";
 
 export default function ReservationsPage() {
-  return <ReservationsList reservations={MOCK_RESERVATIONS} />;
+  return <ReservationsView reservations={MOCK_RESERVATIONS} />;
 }

@@ -17,9 +17,12 @@
     "@hotel/db": "workspace:*",
     "@hotel/i18n": "workspace:*",
     "@hotel/ui": "workspace:*",
+    "lucide-react": "^1.11.0",
+    "@internationalized/date": "^3.12.1",
     "next": "^15.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",

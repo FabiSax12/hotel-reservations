@@ -3,5 +3,6 @@ export const ROUTES = Object.freeze({
     LOGIN: "/admin/login",
     DASHBOARD: "/admin/dashboard",
     RESERVATIONS: "/admin/reservations",
+    ACTIVATE: "/admin/activate",
   } as const),
 } as const);
