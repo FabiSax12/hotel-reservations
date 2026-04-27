@@ -1,12 +1,13 @@
 import { createSupabaseClient } from "@hotel/db/client";
 import type { User, Subscription } from "@supabase/supabase-js";
+import { AUTH_LOG_MESSAGES as LOG } from "@/features/auth/constants/log-messages";
 
 export const getSession = async (): Promise<User | null> => {
   const supabase = createSupabaseClient();
   const { data: { session }, error } = await supabase.auth.getSession();
   
   if (error) {
-    console.error("Error fetching session:", error);
+    console.error(LOG.SESSION_FETCH_ERROR, error);
     throw error;
   }
   
