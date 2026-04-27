@@ -1,10 +1,12 @@
 "use client";
 
-import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { Button, Form } from "@heroui/react";
+import { useState } from "react";
 import { ACTIVATION_FORM_FIELDS } from "@/features/auth/constants/activationFormFields";
-import { PASSWORD_VALIDATION_ERRORS } from "@/features/auth/constants/passwordValidationErrors";
-import { validatePassword } from "@/features/auth/utils/validatePassword";
+import { checkPasswordCriteria } from "@/features/auth/utils/checkPasswordCriteria";
+import { isPasswordValid } from "@/features/auth/utils/isPasswordValid";
 import { useI18n } from "@/locales";
+import { PasswordInput } from "../PasswordInput/PasswordInput";
 import type { ActivationPasswordFormProps } from "./ActivationPasswordForm.interface";
 import { ACTIVATION_PASSWORD_FORM_STYLES as S } from "./ActivationPasswordForm.styles";
 
@@ -15,18 +17,13 @@ export const ActivationPasswordForm = ({
   activateState,
 }: ActivationPasswordFormProps) => {
   const { t } = useI18n();
-  const { ACTIVATE, VALIDATION } = t.AUTH;
+  const { ACTIVATE } = t.AUTH;
 
-  const handleValidatePassword = (password: string) => {
-    const error = validatePassword(password);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-    switch (error) {
-      case PASSWORD_VALIDATION_ERRORS.TOO_SHORT:
-        return VALIDATION.PASSWORD_TOO_SHORT;
-      default:
-        return null;
-    }
-  };
+  const criteria = checkPasswordCriteria(password);
+  const isSubmitDisabled = isPending || !isPasswordValid(criteria) || password !== confirmPassword;
 
   return (
     <main className={S.wrapper}>
@@ -46,30 +43,28 @@ export const ActivationPasswordForm = ({
             value={tokens.refreshToken}
           />
 
-          <TextField
-            isRequired
+          <PasswordInput
             name={ACTIVATION_FORM_FIELDS.PASSWORD}
-            type="password"
-            validate={handleValidatePassword}
-          >
-            <Label>{ACTIVATE.PASSWORD_LABEL}</Label>
-            <Input placeholder={ACTIVATE.PASSWORD_PLACEHOLDER} autoComplete="new-password" />
-            <FieldError />
-          </TextField>
+            label={ACTIVATE.PASSWORD_LABEL}
+            placeholder={ACTIVATE.PASSWORD_PLACEHOLDER}
+            autoComplete="new-password"
+            value={password}
+            onChange={setPassword}
+            criteria={criteria}
+            hideLabel={ACTIVATE.HIDE_PASSWORD}
+            showLabel={ACTIVATE.SHOW_PASSWORD}
+          />
 
-          <TextField
-            isRequired
+          <PasswordInput
             name={ACTIVATION_FORM_FIELDS.CONFIRM_PASSWORD}
-            type="password"
-            validate={handleValidatePassword}
-          >
-            <Label>{ACTIVATE.CONFIRM_PASSWORD_LABEL}</Label>
-            <Input
-              placeholder={ACTIVATE.CONFIRM_PASSWORD_PLACEHOLDER}
-              autoComplete="new-password"
-            />
-            <FieldError />
-          </TextField>
+            label={ACTIVATE.CONFIRM_PASSWORD_LABEL}
+            placeholder={ACTIVATE.CONFIRM_PASSWORD_PLACEHOLDER}
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            hideLabel={ACTIVATE.HIDE_CONFIRM_PASSWORD}
+            showLabel={ACTIVATE.SHOW_CONFIRM_PASSWORD}
+          />
 
           {activateState !== null && "error" in activateState && (
             <p role="alert" className={S.errorAlert}>
@@ -77,7 +72,7 @@ export const ActivationPasswordForm = ({
             </p>
           )}
 
-          <Button type="submit" isDisabled={isPending} fullWidth>
+          <Button type="submit" isDisabled={isSubmitDisabled} fullWidth>
             {isPending ? ACTIVATE.SUBMITTING : ACTIVATE.SUBMIT_BUTTON}
           </Button>
         </Form>

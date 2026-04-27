@@ -4,13 +4,16 @@ import { NextResponse } from "next/server";
 import { ROUTES } from "@/config/routes";
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next({
-    request: { headers: request.headers },
+  const supabaseResponse = NextResponse.next({
+    request,
   });
 
   const supabase = createSupabaseServerClient({
     getAll: () => request.cookies.getAll(),
-    set: (name, value, options) => response.cookies.set(name, value, options),
+    set: (name, value, options) => {
+      request.cookies.set(name, value);
+      supabaseResponse.cookies.set(name, value, options);
+    },
   });
 
   const {
@@ -24,9 +27,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(ROUTES.ADMIN.LOGIN, request.url));
   }
 
-  return response;
+  return supabaseResponse;
 }
 
 export const config = {
-  matcher: ["/admin/:path*", `!${ROUTES.ADMIN.ACTIVATE}`],
+  matcher: ["/admin/:path*"],
 };

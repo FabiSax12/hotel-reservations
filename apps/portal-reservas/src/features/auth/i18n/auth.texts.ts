@@ -19,6 +19,13 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       HIDE_CONFIRM_PASSWORD: "Ocultar confirmación de contraseña",
       SUBMIT_BUTTON: "Crear cuenta",
       SUBMITTING_BUTTON: "Creando cuenta...",
+      PASSWORD_CHECKLIST: {
+        MIN_LENGTH: "Mínimo 8 caracteres",
+        HAS_UPPERCASE: "Al menos una mayúscula",
+        HAS_LOWERCASE: "Al menos una minúscula",
+        HAS_DIGIT: "Al menos un número",
+        HAS_SPECIAL_CHAR: "Al menos un carácter especial",
+      },
     },
     LOGIN: {
       TITLE: "Iniciar sesión",
@@ -48,6 +55,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       FULL_NAME_TOO_SHORT: "El nombre debe tener al menos 2 caracteres",
       INVALID_EMAIL: "Ingresá un email válido",
       PASSWORD_TOO_SHORT: "La contraseña debe tener al menos 8 caracteres",
+      PASSWORD_WEAK: "La contraseña no cumple con los requisitos de seguridad",
       PASSWORDS_DO_NOT_MATCH: "Las contraseñas no coinciden",
     },
     ERRORS: {
@@ -80,6 +88,13 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       HIDE_CONFIRM_PASSWORD: "Hide confirm password",
       SUBMIT_BUTTON: "Create account",
       SUBMITTING_BUTTON: "Creating account...",
+      PASSWORD_CHECKLIST: {
+        MIN_LENGTH: "At least 8 characters",
+        HAS_UPPERCASE: "At least one uppercase letter",
+        HAS_LOWERCASE: "At least one lowercase letter",
+        HAS_DIGIT: "At least one number",
+        HAS_SPECIAL_CHAR: "At least one special character",
+      },
     },
     LOGIN: {
       TITLE: "Sign in",
@@ -108,6 +123,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       FULL_NAME_TOO_SHORT: "Name must be at least 2 characters",
       INVALID_EMAIL: "Please enter a valid email address",
       PASSWORD_TOO_SHORT: "Password must be at least 8 characters",
+      PASSWORD_WEAK: "Password does not meet the security requirements",
       PASSWORDS_DO_NOT_MATCH: "Passwords do not match",
     },
     ERRORS: {

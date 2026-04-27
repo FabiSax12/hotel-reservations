@@ -1,3 +1,4 @@
 @import "tailwindcss";
+@source "@hotel/ui";
 @import "@heroui/styles";
 @import "@hotel/ui/theme.css";
