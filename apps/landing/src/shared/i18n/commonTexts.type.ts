@@ -18,5 +18,8 @@ export type CommonTexts = {
     COPYRIGHT: string;
     LOCATIONS_FOOTER: string;
     MARQUEE_ITEMS: string[];
+    META_TITLE: string;
+    META_DESCRIPTION: string;
+    META_OG_DESCRIPTION: string;
   };
 };

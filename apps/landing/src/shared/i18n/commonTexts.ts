@@ -22,6 +22,9 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       COPYRIGHT: "© 2024 ALTAVERDE. Todos los derechos reservados.",
       LOCATIONS_FOOTER: "Arenal & La Fortuna · Monteverde · Costa Rica",
       MARQUEE_ITEMS: ["ALTAVERDE", "ARENAL & LA FORTUNA", "MONTEVERDE", "LUXURY NATURE RETREATS", "COSTA RICA", "DESDE 2002"],
+      META_TITLE: "ALTAVERDE — Luxury Nature Retreats · Costa Rica",
+      META_DESCRIPTION: "Donde la selva toca el cielo. Dos propiedades de lujo inmersas en la biodiversidad de Costa Rica: Arenal & La Fortuna y Monteverde.",
+      META_OG_DESCRIPTION: "Luxury Nature Retreats · Costa Rica",
     },
   },
   en: {
@@ -44,6 +47,9 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       COPYRIGHT: "© 2024 ALTAVERDE. All rights reserved.",
       LOCATIONS_FOOTER: "Arenal & La Fortuna · Monteverde · Costa Rica",
       MARQUEE_ITEMS: ["ALTAVERDE", "ARENAL & LA FORTUNA", "MONTEVERDE", "LUXURY NATURE RETREATS", "COSTA RICA", "SINCE 2002"],
+      META_TITLE: "ALTAVERDE — Luxury Nature Retreats · Costa Rica",
+      META_DESCRIPTION: "Where the forest meets the sky. Two luxury properties immersed in Costa Rica's biodiversity: Arenal & La Fortuna and Monteverde.",
+      META_OG_DESCRIPTION: "Luxury Nature Retreats · Costa Rica",
     },
   },
 };
