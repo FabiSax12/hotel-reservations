@@ -4,7 +4,7 @@ import type { LocaleStorage } from "../storage/storage";
 
 export interface I18nProviderProps<T> {
   defaultLocale: SupportedLocale;
-  translations: Record<SupportedLocale, T>;
+  translations: Partial<Record<SupportedLocale, T>>;
   storage?: LocaleStorage;
   children: ReactNode;
 }

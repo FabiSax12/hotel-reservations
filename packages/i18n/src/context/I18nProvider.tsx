@@ -12,7 +12,7 @@ export function I18nProvider<T>({
   children,
 }: I18nProviderProps<T>) {
   const [locale, setLocale] = useState<SupportedLocale>(defaultLocale);
-  const t = translations[locale] ?? translations[defaultLocale];
+  const t = (translations[locale] ?? translations[defaultLocale]) as T;
 
   useEffect(() => {
     const saved = storage?.get();
