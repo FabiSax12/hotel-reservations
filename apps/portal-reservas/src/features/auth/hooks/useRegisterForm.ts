@@ -11,6 +11,7 @@ export const useRegisterForm = () => {
   const [password, setPassword] = useState("");
   const [isDirty, setIsDirty] = useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: Its necesary for logic
   useEffect(() => {
     setIsDirty(false);
   }, [state]);
