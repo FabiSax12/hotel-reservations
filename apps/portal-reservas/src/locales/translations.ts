@@ -10,7 +10,7 @@ import { SEARCH_TEXTS } from "@/features/search/i18n/search.texts";
 import type { SearchTexts } from "@/features/search/i18n/searchTexts.type";
 import { ROOMS_TEXTS } from "@/features/rooms/i18n/rooms.texts";
 import type { RoomsTexts } from "@/features/rooms/i18n/roomsTexts.type";
-
+ 
 export type AppTranslations = {
   COMMON: CommonTexts;
   AUTH: AuthTexts;
@@ -18,7 +18,7 @@ export type AppTranslations = {
   SEARCH: SearchTexts;
   ROOMS: RoomsTexts;
 };
-
+ 
 export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
   [LOCALES.ES]: {
     COMMON: COMMON_TEXTS.es,
@@ -35,7 +35,8 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
     ROOMS: ROOMS_TEXTS.en,
   },
 };
-
+ 
+export const LOCALE_COOKIE_NAME = "locale";
 export const defaultLocale = LOCALES.EN;
-
+ 
 export const useI18n = () => _useI18n<AppTranslations>();
