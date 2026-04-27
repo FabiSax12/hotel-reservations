@@ -32,6 +32,7 @@ export type AuthTexts = {
     FULL_NAME_TOO_SHORT: string;
     INVALID_EMAIL: string;
     PASSWORD_TOO_SHORT: string;
+    PASSWORD_WEAK: string;
     PASSWORDS_DO_NOT_MATCH: string;
   };
   ERRORS: {

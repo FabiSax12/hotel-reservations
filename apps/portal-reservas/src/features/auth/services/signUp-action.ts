@@ -11,12 +11,19 @@ import { ROUTES } from "@/config/routes";
 import type { AuthErrorKey, ValidationKey } from "@/features/auth/constants/errors";
 import { AUTH_ERRORS, ERROR_KEYS } from "@/features/auth/constants/errors";
 import { REGISTER_FIELDS } from "../constants/fields";
+import { checkPasswordCriteria } from "../utils/checkPasswordCriteria";
+import { isPasswordValid } from "../utils/isPasswordValid";
 
 const RegisterSchema = z
   .object({
     fullName: z.string().min(2, "FULL_NAME_TOO_SHORT" satisfies ValidationKey),
     email: z.email("INVALID_EMAIL" satisfies ValidationKey),
-    password: z.string().min(8, "PASSWORD_TOO_SHORT" satisfies ValidationKey),
+    password: z
+      .string()
+      .min(8, "PASSWORD_TOO_SHORT" satisfies ValidationKey)
+      .refine((p) => isPasswordValid(checkPasswordCriteria(p)), {
+        message: "PASSWORD_WEAK" satisfies ValidationKey,
+      }),
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {

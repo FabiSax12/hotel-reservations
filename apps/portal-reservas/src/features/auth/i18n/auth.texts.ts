@@ -37,6 +37,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       FULL_NAME_TOO_SHORT: "El nombre debe tener al menos 2 caracteres",
       INVALID_EMAIL: "Ingresá un email válido",
       PASSWORD_TOO_SHORT: "La contraseña debe tener al menos 8 caracteres",
+      PASSWORD_WEAK: "La contraseña no cumple con los requisitos de seguridad",
       PASSWORDS_DO_NOT_MATCH: "Las contraseñas no coinciden",
     },
     ERRORS: {
@@ -79,6 +80,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       FULL_NAME_TOO_SHORT: "Name must be at least 2 characters",
       INVALID_EMAIL: "Please enter a valid email address",
       PASSWORD_TOO_SHORT: "Password must be at least 8 characters",
+      PASSWORD_WEAK: "Password does not meet the security requirements",
       PASSWORDS_DO_NOT_MATCH: "Passwords do not match",
     },
     ERRORS: {

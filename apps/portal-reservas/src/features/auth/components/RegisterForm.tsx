@@ -20,6 +20,7 @@ export const RegisterForm = () => {
     handlePasswordChange,
     criteria,
     markDirty,
+    isSubmitDisabled,
     fullNameError,
     emailError,
     passwordError,
@@ -120,7 +121,7 @@ export const RegisterForm = () => {
             </p>
           )}
 
-          <Button type="submit" variant="primary" fullWidth isPending={isPending} className={S.submitBtn}>
+          <Button type="submit" variant="primary" fullWidth isPending={isPending} isDisabled={isSubmitDisabled} className={S.submitBtn}>
             {isPending ? t.AUTH.REGISTER.SUBMITTING_BUTTON : t.AUTH.REGISTER.SUBMIT_BUTTON}
           </Button>
         </Form>

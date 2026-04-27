@@ -2,6 +2,7 @@ import { useActionState, useEffect, useState } from "react";
 import { REGISTER_FIELDS, type RegisterField } from "@/features/auth/constants/fields";
 import { registerAction } from "@/features/auth/services/signUp-action";
 import { checkPasswordCriteria } from "@/features/auth/utils/checkPasswordCriteria";
+import { isPasswordValid } from "@/features/auth/utils/isPasswordValid";
 
 export const useRegisterForm = () => {
   const [state, formAction, isPending] = useActionState(registerAction, null);
@@ -15,6 +16,7 @@ export const useRegisterForm = () => {
   }, [state]);
 
   const criteria = checkPasswordCriteria(password);
+  const isSubmitDisabled = password.length > 0 && !isPasswordValid(criteria);
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
@@ -41,6 +43,7 @@ export const useRegisterForm = () => {
     handlePasswordChange,
     criteria,
     markDirty,
+    isSubmitDisabled,
     fullNameError: getFieldError(REGISTER_FIELDS.FULL_NAME),
     emailError: getFieldError(REGISTER_FIELDS.EMAIL),
     passwordError: getFieldError(REGISTER_FIELDS.PASSWORD),
