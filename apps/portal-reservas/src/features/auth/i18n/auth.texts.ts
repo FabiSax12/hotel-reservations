@@ -19,6 +19,13 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       HIDE_CONFIRM_PASSWORD: "Ocultar confirmación de contraseña",
       SUBMIT_BUTTON: "Crear cuenta",
       SUBMITTING_BUTTON: "Creando cuenta...",
+      PASSWORD_CHECKLIST: {
+        MIN_LENGTH: "Mínimo 8 caracteres",
+        HAS_UPPERCASE: "Al menos una mayúscula",
+        HAS_LOWERCASE: "Al menos una minúscula",
+        HAS_DIGIT: "Al menos un número",
+        HAS_SPECIAL_CHAR: "Al menos un carácter especial",
+      },
     },
     VERIFY_EMAIL: {
       TITLE: "Revisá tu bandeja de entrada",
@@ -55,6 +62,13 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       HIDE_CONFIRM_PASSWORD: "Hide confirm password",
       SUBMIT_BUTTON: "Create account",
       SUBMITTING_BUTTON: "Creating account...",
+      PASSWORD_CHECKLIST: {
+        MIN_LENGTH: "At least 8 characters",
+        HAS_UPPERCASE: "At least one uppercase letter",
+        HAS_LOWERCASE: "At least one lowercase letter",
+        HAS_DIGIT: "At least one number",
+        HAS_SPECIAL_CHAR: "At least one special character",
+      },
     },
     VERIFY_EMAIL: {
       TITLE: "Check your inbox",

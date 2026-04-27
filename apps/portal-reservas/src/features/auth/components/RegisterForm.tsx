@@ -1,9 +1,10 @@
 "use client";
 
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
+import { PasswordStrengthChecklist } from "@/features/auth/components/PasswordStrengthChecklist/PasswordStrengthChecklist";
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
-import { useI18n } from "@/locales";
 import { AUTH_FORM_STYLES as S } from "@/features/auth/theme/auth.theme";
+import { useI18n } from "@/locales";
 
 export const RegisterForm = () => {
   const { t } = useI18n();
@@ -14,6 +15,9 @@ export const RegisterForm = () => {
     showConfirmPassword,
     handleTogglePassword,
     handleToggleConfirmPassword,
+    password,
+    setPassword,
+    criteria,
     fullNameError,
     emailError,
     passwordError,
@@ -45,31 +49,36 @@ export const RegisterForm = () => {
             {emailError && <FieldError>{t.AUTH.VALIDATION[emailError]}</FieldError>}
           </TextField>
 
-          <TextField
-            name="password"
-            type={showPassword ? "text" : "password"}
-            autoComplete="new-password"
-            isInvalid={!!passwordError}
-            fullWidth
-          >
-            <Label>{t.AUTH.REGISTER.PASSWORD_LABEL}</Label>
-            <div className={S.passwordFieldWrapper}>
-              <Input placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER} className={S.passwordInput} />
-              <Button
-                isIconOnly
-                variant="ghost"
-                size="sm"
-                aria-label={
-                  showPassword ? t.AUTH.REGISTER.HIDE_PASSWORD : t.AUTH.REGISTER.SHOW_PASSWORD
-                }
-                onPress={handleTogglePassword}
-                className={S.passwordToggleBtn}
-              >
-                {showPassword ? "🙈" : "👁"}
-              </Button>
-            </div>
-            {passwordError && <FieldError>{t.AUTH.VALIDATION[passwordError]}</FieldError>}
-          </TextField>
+          <div>
+            <TextField
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="new-password"
+              isInvalid={!!passwordError}
+              value={password}
+              onChange={setPassword}
+              fullWidth
+            >
+              <Label>{t.AUTH.REGISTER.PASSWORD_LABEL}</Label>
+              <div className={S.passwordFieldWrapper}>
+                <Input placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER} className={S.passwordInput} />
+                <Button
+                  isIconOnly
+                  variant="ghost"
+                  size="sm"
+                  aria-label={
+                    showPassword ? t.AUTH.REGISTER.HIDE_PASSWORD : t.AUTH.REGISTER.SHOW_PASSWORD
+                  }
+                  onPress={handleTogglePassword}
+                  className={S.passwordToggleBtn}
+                >
+                  {showPassword ? "🙈" : "👁"}
+                </Button>
+              </div>
+              {passwordError && <FieldError>{t.AUTH.VALIDATION[passwordError]}</FieldError>}
+            </TextField>
+            {password.length > 0 && <PasswordStrengthChecklist criteria={criteria} />}
+          </div>
 
           <TextField
             name="confirmPassword"

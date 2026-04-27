@@ -15,6 +15,13 @@ export type AuthTexts = {
     HIDE_CONFIRM_PASSWORD: string;
     SUBMIT_BUTTON: string;
     SUBMITTING_BUTTON: string;
+    PASSWORD_CHECKLIST: {
+      MIN_LENGTH: string;
+      HAS_UPPERCASE: string;
+      HAS_LOWERCASE: string;
+      HAS_DIGIT: string;
+      HAS_SPECIAL_CHAR: string;
+    };
   };
   VERIFY_EMAIL: {
     TITLE: string;

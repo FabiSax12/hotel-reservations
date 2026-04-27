@@ -1,11 +1,15 @@
 import { useActionState, useState } from "react";
 import { REGISTER_FIELDS, type RegisterField } from "@/features/auth/constants/fields";
 import { registerAction } from "@/features/auth/services/signUp-action";
+import { checkPasswordCriteria } from "@/features/auth/utils/checkPasswordCriteria";
 
 export const useRegisterForm = () => {
   const [state, formAction, isPending] = useActionState(registerAction, null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const criteria = checkPasswordCriteria(password);
 
   const getFieldError = (field: RegisterField) =>
     state && "fieldErrors" in state ? state.fieldErrors[field]?.[0] : undefined;
@@ -20,6 +24,9 @@ export const useRegisterForm = () => {
     showConfirmPassword,
     handleTogglePassword,
     handleToggleConfirmPassword,
+    password,
+    setPassword,
+    criteria,
     fullNameError: getFieldError(REGISTER_FIELDS.FULL_NAME),
     emailError: getFieldError(REGISTER_FIELDS.EMAIL),
     passwordError: getFieldError(REGISTER_FIELDS.PASSWORD),
