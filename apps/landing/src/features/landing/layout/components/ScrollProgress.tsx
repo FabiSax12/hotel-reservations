@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -8,7 +9,7 @@ export function ScrollProgress() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-[2px] bg-gold-500 origin-left z-[100]"
+      className={LAYOUT.SCROLL_PROGRESS}
       style={{ scaleX }}
     />
   );

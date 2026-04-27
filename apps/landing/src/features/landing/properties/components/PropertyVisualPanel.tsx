@@ -29,16 +29,16 @@ export function PropertyVisualPanel({ config }: PropertyVisualPanelProps) {
           className="object-cover"
           sizes="(max-width: 1024px) 100vw, 50vw"
         />
-        <div className="absolute inset-0" style={{ background: config.visual.gradient }} />
+        <div className={PROPERTIES.VISUAL_OVERLAY} style={{ background: config.visual.gradient }} />
         <div
-          className="absolute inset-0"
+          className={PROPERTIES.VISUAL_OVERLAY}
           style={{ background: `radial-gradient(ellipse 70% 60% at 50% 30%, ${config.visual.ringsCenter}, transparent)` }}
         />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className={PROPERTIES.VISUAL_RINGS_WRAPPER}>
           {rings.map((ring, i) => (
             <motion.div
               key={i}
-              className="absolute rounded-full border"
+              className={PROPERTIES.VISUAL_RING}
               style={{ width: ring.size, height: ring.size, borderColor: config.visual.rings }}
               animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
               transition={{ duration: ring.duration, ease: "linear", repeat: Infinity, delay: ring.delay }}
@@ -46,7 +46,7 @@ export function PropertyVisualPanel({ config }: PropertyVisualPanelProps) {
           ))}
         </div>
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className={PROPERTIES.VISUAL_ACCENT}
           style={{ background: `radial-gradient(circle at 50% 50%, ${config.visual.accentColor}, transparent 70%)` }}
         />
       </div>

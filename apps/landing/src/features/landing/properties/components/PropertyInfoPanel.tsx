@@ -18,7 +18,7 @@ export function PropertyInfoPanel({ texts }: PropertyInfoPanelProps) {
         {texts.LOCATION}
       </motion.p>
 
-      <div className="overflow-hidden">
+      <div className={PROPERTIES.INFO_HEADLINE_WRAPPER}>
         <motion.h3 className={PROPERTIES.INFO_NAME}
           initial={{ y: "100%" }} animate={{ y: "0%" }}
           transition={{ duration: 0.9, delay: 0.2, ease: EXPO_OUT }}>

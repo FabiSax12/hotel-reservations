@@ -20,7 +20,7 @@ export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
 
   return (
     <>
-      <div ref={ref} className="hidden lg:grid lg:grid-cols-4 gap-px bg-forest-800">
+      <div ref={ref} className={SERVICES.GRID_DESKTOP}>
         {SERVICES_CONFIG.map((service, index) => (
           <motion.div
             key={service.id}
@@ -41,11 +41,11 @@ export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
         ))}
       </div>
 
-      <div className="lg:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none">
+      <div className={SERVICES.GRID_MOBILE}>
         {SERVICES_CONFIG.map((service, index) => (
           <motion.div
             key={service.id}
-            className="snap-start shrink-0 w-[76vw] bg-forest-900 border border-forest-800"
+            className={SERVICES.GRID_MOBILE_CARD}
             initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: 30 }}
             animate={
               inView

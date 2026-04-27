@@ -33,13 +33,13 @@ export function MosaicPanel({
   return (
     <motion.div
       variants={MOSAIC_ITEM}
-      className={`${ABOUT.MOSAIC_ITEM} ${tall ? ABOUT.MOSAIC_TALL : ""} overflow-hidden`}
+      className={`${ABOUT.MOSAIC_ITEM}${tall ? ` ${ABOUT.MOSAIC_TALL}` : ""}`}
       style={{ minHeight }}
     >
-      <motion.div className="w-full h-full relative" style={{ transform: parallaxTransform }}>
+      <motion.div className={ABOUT.MOSAIC_INNER} style={{ transform: parallaxTransform }}>
         <Image src={src} alt={alt} fill className="object-cover" sizes={sizes} />
         {overlays.map((gradient, i) => (
-          <div key={i} className="absolute inset-0" style={{ background: gradient }} />
+          <div key={i} className={ABOUT.OVERLAY} style={{ background: gradient }} />
         ))}
       </motion.div>
     </motion.div>

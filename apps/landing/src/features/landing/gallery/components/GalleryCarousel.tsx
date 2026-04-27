@@ -28,12 +28,12 @@ export function GalleryCarousel({ current, onSelect, onHoverChange }: GalleryCar
 
   return (
     <div
-      className="hidden lg:block"
+      className={GALLERY.CAROUSEL_WRAPPER}
       onMouseEnter={() => onHoverChange(true)}
       onMouseLeave={() => onHoverChange(false)}
     >
       <div className={GALLERY.STAGE} style={{ perspective: "1000px" }}>
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className={GALLERY.STAGE_INNER}>
           {GALLERY_CONFIG.map((item, i) => {
             const offset = computeOffset(i, current, total);
             const absOff = Math.abs(offset);
@@ -43,7 +43,7 @@ export function GalleryCarousel({ current, onSelect, onHoverChange }: GalleryCar
             return (
               <motion.div
                 key={item.id}
-                className={`absolute rounded-2xl overflow-hidden select-none ${offset !== 0 ? "cursor-pointer" : ""}`}
+                className={`${GALLERY.CARD}${offset !== 0 ? ` ${GALLERY.CARD_CLICKABLE}` : ""}`}
                 style={{ width: CARD_W, height: CARD_H, zIndex: isVisible ? 10 - absOff : -1, backfaceVisibility: "hidden" }}
                 animate={
                   prefersReducedMotion
@@ -54,19 +54,19 @@ export function GalleryCarousel({ current, onSelect, onHoverChange }: GalleryCar
                 onClick={() => offset !== 0 && onSelect(i)}
                 whileHover={offset !== 0 ? { scale: 1 - absOff * SCALE_STEP + 0.02 } : undefined}
               >
-                <div className="w-full h-full relative">
+                <div className={GALLERY.CARD_INNER}>
                   <Image src={item.imageUrl} alt={item.id} fill className="object-cover" sizes="310px" />
-                  <div className="absolute inset-0" style={{ background: item.overlay }} />
-                  <div className="absolute inset-0 opacity-[0.035]"
+                  <div className={GALLERY.CARD_OVERLAY} style={{ background: item.overlay }} />
+                  <div className={GALLERY.CARD_OVERLAY_PATTERN}
                     style={{ background: "repeating-linear-gradient(135deg, transparent, transparent 18px, white 18px, white 19px)" }} />
-                  <div className="absolute inset-x-0 bottom-0 h-[45%]"
+                  <div className={GALLERY.CARD_GRADIENT_BOTTOM}
                     style={{ background: "linear-gradient(to top, oklch(8% 0.03 143 / 0.9), oklch(8% 0.03 143 / 0.4) 50%, transparent)" }} />
-                  <div className="absolute inset-x-0 bottom-0 p-7 flex flex-col">
-                    <div className="w-6 h-px bg-gold-500/60 mb-4" />
+                  <div className={GALLERY.CARD_TEXT_AREA}>
+                    <div className={GALLERY.CARD_ACCENT_LINE} />
                     <p className={GALLERY.CARD_TITLE}>{texts.TITLE}</p>
                     <p className={GALLERY.CARD_SUBTITLE}>{texts.SUBTITLE}</p>
                   </div>
-                  <div className="absolute top-5 right-5 w-1.5 h-1.5 rounded-full bg-gold-500/50" />
+                  <div className={GALLERY.CARD_DOT} />
                 </div>
               </motion.div>
             );

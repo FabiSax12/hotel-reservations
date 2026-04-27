@@ -26,7 +26,7 @@ export function PropertiesControls({
     <div className={PROPERTIES.CONTROLS}>
       <span className={PROPERTIES.DRAG_HINT}>{dragHint}</span>
 
-      <div className="flex flex-col items-center gap-2.5">
+      <div className={PROPERTIES.CONTROLS_DOTS}>
         <div className={PROPERTIES.DOTS}>
           {Array.from({ length: total }).map((_, i) => (
             <button
@@ -38,11 +38,11 @@ export function PropertiesControls({
           ))}
         </div>
         {!prefersReducedMotion && (
-          <div className="w-16 h-px bg-forest-700 overflow-hidden rounded-full">
+          <div className={PROPERTIES.PROGRESS_BG}>
             {!isHovered && (
               <motion.div
                 key={current}
-                className="h-full bg-gold-500/50 origin-left"
+                className={PROPERTIES.PROGRESS_FILL}
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: autoInterval / 1000, ease: "linear" }}
@@ -56,7 +56,7 @@ export function PropertiesControls({
         <button
           onClick={() => onNavigate(-1)}
           disabled={current === 0}
-          className={`${PROPERTIES.NAV_BTN} disabled:opacity-30 disabled:cursor-not-allowed`}
+          className={PROPERTIES.NAV_BTN_FULL}
           aria-label={texts.NAV_PREV}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -66,7 +66,7 @@ export function PropertiesControls({
         <button
           onClick={() => onNavigate(1)}
           disabled={current === total - 1}
-          className={`${PROPERTIES.NAV_BTN} disabled:opacity-30 disabled:cursor-not-allowed`}
+          className={PROPERTIES.NAV_BTN_FULL}
           aria-label={texts.NAV_NEXT}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

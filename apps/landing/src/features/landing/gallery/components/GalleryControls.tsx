@@ -20,7 +20,7 @@ export function GalleryControls({
   const dotLabel = t.LANDING.GALLERY.DOT_LABEL;
 
   return (
-    <div className="flex flex-col items-center gap-4 mt-6">
+    <div className={GALLERY.CONTROLS_WRAPPER}>
       <div className={GALLERY.CONTROLS}>
         {Array.from({ length: total }).map((_, i) => (
           <button
@@ -33,11 +33,11 @@ export function GalleryControls({
       </div>
 
       {!prefersReducedMotion && (
-        <div className="w-20 h-px bg-forest-700 overflow-hidden rounded-full">
+        <div className={GALLERY.PROGRESS_BG}>
           {!isHovered && (
             <motion.div
               key={current}
-              className="h-full bg-gold-500/40 origin-left"
+              className={GALLERY.PROGRESS_FILL}
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: autoInterval / 1000, ease: "linear" }}

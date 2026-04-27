@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
 
 const NAV_KEYS = ["HOME", "ABOUT", "ROOMS", "CONTACT"] as const;
 
@@ -8,26 +9,23 @@ export function LandingFooter() {
   const { t } = useI18n();
 
   return (
-    <footer className="bg-forest-950 border-t border-forest-900">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-16 py-16 lg:py-20">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-12">
-          <div className="flex flex-col gap-3">
-            <span className="font-serif text-2xl tracking-[0.35em] uppercase text-stone-50">
+    <footer className={LAYOUT.FOOTER_WRAPPER}>
+      <div className={LAYOUT.FOOTER_INNER}>
+        <div className={LAYOUT.FOOTER_TOP}>
+          <div className={LAYOUT.FOOTER_BRAND}>
+            <span className={LAYOUT.FOOTER_HOTEL_NAME}>
               {t.COMMON.LAYOUT.HOTEL_NAME}
             </span>
-            <span className="text-xs tracking-[0.25em] uppercase text-stone-500">
+            <span className={LAYOUT.FOOTER_TAGLINE}>
               {t.COMMON.LAYOUT.TAGLINE}
             </span>
           </div>
 
           <nav>
-            <ul className="flex flex-wrap gap-8">
+            <ul className={LAYOUT.FOOTER_LINKS}>
               {NAV_KEYS.map((key) => (
                 <li key={key}>
-                  <a
-                    href="#"
-                    className="text-xs tracking-[0.25em] uppercase text-stone-500 hover:text-stone-300 transition-colors duration-300"
-                  >
+                  <a href="#" className={LAYOUT.FOOTER_LINK}>
                     {t.COMMON.NAV[key]}
                   </a>
                 </li>
@@ -35,21 +33,18 @@ export function LandingFooter() {
             </ul>
           </nav>
 
-          <a
-            href="#"
-            className="text-xs tracking-[0.25em] uppercase text-gold-500 hover:text-gold-400 transition-colors duration-300 border-b border-gold-500/40 pb-0.5"
-          >
+          <a href="#" className={LAYOUT.FOOTER_BOOK}>
             {t.COMMON.ACTIONS.BOOK_NOW}
           </a>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-forest-900 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <p className="text-xs text-stone-700 tracking-wide">
+        <div className={LAYOUT.FOOTER_BOTTOM}>
+          <p className={LAYOUT.FOOTER_COPYRIGHT}>
             {t.COMMON.LAYOUT.COPYRIGHT}
           </p>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-gold-500 opacity-60" />
-            <p className="text-xs text-stone-700 tracking-wide">
+          <div className={LAYOUT.FOOTER_LOCATION_ROW}>
+            <span className={LAYOUT.FOOTER_LOCATION_DOT} />
+            <p className={LAYOUT.FOOTER_LOCATION_TEXT}>
               {t.COMMON.LAYOUT.LOCATIONS_FOOTER}
             </p>
           </div>

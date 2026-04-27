@@ -27,7 +27,7 @@ export function GalleryHeader() {
         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
       >
         <motion.span className={GALLERY.EYEBROW} variants={ITEM}>{gallery.EYEBROW}</motion.span>
-        <div className="overflow-hidden">
+        <div className={GALLERY.HEADLINE_WRAPPER}>
           <motion.h2
             className={GALLERY.HEADLINE}
             initial={{ y: "100%" }}

@@ -28,14 +28,14 @@ export function AboutTextPanel() {
       variants={STAGGER}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="flex flex-col"
+      className={ABOUT.TEXT_PANEL}
     >
       <motion.span className={ABOUT.EYEBROW} variants={REVEAL}>
         {about.EYEBROW}
       </motion.span>
-      <div className="overflow-hidden mb-8">
+      <div className={ABOUT.HEADLINE_WRAPPER}>
         <motion.h2
-          className={ABOUT.HEADLINE.replace("mb-8", "")}
+          className={ABOUT.HEADLINE_NO_MB}
           initial={{ y: "100%" }}
           animate={inView ? { y: "0%" } : { y: "100%" }}
           transition={{ duration: 1, delay: 0.1, ease: EXPO_OUT }}

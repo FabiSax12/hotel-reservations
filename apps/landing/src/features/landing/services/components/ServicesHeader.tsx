@@ -28,7 +28,7 @@ export function ServicesHeader() {
       <motion.span className={SERVICES.EYEBROW} variants={ITEM}>
         {services.EYEBROW}
       </motion.span>
-      <div className="overflow-hidden">
+      <div className={SERVICES.HEADLINE_WRAPPER}>
         <motion.h2
           className={SERVICES.HEADLINE}
           initial={{ y: "100%" }}

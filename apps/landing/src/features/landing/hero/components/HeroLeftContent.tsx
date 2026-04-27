@@ -50,21 +50,21 @@ export function HeroLeftContent() {
       </motion.p>
 
       <h1 className={HERO.HEADLINE} aria-label={`${hero.HEADLINE_LINE1} ${hero.HEADLINE_LINE2}`}>
-        <span className="block overflow-hidden" style={{ lineHeight: "0.97" }}>
-          <motion.span className="block italic" initial={{ y: "110%" }} animate={{ y: "0%" }}
+        <span className={HERO.HEADLINE_LINE_WRAPPER} style={{ lineHeight: "0.97" }}>
+          <motion.span className={HERO.HEADLINE_LINE_ITALIC} initial={{ y: "110%" }} animate={{ y: "0%" }}
             transition={{ duration: 1.1, delay: prefersReducedMotion ? 0.1 : 0.65, ease: EXPO_OUT }}>
             {hero.HEADLINE_LINE1}
           </motion.span>
         </span>
-        <span className="block overflow-hidden" style={{ lineHeight: "0.97" }}>
-          <motion.span className="block" initial={{ y: "110%" }} animate={{ y: "0%" }}
+        <span className={HERO.HEADLINE_LINE_WRAPPER} style={{ lineHeight: "0.97" }}>
+          <motion.span className={HERO.HEADLINE_LINE} initial={{ y: "110%" }} animate={{ y: "0%" }}
             transition={{ duration: 1.1, delay: prefersReducedMotion ? 0.2 : 0.82, ease: EXPO_OUT }}>
             {hero.HEADLINE_LINE2}
           </motion.span>
         </span>
       </h1>
 
-      <motion.div variants={STAGGER_CONTENT} initial="hidden" animate="visible" className="flex flex-col gap-8">
+      <motion.div variants={STAGGER_CONTENT} initial="hidden" animate="visible" className={HERO.CONTENT_STAGGER}>
         <motion.p className={HERO.SUBHEADLINE} variants={FADE_UP}>{hero.SUBHEADLINE}</motion.p>
 
         <motion.div className={HERO.CTA_ROW} variants={FADE_UP}>

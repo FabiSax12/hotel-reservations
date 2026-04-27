@@ -33,10 +33,10 @@ export function HeroVisualPanel({ scale }: HeroVisualPanelProps) {
             sizes="(max-width: 1024px) 100vw, 480px"
             priority
           />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, oklch(28% 0.07 143 / 0.55) 0%, oklch(16% 0.05 143 / 0.45) 50%, oklch(11% 0.04 143 / 0.65) 100%)" }} />
-          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 50% at 50% 20%, oklch(36% 0.08 143 / 0.5), transparent)" }} />
-          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 40% at 30% 70%, oklch(67% 0.15 68 / 0.1), transparent)" }} />
-          <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 400 533" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <div className={HERO.VISUAL_INNER} style={{ background: "linear-gradient(160deg, oklch(28% 0.07 143 / 0.55) 0%, oklch(16% 0.05 143 / 0.45) 50%, oklch(11% 0.04 143 / 0.65) 100%)" }} />
+          <div className={HERO.VISUAL_INNER} style={{ background: "radial-gradient(ellipse 70% 50% at 50% 20%, oklch(36% 0.08 143 / 0.5), transparent)" }} />
+          <div className={HERO.VISUAL_INNER} style={{ background: "radial-gradient(ellipse 60% 40% at 30% 70%, oklch(67% 0.15 68 / 0.1), transparent)" }} />
+          <svg className={HERO.VISUAL_SVG} viewBox="0 0 400 533" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <circle cx="200" cy="200" r="120" stroke="oklch(67% 0.15 68)" strokeWidth="0.5" />
             <circle cx="200" cy="200" r="80" stroke="oklch(67% 0.15 68)" strokeWidth="0.5" />
             <circle cx="200" cy="200" r="40" stroke="oklch(67% 0.15 68)" strokeWidth="0.5" />
@@ -47,13 +47,13 @@ export function HeroVisualPanel({ scale }: HeroVisualPanelProps) {
           </svg>
           {!prefersReducedMotion && (
             <>
-              <motion.div className="absolute top-8 right-8 w-2 h-2 rounded-full bg-gold-500"
+              <motion.div className={HERO.VISUAL_ORB_1}
                 animate={{ opacity: [0.4, 1, 0.4] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
-              <motion.div className="absolute top-20 right-20 w-1 h-1 rounded-full bg-gold-400"
+              <motion.div className={HERO.VISUAL_ORB_2}
                 animate={{ opacity: [0.2, 0.8, 0.2] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-              <motion.div className="absolute top-32 right-14 w-1.5 h-1.5 rounded-full bg-gold-300"
+              <motion.div className={HERO.VISUAL_ORB_3}
                 animate={{ opacity: [0.3, 0.9, 0.3] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
-              <motion.div className="absolute bottom-32 left-10 w-1 h-1 rounded-full bg-gold-400"
+              <motion.div className={HERO.VISUAL_ORB_4}
                 animate={{ opacity: [0.2, 0.7, 0.2], y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
             </>
           )}
