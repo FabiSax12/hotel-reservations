@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AuthErrorContent } from "./AuthErrorContent";
 import type { AuthErrorPageProps } from "./page.interface";
-import { getServerTranslations } from "@/locales";
+import { getServerTranslations } from "@/locales/server";
  
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getServerTranslations();

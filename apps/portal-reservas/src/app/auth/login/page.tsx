@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { loginAction } from "@/features/auth/services/loginAction";
-import { getServerTranslations } from "@/locales";
+import { getServerTranslations } from "@/locales/server";
  
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getServerTranslations();
