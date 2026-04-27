@@ -6,12 +6,11 @@ export const ROOM_LIST_STYLES = {
   section:
     "relative w-full max-w-5xl mx-auto px-6 sm:px-10 pb-20 pt-12 mt-8 mb-24 bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-white/40 animate-in fade-in slide-in-from-bottom-12 duration-700 fill-mode-both",
   header:
-    "flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-emerald-900/10",
+    "flex flex-col md:flex-row md:items-end justify-between gap-5 mb-10 pb-6 border-b border-emerald-900/10",
   badge: "text-emerald-700 font-bold tracking-widest uppercase mb-2 text-xs",
   heading: "text-4xl sm:text-5xl font-black text-emerald-950 tracking-tight",
-  countBadge:
-    "mt-6 md:mt-0 px-4 py-2 bg-emerald-50/80 rounded-xl text-emerald-800 font-bold flex items-center gap-2 text-sm border border-emerald-100",
-  countDot: "w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0",
+  countBadge: "md:mt-0 text-sm text-emerald-900/75 font-medium",
+  countValue: "font-semibold text-emerald-950",
   grid: "flex flex-col gap-8",
 } as const;
 
@@ -30,9 +29,9 @@ export const ROOM_CARD_STYLES = {
   urgencyIcon: "w-3.5 h-3.5 flex-shrink-0",
   adminTipBadgeRemoved: "", // adminTip moved to card body pull-quote (RoomCardMeta)
   expandBtn:
-    "absolute bottom-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-emerald-950 flex items-center justify-center shadow-sm hover:bg-white hover:shadow-md transition-all duration-200 active:scale-95",
+    "absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm text-emerald-950 flex items-center justify-center shadow-sm hover:bg-white hover:shadow-md transition-all duration-200 active:scale-95",
   expandBtnIcon: (isExpanded: boolean) =>
-    `w-4 h-4 transition-transform duration-300 ${isExpanded ? "rotate-180" : "rotate-0"}`,
+    `w-4 h-4 transition-transform duration-300 ${isExpanded ? "rotate-180 scale-95" : "rotate-0"}`,
 
   // ─── Body ───────────────────────────────────────────────────────────────────
   body: "flex flex-col flex-1 p-7 lg:pr-9",
@@ -76,7 +75,7 @@ export const ROOM_CARD_STYLES = {
     "px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium border border-emerald-100",
 
   // ─── Price Tier ─────────────────────────────────────────────────────────────
-  priceTier: "mt-auto flex flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
+  priceTier: "mt-auto flex w-full flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
   priceBlock: "flex flex-col",
   priceLabel: "text-xs font-bold text-neutral-400 uppercase tracking-wider mb-0.5",
   priceRow: "flex items-baseline gap-1.5",
@@ -86,7 +85,7 @@ export const ROOM_CARD_STYLES = {
   availDot: "w-1.5 h-1.5 rounded-full bg-emerald-500",
 
   // ─── CTA Buttons ────────────────────────────────────────────────────────────
-  ctaWrapper: "flex flex-col items-stretch sm:items-end gap-2 min-w-[180px]",
+  ctaWrapper: "ml-auto flex flex-col items-end gap-2 min-w-[180px] self-end",
   reserveBtn:
     "flex items-center justify-center gap-2 h-14 bg-emerald-950 hover:bg-emerald-900 text-white font-bold text-base px-8 rounded-xl shadow-md transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed",
   reserveBtnLoader: "animate-spin w-4 h-4 text-white",
@@ -98,7 +97,7 @@ export const ROOM_CARD_STYLES = {
 
   // ─── Room Availability Calendar (inline popover below CTA button) ────────────
   availCalWrapper:
-    "absolute z-[9999] bottom-full mb-3 right-0 bg-white rounded-[2rem] shadow-[0_24px_60px_rgba(0,0,0,0.15)] border border-neutral-100 p-2 sm:p-5 animate-in fade-in slide-in-from-bottom-3 duration-200 w-[95vw] sm:w-[650px] max-w-full",
+    "absolute z-[9999] bottom-full mb-3 right-0 bg-white rounded-[1.6rem] shadow-[0_20px_55px_rgba(0,0,0,0.18)] border border-neutral-200 p-4 sm:p-5 animate-in fade-in slide-in-from-bottom-3 duration-200 w-[680px] max-w-[95vw] overflow-hidden",
   availCalHeader: "flex items-center justify-between mb-4",
   availCalTitle: "text-sm font-bold text-emerald-950 uppercase tracking-wider",
   availCalClose:
@@ -142,4 +141,20 @@ export const ROOM_CARD_STYLES = {
   guestStepBtn:
     "w-8 h-8 rounded-full bg-white border border-neutral-200 hover:border-emerald-300 hover:bg-emerald-50 text-neutral-700 font-bold flex items-center justify-center transition-colors text-sm disabled:opacity-40 disabled:cursor-not-allowed",
   guestCount: "w-6 text-center font-black text-emerald-950 text-sm",
+  detailOverlay: (isOpen: boolean) =>
+    `fixed inset-0 z-[100] flex items-center justify-center p-5 sm:p-8 transition-opacity duration-300 ${
+      isOpen ? "opacity-100 pointer-events-auto bg-black/0" : "opacity-0 pointer-events-none bg-black/0"
+    }`,
+  detailPanel: (isOpen: boolean) =>
+    `relative w-[min(70vw,1050px)] max-w-[1050px] max-h-[88vh] overflow-hidden rounded-[2.2rem] border border-emerald-100/70 bg-white shadow-[0_45px_120px_rgba(0,0,0,0.32)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      isOpen
+        ? "opacity-100 translate-y-0 scale-100"
+        : "opacity-0 translate-y-5 scale-[0.96]"
+    }`,
+  detailCloseBtn:
+    "absolute top-5 right-5 z-20 h-10 w-10 rounded-full border border-neutral-200 bg-white/95 text-neutral-600 shadow-sm transition-colors hover:bg-neutral-50 hover:text-neutral-900",
+  detailHeader: "border-b border-neutral-100 px-7 py-5 sm:px-9 sm:py-7",
+  detailTitle: "text-2xl sm:text-3xl font-black tracking-tight text-emerald-950",
+  detailSubtitle: "mt-1 text-sm uppercase tracking-[0.16em] text-emerald-700/80 font-semibold",
+  detailBody: "max-h-[calc(88vh-120px)] overflow-auto px-7 pb-7 sm:px-9 sm:pb-9",
 } as const;

@@ -31,14 +31,11 @@ export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
       <div className={S.header}>
         <div>
           <div className={S.badge}>Explorar Habitaciones</div>
-          <h2 className={S.heading}>
-            Opciones en {selectedDest}
-          </h2>
+          <h2 className={S.heading}>{selectedDest}</h2>
         </div>
 
         <div className={S.countBadge} role="status" aria-live="polite">
-          <span className={S.countDot} />
-          {rooms.length} {t.ROOMS.ROOMS_FOUND}
+          <span className={S.countValue}>{rooms.length}</span> {t.ROOMS.ROOMS_FOUND}
         </div>
       </div>
 

@@ -41,7 +41,10 @@ export function RoomImagePanel({ room, isExpanded, onToggleExpand }: RoomImagePa
       <button
         type="button"
         className={S.expandBtn}
-        onClick={onToggleExpand}
+        onClick={(event) => {
+          event.stopPropagation();
+          onToggleExpand();
+        }}
         aria-label={isExpanded ? t.ROOMS.COLLAPSE_DETAILS : t.ROOMS.EXPAND_DETAILS}
         aria-expanded={isExpanded}
       >
@@ -52,7 +55,7 @@ export function RoomImagePanel({ room, isExpanded, onToggleExpand }: RoomImagePa
           stroke="currentColor"
           strokeWidth={2.5}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 4H4v4m0-4l6 6m6-6h4v4m0-4l-6 6M8 20H4v-4m0 4l6-6m6 6h4v-4m0 4l-6-6" />
         </svg>
       </button>
     </div>

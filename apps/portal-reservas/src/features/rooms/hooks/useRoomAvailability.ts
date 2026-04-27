@@ -6,8 +6,7 @@
  * search dates from RoomsContext.
  *
  * Availability logic: a room is considered available for a date range if its
- * `availableDates` array contains the requested checkIn date.
- * (Simplified mock — real implementation would check the full range.)
+ * `availableDates` array contains every night in the requested stay interval.
  */
 
 "use client";
@@ -32,25 +31,38 @@ export interface RoomAvailabilityResult {
 export function useRoomAvailability(
   roomId: string,
   checkIn: string | undefined,
+  checkOut: string | undefined,
   availableDates: string[],
 ): RoomAvailabilityResult {
   const [isAvailable, setIsAvailable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Track the previous checkIn to avoid re-triggering when nothing changed
-  const prevCheckInRef = useRef<string | undefined>(undefined);
+  // Track previous date range to avoid re-triggering when nothing changed
+  const prevRangeRef = useRef<string>("");
 
   useEffect(() => {
-    if (!checkIn || prevCheckInRef.current === checkIn) return;
-    prevCheckInRef.current = checkIn;
+    if (!checkIn || !checkOut) return;
+    const nextRangeKey = `${checkIn}_${checkOut}`;
+    if (prevRangeRef.current === nextRangeKey) return;
+    prevRangeRef.current = nextRangeKey;
 
     setIsLoading(true);
     setError(null);
 
     const timeout = setTimeout(() => {
       try {
-        const available = availableDates.includes(checkIn);
+        const availableDateSet = new Set(availableDates);
+        const stayNightDates: string[] = [];
+        const cursor = new Date(`${checkIn}T00:00:00`);
+        const target = new Date(`${checkOut}T00:00:00`);
+
+        while (cursor < target) {
+          stayNightDates.push(cursor.toISOString().slice(0, 10));
+          cursor.setDate(cursor.getDate() + 1);
+        }
+
+        const available = stayNightDates.every((isoDay) => availableDateSet.has(isoDay));
         setIsAvailable(available);
         setIsLoading(false);
       } catch {
@@ -60,7 +72,7 @@ export function useRoomAvailability(
     }, ROOM_MOCK.AVAILABILITY_DELAY_MS);
 
     return () => clearTimeout(timeout);
-  }, [roomId, checkIn, availableDates]);
+  }, [roomId, checkIn, checkOut, availableDates]);
 
   return { isAvailable, isLoading, error };
 }

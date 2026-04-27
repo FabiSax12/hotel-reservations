@@ -3,9 +3,9 @@
  *
  * Refactored in US-DM-02 to:
  *  - Consume `RoomsContext` for expansion state and unavailability styling.
- *  - Delegate image panel to `RoomImagePanel` (which now has adminTip + expand button).
+ *  - Delegate image panel to `RoomImagePanel` with a dedicated detail-view trigger.
  *  - Delegate header/meta to new sub-components `RoomCardHeader` and `RoomCardMeta`.
- *  - Animate the expansion panel using `grid-template-rows` CSS transition.
+ *  - Render room details in a smooth fixed popover instead of inline card expansion.
  *  - Apply opacity reduction when dates are set but the room is unavailable.
  *
  * Expansion state is managed via `useRoomExpansion` which reads from the shared
@@ -22,7 +22,7 @@ import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { RoomImagePanel } from "./RoomImagePanel";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
-import { RoomCardGallery } from "./sub-components/RoomCardGallery";
+import { RoomDetailsPopover } from "./sub-components/RoomDetailsPopover";
 import { RoomPriceTier } from "./RoomPriceTier";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 
@@ -37,15 +37,16 @@ interface RoomCardProps {
 
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   const { hasDates, searchDates } = useRoomsContext();
-  const { isExpanded, handleToggle } = useRoomExpansion(room.id);
+  const { isExpanded, handleToggle, handleCollapse } = useRoomExpansion(room.id);
   const { isAvailable, isLoading } = useRoomAvailability(
     room.id,
     searchDates?.checkIn,
+    searchDates?.checkOut,
     room.availableDates,
   );
 
   // A room is visually unavailable when dates are set, loading is done, and it's not free
-  const isUnavailable = hasDates && !isLoading && !isAvailable;
+  const isUnavailable = hasDates && !isLoading && !isAvailable && !isExpanded;
 
   return (
     <article
@@ -67,19 +68,11 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
 
         <RoomCardMeta room={room} />
 
-        {/* Expansion panel — animated via grid-template-rows */}
-        <div
-          className={`${S.expansionGrid} ${isExpanded ? S.expansionGridOpen : S.expansionGridClosed}`}
-          aria-hidden={!isExpanded}
-        >
-          <div className={S.expansionInner}>
-            <RoomCardGallery room={room} />
-          </div>
-        </div>
-
         {/* Price tier + conditional CTA */}
         <RoomPriceTier room={room} />
       </div>
+
+      <RoomDetailsPopover room={room} isOpen={isExpanded} onClose={handleCollapse} />
     </article>
   );
 }

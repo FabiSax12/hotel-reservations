@@ -8,7 +8,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CalendarPopover } from "@hotel/ui";
 import { useRoomsContext } from "../../context/RoomsContext";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
@@ -31,101 +31,116 @@ export function RoomRangeCalendar({
   const [checkIn, setCheckIn] = useState<string>("");
   const [checkOut, setCheckOut] = useState<string>("");
   const [invalidState, setInvalidState] = useState<{ dayStr: string; isFading: boolean } | null>(null);
+  const availableDateSet = new Set(availableDates);
+  const lastSubmittedRangeRef = useRef<string>("");
 
-  // Re-implementing simplified date selection logic locally
+  const dismissInvalidState = (dayStr: string) => {
+    setInvalidState({ dayStr, isFading: false });
+    setTimeout(() => {
+      setInvalidState({ dayStr, isFading: true });
+    }, 170);
+    setTimeout(() => {
+      setInvalidState((current) => (current?.dayStr === dayStr ? null : current));
+    }, 500);
+  };
+
+  const getDatesBetween = (start: string, end: string): string[] => {
+    const result: string[] = [];
+    const cursor = new Date(`${start}T00:00:00`);
+    const target = new Date(`${end}T00:00:00`);
+    while (cursor < target) {
+      result.push(cursor.toISOString().slice(0, 10));
+      cursor.setDate(cursor.getDate() + 1);
+    }
+    return result;
+  };
+
+  const getFirstBlockedDate = (start: string, end: string): string | null => {
+    const stayNights = getDatesBetween(start, end);
+    const blockedDate = stayNights.find((isoDay) => !availableDateSet.has(isoDay));
+    return blockedDate ?? null;
+  };
+
+  const submitRange = (start: string, end: string) => {
+    const rangeKey = `${start}__${end}`;
+    if (lastSubmittedRangeRef.current === rangeKey) return;
+    lastSubmittedRangeRef.current = rangeKey;
+    onSearch({
+      destination: location,
+      checkIn: start,
+      checkOut: end,
+      adults: 2,
+      children: 0,
+      pets: 0,
+    });
+    onClose();
+  };
+
   const handlePickDate = (dayStr: string) => {
-    // If no check-in, set it
+    if (invalidState) setInvalidState(null);
+
+    if (dayStr === checkIn && !checkOut) {
+      setCheckIn("");
+      return;
+    }
+
     if (!checkIn) {
       setCheckIn(dayStr);
       setCheckOut("");
       return;
     }
 
-    // If check-in is set but no check-out
-    if (checkIn && !checkOut) {
+    if (!checkOut) {
       if (dayStr < checkIn) {
-        // Picked a date before check-in -> becomes new check-in
         setCheckIn(dayStr);
-      } else if (dayStr === checkIn) {
-        // Clicked check-in again -> reset
-        setCheckIn("");
       } else {
-        // Picked a date after check-in -> becomes check-out
+        const firstBlockedDate = getFirstBlockedDate(checkIn, dayStr);
+        if (firstBlockedDate) {
+          dismissInvalidState(firstBlockedDate);
+          return;
+        }
         setCheckOut(dayStr);
+        submitRange(checkIn, dayStr);
       }
       return;
     }
 
-    // If both are set, picking a new date resets to check-in
-    if (checkIn && checkOut) {
+    if (dayStr === checkOut) {
+      setCheckOut("");
+      return;
+    }
+
+    if (dayStr <= checkIn) {
       setCheckIn(dayStr);
       setCheckOut("");
+      return;
     }
-  };
 
-  const handleConfirm = () => {
-    if (checkIn && checkOut) {
-      onSearch({
-        destination: location,
-        checkIn,
-        checkOut,
-        adults: 2,
-        children: 0,
-        pets: 0,
-      });
-      onClose();
+    const firstBlockedDate = getFirstBlockedDate(checkIn, dayStr);
+    if (firstBlockedDate) {
+      dismissInvalidState(firstBlockedDate);
+      return;
     }
+
+    setCheckOut(dayStr);
+    submitRange(checkIn, dayStr);
   };
 
   return (
-    <div 
-      className={`${S.availCalWrapper} -right-4 sm:-right-8`} 
-      role="dialog" 
+    <div
+      className={S.availCalWrapper}
+      role="dialog"
       aria-label={t.ROOMS.AVAIL_CALENDAR_TITLE}
     >
-      <div className={S.availCalHeader}>
-        <span className={S.availCalTitle}>{t.ROOMS.AVAIL_CALENDAR_TITLE}</span>
-        <button type="button" className={S.availCalClose} onClick={onClose} aria-label="Cerrar">
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
       <CalendarPopover
         variant="compact"
-        className="w-full bg-transparent shadow-none !p-0"
+        isInline
+        className="w-full"
         checkIn={checkIn}
         checkOut={checkOut}
         invalidState={invalidState}
         onPickDate={handlePickDate}
         availableDates={availableDates}
-        bottomContent={
-          <div className="flex items-center justify-between">
-            <div className={S.availCalLegend}>
-              <div className={S.availCalLegendItem}>
-                <span className={S.availCalLegendDot("available")} />
-                Disponible
-              </div>
-              <div className={S.availCalLegendItem}>
-                <span className={S.availCalLegendDot("booked")} />
-                Ocupado
-              </div>
-            </div>
-            <button
-              type="button"
-              className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                checkIn && checkOut
-                  ? "bg-emerald-950 text-white hover:bg-emerald-900 shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                  : "bg-neutral-100 text-neutral-400 cursor-not-allowed"
-              }`}
-              disabled={!checkIn || !checkOut}
-              onClick={handleConfirm}
-            >
-              Confirmar fechas
-            </button>
-          </div>
-        }
       />
     </div>
   );

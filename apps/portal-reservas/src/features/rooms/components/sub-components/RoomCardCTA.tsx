@@ -38,6 +38,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
   const { isAvailable, isLoading } = useRoomAvailability(
     room.id,
     searchDates?.checkIn,
+    searchDates?.checkOut,
     room.availableDates,
   );
 

@@ -17,8 +17,8 @@ import { ROOM_MOCK } from "../constants/rooms.constants";
 // ─── Dynamic Date Generator ────────────────────────────────────────────────────
 /**
  * Generates an array of future ISO date strings.
- * Uses a sparse pattern (available ~every other day) to simulate realistic
- * hotel availability rather than every single day being free.
+ * Uses clustered windows of contiguous availability (3-4 nights) separated
+ * by short gaps, so UX testing can always select valid ranges.
  *
  * @param count - How many available date slots to generate.
  * @param startOffset - Days from today before the first slot.
@@ -32,14 +32,21 @@ function generateAvailableDates(
   const dates: string[] = [];
   const today = new Date();
   let dayOffset = startOffset;
+  let windowSize = 3;
 
-  for (let i = 0; i < count; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + dayOffset);
-    dates.push(d.toISOString().slice(0, 10));
-    // Alternate between 1-day and 2-day gaps to create realistic patterns
-    dayOffset += i % 3 === 0 ? skip + 1 : skip;
+  while (dates.length < count) {
+    for (let dayInWindow = 0; dayInWindow < windowSize && dates.length < count; dayInWindow++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + dayOffset + dayInWindow);
+      dates.push(d.toISOString().slice(0, 10));
+    }
+
+    // Booked gap between availability windows (1-3 nights)
+    dayOffset += windowSize + (skip % 3) + 1;
+    // Alternate between 3 and 4-night windows for more realistic variance.
+    windowSize = windowSize === 3 ? 4 : 3;
   }
+
   return dates;
 }
 

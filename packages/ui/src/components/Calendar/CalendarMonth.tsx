@@ -78,8 +78,8 @@ export function CalendarMonth({
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
-    <div className={S.monthCol}>
-      <div className={S.monthHeader}>
+    <div className={S.monthCol(isHero)}>
+      <div className={S.monthHeader(isHero)}>
         {monthIndexLocal === 0 ? (
           <button
             type="button"

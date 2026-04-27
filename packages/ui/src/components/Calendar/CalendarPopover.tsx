@@ -29,6 +29,8 @@ interface CalendarPopoverProps {
   bottomContent?: React.ReactNode;
   /** Optional override for the root container classes */
   className?: string;
+  /** Whether to render inline in the normal document flow. */
+  isInline?: boolean;
 }
 
 export function CalendarPopover({
@@ -42,6 +44,7 @@ export function CalendarPopover({
   availableDates,
   bottomContent,
   className,
+  isInline = false,
 }: CalendarPopoverProps) {
   const [hoveredDay, setHoveredDay] = useState<string | null>(null);
   const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
@@ -52,9 +55,10 @@ export function CalendarPopover({
   const inVal = parseDateHelper(checkIn);
   const outVal = parseDateHelper(checkOut);
   const isHero = variant === UI_VARIANTS.HERO;
+  const wrapperClasses = isInline ? S.inlineWrapper(isHero) : S.wrapper(isHero);
 
   return (
-    <div className={`flex ${S.padding(isHero)} ${className ?? S.wrapper(isHero)}`}>
+    <div className={`${S.frame(isHero)} ${S.padding(isHero)} ${wrapperClasses} ${className ?? ""}`}>
       {([0, 1] as const).map((monthIndexLocal) => (
         <CalendarMonth
           key={monthIndexLocal}
@@ -77,7 +81,7 @@ export function CalendarPopover({
         />
       ))}
       {bottomContent && (
-        <div className="col-span-full w-full mt-4 pt-4 border-t border-neutral-100">
+        <div className="w-full mt-4 pt-4 border-t border-neutral-100">
           {bottomContent}
         </div>
       )}
