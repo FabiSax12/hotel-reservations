@@ -19,6 +19,10 @@ export const ReservationsFilters = ({
   const { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange } =
     useReservationFilters(filters, onFiltersChange);
 
+  const handleClearStatuses = () => update({ statuses: [] });
+  const handleDateRangeChange = (checkIn: string, checkOut: string) =>
+    update({ dateFrom: checkIn, dateTo: checkOut });
+
   return (
     <div className={S.wrapper}>
       <div className={S.bar}>
@@ -26,7 +30,7 @@ export const ReservationsFilters = ({
           statuses={filters.statuses}
           statusCounts={statusCounts}
           totalCount={totalCount}
-          onAllClick={() => update({ statuses: [] })}
+          onAllClick={handleClearStatuses}
           onStatusToggle={toggleStatus}
         />
 
@@ -38,7 +42,7 @@ export const ReservationsFilters = ({
           <DateRangePicker
             checkIn={filters.dateFrom}
             checkOut={filters.dateTo}
-            onChange={(checkIn, checkOut) => update({ dateFrom: checkIn, dateTo: checkOut })}
+            onChange={handleDateRangeChange}
           />
 
           <ClearFiltersButton isFiltered={isFiltered} onClear={clearFilters} />

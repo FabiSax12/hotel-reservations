@@ -2,6 +2,7 @@
 
 import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
 import { useReservationsFiltering } from "../../hooks/useReservationsFiltering";
+import { FILTERED_RESULTS } from "../../constants/filtered-results";
 import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsFilters } from "../ReservationsFilters/ReservationsFilters";
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
@@ -10,7 +11,7 @@ import type { ReservationsViewProps } from "./ReservationsView.interface";
 
 export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);
-  const hasResults = filtered.length > 0;
+  const hasResults = filtered.length > FILTERED_RESULTS.EMPTY;
 
   return (
     <main className={RESERVATIONS_PAGE_STYLES.wrapper}>

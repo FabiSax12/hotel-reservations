@@ -2,6 +2,7 @@ import type { ReservationStatus } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
 import { DEFAULT_FILTERS } from "../constants/reservation-filters";
 import { ROOM_ALL_KEY } from "../constants/room-list";
+import { FILTERED_RESULTS } from "../constants/filtered-results";
 
 interface UseReservationFiltersReturn {
   toggleStatus: (status: ReservationStatus) => void;
@@ -31,10 +32,10 @@ export const useReservationFilters = (
   const clearFilters = () => onFiltersChange({ ...DEFAULT_FILTERS });
 
   const isFiltered =
-    filters.statuses.length > 0 ||
-    filters.roomName !== "" ||
-    filters.dateFrom !== "" ||
-    filters.dateTo !== "";
+    filters.statuses.length > FILTERED_RESULTS.EMPTY ||
+    filters.roomName !== DEFAULT_FILTERS.roomName ||
+    filters.dateFrom !== DEFAULT_FILTERS.dateFrom ||
+    filters.dateTo !== DEFAULT_FILTERS.dateTo;
 
   const selectedRoomKey = filters.roomName === "" ? ROOM_ALL_KEY : filters.roomName;
 
