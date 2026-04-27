@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Form, TextField, Label, InputGroup, Button } from "@heroui/react";
 import { Eye, EyeOff } from "lucide-react";
 import { ROUTES } from "@/config/routes";
-import { LOGIN_FIELDS } from "@/features/auth/constants/fields";
+import { LOGIN_FORM_FIELDS } from "@/features/auth/constants/loginFormFields";
 import { INPUT_TYPES as IT, AUTOCOMPLETE as AC, BUTTON_UI as BU, ARIA_ROLES as AR } from "@/features/auth/constants/ui";
 import type { LoginActionState } from "@/features/auth/domain/credentials";
 import { useLoginForm } from "@/features/auth/hooks/useLoginForm";
@@ -38,11 +38,11 @@ export const LoginForm = ({ action }: LoginFormProps) => {
         </div>
  
         <Form className={AS.form} action={formAction}>
-          <input type={IT.HIDDEN} name={LOGIN_FIELDS.CALLBACK_URL} value={callbackUrl} />
+          <input type={IT.HIDDEN} name={LOGIN_FORM_FIELDS.CALLBACK_URL} value={callbackUrl} />
  
           <TextField
-            id={LOGIN_FIELDS.EMAIL}
-            name={LOGIN_FIELDS.EMAIL}
+            id={LOGIN_FORM_FIELDS.EMAIL}
+            name={LOGIN_FORM_FIELDS.EMAIL}
             type={IT.EMAIL}
             isRequired
             autoComplete={AC.EMAIL}
@@ -58,8 +58,8 @@ export const LoginForm = ({ action }: LoginFormProps) => {
           </TextField>
  
           <TextField
-            id={LOGIN_FIELDS.PASSWORD}
-            name={LOGIN_FIELDS.PASSWORD}
+            id={LOGIN_FORM_FIELDS.PASSWORD}
+            name={LOGIN_FORM_FIELDS.PASSWORD}
             type={showPassword ? IT.TEXT : IT.PASSWORD}
             isRequired
             autoComplete={AC.CURRENT_PASSWORD}
