@@ -5,13 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/locales";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
 import { GALLERY_CONFIG } from "@/features/landing/gallery/constants/gallery-config";
-
-const CARD_W = 310;
-const CARD_H = 420;
-const SPREAD = 255;
-const SCALE_STEP = 0.08;
-const OPACITY_STEP = 0.22;
-const VISIBLE_RANGE = 2;
+import { CARD_W, CARD_H, SPREAD, SCALE_STEP, OPACITY_STEP, VISIBLE_RANGE } from "@/features/landing/gallery/constants/carousel";
 
 function computeOffset(index: number, current: number, total: number): number {
   let offset = index - current;

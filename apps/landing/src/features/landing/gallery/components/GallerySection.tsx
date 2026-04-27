@@ -4,12 +4,11 @@ import { useState, useEffect } from "react";
 import { useReducedMotion } from "framer-motion";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
 import { GALLERY_CONFIG } from "@/features/landing/gallery/constants/gallery-config";
+import { AUTO_INTERVAL } from "@/features/landing/gallery/constants/carousel";
 import { GalleryHeader } from "./GalleryHeader";
 import { GalleryCarousel } from "./GalleryCarousel";
 import { GalleryMobile } from "./GalleryMobile";
 import { GalleryControls } from "./GalleryControls";
-
-const AUTO_INTERVAL = 3800;
 
 export function GallerySection() {
   const [current, setCurrent] = useState(0);
