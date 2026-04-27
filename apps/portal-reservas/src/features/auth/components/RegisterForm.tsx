@@ -6,6 +6,7 @@ import { PasswordStrengthChecklist } from "@/features/auth/components/PasswordSt
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 import { AUTH_FORM_STYLES as S } from "@/features/auth/theme/auth.theme";
 import { useI18n } from "@/locales";
+import { REGISTER_FORM_FIELDS } from "../constants/registerFormFields";
 
 export const RegisterForm = () => {
   const { t } = useI18n();
@@ -34,14 +35,14 @@ export const RegisterForm = () => {
         <h1 className={S.heading}>{t.AUTH.REGISTER.TITLE}</h1>
 
         <Form action={formAction} className={S.form}>
-          <TextField name="fullName" autoComplete="name" isInvalid={!!fullNameError} fullWidth>
+          <TextField name={REGISTER_FORM_FIELDS.FULL_NAME} autoComplete="name" isInvalid={!!fullNameError} fullWidth>
             <Label>{t.AUTH.REGISTER.FULL_NAME_LABEL}</Label>
             <Input placeholder={t.AUTH.REGISTER.FULL_NAME_PLACEHOLDER} />
             {fullNameError && <FieldError>{t.AUTH.VALIDATION[fullNameError]}</FieldError>}
           </TextField>
 
           <TextField
-            name="email"
+            name={REGISTER_FORM_FIELDS.EMAIL}
             type="email"
             autoComplete="email"
             isInvalid={!!emailError}
@@ -55,7 +56,7 @@ export const RegisterForm = () => {
 
           <div>
             <TextField
-              name="password"
+              name={REGISTER_FORM_FIELDS.PASSWORD}
               type={showPassword ? "text" : "password"}
               autoComplete="new-password"
               isInvalid={!!passwordError}
@@ -85,7 +86,7 @@ export const RegisterForm = () => {
           </div>
 
           <TextField
-            name="confirmPassword"
+            name={REGISTER_FORM_FIELDS.CONFIRM_PASSWORD}
             type={showConfirmPassword ? "text" : "password"}
             autoComplete="new-password"
             isInvalid={!!confirmPasswordError}
