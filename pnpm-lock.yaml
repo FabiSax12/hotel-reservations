@@ -90,6 +90,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.0
@@ -217,6 +220,9 @@ importers:
       '@heroui/styles':
         specifier: ^3.0.1
         version: 3.0.1(tailwind-merge@3.4.0)(tailwindcss@4.2.2)
+      '@hotel/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       react:
         specifier: ^19.1.0
         version: 19.2.4

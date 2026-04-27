@@ -9,8 +9,9 @@
  *  - "Seleccionar y Continuar" CTA button.
  */
 
-import { UI_CONSTANTS } from '../../../shared/constants/ui';
-import { ROOM_CARD_STYLES as S } from '../../../theme/rooms.theme';
+import { Button } from "@hotel/ui";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { useI18n } from "@/locales";
 
 interface RoomPriceTierProps {
   /** Average nightly price in USD. */
@@ -22,32 +23,43 @@ interface RoomPriceTierProps {
 }
 
 export function RoomPriceTier({ price, inventory, isScarce }: RoomPriceTierProps) {
+  const { t } = useI18n();
+
   return (
     <div className={S.priceTier}>
-
       <div className={S.priceBlock}>
-        <div className={S.priceLabel}>{UI_CONSTANTS.ROOMS.PRICE_LABEL}</div>
+        <div className={S.priceLabel}>{t.ROOMS.PRICE_LABEL}</div>
         <div className={S.priceRow}>
           <span className={S.priceAmount}>${price}</span>
-          <span className={S.priceCurrency}>{UI_CONSTANTS.ROOMS.CURRENCY}</span>
+          <span className={S.priceCurrency}>{t.ROOMS.CURRENCY}</span>
         </div>
         {/* Subdued availability count — hidden when scarcity badge is active */}
         {!isScarce && (
           <div className={S.availRow}>
             <span className={S.availDot}></span>
-            {inventory} {UI_CONSTANTS.ROOMS.AVAILABLE_DATES}
+            {inventory} {t.ROOMS.AVAILABLE_DATES}
           </div>
         )}
       </div>
 
       {/* Primary CTA */}
-      <button className={S.selectBtn}>
-        {UI_CONSTANTS.ROOMS.SELECT_ACTION}
-        <svg className={S.selectBtnIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
+      <Button
+        size="lg"
+        className={S.selectBtnWidth}
+        icon={
+          <svg
+            className={S.selectBtnIcon}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        }
+      >
+        {t.ROOMS.SELECT_ACTION}
+      </Button>
     </div>
   );
 }
