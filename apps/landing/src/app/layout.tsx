@@ -3,10 +3,10 @@ import { I18nProvider } from "@hotel/i18n";
 import type { SupportedLocale } from "@hotel/i18n";
 import { fetchContent } from "@/lib/content";
 import { playfair, dmSans } from "@/config/fonts";
-import { siteMetadata } from "@/config/metadata";
+import { generateSiteMetadata } from "@/config/metadata";
 import "./globals.css";
 
-export const metadata = siteMetadata;
+export const generateMetadata = generateSiteMetadata;
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const headersList = await headers();

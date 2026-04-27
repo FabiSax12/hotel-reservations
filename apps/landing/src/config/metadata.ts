@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
-import { COMMON_TEXTS } from "@/shared/i18n/commonTexts";
+import { headers } from "next/headers";
+import type { SupportedLocale } from "@hotel/i18n";
+import { fetchContent } from "@/lib/content";
 
-const layout = COMMON_TEXTS.es.LAYOUT;
+export async function generateSiteMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const locale = (headersList.get("x-locale") ?? "es") as SupportedLocale;
+  const content = await fetchContent(locale);
+  const layout = content.COMMON.LAYOUT;
 
-export const siteMetadata: Metadata = {
-  title: layout.META_TITLE,
-  description: layout.META_DESCRIPTION,
-  openGraph: {
-    title: layout.HOTEL_NAME,
-    description: layout.META_OG_DESCRIPTION,
-    type: "website",
-  },
-};
+  return {
+    title: layout.META_TITLE,
+    description: layout.META_DESCRIPTION,
+    openGraph: {
+      title: layout.HOTEL_NAME,
+      description: layout.META_OG_DESCRIPTION,
+      type: "website",
+    },
+  };
+}
