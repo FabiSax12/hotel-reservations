@@ -21,7 +21,11 @@ export const SidebarWrapper = () => {
 
       <div className={S.body}>
         {SIDEBAR_SECTIONS.map((section) => (
-          <SidebarRoutesSection key={section.title} section={section} isCollapsed={isCollapsed} />
+          <SidebarRoutesSection
+            key={section.sectionKey}
+            section={section}
+            isCollapsed={isCollapsed}
+          />
         ))}
       </div>
 
