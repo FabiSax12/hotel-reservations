@@ -7,6 +7,7 @@ import { ROOM_INFO_FORM_STYLES as s } from "../RoomInfoForm.styles";
 import { ROOM_FORM_FIELDS } from "../../../../constants/roomFormFields";
 import type { RoomInfoFormData } from "../RoomInfoForm.interface";
 import type { RoomsTexts } from "../../../../i18n/roomsTexts.type";
+import { Users, Baby } from "lucide-react";
 
 interface RoomCapacityProps {
   texts: RoomsTexts;
@@ -25,11 +26,14 @@ export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessa
           isInvalid={!!errors.capacity_adults}
         >
           <Label className={s.label}>{texts.FORM.CAPACITY_ADULTS_LABEL}</Label>
-          <Input
-            {...register(ROOM_FORM_FIELDS.CAPACITY_ADULTS, { valueAsNumber: true })}
-            type="number"
-            className={s.input}
-          />
+          <div className={s.inputWrapper}>
+            <Users className={s.inputIcon} size={18} />
+            <Input
+              {...register(ROOM_FORM_FIELDS.CAPACITY_ADULTS, { valueAsNumber: true })}
+              type="number"
+              className={`${s.input} ${s.inputWithIcon}`}
+            />
+          </div>
           <FieldError>{getErrorMessage(errors.capacity_adults?.message)}</FieldError>
         </TextField>
 
@@ -38,11 +42,14 @@ export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessa
           isInvalid={!!errors.capacity_kids}
         >
           <Label className={s.label}>{texts.FORM.CAPACITY_KIDS_LABEL}</Label>
-          <Input
-            {...register(ROOM_FORM_FIELDS.CAPACITY_KIDS, { valueAsNumber: true })}
-            type="number"
-            className={s.input}
-          />
+          <div className={s.inputWrapper}>
+            <Baby className={s.inputIcon} size={18} />
+            <Input
+              {...register(ROOM_FORM_FIELDS.CAPACITY_KIDS, { valueAsNumber: true })}
+              type="number"
+              className={`${s.input} ${s.inputWithIcon}`}
+            />
+          </div>
           <FieldError>{getErrorMessage(errors.capacity_kids?.message)}</FieldError>
         </TextField>
       </div>

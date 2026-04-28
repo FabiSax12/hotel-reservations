@@ -4,7 +4,7 @@ import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form } from "@heroui/react";
-import { useI18n } from "@hotel/i18n";
+import { useI18n } from "@/locales";
 import { ROOM_INFO_FORM_STYLES as s } from "./RoomInfoForm.styles";
 import {
   roomInfoSchema,
@@ -29,7 +29,8 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
   onSubmit,
   isLoading = false,
 }) => {
-  const { t: texts } = useI18n<RoomsTexts>();
+  const { t } = useI18n();
+  const texts = t.ROOMS;
 
   const methods = useForm<RoomInfoFormData>({
     resolver: zodResolver(roomInfoSchema),
@@ -42,6 +43,7 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
       [ROOM_FORM_FIELDS.REGULAR_FEE]: 0,
       [ROOM_FORM_FIELDS.HIGH_SEASON_FEE]: 0,
       [ROOM_FORM_FIELDS.IS_ACTIVE]: true,
+      [ROOM_FORM_FIELDS.IS_PET_FRIENDLY]: false,
     },
   });
 
@@ -56,9 +58,14 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
 
   return (
     <div className={s.container}>
-      <h1 className={s.title}>
-        {initialData ? texts.FORM.TITLE_EDIT : texts.FORM.TITLE_CREATE}
-      </h1>
+      <header className={s.header}>
+        <h1 className={s.title}>
+          {initialData ? texts.FORM.TITLE_EDIT : texts.FORM.TITLE_CREATE}
+        </h1>
+        <p className={s.subtitle}>
+          {initialData ? texts.MESSAGES.SUCCESS_EDIT : texts.FORM.DESCRIPTION_PLACEHOLDER}
+        </p>
+      </header>
 
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)} className={s.form}>

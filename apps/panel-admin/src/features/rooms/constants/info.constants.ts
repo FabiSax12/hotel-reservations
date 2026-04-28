@@ -21,12 +21,14 @@ export const MOCK_SERVICE_DELAYS = {
   TOGGLE: 500,
 } as const;
 
-// Theme Constants (Natural Premium)
+// Theme Constants (Natural Premium Emerald)
 export const THEME_COLORS = {
-  PRIMARY: "oklch(62.04% 0.195 224.67)", // Emerald
-  SURFACE: "white",
-  LABEL: "oklch(55.55% 0 0)", // gray-500
-  SUBTLE: "oklch(96.11% 0 0)", // gray-50
+  PRIMARY: "oklch(60.18% 0.147 158.46)", // Rich Emerald
+  ACCENT: "oklch(45.18% 0.12 158.46)", // Darker Forest Green
+  SURFACE: "oklch(99.41% 0.005 158.46)", // Soft Mint Surface
+  LABEL: "oklch(55.55% 0.01 158.46)", // Subtle Sage Label
+  SUBTLE: "oklch(96.11% 0.01 158.46)", // Light Sage Background
+  BORDER: "oklch(90.11% 0.02 158.46)", // Border Sage
 } as const;
 
 export const THEME_INTERACTIONS = {

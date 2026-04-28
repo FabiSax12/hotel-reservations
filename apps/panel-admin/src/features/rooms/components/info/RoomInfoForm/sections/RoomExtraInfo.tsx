@@ -46,6 +46,27 @@ export const RoomExtraInfo: React.FC<RoomExtraInfoProps> = ({ texts }) => {
           )}
         />
       </div>
+
+      <div className={s.switchContainer}>
+        <Label className={s.label}>{texts.FORM.PETS_LABEL}</Label>
+        <Controller
+          name={ROOM_FORM_FIELDS.IS_PET_FRIENDLY}
+          control={control}
+          render={({ field }) => (
+            <Switch
+              isSelected={field.value}
+              onChange={field.onChange}
+            >
+              <Switch.Control>
+                <Switch.Thumb />
+              </Switch.Control>
+              <Label className={s.switchLabel}>
+                {field.value ? texts.FORM.PETS_ALLOWED : texts.FORM.PETS_NOT_ALLOWED}
+              </Label>
+            </Switch>
+          )}
+        />
+      </div>
     </div>
   );
 };

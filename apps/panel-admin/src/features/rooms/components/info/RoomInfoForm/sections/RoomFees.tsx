@@ -25,11 +25,14 @@ export const RoomFees: React.FC<RoomFeesProps> = ({ texts, getErrorMessage }) =>
           isInvalid={!!errors.regular_fee}
         >
           <Label className={s.label}>{texts.FORM.REGULAR_FEE_LABEL}</Label>
-          <Input
-            {...register(ROOM_FORM_FIELDS.REGULAR_FEE, { valueAsNumber: true })}
-            type="number"
-            className={s.input}
-          />
+          <div className={s.inputWrapper}>
+            <span className={s.inputIcon}>$</span>
+            <Input
+              {...register(ROOM_FORM_FIELDS.REGULAR_FEE, { valueAsNumber: true })}
+              type="number"
+              className={`${s.input} ${s.inputWithIcon}`}
+            />
+          </div>
           <FieldError>{getErrorMessage(errors.regular_fee?.message)}</FieldError>
         </TextField>
 
@@ -38,11 +41,14 @@ export const RoomFees: React.FC<RoomFeesProps> = ({ texts, getErrorMessage }) =>
           isInvalid={!!errors.high_season_fee}
         >
           <Label className={s.label}>{texts.FORM.HIGH_SEASON_FEE_LABEL}</Label>
-          <Input
-            {...register(ROOM_FORM_FIELDS.HIGH_SEASON_FEE, { valueAsNumber: true })}
-            type="number"
-            className={s.input}
-          />
+          <div className={s.inputWrapper}>
+            <span className={s.inputIcon}>$</span>
+            <Input
+              {...register(ROOM_FORM_FIELDS.HIGH_SEASON_FEE, { valueAsNumber: true })}
+              type="number"
+              className={`${s.input} ${s.inputWithIcon}`}
+            />
+          </div>
           <FieldError>{getErrorMessage(errors.high_season_fee?.message)}</FieldError>
         </TextField>
       </div>

@@ -10,6 +10,7 @@ export const roomInfoSchema = z.object({
   regular_fee: z.number().positive("VALIDATION.POSITIVE_NUMBER"),
   high_season_fee: z.number().positive("VALIDATION.POSITIVE_NUMBER"),
   is_active: z.boolean(),
+  is_pet_friendly: z.boolean(),
 });
 
 export type RoomInfoFormData = z.infer<typeof roomInfoSchema>;

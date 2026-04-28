@@ -15,6 +15,9 @@ export interface RoomsTexts {
     STATE_LABEL: string;
     STATE_ACTIVE: string;
     STATE_INACTIVE: string;
+    PETS_LABEL: string;
+    PETS_ALLOWED: string;
+    PETS_NOT_ALLOWED: string;
     SUBMIT_CREATE: string;
     SUBMIT_EDIT: string;
     CANCEL: string;

@@ -10,6 +10,7 @@ export interface Room {
   regular_fee: number;
   high_season_fee: number;
   is_active: boolean;
+  is_pet_friendly: boolean;
   created_at?: string;
   updated_at?: string;
 }

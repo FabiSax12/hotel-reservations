@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS public.rooms (
     regular_fee NUMERIC(10,2) NOT NULL,
     high_season_fee NUMERIC(10,2) NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT true,
+    is_pet_friendly BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
