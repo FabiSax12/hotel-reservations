@@ -1,19 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 import {
   BedDouble,
-  BedSingle,
   ClipboardList,
-  DoorOpen,
-  Hotel,
   LayoutDashboard,
   LayoutPanelTop,
-  Mail,
-  MailCheck,
-  MailX,
   Receipt,
-  UserPlus,
+  UserKey,
   UserRound,
-  Users,
 } from "lucide-react";
 
 export type SidebarItem = {
@@ -33,7 +26,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     title: "Administracion",
     items: [
       { label: "Dashboard", route: "/admin/dashboard", icon: LayoutDashboard, isPrimary: true },
-      { label: "Administradores (Nuevo)", route: "/admin/new", icon: UserPlus, isPrimary: true },
+      { label: "Administradores", route: "/admin/admins", icon: UserKey, isPrimary: true },
       // { label: "Lista Admins", route: "/admin/admins", icon: Users },
       // { label: "Añadir admin", route: "/admin/admins/new", icon: UserPlus },
       // { label: "Invitaciones", route: "/admin/invitations", icon: Mail },
