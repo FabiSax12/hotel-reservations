@@ -1,6 +1,8 @@
-import { Avatar, Button } from "@heroui/react";
+import { Avatar, Button, Spinner } from "@heroui/react";
 import { LogOut } from "lucide-react";
+import { useState } from "react";
 import { signOutAction } from "@/features/auth/services/signOutAction";
+import { useI18n } from "@/locales";
 import { useAuth } from "@/shared/auth/context/useAuth";
 import type { SidebarFooterProps } from "./SidebarFooter.interface";
 import { SIDEBAR_FOOTER_STYLES as S } from "./SidebarFooter.styles";
@@ -8,7 +10,22 @@ import { SIDEBAR_FOOTER_STYLES as S } from "./SidebarFooter.styles";
 export const SidebarFooter = ({ isCollapsed }: SidebarFooterProps) => {
   const { user, profile } = useAuth();
 
-  console.log("User in SidebarFooter:", user, profile);
+  const { t } = useI18n();
+
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    try {
+      await signOutAction();
+    } catch (error) {
+      console.error("Error signing out:", error);
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
+
+  console.log("isSigningOut", isSigningOut);
 
   return (
     <div className={S.footer}>
@@ -23,12 +40,12 @@ export const SidebarFooter = ({ isCollapsed }: SidebarFooterProps) => {
           </div>
         )}
       </div>
-      <form action={signOutAction}>
-        <Button variant="ghost" size="sm" className={S.logoutButton} type="submit">
-          <LogOut className={S.icon} />
-          {!isCollapsed && <span>Cerrar sesion</span>}
-        </Button>
-      </form>
+      <Button isIconOnly={isCollapsed} onPress={handleSignOut} variant="danger-soft" size="sm" className={S.logoutButton} type="submit" isPending={isSigningOut}>
+        {({ isPending }) => <>
+          {isPending ? <Spinner color="current" size="sm" /> : <LogOut className={S.icon} />}
+          {!isCollapsed && <span>{isPending ? t.SIDEBAR.FOOTER.LOGGING_OUT : t.SIDEBAR.FOOTER.LOGOUT}</span>}
+        </>}
+      </Button>
     </div>
   );
 };

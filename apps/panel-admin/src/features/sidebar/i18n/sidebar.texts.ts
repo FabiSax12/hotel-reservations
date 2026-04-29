@@ -29,6 +29,10 @@ export const SIDEBAR_TEXTS: Record<SupportedLocale, SidebarTexts> = {
         CMS_LANDING: "Contenido Landing Page (CMS)",
       },
     },
+    FOOTER: {
+      LOGOUT: "Cerrar sesión",
+      LOGGING_OUT: "Cerrando sesión...",
+    },
   },
   en: {
     WRAPPER: {
@@ -56,6 +60,10 @@ export const SIDEBAR_TEXTS: Record<SupportedLocale, SidebarTexts> = {
         INVOICES: "Invoices",
         CMS_LANDING: "Landing page content (CMS)",
       },
+    },
+    FOOTER: {
+      LOGOUT: "Log out",
+      LOGGING_OUT: "Logging out...",
     },
   },
 } as const;

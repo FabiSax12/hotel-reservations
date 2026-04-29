@@ -25,4 +25,8 @@ export type SidebarTexts = {
       CMS_LANDING: string;
     };
   };
+  FOOTER: {
+    LOGOUT: string;
+    LOGGING_OUT: string;
+  };
 };
