@@ -23,11 +23,11 @@ export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMes
       <div className={s.sectionHeader}>
         <h2 className={s.sectionTitle}>{texts.FORM.SECTION_BASIC_INFO}</h2>
       </div>
-      <div className={s.grid}>
+      <div className="flex flex-col gap-6">
         <TextField
           name={ROOM_FORM_FIELDS.NAME}
           isInvalid={!!errors.name}
-          className="md:col-span-2"
+          className={s.fullWidth}
         >
           <Label className={s.label}>{texts.FORM.NAME_LABEL}</Label>
           <div className={s.inputWrapper}>

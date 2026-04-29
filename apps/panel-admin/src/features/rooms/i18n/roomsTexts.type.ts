@@ -25,6 +25,9 @@ export interface RoomsTexts {
     SECTION_FEES: string;
     SECTION_BASIC_INFO: string;
     SECTION_EXTRA_INFO: string;
+    HINT_BASIC_INFO: string;
+    HINT_CAPACITY: string;
+    HINT_FEES: string;
   };
   VALIDATION: {
     REQUIRED: string;

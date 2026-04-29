@@ -23,12 +23,14 @@ import { RoomBasicInfo } from "./sections/RoomBasicInfo";
 import { RoomCapacity } from "./sections/RoomCapacity";
 import { RoomFees } from "./sections/RoomFees";
 import { RoomExtraInfo } from "./sections/RoomExtraInfo";
+import { useRouter } from "next/navigation";
 
 export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
   initialData,
   onSubmit,
   isLoading = false,
 }) => {
+  const router = useRouter();
   const { t } = useI18n();
   const texts = t.ROOMS;
 
@@ -59,9 +61,6 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
   return (
     <div className={s.container}>
       <header className={s.headerWrapper}>
-        <span className={s.subtitle}>
-          {initialData ? texts.MESSAGES.SUCCESS_EDIT : texts.FORM.DESCRIPTION_PLACEHOLDER}
-        </span>
         <h1 className={s.title}>
           {initialData ? texts.FORM.TITLE_EDIT : texts.FORM.TITLE_CREATE}
         </h1>
@@ -69,29 +68,26 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
 
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)} className={s.form}>
-          <div className={s.card}>
-            <RoomBasicInfo texts={texts} getErrorMessage={getErrorMessage} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+            <div className={s.card}>
+              <RoomBasicInfo texts={texts} getErrorMessage={getErrorMessage} />
+            </div>
+
+            <div className={s.card}>
+              <RoomCapacity texts={texts} getErrorMessage={getErrorMessage} />
+            </div>
+
+            <div className={s.card}>
+              <RoomFees texts={texts} getErrorMessage={getErrorMessage} />
+            </div>
+
+            <div className={s.card}>
+              <RoomExtraInfo texts={texts} getErrorMessage={getErrorMessage} />
+            </div>
           </div>
 
-          <div className={s.card}>
-            <RoomCapacity texts={texts} getErrorMessage={getErrorMessage} />
-          </div>
-
-          <div className={s.card}>
-            <RoomFees texts={texts} getErrorMessage={getErrorMessage} />
-          </div>
-
-          <div className={s.card}>
-            <RoomExtraInfo texts={texts} getErrorMessage={getErrorMessage} />
-          </div>
-
-          {/* Actions */}
           <div className={s.actions}>
-            <Button
-              className={s.cancelButton}
-              variant="ghost"
-              isDisabled={isLoading}
-            >
+            <Button className={s.cancelButton} onPress={() => router.back()}>
               {texts.FORM.CANCEL}
             </Button>
             <Button

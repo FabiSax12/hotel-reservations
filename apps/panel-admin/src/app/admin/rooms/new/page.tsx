@@ -21,12 +21,13 @@ export default function NewRoomPage() {
     <main className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Immersive Nature Background */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center scale-110 blur-[80px] opacity-40 transition-opacity duration-1000"
+        className="absolute inset-0 z-0 bg-cover bg-center scale-105 blur-[5px] transition-opacity duration-1000"
         style={{ 
-          backgroundImage: `url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpaperaccess.com%2Ffull%2F1516567.jpg&f=1&nofb=1&ipt=1ccf10cfba0597844e6db6139f9f202f7317a84c8b22d901aa74f2b15a33acc5')` 
+          backgroundImage: `url('/images/room-bg.jpg')` 
         }}
       />
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-white/60 via-emerald-50/40 to-mint-50/60" />
+      {/* Subtle Darkening Overlay for focus */}
+      <div className="absolute inset-0 z-0 bg-black/5" />
 
       {/* Decorative organic blob */}
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-emerald-100/50 rounded-full blur-3xl" />

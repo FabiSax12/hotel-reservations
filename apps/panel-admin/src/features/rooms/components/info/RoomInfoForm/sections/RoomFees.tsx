@@ -21,7 +21,7 @@ export const RoomFees: React.FC<RoomFeesProps> = ({ texts, getErrorMessage }) =>
       <div className={s.sectionHeader}>
         <h2 className={s.sectionTitle}>{texts.FORM.SECTION_FEES}</h2>
       </div>
-      <div className={s.grid}>
+      <div className="flex flex-col gap-6">
         <TextField
           name={ROOM_FORM_FIELDS.REGULAR_FEE}
           isInvalid={!!errors.regular_fee}

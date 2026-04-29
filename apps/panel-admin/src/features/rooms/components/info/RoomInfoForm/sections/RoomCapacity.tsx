@@ -22,7 +22,7 @@ export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessa
       <div className={s.sectionHeader}>
         <h2 className={s.sectionTitle}>{texts.FORM.SECTION_CAPACITY}</h2>
       </div>
-      <div className={s.grid}>
+      <div className="flex flex-col gap-6">
         <TextField
           name={ROOM_FORM_FIELDS.CAPACITY_ADULTS}
           isInvalid={!!errors.capacity_adults}
