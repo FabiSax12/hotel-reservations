@@ -3,7 +3,8 @@ import { SIDEBAR_LOCAL_STORAGE_KEY } from "../constants/localStorageKey";
 
 export const useSidebarCollapsed = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(
-    Boolean(localStorage.getItem(SIDEBAR_LOCAL_STORAGE_KEY) || false),
+    // Boolean(localStorage.getItem(SIDEBAR_LOCAL_STORAGE_KEY) || true),
+    false,
   );
 
   const toggleCollapsed = () => {
