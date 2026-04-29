@@ -1,77 +1,74 @@
 "use client";
 
-import { Avatar, Button, Table } from "@heroui/react";
+import { Fragment } from "react";
 import { useI18n } from "@/locales";
-import { RESERVATIONS_TABLE_STYLES as T, TABLE_CELL_STYLES as C } from "./ReservationsTable.styles";
-import { formatTableDate } from "../../utils/format-reservation-date";
-import { StatusBadge } from "../StatusBadge/StatusBadge";
+import { useExpandedReservations } from "../../hooks/useExpandedReservations";
+import { useDelayedUnmount } from "../../hooks/useDelayedUnmount";
+import { ReservationRow } from "../ReservationRow/ReservationRow";
+import { ReservationExpandedPanel } from "../ReservationExpandedPanel/ReservationExpandedPanel";
+import { RESERVATIONS_TABLE_STYLES as T, TABLE_COLUMN_COUNT } from "./ReservationsTable.styles";
 import type { ReservationsTableProps } from "./ReservationsTable.interface";
+import type { Reservation } from "../../domain/reservation";
+
+const COLLAPSE_DURATION_MS = 160;
+
+interface ExpandedPanelRowProps {
+  reservation: Reservation;
+  isExpanded: boolean;
+}
+
+const ExpandedPanelRow = ({ reservation, isExpanded }: ExpandedPanelRowProps) => {
+  const shouldRender = useDelayedUnmount(isExpanded, COLLAPSE_DURATION_MS);
+
+  if (!shouldRender) return null;
+
+  return (
+    <tr>
+      <td colSpan={TABLE_COLUMN_COUNT} className={T.expandedCell}>
+        <ReservationExpandedPanel reservation={reservation} isClosing={!isExpanded} />
+      </td>
+    </tr>
+  );
+};
 
 export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
   const { t } = useI18n();
+  const { isExpanded, toggleExpanded } = useExpandedReservations();
+
+  const buildToggleHandler = (id: string) => () => toggleExpanded(id);
+
   return (
-    <Table>
-      <Table.ScrollContainer>
-        <Table.Content aria-label={t.RESERVATIONS.TABLE.ARIA_LABEL}>
-          <Table.Header>
-            <Table.Column isRowHeader className={T.columnHeader}>
-              {t.RESERVATIONS.TABLE.COL_CODE}
-            </Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_GUEST}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_ROOM}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_CHECKIN}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_CHECKOUT}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_NIGHTS}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_TOTAL}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_STATUS}</Table.Column>
-            <Table.Column className={T.columnHeader}>{t.RESERVATIONS.TABLE.COL_ACTIONS}</Table.Column>
-          </Table.Header>
-          <Table.Body>
-            {reservations.map((r) => (
-              <Table.Row key={r.id} id={r.id}>
-                <Table.Cell>
-                  <code className={C.codeBadge}>{r.code}</code>
-                </Table.Cell>
-                <Table.Cell>
-                  <div className={C.guestRow}>
-                    <Avatar size="sm">
-                      <Avatar.Fallback>{r.guest.initials}</Avatar.Fallback>
-                    </Avatar>
-                    <div className={C.guestTextBlock}>
-                      <p className={C.textPrimary}>{r.guest.name}</p>
-                      <p className={C.textSecondary}>{r.guest.email}</p>
-                    </div>
-                  </div>
-                </Table.Cell>
-                <Table.Cell>
-                  <p className={C.textPrimary}>{r.room.name}</p>
-                  <p className={C.textSecondary}>{r.room.location}</p>
-                </Table.Cell>
-                <Table.Cell>
-                  <span className={C.textDefault}>{formatTableDate(r.checkIn)}</span>
-                </Table.Cell>
-                <Table.Cell>
-                  <span className={C.textDefault}>{formatTableDate(r.checkOut)}</span>
-                </Table.Cell>
-                <Table.Cell>
-                  <span className={C.textDefault}>{r.nights}</span>
-                </Table.Cell>
-                <Table.Cell>
-                  <span className={C.textAmount}>${r.totalUSD.toLocaleString("en-US")}</span>
-                </Table.Cell>
-                <Table.Cell>
-                  <StatusBadge status={r.status} />
-                </Table.Cell>
-                <Table.Cell>
-                  <Button variant="outline" size="sm">
-                    {t.RESERVATIONS.ACTIONS.VIEW_DETAIL}
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Content>
-      </Table.ScrollContainer>
-    </Table>
+    <div className={T.scrollContainer}>
+      <table className={T.table}>
+        <thead className={T.thead}>
+          <tr>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_CODE}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_GUEST}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_ROOM}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_CHECKIN}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_CHECKOUT}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_NIGHTS}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_TOTAL}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_STATUS}</th>
+            <th className={T.th}>{t.RESERVATIONS.TABLE.COL_ACTIONS}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reservations.map((r) => (
+            <Fragment key={r.id}>
+              <ReservationRow
+                reservation={r}
+                isExpanded={isExpanded(r.id)}
+                onToggle={buildToggleHandler(r.id)}
+              />
+              <ExpandedPanelRow
+                reservation={r}
+                isExpanded={isExpanded(r.id)}
+              />
+            </Fragment>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
