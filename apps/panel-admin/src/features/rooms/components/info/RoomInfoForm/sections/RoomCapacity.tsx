@@ -19,7 +19,9 @@ export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessa
 
   return (
     <div className={s.section}>
-      <h2 className={s.sectionTitle}>{texts.FORM.SECTION_CAPACITY}</h2>
+      <div className={s.sectionHeader}>
+        <h2 className={s.sectionTitle}>{texts.FORM.SECTION_CAPACITY}</h2>
+      </div>
       <div className={s.grid}>
         <TextField
           name={ROOM_FORM_FIELDS.CAPACITY_ADULTS}

@@ -58,21 +58,32 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
 
   return (
     <div className={s.container}>
-      <header className={s.header}>
+      <header className={s.headerWrapper}>
+        <span className={s.subtitle}>
+          {initialData ? texts.MESSAGES.SUCCESS_EDIT : texts.FORM.DESCRIPTION_PLACEHOLDER}
+        </span>
         <h1 className={s.title}>
           {initialData ? texts.FORM.TITLE_EDIT : texts.FORM.TITLE_CREATE}
         </h1>
-        <p className={s.subtitle}>
-          {initialData ? texts.MESSAGES.SUCCESS_EDIT : texts.FORM.DESCRIPTION_PLACEHOLDER}
-        </p>
       </header>
 
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)} className={s.form}>
-          <RoomBasicInfo texts={texts} getErrorMessage={getErrorMessage} />
-          <RoomCapacity texts={texts} getErrorMessage={getErrorMessage} />
-          <RoomFees texts={texts} getErrorMessage={getErrorMessage} />
-          <RoomExtraInfo texts={texts} />
+          <div className={s.card}>
+            <RoomBasicInfo texts={texts} getErrorMessage={getErrorMessage} />
+          </div>
+
+          <div className={s.card}>
+            <RoomCapacity texts={texts} getErrorMessage={getErrorMessage} />
+          </div>
+
+          <div className={s.card}>
+            <RoomFees texts={texts} getErrorMessage={getErrorMessage} />
+          </div>
+
+          <div className={s.card}>
+            <RoomExtraInfo texts={texts} getErrorMessage={getErrorMessage} />
+          </div>
 
           {/* Actions */}
           <div className={s.actions}>

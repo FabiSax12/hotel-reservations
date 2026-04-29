@@ -27,6 +27,8 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       CANCEL: "Cancelar",
       SECTION_CAPACITY: "Capacidad",
       SECTION_FEES: "Tarifas",
+      SECTION_BASIC_INFO: "Información Básica",
+      SECTION_EXTRA_INFO: "Detalles Adicionales",
     },
     VALIDATION: {
       REQUIRED: "Este campo es requerido",
@@ -65,6 +67,8 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       CANCEL: "Cancel",
       SECTION_CAPACITY: "Capacity",
       SECTION_FEES: "Fees",
+      SECTION_BASIC_INFO: "Basic Information",
+      SECTION_EXTRA_INFO: "Extra Details",
     },
     VALIDATION: {
       REQUIRED: "This field is required",

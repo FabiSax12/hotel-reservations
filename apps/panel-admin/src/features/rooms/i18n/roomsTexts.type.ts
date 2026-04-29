@@ -23,6 +23,8 @@ export interface RoomsTexts {
     CANCEL: string;
     SECTION_CAPACITY: string;
     SECTION_FEES: string;
+    SECTION_BASIC_INFO: string;
+    SECTION_EXTRA_INFO: string;
   };
   VALIDATION: {
     REQUIRED: string;

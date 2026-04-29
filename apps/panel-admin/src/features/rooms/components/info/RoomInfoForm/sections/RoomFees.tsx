@@ -18,7 +18,9 @@ export const RoomFees: React.FC<RoomFeesProps> = ({ texts, getErrorMessage }) =>
 
   return (
     <div className={s.section}>
-      <h2 className={s.sectionTitle}>{texts.FORM.SECTION_FEES}</h2>
+      <div className={s.sectionHeader}>
+        <h2 className={s.sectionTitle}>{texts.FORM.SECTION_FEES}</h2>
+      </div>
       <div className={s.grid}>
         <TextField
           name={ROOM_FORM_FIELDS.REGULAR_FEE}
