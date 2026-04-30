@@ -8,6 +8,11 @@ dist/
 *.tsbuildinfo
 next-env.d.ts
 
+# Supabase CLI (local development)
+supabase/
+supabase/.branches/
+supabase/.apps/
+supabase/.temp/
 # OS files (prevents platform-specific conflicts)
 .DS_Store
 Thumbs.db
