@@ -43,6 +43,7 @@ hotel-reservations/
 
 - **Node.js** >= 20
 - **pnpm** 10 → `npm install -g pnpm@10`
+- **Docker**
 - Acceso al proyecto en **Supabase**
 
 ---
@@ -64,6 +65,55 @@ cp .env.example .env.local
 # 4. Levantar el entorno de desarrollo
 pnpm dev
 ```
+
+### Setup Supabase Local
+
+El proyecto usa **Supabase** como backend (PostgreSQL, Auth, Storage, Realtime).
+
+#### Requerimientos
+- **Docker** instalado y corriendo
+
+#### Inicio Rápido
+
+```bash
+# Desarrollo local (Supabase + apps)
+pnpm dev:local
+
+# Desarrollo con Supabase cloud (solo apps)
+pnpm dev:remote
+```
+
+Al ejecutar `dev:local`, las credenciales se mostrarán en la terminal. Cópialas a `.env.local`:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<anon-key>
+SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+```
+
+> Las keys cambian en cada reinicio. Actualiza `.env.local` si reinicias.
+
+#### Puertos de Servicios
+
+| Servicio | Puerto | URL |
+|----------|--------|-----|
+| API REST | 54321 | http://127.0.0.1:54321 |
+| PostgreSQL | 54322 | localhost:54322 |
+| Studio UI | 54323 | http://127.0.0.1:54323 |
+| SMTP | 54324 | http://127.0.0.1:54324 |
+
+#### Comandos Útiles
+
+```bash
+pnpm --filter @hotel/db db:start     # Iniciar Supabase
+pnpm --filter @hotel/db db:stop      # Detener
+pnpm --filter @hotel/db db:reset     # Reiniciar (borra datos)
+pnpm --filter @hotel/db db:status    # Ver estado
+pnpm --filter @hotel/db db:logs      # Ver logs
+```
+
+
+
 
 > Las tres apps corren en paralelo. Turborepo se encarga de la orquestación.
 
@@ -89,8 +139,10 @@ Copiar `.env.example` a `.env.local` en la raíz y completar:
 ## Comandos disponibles
 
 ```bash
-pnpm dev          # Levanta todas las apps en modo desarrollo
-pnpm build        # Build de producción (respeta dependencias entre packages)
+pnpm dev          # Levanta las apps (Supabase debe estar corriendo)
+pnpm dev:local    # Inicia Supabase + apps (desarrollo local)
+pnpm dev:remote   # Solo apps (usa Supabase cloud)
+pnpm build        # Build de producción
 pnpm lint         # Chequea linting con Biome
 pnpm lint:fix     # Corrige problemas de linting automáticamente
 pnpm format       # Formatea el código con Biome
