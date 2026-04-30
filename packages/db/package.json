@@ -16,7 +16,13 @@
     "clean": "rm -rf dist .turbo node_modules",
     "db:push": "supabase db push",
     "db:types": "supabase gen types typescript --project-id vhnblyovgvpamjsqlzix > src/database.types.ts",
-    "db:migration": "supabase migration new"
+    "db:migration": "supabase migration new",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase reset",
+    "db:status": "supabase status",
+    "db:logs": "supabase logs",
+    "db:dump": "supabase db dump"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.0"

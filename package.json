@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "turbo dev",
+    "dev:local": "pnpm --filter @hotel/db db:start && turbo dev",
+    "dev:remote": "turbo dev",
     "build": "turbo build",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",

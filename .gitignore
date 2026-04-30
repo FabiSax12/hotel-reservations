@@ -8,6 +8,12 @@ dist/
 *.tsbuildinfo
 next-env.d.ts
 
+# Supabase CLI (local development)
+supabase/
+supabase/.branches/
+supabase/.apps/
+supabase/.temp/
+
 # Agent/AI tooling (per-developer, not application code)
 skills-lock.json
 .agents/
