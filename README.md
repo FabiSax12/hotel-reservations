@@ -112,6 +112,47 @@ pnpm --filter @hotel/db db:status    # Ver estado
 pnpm --filter @hotel/db db:logs      # Ver logs
 ```
 
+### Migraciones de Base de Datos
+
+Las migraciones viven en `packages/db/supabase/migrations/` y definen el esquema de la BD.
+
+#### Qué son las migraciones
+Archivos SQL que versionan los cambios en la estructura de la base de datos (tablas, columnas, índices, funciones, políticas RLS).
+
+#### NO EDITAR MIGRACIONES EXISTENTES
+**Nunca modifiques migraciones ya aplicadas.** Si necesitas un cambio:
+- Crea una **nueva migración** (nunca edites la anterior)
+- Las migraciones aplicadas no se pueden revertir en producción
+
+#### Comandos de Migraciones
+
+```bash
+# Crear nueva migración
+pnpm --filter @hotel/db db:migration nombre_descriptivo
+
+# Aplicar migraciones pendientes a la BD local
+pnpm --filter @hotel/db db:push
+
+# Aplicar migraciones a Supabase cloud (producción)
+pnpm --filter @hotel/db db:push --db-url <production-url>
+```
+
+#### Flujo de Trabajo
+1. Crea tu cambio de esquema en un archivo SQL nuevo
+2. Aplícalo localmente: `db:push`
+3. Cuando funcione, haz push a producción
+4. **Nunca редагуess migraciones ya aplicadas** — crea nuevas
+
+#### Estructura de Migraciones
+
+```
+packages/db/supabase/migrations/
+├── 20240101000000_initial_schema.sql
+├── 20240115000000_add_bookings_table.sql
+├── 20240120000000_add_rls_policies.sql
+└── ...
+```
+
 
 
 
