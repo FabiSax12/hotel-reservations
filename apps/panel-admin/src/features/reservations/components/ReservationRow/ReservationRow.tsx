@@ -1,25 +1,17 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import { Avatar, Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { formatTableDate } from "../../utils/format-reservation-date";
 import { formatAmount } from "../../utils/format-currency";
 import { StatusBadge } from "../StatusBadge/StatusBadge";
+import { useCopyCode } from "./useCopyCode";
 import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
 import type { ReservationRowProps } from "./ReservationRow.interface";
 
-const COPY_FEEDBACK_DURATION_MS = 1500;
-
 export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: ReservationRowProps) => {
   const { t } = useI18n();
-  const [copied, setCopied] = useState(false);
-
-  const handleCopyCode = useCallback(() => {
-    navigator.clipboard.writeText(r.code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), COPY_FEEDBACK_DURATION_MS);
-  }, [r.code]);
+  const { copied, handleCopyCode } = useCopyCode(r.code);
 
   const rowClassName    = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
   const toggleClassName = isExpanded ? S.toggleButtonOn : S.toggleButtonOff;

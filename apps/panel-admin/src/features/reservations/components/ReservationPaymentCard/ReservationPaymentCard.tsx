@@ -2,6 +2,7 @@
 
 import { useI18n } from "@/locales";
 import { formatAmount } from "../../utils/format-currency";
+import { Divider } from "../Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
 import { RESERVATION_PAYMENT_CARD_STYLES as S } from "./ReservationPaymentCard.styles";
 import type { ReservationPaymentCardProps } from "./ReservationPaymentCard.interface";
@@ -22,13 +23,13 @@ export const ReservationPaymentCard = ({
         <span className={S.fieldValue}>{formatAmount(pricePerNight)}</span>
       </div>
 
-      <div className={S.divider} />
+      <Divider />
       <div className={S.fieldRow}>
         <span className={S.fieldLabel}>{labels.LABEL_NIGHTS}</span>
         <span className={S.fieldValue}>{nights}</span>
       </div>
 
-      <div className={S.divider} />
+      <Divider />
       <div className={S.fieldRow}>
         <span className={S.fieldLabel}>{labels.LABEL_CURRENCY}</span>
         <span className={S.fieldValue}>{currency}</span>

@@ -4,6 +4,7 @@ import { useI18n } from "@/locales";
 import { CHECK_IN_TIME, CHECK_OUT_TIME } from "../../domain/reservation";
 import { formatDetailDate, getTodayISODate } from "../../utils/format-reservation-date";
 import { computeTotalGuests, pluralizeCount } from "../../utils/reservation-utils";
+import { Divider } from "../Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
 import { RESERVATION_ROOM_CARD_STYLES as S } from "./ReservationRoomCard.styles";
 import type { ReservationRoomCardProps } from "./ReservationRoomCard.interface";
@@ -27,7 +28,7 @@ export const ReservationRoomCard = ({
       <p className={S.roomName}>{room.name}</p>
       <p className={S.roomLocation}>{room.location}</p>
 
-      <div className={S.divider} />
+      <Divider />
       <div className={S.datesBlock}>
         {arrivesToday && (
           <span className={S.arrivesToday}>{labels.ARRIVES_TODAY}</span>
@@ -53,7 +54,7 @@ export const ReservationRoomCard = ({
         </div>
       </div>
 
-      <div className={S.divider} />
+      <Divider />
       <span className={S.guestsLabel}>
         {labels.LABEL_GUESTS_TOTAL} · {totalGuests}
       </span>

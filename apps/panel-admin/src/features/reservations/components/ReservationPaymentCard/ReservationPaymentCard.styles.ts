@@ -1,5 +1,4 @@
 export const RESERVATION_PAYMENT_CARD_STYLES = {
-  divider:     "border-t border-gray-100 my-3",
   fieldRow:    "flex justify-between items-baseline gap-2",
   fieldLabel:  "text-[10px] font-bold uppercase tracking-widest text-gray-400",
   fieldValue:  "text-sm text-gray-700",

@@ -10,7 +10,7 @@ export const RESERVATION_ROW_STYLES = {
   textAmount: "text-sm font-semibold text-gray-900 whitespace-nowrap",
 
   codeChip:
-    "flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 rounded-full pl-2.5 pr-1.5 py-0.5 w-fit",
+    "flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 rounded-full pl-2.5 pr-1.5 h-8 w-fit",
   codeText: "font-mono text-xs text-emerald-800 font-medium",
   copyButton:
     "text-emerald-600 hover:text-emerald-800 transition-colors p-0.5 rounded-full hover:bg-emerald-100 cursor-pointer",
