@@ -13,6 +13,13 @@ supabase/
 supabase/.branches/
 supabase/.apps/
 supabase/.temp/
+# OS files (prevents platform-specific conflicts)
+.DS_Store
+Thumbs.db
+
+# IDEs (prevents settings.json and workspace conflicts)
+.vscode/
+.idea/
 
 # Agent/AI tooling (per-developer, not application code)
 skills-lock.json
