@@ -4,10 +4,10 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TextField, Label, Input, FieldError, Select, ListBox } from "@heroui/react";
 import { ROOM_BASIC_INFO_STYLES as s } from "./RoomBasicInfo.styles";
-import { ROOM_FORM_FIELDS } from "../../../../../constants/roomFormFields";
-import { ROOM_CATEGORIES, ICON_SIZES } from "../../../../../constants/info.constants";
-import type { RoomInfoFormData } from "../../RoomInfoForm.interface";
-import { Home } from "lucide-react";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
+import { ROOM_CATEGORIES, ICON_SIZES } from "@/features/rooms/constants/info.constants";
+import type { RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
+import { Home, Tags } from "lucide-react";
 import type { RoomBasicInfoProps } from "./RoomBasicInfo.interface";
 
 export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMessage }) => {
@@ -18,7 +18,7 @@ export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMes
       <div className={s.sectionHeader}>
         <h2 className={s.sectionTitle}>{texts.FORM.SECTION_BASIC_INFO}</h2>
       </div>
-      <div className="flex flex-col gap-6">
+      <div className={s.formContainer}>
         <TextField
           name={ROOM_FORM_FIELDS.NAME}
           isInvalid={!!errors.name}
@@ -50,7 +50,10 @@ export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMes
             >
               <Label className={s.label}>{texts.FORM.CATEGORY_LABEL}</Label>
               <Select.Trigger className={s.selectTrigger}>
-                <Select.Value />
+                <div className={s.selectContent}>
+                  <Tags size={ICON_SIZES.MD} />
+                  <Select.Value className={s.selectValue} />
+                </div>
               </Select.Trigger>
               <Select.Popover>
                 <ListBox className={s.listBox}>

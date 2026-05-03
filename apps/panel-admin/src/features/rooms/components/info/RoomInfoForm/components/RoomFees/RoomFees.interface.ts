@@ -1,4 +1,4 @@
-import type { RoomsTexts } from "../../../../../i18n/roomsTexts.type";
+import type { RoomsTexts } from "@/features/rooms/i18n/roomsTexts.type";
 
 export interface RoomFeesProps {
   texts: RoomsTexts;

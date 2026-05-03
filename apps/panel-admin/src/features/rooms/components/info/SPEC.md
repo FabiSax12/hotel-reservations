@@ -1,7 +1,7 @@
 # Feature Specification: Register Room Info and Fees
 
 **Status:** in-progress
-**Version:** 1.4
+**Version:** 1.5
 
 ## 1. Objective 
 As an administrator I need to register new room with all the neccesary textual information (name, category, capacity{adults, kids}, description), fees (regular fee, high season fee) and state (active, inactive). 
@@ -38,5 +38,5 @@ As an administrator I need to register new room with all the neccesary textual i
 * [ ] Condition 4: As a logged admin, I want to make sure that the numeric numbers are positive and integer.
 
 ## 5. Handoff & Status Notes
-* **Current State:** Clean the files, ensure eveything follows the good practices guidelines.
-* **Next Step:** Add testing to ensure everything works fine.
+* **Current State:** Add testing to ensure everything works fine.
+* **Next Step:** Merge

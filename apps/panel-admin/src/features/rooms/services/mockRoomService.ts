@@ -1,5 +1,5 @@
-import type { Room, CreateRoomDTO, UpdateRoomDTO } from "../domain/room.interface";
-import { MOCK_SERVICE_DELAYS } from "../constants/info.constants";
+import type { Room, CreateRoomDTO, UpdateRoomDTO } from "@/features/rooms/domain/room.interface";
+import { MOCK_SERVICE_DELAYS } from "@/features/rooms/constants/info.constants";
 
 const STORAGE_KEY = "hotel_rooms_mock";
 

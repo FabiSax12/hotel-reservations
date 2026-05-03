@@ -1,4 +1,4 @@
-import type { RoomCategory } from "../constants/info.constants";
+import type { RoomCategory } from "@/features/rooms/constants/info.constants";
 
 export interface Room {
   id: string;

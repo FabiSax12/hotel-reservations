@@ -4,10 +4,10 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TextField, Label, TextArea, Switch, FieldError } from "@heroui/react";
 import { ROOM_EXTRA_INFO_STYLES as s } from "./RoomExtraInfo.styles";
-import { ROOM_FORM_FIELDS } from "../../../../../constants/roomFormFields";
-import { ICON_SIZES } from "../../../../../constants/info.constants";
-import type { RoomInfoFormData } from "../../RoomInfoForm.interface";
-import { Activity, PawPrint } from "lucide-react";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
+import { ICON_SIZES } from "@/features/rooms/constants/info.constants";
+import type { RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
+import { Activity, PawPrint, AlignLeft } from "lucide-react";
 import type { RoomExtraInfoProps } from "./RoomExtraInfo.interface";
 
 export const RoomExtraInfo: React.FC<RoomExtraInfoProps> = ({ texts, getErrorMessage }) => {
@@ -25,11 +25,14 @@ export const RoomExtraInfo: React.FC<RoomExtraInfoProps> = ({ texts, getErrorMes
         className={s.fullWidth}
       >
         <Label className={s.label}>{texts.FORM.DESCRIPTION_LABEL}</Label>
-        <TextArea
-          {...register(ROOM_FORM_FIELDS.DESCRIPTION)}
-          placeholder={texts.FORM.DESCRIPTION_PLACEHOLDER}
-          className={s.input}
-        />
+        <div className={s.inputWrapper}>
+          <AlignLeft className={s.inputIcon} size={ICON_SIZES.MD} />
+          <TextArea
+            {...register(ROOM_FORM_FIELDS.DESCRIPTION)}
+            placeholder={texts.FORM.DESCRIPTION_PLACEHOLDER}
+            className={`${s.input} ${s.inputWithIcon} py-4`}
+          />
+        </div>
         <FieldError>{getErrorMessage(errors.description?.message)}</FieldError>
       </TextField>
 

@@ -7,11 +7,15 @@ export interface RoomsTexts {
     CATEGORY_LABEL: string;
     CATEGORY_PLACEHOLDER: string;
     CAPACITY_ADULTS_LABEL: string;
+    CAPACITY_ADULTS_PLACEHOLDER: string;
     CAPACITY_KIDS_LABEL: string;
+    CAPACITY_KIDS_PLACEHOLDER: string;
     DESCRIPTION_LABEL: string;
     DESCRIPTION_PLACEHOLDER: string;
     REGULAR_FEE_LABEL: string;
+    REGULAR_FEE_PLACEHOLDER: string;
     HIGH_SEASON_FEE_LABEL: string;
+    HIGH_SEASON_FEE_PLACEHOLDER: string;
     STATE_LABEL: string;
     STATE_ACTIVE: string;
     STATE_INACTIVE: string;
@@ -33,6 +37,8 @@ export interface RoomsTexts {
     REQUIRED: string;
     MIN_LENGTH: string;
     POSITIVE_NUMBER: string;
+    MIN_ADULTS: string;
+    MIN_PRICE: string;
   };
   MESSAGES: {
     SUCCESS_CREATE: string;

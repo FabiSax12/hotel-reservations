@@ -1,5 +1,5 @@
-import { THEME_COLORS } from "../../../../../constants/info.constants";
-import { SHARED_FORM_STYLES } from "../shared/shared.styles";
+import { THEME_COLORS } from "@/features/rooms/constants/info.constants";
+import { SHARED_FORM_STYLES } from "@/features/rooms/components/info/RoomInfoForm/components/shared/shared.styles";
 
 export const ROOM_EXTRA_INFO_STYLES = {
   ...SHARED_FORM_STYLES,

@@ -9,8 +9,11 @@ export const DEFAULT_ADULTS = 2;
 export const DEFAULT_KIDS = 0;
 
 // Room capacity limits
+export const MIN_ADULTS = 1;
+export const MIN_KIDS = 0;
 export const MAX_ADULTS = 10;
 export const MAX_KIDS = 10;
+export const MIN_PRICE = 1;
 
 // Mock Service Constants
 export const MOCK_SERVICE_DELAYS = {

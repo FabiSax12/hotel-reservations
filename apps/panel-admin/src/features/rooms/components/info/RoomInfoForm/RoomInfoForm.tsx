@@ -10,7 +10,7 @@ import { RoomCapacity } from "./components/RoomCapacity";
 import { RoomFees } from "./components/RoomFees";
 import { RoomExtraInfo } from "./components/RoomExtraInfo";
 import { useRouter } from "next/navigation";
-import { useRoomInfoForm } from "../hooks/useRoomInfoForm";
+import { useRoomInfoForm } from "@/features/rooms/components/info/hooks/useRoomInfoForm";
 
 export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
   initialData,
@@ -30,7 +30,7 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
 
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)} className={s.form}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+          <div className={s.roomBasicInfo}>
             <div className={s.card}>
               <RoomBasicInfo texts={texts} getErrorMessage={getErrorMessage} />
             </div>

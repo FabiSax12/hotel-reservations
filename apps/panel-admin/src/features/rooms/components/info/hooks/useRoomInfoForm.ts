@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useI18n } from "@/locales";
-import { roomInfoSchema, type RoomInfoFormData } from "../RoomInfoForm/RoomInfoForm.interface";
-import { ROOM_FORM_FIELDS } from "../../../constants/roomFormFields";
-import { DEFAULT_ADULTS, DEFAULT_KIDS, DEFAULT_ROOM_STATE } from "../../../constants/info.constants";
-import type { Room } from "../../../domain/room.interface";
+import { roomInfoSchema, type RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
+import { DEFAULT_ADULTS, DEFAULT_KIDS, DEFAULT_ROOM_STATE } from "@/features/rooms/constants/info.constants";
+import type { Room } from "@/features/rooms/domain/room.interface";
 
 export const useRoomInfoForm = (initialData?: Room) => {
   const { t } = useI18n();

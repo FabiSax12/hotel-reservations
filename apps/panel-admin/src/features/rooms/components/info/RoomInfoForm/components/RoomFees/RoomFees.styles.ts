@@ -1,5 +1,6 @@
-import { SHARED_FORM_STYLES } from "../shared/shared.styles";
+import { SHARED_FORM_STYLES } from "@/features/rooms/components/info/RoomInfoForm/components/shared/shared.styles";
 
 export const ROOM_FEES_STYLES = {
   ...SHARED_FORM_STYLES,
+  formContainer: "flex flex-col gap-6",
 } as const;

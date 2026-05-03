@@ -9,4 +9,5 @@ export const ROOM_INFO_FORM_STYLES = {
   actions: "flex justify-center items-center gap-6 mt-8",
   submitButton: "bg-emerald-600 text-white font-black uppercase tracking-[0.15em] text-[13px] px-12 py-5 rounded-full transition-all duration-300 hover:scale-105 hover:bg-emerald-500 hover:shadow-[0_15px_40px_-10px_rgba(16,185,129,0.4)] active:scale-95",
   cancelButton: "bg-white text-rose-600 font-black uppercase tracking-[0.15em] text-[13px] px-12 py-5 rounded-full border-2 border-rose-100 transition-all hover:bg-rose-50 hover:border-rose-200 active:scale-95",
+  roomBasicInfo: "grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch"
 } as const;
