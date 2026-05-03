@@ -1,7 +1,7 @@
 import type { Room, CreateRoomDTO, UpdateRoomDTO } from "@/features/rooms/domain/room.interface";
-import { MOCK_SERVICE_DELAYS } from "@/features/rooms/constants/info.constants";
+import { MOCK_SERVICE_DELAYS, MOCK_STORAGE_KEY, ROOM_NOT_FOUND_ERROR } from "@/features/rooms/constants/info.constants";
 
-const STORAGE_KEY = "hotel_rooms_mock";
+const STORAGE_KEY = MOCK_STORAGE_KEY;
 
 const simulateNetworkDelay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -45,7 +45,7 @@ export const mockRoomService = {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
     const rooms = getStoredRooms();
     const roomIndex = rooms.findIndex((room) => room.id === id);
-    if (roomIndex === -1) throw new Error("ROOM_NOT_FOUND");
+    if (roomIndex === -1) throw new Error(ROOM_NOT_FOUND_ERROR);
 
     const updatedRoom: Room = {
       ...rooms[roomIndex],
@@ -63,7 +63,7 @@ export const mockRoomService = {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.TOGGLE);
     const rooms = getStoredRooms();
     const room = rooms.find((room) => room.id === id);
-    if (!room) throw new Error("ROOM_NOT_FOUND");
+    if (!room) throw new Error(ROOM_NOT_FOUND_ERROR);
 
     return mockRoomService.updateRoom(id, { is_active: !room.is_active });
   },
