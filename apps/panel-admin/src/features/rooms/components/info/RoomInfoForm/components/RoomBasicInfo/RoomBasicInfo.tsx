@@ -3,17 +3,12 @@
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { TextField, Label, Input, FieldError, Select, ListBox } from "@heroui/react";
-import { ROOM_INFO_FORM_STYLES as s } from "../RoomInfoForm.styles";
-import { ROOM_FORM_FIELDS } from "../../../../constants/roomFormFields";
-import { ROOM_CATEGORIES } from "../../../../constants/info.constants";
-import type { RoomInfoFormData } from "../RoomInfoForm.interface";
-import type { RoomsTexts } from "../../../../i18n/roomsTexts.type";
+import { ROOM_BASIC_INFO_STYLES as s } from "./RoomBasicInfo.styles";
+import { ROOM_FORM_FIELDS } from "../../../../../constants/roomFormFields";
+import { ROOM_CATEGORIES, ICON_SIZES } from "../../../../../constants/info.constants";
+import type { RoomInfoFormData } from "../../RoomInfoForm.interface";
 import { Home } from "lucide-react";
-
-interface RoomBasicInfoProps {
-  texts: RoomsTexts;
-  getErrorMessage: (message?: string) => string | undefined;
-}
+import type { RoomBasicInfoProps } from "./RoomBasicInfo.interface";
 
 export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMessage }) => {
   const { register, control, formState: { errors } } = useFormContext<RoomInfoFormData>();
@@ -31,7 +26,7 @@ export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMes
         >
           <Label className={s.label}>{texts.FORM.NAME_LABEL}</Label>
           <div className={s.inputWrapper}>
-            <Home className={s.inputIcon} size={18} />
+            <Home className={s.inputIcon} size={ICON_SIZES.MD} />
             <Input
               {...register(ROOM_FORM_FIELDS.NAME)}
               placeholder={texts.FORM.NAME_PLACEHOLDER}

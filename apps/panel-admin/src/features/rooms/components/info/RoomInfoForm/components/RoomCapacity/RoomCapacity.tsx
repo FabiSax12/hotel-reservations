@@ -3,16 +3,12 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { TextField, Label, Input, FieldError } from "@heroui/react";
-import { ROOM_INFO_FORM_STYLES as s } from "../RoomInfoForm.styles";
-import { ROOM_FORM_FIELDS } from "../../../../constants/roomFormFields";
-import type { RoomInfoFormData } from "../RoomInfoForm.interface";
-import type { RoomsTexts } from "../../../../i18n/roomsTexts.type";
+import { ROOM_CAPACITY_STYLES as s } from "./RoomCapacity.styles";
+import { ROOM_FORM_FIELDS } from "../../../../../constants/roomFormFields";
+import { ICON_SIZES } from "../../../../../constants/info.constants";
+import type { RoomInfoFormData } from "../../RoomInfoForm.interface";
 import { Users, Baby } from "lucide-react";
-
-interface RoomCapacityProps {
-  texts: RoomsTexts;
-  getErrorMessage: (message?: string) => string | undefined;
-}
+import type { RoomCapacityProps } from "./RoomCapacity.interface";
 
 export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessage }) => {
   const { register, formState: { errors } } = useFormContext<RoomInfoFormData>();
@@ -29,7 +25,7 @@ export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessa
         >
           <Label className={s.label}>{texts.FORM.CAPACITY_ADULTS_LABEL}</Label>
           <div className={s.inputWrapper}>
-            <Users className={s.inputIcon} size={18} />
+            <Users className={s.inputIcon} size={ICON_SIZES.MD} />
             <Input
               {...register(ROOM_FORM_FIELDS.CAPACITY_ADULTS, { valueAsNumber: true })}
               type="number"
@@ -45,7 +41,7 @@ export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessa
         >
           <Label className={s.label}>{texts.FORM.CAPACITY_KIDS_LABEL}</Label>
           <div className={s.inputWrapper}>
-            <Baby className={s.inputIcon} size={18} />
+            <Baby className={s.inputIcon} size={ICON_SIZES.MD} />
             <Input
               {...register(ROOM_FORM_FIELDS.CAPACITY_KIDS, { valueAsNumber: true })}
               type="number"

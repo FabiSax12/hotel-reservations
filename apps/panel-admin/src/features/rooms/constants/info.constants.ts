@@ -35,3 +35,10 @@ export const THEME_INTERACTIONS = {
   ACTIVE_SCALE: "0.98",
   TRANSITION_DURATION: "300ms",
 } as const;
+
+export const ICON_SIZES = {
+  MD: 18,
+  SM: 16,
+} as const;
+
+// Si crece mucho meter las constantes especificadas directamente en cada feature

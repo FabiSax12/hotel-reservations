@@ -3,15 +3,10 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { TextField, Label, Input, FieldError } from "@heroui/react";
-import { ROOM_INFO_FORM_STYLES as s } from "../RoomInfoForm.styles";
-import { ROOM_FORM_FIELDS } from "../../../../constants/roomFormFields";
-import type { RoomInfoFormData } from "../RoomInfoForm.interface";
-import type { RoomsTexts } from "../../../../i18n/roomsTexts.type";
-
-interface RoomFeesProps {
-  texts: RoomsTexts;
-  getErrorMessage: (message?: string) => string | undefined;
-}
+import { ROOM_FEES_STYLES as s } from "./RoomFees.styles";
+import { ROOM_FORM_FIELDS } from "../../../../../constants/roomFormFields";
+import type { RoomInfoFormData } from "../../RoomInfoForm.interface";
+import type { RoomFeesProps } from "./RoomFees.interface";
 
 export const RoomFees: React.FC<RoomFeesProps> = ({ texts, getErrorMessage }) => {
   const { register, formState: { errors } } = useFormContext<RoomInfoFormData>();

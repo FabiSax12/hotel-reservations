@@ -1,29 +1,16 @@
 "use client";
 
 import React from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider } from "react-hook-form";
 import { Button, Form } from "@heroui/react";
-import { useI18n } from "@/locales";
 import { ROOM_INFO_FORM_STYLES as s } from "./RoomInfoForm.styles";
-import {
-  roomInfoSchema,
-  type RoomInfoFormData,
-  type RoomInfoFormProps,
-} from "./RoomInfoForm.interface";
-import {
-  DEFAULT_ADULTS,
-  DEFAULT_KIDS,
-} from "../../../constants/info.constants";
-import { ROOM_FORM_FIELDS } from "../../../constants/roomFormFields";
-import type { RoomsTexts } from "../../../i18n/roomsTexts.type";
-
-// Sections
-import { RoomBasicInfo } from "./sections/RoomBasicInfo";
-import { RoomCapacity } from "./sections/RoomCapacity";
-import { RoomFees } from "./sections/RoomFees";
-import { RoomExtraInfo } from "./sections/RoomExtraInfo";
+import type { RoomInfoFormProps } from "./RoomInfoForm.interface";
+import { RoomBasicInfo } from "./components/RoomBasicInfo";
+import { RoomCapacity } from "./components/RoomCapacity";
+import { RoomFees } from "./components/RoomFees";
+import { RoomExtraInfo } from "./components/RoomExtraInfo";
 import { useRouter } from "next/navigation";
+import { useRoomInfoForm } from "../hooks/useRoomInfoForm";
 
 export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
   initialData,
@@ -31,32 +18,7 @@ export const RoomInfoForm: React.FC<RoomInfoFormProps> = ({
   isLoading = false,
 }) => {
   const router = useRouter();
-  const { t } = useI18n();
-  const texts = t.ROOMS;
-
-  const methods = useForm<RoomInfoFormData>({
-    resolver: zodResolver(roomInfoSchema),
-    defaultValues: initialData || {
-      [ROOM_FORM_FIELDS.NAME]: "",
-      [ROOM_FORM_FIELDS.CATEGORY]: "",
-      [ROOM_FORM_FIELDS.CAPACITY_ADULTS]: DEFAULT_ADULTS,
-      [ROOM_FORM_FIELDS.CAPACITY_KIDS]: DEFAULT_KIDS,
-      [ROOM_FORM_FIELDS.DESCRIPTION]: "",
-      [ROOM_FORM_FIELDS.REGULAR_FEE]: 0,
-      [ROOM_FORM_FIELDS.HIGH_SEASON_FEE]: 0,
-      [ROOM_FORM_FIELDS.IS_ACTIVE]: true,
-      [ROOM_FORM_FIELDS.IS_PET_FRIENDLY]: false,
-    },
-  });
-
-  const getErrorMessage = (errorKey?: string) => {
-    if (!errorKey) return undefined;
-    const parts = errorKey.split(".");
-    if (parts[0] === "VALIDATION" && parts[1]) {
-      return (texts.VALIDATION as any)[parts[1]];
-    }
-    return errorKey;
-  };
+  const { methods, texts, getErrorMessage } = useRoomInfoForm(initialData);
 
   return (
     <div className={s.container}>

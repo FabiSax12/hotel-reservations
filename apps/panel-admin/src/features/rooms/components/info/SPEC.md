@@ -35,7 +35,8 @@ As an administrator I need to register new room with all the neccesary textual i
 * [ ] Condition 1: As a logged admin, I can add textual information to a new room.
 * [ ] Condition 2: As a logged admin, I can modify the textual information of the room.
 * [ ] Condition 3: As a logged admin, I can use a switch button to change the state of the room.
+* [ ] Condition 4: As a logged admin, I want to make sure that the numeric numbers are positive and integer.
 
 ## 5. Handoff & Status Notes
-* **Current State:** Add Supabase integration.
-* **Next Step:** Clean the files ensuring they all follow the good practices guidelines.
+* **Current State:** Clean the files, ensure eveything follows the good practices guidelines.
+* **Next Step:** Add testing to ensure everything works fine.
