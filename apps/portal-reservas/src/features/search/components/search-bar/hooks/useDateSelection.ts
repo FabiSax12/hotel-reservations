@@ -16,7 +16,7 @@ export function useDateSelection(
 ) {
   const [checkIn, setCheckIn] = useState(initialCheckIn);
   const [checkOut, setCheckOut] = useState(initialCheckOut);
-  const [invalidState, setInvalidState] = useState<{ dayStr: string; isFading: boolean } | null>(
+  const [invalidState, setInvalidState] = useState<{ dayStrs: string[]; isFading: boolean; animationKey?: number } | null>(
     null,
   );
 

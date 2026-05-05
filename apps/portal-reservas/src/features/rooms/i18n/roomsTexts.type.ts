@@ -12,7 +12,6 @@ export type RoomsTexts = {
   CURRENCY: string;
   AVAILABLE_DATES: string;
   SELECT_ACTION: string;
-  // US-DM-02 additions
   CAPACITY_LABEL: string;
   AMENITIES_TITLE: string;
   ADMIN_TIP_LABEL: string;
@@ -29,4 +28,5 @@ export type RoomsTexts = {
   CONFIRM_SEARCH: string;
   NO_LOCATION_HINT: string;
   BROWSE_ROOMS: string;
+  SEARCHING_ROOMS: string;
 };

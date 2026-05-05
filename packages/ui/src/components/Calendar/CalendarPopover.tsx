@@ -11,14 +11,16 @@ import { CalendarMonth } from "./CalendarMonth";
 import { UI_VARIANTS } from "../../constants/ui.constants";
 
 interface CalendarInvalidState {
-  dayStr: string;
+  dayStrs: string[];
   isFading: boolean;
+  animationKey?: number;
 }
 
 interface CalendarPopoverProps {
   checkIn: string;
   checkOut: string;
   invalidState: CalendarInvalidState | null;
+  hideTooltips?: boolean;
   onPickDate: (dayStr: string) => void;
   variant?: (typeof UI_VARIANTS)[keyof typeof UI_VARIANTS];
   startLabel?: string;
@@ -37,6 +39,7 @@ export function CalendarPopover({
   checkIn,
   checkOut,
   invalidState,
+  hideTooltips,
   onPickDate,
   variant,
   startLabel,
@@ -71,6 +74,7 @@ export function CalendarPopover({
           invalidState={invalidState}
           hoveredDay={hoveredDay}
           isHero={isHero}
+          hideTooltips={hideTooltips}
           onPickDate={onPickDate}
           onHoverDay={setHoveredDay}
           onPrev={() => setCurrentMonthOffset((prev) => Math.max(0, prev - 1))}

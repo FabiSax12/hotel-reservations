@@ -41,7 +41,7 @@ export interface SearchBarContextValue {
   // DateSelection
   checkIn: string;
   checkOut: string;
-  invalidState: { dayStr: string; isFading: boolean } | null;
+  invalidState: { dayStrs: string[]; isFading: boolean; animationKey?: number } | null;
   handlePickDate: (dayStr: string) => void;
 
   // GuestsSelection

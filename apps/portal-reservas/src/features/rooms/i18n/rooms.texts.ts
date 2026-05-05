@@ -12,11 +12,10 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     ROOMS_PLURAL: "habitaciones",
     TYPE_LABEL: "Tipo",
     SQFT_LABEL: "m²",
-    PRICE_LABEL: "Precio Promedio Por Noche",
+    PRICE_LABEL: "Precio por noche",
     CURRENCY: "USD",
     AVAILABLE_DATES: "disponibles para sus fechas",
     SELECT_ACTION: "Seleccionar y Continuar",
-    // US-DM-02
     CAPACITY_LABEL: "Capacidad",
     AMENITIES_TITLE: "Amenidades",
     ADMIN_TIP_LABEL: "Recomendación",
@@ -33,6 +32,7 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     CONFIRM_SEARCH: "Buscar habitaciones",
     NO_LOCATION_HINT: "Selecciona una sede para explorar las habitaciones disponibles",
     BROWSE_ROOMS: "Explorar habitaciones",
+    SEARCHING_ROOMS: "Buscando habitaciones...",
   },
   en: {
     REALTIME_AVAIL: "Real-time availability",
@@ -44,7 +44,7 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     ROOMS_PLURAL: "rooms left",
     TYPE_LABEL: "Type",
     SQFT_LABEL: "sq ft",
-    PRICE_LABEL: "Average Price Per Night",
+    PRICE_LABEL: "Price per night",
     CURRENCY: "USD",
     AVAILABLE_DATES: "available for your dates",
     SELECT_ACTION: "Select and Continue",
@@ -65,5 +65,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     CONFIRM_SEARCH: "Search rooms",
     NO_LOCATION_HINT: "Select a location to explore available rooms",
     BROWSE_ROOMS: "Browse rooms",
+    SEARCHING_ROOMS: "Searching rooms...",
   },
 } as const;

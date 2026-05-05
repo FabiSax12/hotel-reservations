@@ -10,6 +10,7 @@
 
 import type { Room } from "../domain/types";
 import { RoomCard } from "./RoomCard";
+import { RoomCardSkeleton } from "./RoomCardSkeleton";
 import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 
@@ -20,9 +21,11 @@ interface RoomListProps {
   selectedDest: string;
   /** Monotonic counter used as a React key to force re-mount and replay entrance animations. */
   searchKey: number;
+  /** Whether the list is currently simulating a search data load. */
+  isLoading?: boolean;
 }
 
-export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
+export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
 
   return (
@@ -35,15 +38,25 @@ export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
         </div>
 
         <div className={S.countBadge} role="status" aria-live="polite">
-          <span className={S.countValue}>{rooms.length}</span> {t.ROOMS.ROOMS_FOUND}
+          {isLoading ? (
+            <span className="animate-pulse">{t.ROOMS.SEARCHING_ROOMS}</span>
+          ) : (
+            <>
+              <span className={S.countValue}>{rooms.length}</span> {t.ROOMS.ROOMS_FOUND}
+            </>
+          )}
         </div>
       </div>
 
       {/* Card grid — key forces re-mount for staggered animations on new search */}
       <div key={searchKey} className={S.grid}>
-        {rooms.map((room, index) => (
-          <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />
-        ))}
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, index) => (
+              <RoomCardSkeleton key={`skel-${index}`} />
+            ))
+          : rooms.map((room, index) => (
+              <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />
+            ))}
       </div>
     </section>
   );

@@ -13,8 +13,9 @@ import { useI18n } from "@hotel/i18n";
 const C = UI_PACKAGE_CONSTANTS.CALENDAR;
 
 interface CalendarInvalidState {
-  dayStr: string;
+  dayStrs: string[];
   isFading: boolean;
+  animationKey?: number;
 }
 
 interface CalendarMonthProps {
@@ -27,6 +28,7 @@ interface CalendarMonthProps {
   invalidState: CalendarInvalidState | null;
   hoveredDay: string | null;
   isHero: boolean;
+  hideTooltips?: boolean;
   onPickDate: (dayStr: string) => void;
   onHoverDay: (dayStr: string | null) => void;
   onPrev: () => void;
@@ -46,6 +48,7 @@ export function CalendarMonth({
   invalidState,
   hoveredDay,
   isHero,
+  hideTooltips,
   onPickDate,
   onHoverDay,
   onPrev,
@@ -163,8 +166,9 @@ export function CalendarMonth({
             isStart || isEnd || (inVal > 0 && outVal > 0 && currVal > inVal && currVal < outVal);
           const isToday = currVal === today.getTime();
           const isHovered = hoveredDay === dayStr;
-          const isInvalid = invalidState?.dayStr === dayStr;
+          const isInvalid = !!invalidState?.dayStrs.includes(dayStr);
           const isFading = isInvalid && !!invalidState?.isFading;
+          const invalidAnimationKey = isInvalid ? invalidState?.animationKey : undefined;
 
           return (
             <CalendarDay
@@ -179,7 +183,9 @@ export function CalendarMonth({
               isHovered={isHovered}
               isInvalid={isInvalid}
               isFading={isFading}
+              invalidAnimationKey={invalidAnimationKey}
               isHero={isHero}
+              hideTooltips={hideTooltips}
               inVal={inVal}
               outVal={outVal}
               onPickDate={onPickDate}

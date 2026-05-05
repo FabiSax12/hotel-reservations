@@ -4,6 +4,85 @@
 
 @source "./**/*.{ts,tsx}";
 
+@theme inline {
+  --font-serif: var(--font-playfair, "Playfair Display", Georgia, serif);
+  --font-sans: var(--font-dm-sans, "DM Sans", system-ui, sans-serif);
+
+  --color-forest-950: oklch(11% 0.04 143);
+  --color-forest-900: oklch(16% 0.05 143);
+  --color-forest-800: oklch(22% 0.06 143);
+  --color-forest-700: oklch(28% 0.07 143);
+  --color-forest-600: oklch(35% 0.08 143);
+  --color-forest-500: oklch(44% 0.09 143);
+  --color-forest-400: oklch(54% 0.1 143);
+  --color-forest-300: oklch(64% 0.09 143);
+
+  --color-stone-50: oklch(97.5% 0.008 75);
+  --color-stone-100: oklch(94% 0.015 75);
+  --color-stone-200: oklch(88% 0.022 75);
+  --color-stone-300: oklch(80% 0.03 75);
+  --color-stone-400: oklch(70% 0.03 75);
+  --color-stone-600: oklch(50% 0.025 75);
+  --color-stone-800: oklch(30% 0.02 75);
+
+  --color-gold-200: oklch(90% 0.07 68);
+  --color-gold-300: oklch(83% 0.1 68);
+  --color-gold-400: oklch(75% 0.13 68);
+  --color-gold-500: oklch(67% 0.15 68);
+  --color-gold-600: oklch(58% 0.14 68);
+  --color-gold-700: oklch(48% 0.12 68);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .grain-overlay {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    animation: grain 6s steps(1) infinite;
+    pointer-events: none;
+    z-index: 9999;
+  }
+}
+
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-2%, -3%); }
+  20%  { transform: translate(1%, 2%); }
+  30%  { transform: translate(3%, -1%); }
+  40%  { transform: translate(-1%, 4%); }
+  50%  { transform: translate(-3%, 1%); }
+  60%  { transform: translate(2%, -4%); }
+  70%  { transform: translate(1%, 3%); }
+  80%  { transform: translate(-2%, 0%); }
+  90%  { transform: translate(3%, 2%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-12px) rotate(1deg); }
+  66%       { transform: translateY(-6px) rotate(-0.5deg); }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
+}
+
+@keyframes draw-line {
+  from { stroke-dashoffset: 300; }
+  to   { stroke-dashoffset: 0; }
+}
+
 /*
  * HeroUI Theme Customization
  * Add this to your global.css after importing @heroui/styles
@@ -54,41 +133,41 @@
 
   /* Font Family */
   /* Make sure to load Instrument Sans font in your app */
-  --font-sans: var(--font-instrument-sans);
+  --font-sans: var(--font-dm-sans, system-ui, sans-serif);
 }
 
 .dark,
 [data-theme="dark"] {
   color-scheme: dark;
-  /* Theme Colors (Dark Mode) */
-  --accent: oklch(62.04% 0.195 224.67);
-  --accent-foreground: oklch(99.11% 0 0);
-  --background: oklch(12.00% 0.0012 224.67);
-  --border: oklch(28.00% 0.0012 224.67);
+  /* Theme Colors (Dark Mode) - Adapted to Forest/Gold slightly */
+  --accent: oklch(67% 0.15 68); /* gold-500 */
+  --accent-foreground: oklch(11% 0.04 143); /* forest-950 */
+  --background: oklch(11% 0.04 143); /* forest-950 */
+  --border: oklch(22% 0.06 143); /* forest-800 */
   --danger: oklch(59.40% 0.1972 21.13);
-  --danger-foreground: oklch(99.11% 0 0);
-  --default: oklch(27.40% 0.0012 224.67);
-  --default-foreground: oklch(99.11% 0 0);
-  --field-background: oklch(21.03% 0.0024 224.67);
-  --field-foreground: oklch(99.11% 0.0012 224.67);
-  --field-placeholder: oklch(70.50% 0.0024 224.67);
-  --focus: oklch(62.04% 0.195 224.67);
-  --foreground: oklch(99.11% 0.0012 224.67);
-  --muted: oklch(70.50% 0.0024 224.67);
-  --overlay: oklch(21.03% 0.0024 224.67);
-  --overlay-foreground: oklch(99.11% 0.0012 224.67);
-  --scrollbar: oklch(70.50% 0.0012 224.67);
-  --segment: oklch(39.64% 0.0012 224.67);
-  --segment-foreground: oklch(99.11% 0.0012 224.67);
-  --separator: oklch(25.00% 0.0012 224.67);
+  --danger-foreground: oklch(97.5% 0.008 75);
+  --default: oklch(22% 0.06 143); /* forest-800 */
+  --default-foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --field-background: oklch(16% 0.05 143); /* forest-900 */
+  --field-foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --field-placeholder: oklch(70% 0.03 75); /* stone-400 */
+  --focus: oklch(67% 0.15 68); /* gold-500 */
+  --foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --muted: oklch(70% 0.03 75); /* stone-400 */
+  --overlay: oklch(16% 0.05 143); /* forest-900 */
+  --overlay-foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --scrollbar: oklch(70% 0.03 75); /* stone-400 */
+  --segment: oklch(22% 0.06 143); /* forest-800 */
+  --segment-foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --separator: oklch(22% 0.06 143); /* forest-800 */
   --success: oklch(73.29% 0.194 147.31);
-  --success-foreground: oklch(21.03% 0.0059 147.31);
-  --surface: oklch(21.03% 0.0024 224.67);
-  --surface-foreground: oklch(99.11% 0.0012 224.67);
-  --surface-secondary: oklch(25.70% 0.0018 224.67);
-  --surface-secondary-foreground: oklch(99.11% 0.0012 224.67);
-  --surface-tertiary: oklch(27.21% 0.0018 224.67);
-  --surface-tertiary-foreground: oklch(99.11% 0.0012 224.67);
+  --success-foreground: oklch(11% 0.04 143);
+  --surface: oklch(16% 0.05 143); /* forest-900 */
+  --surface-foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --surface-secondary: oklch(22% 0.06 143); /* forest-800 */
+  --surface-secondary-foreground: oklch(97.5% 0.008 75); /* stone-50 */
+  --surface-tertiary: oklch(28% 0.07 143); /* forest-700 */
+  --surface-tertiary-foreground: oklch(97.5% 0.008 75); /* stone-50 */
   --warning: oklch(82.03% 0.1391 72.84);
-  --warning-foreground: oklch(21.03% 0.0059 72.84);
+  --warning-foreground: oklch(11% 0.04 143);
 }

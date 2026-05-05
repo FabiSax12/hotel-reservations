@@ -30,18 +30,19 @@ export function RoomRangeCalendar({
 
   const [checkIn, setCheckIn] = useState<string>("");
   const [checkOut, setCheckOut] = useState<string>("");
-  const [invalidState, setInvalidState] = useState<{ dayStr: string; isFading: boolean } | null>(null);
+  const [invalidState, setInvalidState] = useState<{ dayStrs: string[]; isFading: boolean; animationKey: number } | null>(null);
   const availableDateSet = new Set(availableDates);
   const lastSubmittedRangeRef = useRef<string>("");
 
-  const dismissInvalidState = (dayStr: string) => {
-    setInvalidState({ dayStr, isFading: false });
+  const dismissInvalidState = (dayStrs: string[]) => {
+    const animationKey = Date.now();
+    setInvalidState({ dayStrs, isFading: false, animationKey });
     setTimeout(() => {
-      setInvalidState({ dayStr, isFading: true });
-    }, 170);
+      setInvalidState({ dayStrs, isFading: true, animationKey });
+    }, 400); // Wait longer before fading out
     setTimeout(() => {
-      setInvalidState((current) => (current?.dayStr === dayStr ? null : current));
-    }, 500);
+      setInvalidState((current) => (current?.animationKey === animationKey ? null : current));
+    }, 700);
   };
 
   const getDatesBetween = (start: string, end: string): string[] => {
@@ -55,10 +56,9 @@ export function RoomRangeCalendar({
     return result;
   };
 
-  const getFirstBlockedDate = (start: string, end: string): string | null => {
+  const getBlockedDatesBetween = (start: string, end: string): string[] => {
     const stayNights = getDatesBetween(start, end);
-    const blockedDate = stayNights.find((isoDay) => !availableDateSet.has(isoDay));
-    return blockedDate ?? null;
+    return stayNights.filter((isoDay) => !availableDateSet.has(isoDay));
   };
 
   const submitRange = (start: string, end: string) => {
@@ -79,51 +79,40 @@ export function RoomRangeCalendar({
   const handlePickDate = (dayStr: string) => {
     if (invalidState) setInvalidState(null);
 
-    if (dayStr === checkIn && !checkOut) {
+    // If both dates are selected, clicking starts a fresh selection
+    if (checkIn && checkOut) {
+      setCheckIn(dayStr);
+      setCheckOut("");
+      return;
+    }
+
+    // First click
+    if (!checkIn) {
+      setCheckIn(dayStr);
+      return;
+    }
+
+    // Second click on the same date: unselect
+    if (dayStr === checkIn) {
       setCheckIn("");
       return;
     }
 
-    if (!checkIn) {
-      setCheckIn(dayStr);
-      setCheckOut("");
+    // Second click on a different date: determine chronological order
+    const start = dayStr < checkIn ? dayStr : checkIn;
+    const end = dayStr < checkIn ? checkIn : dayStr;
+
+    // Check for blocked dates in the resulting range
+    const blockedDates = getBlockedDatesBetween(start, end);
+    if (blockedDates.length > 0) {
+      dismissInvalidState(blockedDates);
       return;
     }
 
-    if (!checkOut) {
-      if (dayStr < checkIn) {
-        setCheckIn(dayStr);
-      } else {
-        const firstBlockedDate = getFirstBlockedDate(checkIn, dayStr);
-        if (firstBlockedDate) {
-          dismissInvalidState(firstBlockedDate);
-          return;
-        }
-        setCheckOut(dayStr);
-        submitRange(checkIn, dayStr);
-      }
-      return;
-    }
-
-    if (dayStr === checkOut) {
-      setCheckOut("");
-      return;
-    }
-
-    if (dayStr <= checkIn) {
-      setCheckIn(dayStr);
-      setCheckOut("");
-      return;
-    }
-
-    const firstBlockedDate = getFirstBlockedDate(checkIn, dayStr);
-    if (firstBlockedDate) {
-      dismissInvalidState(firstBlockedDate);
-      return;
-    }
-
-    setCheckOut(dayStr);
-    submitRange(checkIn, dayStr);
+    // Valid range: update state and submit
+    setCheckIn(start);
+    setCheckOut(end);
+    submitRange(start, end);
   };
 
   return (
@@ -138,6 +127,7 @@ export function RoomRangeCalendar({
         className="w-full"
         checkIn={checkIn}
         checkOut={checkOut}
+        hideTooltips={true}
         invalidState={invalidState}
         onPickDate={handlePickDate}
         availableDates={availableDates}

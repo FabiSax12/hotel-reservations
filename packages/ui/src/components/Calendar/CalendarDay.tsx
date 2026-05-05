@@ -19,7 +19,9 @@ interface CalendarDayProps {
   isHovered: boolean;
   isInvalid: boolean;
   isFading: boolean;
+  invalidAnimationKey?: number;
   isHero: boolean;
+  hideTooltips?: boolean;
   inVal: number;
   outVal: number;
   onPickDate: (dayStr: string) => void;
@@ -41,7 +43,9 @@ export function CalendarDay({
   isHovered,
   isInvalid,
   isFading,
+  invalidAnimationKey,
   isHero,
+  hideTooltips,
   inVal,
   outVal,
   onPickDate,
@@ -74,15 +78,15 @@ export function CalendarDay({
       {isEnd && !isStart && <div className={S.selectedEnd}></div>}
       {isStart && isEnd && <div className={S.selectedStart}></div>}
 
-      {isInvalid && <div className={S.invalidDot(isFading)}></div>}
+      {isInvalid && <div key={`invalid-${invalidAnimationKey}`} className={S.invalidDot(isFading)}></div>}
 
-      {isStart && isHovered && !isInvalid && (
+      {!hideTooltips && isStart && isHovered && !isInvalid && (
         <div className={S.tooltip(isHero)}>
           {startLabel}
           <div className={S.tooltipArrow}></div>
         </div>
       )}
-      {isEnd && !isStart && isHovered && !isInvalid && (
+      {!hideTooltips && isEnd && !isStart && isHovered && !isInvalid && (
         <div className={S.tooltip(isHero)}>
           {endLabel}
           <div className={S.tooltipArrow}></div>

@@ -8,21 +8,21 @@ export const SEARCH_BAR_STYLES = {
   heroCalendarInner: "w-full flex flex-col items-center",
 
   bar: (isHero: boolean) =>
-    `relative flex items-stretch rounded-full border border-neutral-200 shadow-[0_12px_40px_rgba(0,0,0,0.08)] overflow-visible transition-colors z-50 w-full bg-white${isHero ? " shadow-2xl" : ""}`,
+    `relative flex items-stretch rounded-full border border-forest-800 shadow-[0_12px_40px_rgba(0,0,0,0.4)] overflow-visible transition-colors z-50 w-full bg-forest-900${isHero ? " shadow-2xl" : ""}`,
 
   expandTab:
-    "absolute -bottom-[26px] left-[42%] -translate-x-[50%] bg-white px-6 py-1.5 rounded-b-xl border-b border-l border-r border-neutral-200/50 shadow-[0_6px_16px_rgba(0,0,0,0.03)] flex items-center justify-center hover:bg-neutral-50 transition-colors cursor-pointer group -z-10",
+    "absolute -bottom-[26px] left-[42%] -translate-x-[50%] bg-forest-900 px-6 py-1.5 rounded-b-xl border-b border-l border-r border-forest-800 shadow-[0_6px_16px_rgba(0,0,0,0.3)] flex items-center justify-center hover:bg-forest-800 transition-colors cursor-pointer group -z-10",
   expandTabIcon:
-    "w-5 h-5 text-emerald-600 transition-transform duration-300 ease-out group-hover:translate-y-1 group-active:translate-y-2 group-active:scale-95",
+    "w-5 h-5 text-gold-500 transition-transform duration-300 ease-out group-hover:translate-y-1 group-active:translate-y-2 group-active:scale-95",
 
-  divider: "self-center w-[1px] h-10 bg-neutral-300/80",
-  dividerRelative: "self-center w-[1px] h-10 bg-neutral-300/80 relative",
+  divider: "self-center w-[1px] h-10 bg-forest-800/80",
+  dividerRelative: "self-center w-[1px] h-10 bg-forest-800/80 relative",
 
   sectionBase: "relative flex flex-col justify-center rounded-full cursor-pointer transition",
-  sectionActive: "bg-white shadow-lg",
-  sectionInactive: "hover:bg-black/5",
+  sectionActive: "bg-forest-800 shadow-[inset_0_0_10px_rgba(0,0,0,0.2)]",
+  sectionInactive: "hover:bg-forest-800/50",
   sectionFaded: "opacity-30",
-  sectionError: "ring-2 ring-red-400/60 bg-red-50/40",
+  sectionError: "ring-2 ring-red-400/60 bg-red-900/40",
   sectionShake: "animate-search-bar-shake",
 
   sectionDestination: "flex-[1.2] pl-10 pr-6 flex-shrink-0",
@@ -47,16 +47,16 @@ export const SEARCH_BAR_STYLES = {
   },
 
   fieldLabel:
-    "font-extrabold tracking-widest text-neutral-800 uppercase mb-0.5 pointer-events-none",
+    "font-extrabold tracking-widest text-stone-400 uppercase mb-0.5 pointer-events-none",
   fieldValueWrapper: "flex items-center gap-2",
   fieldValue: (hasValue: boolean) =>
-    `w-full bg-transparent border-none outline-none focus:outline-none font-bold mt-0.5 truncate pointer-events-none ${hasValue ? "text-emerald-950" : "text-neutral-400"}`,
-  fieldValueDate: "text-emerald-950 font-bold truncate mt-0.5 pointer-events-none",
-  fieldValueGuests: "text-emerald-950 font-bold truncate mt-0.5 pointer-events-none",
+    `w-full bg-transparent border-none outline-none focus:outline-none font-bold mt-0.5 truncate pointer-events-none ${hasValue ? "text-stone-50" : "text-stone-500"}`,
+  fieldValueDate: "text-stone-50 font-bold truncate mt-0.5 pointer-events-none",
+  fieldValueGuests: "text-stone-50 font-bold truncate mt-0.5 pointer-events-none",
 
   searchBtnWrapper: "flex-shrink-0 pr-4 md:pr-5 flex items-center z-10",
   searchBtn: (sizePad: string) =>
-    `flex items-center justify-center bg-emerald-700 hover:bg-emerald-800 text-white rounded-full transition-all duration-300 font-bold shadow-md hover:shadow-lg active:scale-95 ${sizePad} gap-2 whitespace-nowrap`,
+    `flex items-center justify-center bg-gold-600 hover:bg-gold-500 text-forest-950 rounded-full transition-all duration-300 font-bold shadow-[0_4px_15px_rgba(202,138,4,0.3)] hover:shadow-lg active:scale-95 ${sizePad} gap-2 whitespace-nowrap`,
   searchBtnSpinner: "animate-spin",
   searchBtnSpinnerCircle: "opacity-25",
   searchBtnSpinnerPath: "opacity-75",
@@ -102,8 +102,8 @@ export const SEARCH_BAR_STYLES = {
   errorTooltipWrapper:
     "absolute top-full mt-3 left-0 right-0 flex justify-center pointer-events-none z-40",
   errorTooltipPill:
-    "flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-50 border border-red-200 shadow-md " +
+    "flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-900 border border-gold-500/50 shadow-[0_10px_25px_rgba(0,0,0,0.5)] " +
     "animate-in fade-in slide-in-from-top-2 duration-300 pointer-events-auto",
-  errorTooltipIcon: "w-4 h-4 text-amber-500 flex-shrink-0",
-  errorTooltipText: "text-sm font-medium text-red-700 whitespace-nowrap",
+  errorTooltipIcon: "w-4 h-4 text-gold-500 flex-shrink-0",
+  errorTooltipText: "text-sm font-medium text-stone-200 whitespace-nowrap",
 } as const;

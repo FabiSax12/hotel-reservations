@@ -41,31 +41,42 @@ export function HeroSearch({
     <section className={S.section(hasLocation)}>
       <div className={S.contentWrapper}>
         {/*
-         * Title block: fades out (opacity 0) and slides up (-20px) when
-         * the calendar opens, giving the search bar maximum visual focus.
+         * Title block: The main heading remains partially visible but scales down,
+         * while the subtitle fades out completely and slides up.
          */}
-        <div
-          className={S.titleBlock}
-          style={{
-            transition: "opacity 300ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1)",
-            opacity: heroCalendarActive ? 0 : 1,
-            transform: heroCalendarActive ? "translateY(-20px)" : "translateY(0)",
-          }}
-        >
-          <h1 className={S.heading}>{t.SEARCH.HERO.TITLE}</h1>
-          <p className={S.subtitle}>{t.SEARCH.HERO.SUBTITLE}</p>
+        <div className={S.titleBlock}>
+          <h1
+            className={S.heading}
+            style={{
+              transition: "opacity 400ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
+              opacity: heroCalendarActive ? 0.8 : 1,
+              transform: heroCalendarActive ? "scale(0.95)" : "scale(1)",
+              transformOrigin: "center top",
+            }}
+          >
+            {t.SEARCH.HERO.TITLE}
+          </h1>
+          <p
+            className={S.subtitle}
+            style={{
+              transition: "opacity 300ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1)",
+              opacity: heroCalendarActive ? 0 : 1,
+              transform: heroCalendarActive ? "translateY(-20px)" : "translateY(0)",
+            }}
+          >
+            {t.SEARCH.HERO.SUBTITLE}
+          </p>
         </div>
 
         {/*
-         * Search bar wrapper: starts 48px below the title (visual breathing
-         * room), then jumps up by -200px when the calendar expands so the
-         * floating calendar panel has vertical space beneath the bar.
+         * Search bar wrapper: starts 48px below the title, then jumps up to 0px 
+         * (just enough to make space for the calendar without hiding the title).
          */}
         <div
           className={S.searchWrapper}
           style={{
             transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
-            transform: heroCalendarActive ? "translateY(-200px)" : "translateY(48px)",
+            transform: heroCalendarActive ? "translateY(0px)" : "translateY(48px)",
           }}
         >
           <ModernSearchBar
@@ -78,8 +89,12 @@ export function HeroSearch({
         </div>
 
         {/* Scroll indicator when destination is selected */}
-        {hasLocation && !heroCalendarActive && (
-          <div className="relative mt-24 flex flex-col items-center gap-2 animate-in fade-in duration-1000 pointer-events-none">
+        {hasLocation && (
+          <div 
+            className={`relative mt-24 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-300 ease-in-out ${
+              heroCalendarActive ? "opacity-0" : "opacity-100 animate-in fade-in duration-1000"
+            }`}
+          >
             <style>
               {`
                 @keyframes scrollArrow {

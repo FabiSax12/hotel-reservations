@@ -55,6 +55,9 @@ export default function HomePage() {
    */
   const [searchKey, setSearchKey] = useState(0);
 
+  /** Whether the app is currently simulating a search payload retrieval. */
+  const [isSearchingData, setIsSearchingData] = useState(false);
+
   /** The current search parameters, shared between hero and compact bars. */
   const [searchParams, setSearchParams] = useState<SearchParams>({
     destination: SEARCH_VALS.DESTINATION_ALL,
@@ -103,22 +106,19 @@ export default function HomePage() {
       setSelectedLocation(params.destination);
     }
     setHasSearched(true);
-    setSearchKey((prev) => prev + 1);
+    setHeroCalendarActive(false);
+    
+    // Simulate network delay for dynamic price calculation
+    setIsSearchingData(true);
+    setTimeout(() => {
+      setSearchKey((prev) => prev + 1);
+      setIsSearchingData(false);
+    }, 800);
   };
 
-  /** Resets the page back to State A (hero search). */
+  /** Resets the page back to State A (hero search) completely. */
   const handleReset = () => {
-    setHasSearched(false);
-    setHeroCalendarActive(false);
-    setSearchParams({
-      destination: SEARCH_VALS.DESTINATION_ALL,
-      checkIn: "",
-      checkOut: "",
-      adults: 2,
-      children: 0,
-      pets: 0,
-    });
-    setSelectedLocation(AUTO_SELECTED_LOCATION);
+    window.location.href = "/";
   };
 
   const filteredRooms = filterRoomsByDestination(
@@ -146,6 +146,7 @@ export default function HomePage() {
       searchParams={searchParams}
       searchKey={searchKey}
       hasDates={hasDates}
+      isSearchingData={isSearchingData}
       filteredRooms={filteredRooms}
       onSearchTrigger={handleSearchTrigger}
       onDestinationChange={handleDestinationChange}
@@ -166,6 +167,7 @@ function RoomsInnerPage({
   searchParams,
   searchKey,
   hasDates,
+  isSearchingData,
   filteredRooms,
   onSearchTrigger,
   onDestinationChange,
@@ -178,12 +180,23 @@ function RoomsInnerPage({
   searchParams: SearchParams;
   searchKey: number;
   hasDates: boolean;
+  isSearchingData: boolean;
   filteredRooms: ReturnType<typeof filterRoomsByDestination>;
   onSearchTrigger: (params: SearchParams) => void;
   onDestinationChange: (dest: string) => void;
   onReset: () => void;
 }) {
   const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (heroCalendarActive || isSearchingData) {
+      // Use setTimeout to ensure the DOM layout shifts (like pt-48) have applied
+      // before calculating the "top" position.
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 50);
+    }
+  }, [heroCalendarActive, isSearchingData]);
 
   const roomsContextValue = {
     selectedLocation,
@@ -221,11 +234,14 @@ function RoomsInnerPage({
 
         {/* Rooms section — visible once a location is selected, regardless of State A/B */}
         {selectedLocation && (
-          <div className={hasSearched ? "pt-48" : ""}>
+          <div 
+            className={`transition-opacity duration-500 ease-in-out ${hasSearched ? "pt-48" : ""} ${heroCalendarActive ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+          >
             <RoomList
               rooms={filteredRooms}
               selectedDest={selectedLocation}
               searchKey={searchKey}
+              isLoading={isSearchingData}
             />
           </div>
         )}

@@ -15,13 +15,14 @@ import React, { useMemo } from "react";
 import type { SearchBarProps } from "../domain/types";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { REGIONS_CONFIG } from "../constants/regionsMock";
-import { SEARCH_VARIANTS, SEARCH_VALS, TIMEOUTS } from "../constants/search.constants";
+import { SEARCH_VARIANTS, SEARCH_VALS, TIMEOUTS, SEARCH_SECTIONS } from "../constants/search.constants";
 
 // Custom Hooks
 import { useSearchBarState } from "../hooks/useSearchBarState";
 import { useSearchValidation } from "../hooks/useSearchValidation";
 import { useDateSelection } from "../hooks/useDateSelection";
 import { useGuestsSelection } from "../hooks/useGuestsSelection";
+import { useI18n } from "@/locales";
 
 // Sub-components
 import { HeroCalendarFloat } from "./HeroCalendarFloat";
@@ -50,13 +51,16 @@ export function ModernSearchBar({
     isHero,
   } = useSearchBarState(size, onHeroCalendarOpen);
 
-  const { validationError, isShaking, clearError, validateSearch, fieldHasError } =
+  const { validationError, isShaking, clearError, showError, validateSearch, fieldHasError } =
     useSearchValidation();
 
   const onlyOneSede = useMemo(
     () => (REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null),
     [],
   );
+
+  const { t } = useI18n();
+  const C = t.SEARCH.SEARCH_BAR.VALIDATION;
 
   const [destination, setDestination] = React.useState(() => {
     if (initialState?.destination && initialState?.destination !== SEARCH_VALS.DESTINATION_ALL)
@@ -96,7 +100,6 @@ export function ModernSearchBar({
     initialState?.pets,
   );
 
-  // 2. Event Handlers
   const handleSearchTrigger = () => {
     if (!validateSearch(destination, checkIn, checkOut, onlyOneSede)) return;
     clearError();
@@ -116,6 +119,23 @@ export function ModernSearchBar({
     }, TIMEOUTS.SEARCH_TRIGGER_DELAY);
   };
 
+  const activateSectionIntercepted = React.useCallback(
+    (section: any, onClearError?: () => void) => {
+      if (
+        (section === SEARCH_SECTIONS.CHECK_IN || section === SEARCH_SECTIONS.CHECK_OUT) &&
+        (!destination || destination === SEARCH_VALS.DESTINATION_ALL)
+      ) {
+        showError({
+          message: C.MISSING_SEDE,
+          fields: ["where"],
+        });
+        return;
+      }
+      activateSection(section, onClearError);
+    },
+    [destination, activateSection, showError, C.MISSING_SEDE]
+  );
+
   // 3. Construct Context Value
   const contextValue = {
     size,
@@ -127,7 +147,7 @@ export function ModernSearchBar({
     isSearching,
     setIsSearching,
     lastUserActivatedSection,
-    activateSection,
+    activateSection: activateSectionIntercepted,
     onHeroCalendarOpen,
     validationError,
     isShaking,

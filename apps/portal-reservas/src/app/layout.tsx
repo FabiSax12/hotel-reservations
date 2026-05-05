@@ -19,10 +19,13 @@ export const metadata: Metadata = {
   description: "Sistema de reservas hoteleras",
 };
 
+import { playfair, dmSans } from "@/config/fonts";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang={defaultLocale}>
+    <html lang={defaultLocale} className={`dark ${playfair.variable} ${dmSans.variable}`}>
       <body className={S.body}>
+        <div className="grain-overlay" aria-hidden="true" />
         <I18nProvider defaultLocale={defaultLocale} translations={TRANSLATIONS}>
           {children}
         </I18nProvider>
