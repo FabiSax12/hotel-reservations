@@ -5,9 +5,9 @@ import { useI18n } from "@/locales";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
 import { GALLERY_CONFIG } from "@/features/landing/gallery/constants/gallery-config";
 
-type GalleryMobileProps = {
+interface GalleryMobileProps {
   current: number;
-};
+}
 
 export function GalleryMobile({ current }: GalleryMobileProps) {
   const { t } = useI18n();

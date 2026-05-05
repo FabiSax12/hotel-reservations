@@ -6,7 +6,11 @@ import { useI18n } from "@/locales";
 import { ABOUT } from "@/features/landing/about/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 
-type StatDisplay = { prefix: string; num: number; suffix: string };
+interface StatDisplay {
+  prefix: string;
+  num: number;
+  suffix: string;
+}
 
 function parseStatValue(value: string): StatDisplay {
   const match = value.match(/^([^\d]*)(\d+(?:\.\d+)?)(.*)$/);

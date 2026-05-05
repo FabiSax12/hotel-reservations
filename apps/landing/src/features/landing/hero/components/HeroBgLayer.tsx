@@ -5,9 +5,9 @@ import type { MotionValue } from "framer-motion";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { HERO_ORBS } from "@/features/landing/hero/constants/orbs";
 
-type HeroBgLayerProps = {
+interface HeroBgLayerProps {
   bgTransform: MotionValue<string>;
-};
+}
 
 export function HeroBgLayer({ bgTransform }: HeroBgLayerProps) {
   const prefersReducedMotion = useReducedMotion() ?? false;

@@ -4,22 +4,13 @@ import { motion } from "framer-motion";
 import { SERVICES } from "@/features/landing/services/constants/styles";
 import type { ServiceConfig } from "@/features/landing/services/constants/services-config";
 import type { ServiceItemTexts } from "@/features/landing/services/i18n/servicesTexts.type";
-import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { CARD_VARIANT } from "@/features/landing/services/constants/animations";
 
-type ServiceCardProps = {
+interface ServiceCardProps {
   service: ServiceConfig;
   texts: ServiceItemTexts;
   index: number;
-};
-
-const CARD_VARIANT = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, delay: i * 0.07, ease: EXPO_OUT },
-  }),
-};
+}
 
 export function ServiceCard({ service, texts, index }: ServiceCardProps) {
   const { Icon } = service;

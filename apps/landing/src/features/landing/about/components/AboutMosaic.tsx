@@ -4,14 +4,9 @@ import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import { useI18n } from "@/locales";
 import { ABOUT } from "@/features/landing/about/constants/styles";
+import { STAGGER } from "@/features/landing/about/constants/animations";
+import { MOSAIC_SIZES } from "@/features/landing/about/constants/mosaic";
 import { MosaicPanel } from "./MosaicPanel";
-
-const STAGGER = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const SIZES = "(max-width: 1024px) 50vw, 25vw";
 
 export function AboutMosaic() {
   const { t } = useI18n();
@@ -40,7 +35,7 @@ export function AboutMosaic() {
       <MosaicPanel
         src="https://picsum.photos/seed/about-forest/480/720"
         alt={about.MOSAIC_ALT_1}
-        sizes={SIZES}
+        sizes={MOSAIC_SIZES}
         overlays={[
           "linear-gradient(170deg, oklch(28% 0.07 143 / 0.5) 0%, oklch(11% 0.04 143 / 0.65) 100%)",
           "radial-gradient(ellipse 80% 60% at 40% 30%, oklch(35% 0.08 143 / 0.5), transparent)",
@@ -52,7 +47,7 @@ export function AboutMosaic() {
       <MosaicPanel
         src="https://picsum.photos/seed/about-warm/480/340"
         alt={about.MOSAIC_ALT_2}
-        sizes={SIZES}
+        sizes={MOSAIC_SIZES}
         overlays={[
           "linear-gradient(140deg, oklch(67% 0.15 68 / 0.35) 0%, oklch(16% 0.05 143 / 0.6) 100%)",
         ]}
@@ -62,7 +57,7 @@ export function AboutMosaic() {
       <MosaicPanel
         src="https://picsum.photos/seed/about-stone/480/340"
         alt={about.MOSAIC_ALT_3}
-        sizes={SIZES}
+        sizes={MOSAIC_SIZES}
         overlays={[
           "linear-gradient(200deg, oklch(94% 0.015 75 / 0.3) 0%, oklch(70% 0.03 75 / 0.5) 100%)",
         ]}

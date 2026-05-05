@@ -3,10 +3,10 @@ import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
 import { RATING_MAX } from "@/features/landing/testimonials/constants/testimonials-config";
 import type { TestimonialItemTexts } from "@/features/landing/testimonials/i18n/testimonialsTexts.type";
 
-type TestimonialCardProps = {
+interface TestimonialCardProps {
   texts: TestimonialItemTexts;
   rating: number;
-};
+}
 
 const getInitials = (name: string): string =>
   name

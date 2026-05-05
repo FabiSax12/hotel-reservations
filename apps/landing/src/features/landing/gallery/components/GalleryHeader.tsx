@@ -5,11 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useI18n } from "@/locales";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-
-const ITEM = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EXPO_OUT } },
-};
+import { HEADER_ITEM } from "@/features/landing/gallery/constants/animations";
 
 export function GalleryHeader() {
   const { t } = useI18n();
@@ -26,7 +22,7 @@ export function GalleryHeader() {
         animate={inView ? "visible" : "hidden"}
         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
       >
-        <motion.span className={GALLERY.EYEBROW} variants={ITEM}>{gallery.EYEBROW}</motion.span>
+        <motion.span className={GALLERY.EYEBROW} variants={HEADER_ITEM}>{gallery.EYEBROW}</motion.span>
         <div className={GALLERY.HEADLINE_WRAPPER}>
           <motion.h2
             className={GALLERY.HEADLINE}

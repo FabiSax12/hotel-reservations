@@ -8,9 +8,9 @@ import { SERVICES_CONFIG } from "@/features/landing/services/constants/services-
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import { ServiceCard } from "./ServiceCard";
 
-type ServicesGridProps = {
+interface ServicesGridProps {
   prefersReducedMotion: boolean;
-};
+}
 
 export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
   const { t } = useI18n();

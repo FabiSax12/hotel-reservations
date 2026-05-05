@@ -7,9 +7,9 @@ import { useI18n } from "@/locales";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 
-type HeroVisualPanelProps = {
+interface HeroVisualPanelProps {
   scale: MotionValue<number>;
-};
+}
 
 export function HeroVisualPanel({ scale }: HeroVisualPanelProps) {
   const { t } = useI18n();

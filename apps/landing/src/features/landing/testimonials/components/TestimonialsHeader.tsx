@@ -5,11 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { useI18n } from "@/locales";
 import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-
-const ITEM = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EXPO_OUT } },
-};
+import { HEADER_ITEM } from "@/features/landing/testimonials/constants/animations";
 
 export function TestimonialsHeader() {
   const { t } = useI18n();
@@ -25,7 +21,7 @@ export function TestimonialsHeader() {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
     >
-      <motion.span className={TESTIMONIALS.EYEBROW} variants={ITEM}>
+      <motion.span className={TESTIMONIALS.EYEBROW} variants={HEADER_ITEM}>
         {testimonials.EYEBROW}
       </motion.span>
       <div className={TESTIMONIALS.HEADLINE_WRAPPER}>
@@ -38,7 +34,7 @@ export function TestimonialsHeader() {
           {testimonials.HEADLINE}
         </motion.h2>
       </div>
-      <motion.p className={TESTIMONIALS.SUBHEADLINE} variants={ITEM}>
+      <motion.p className={TESTIMONIALS.SUBHEADLINE} variants={HEADER_ITEM}>
         {testimonials.SUBHEADLINE}
       </motion.p>
     </motion.div>

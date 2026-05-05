@@ -14,11 +14,11 @@ function computeOffset(index: number, current: number, total: number): number {
   return offset;
 }
 
-type GalleryCarouselProps = {
+interface GalleryCarouselProps {
   current: number;
   onSelect: (i: number) => void;
   onHoverChange: (hovered: boolean) => void;
-};
+}
 
 export function GalleryCarousel({ current, onSelect, onHoverChange }: GalleryCarouselProps) {
   const { t } = useI18n();

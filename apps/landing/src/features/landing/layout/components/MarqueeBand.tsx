@@ -3,13 +3,12 @@
 import { motion } from "framer-motion";
 import { useI18n } from "@/locales";
 import { LAYOUT } from "@/features/landing/layout/constants/styles";
-
-const SEPARATOR = "✦";
+import { MARQUEE_SEPARATOR } from "@/features/landing/layout/constants/marquee";
 
 export function MarqueeBand() {
   const { t } = useI18n();
   const items = t.COMMON.LAYOUT.MARQUEE_ITEMS;
-  const withSeparators = items.flatMap((item) => [item, SEPARATOR]);
+  const withSeparators = items.flatMap((item) => [item, MARQUEE_SEPARATOR]);
   const repeated = [...withSeparators, ...withSeparators];
 
   return (
@@ -22,7 +21,7 @@ export function MarqueeBand() {
         {repeated.map((item, i) => (
           <span
             key={i}
-            className={item === SEPARATOR ? LAYOUT.MARQUEE_SEPARATOR : LAYOUT.MARQUEE_ITEM}
+            className={item === MARQUEE_SEPARATOR ? LAYOUT.MARQUEE_SEPARATOR : LAYOUT.MARQUEE_ITEM}
           >
             {item}
           </span>

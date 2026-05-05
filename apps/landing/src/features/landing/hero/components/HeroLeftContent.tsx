@@ -4,13 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/locales";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-
-const WORDMARK_CHARS = Array.from("ALTAVERDE");
-
-const CHAR_CONTAINER = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.045, delayChildren: 0.25 } },
-};
+import { WORDMARK_CHARS, CHAR_CONTAINER } from "@/features/landing/hero/constants/animations";
 
 export function HeroLeftContent() {
   const { t } = useI18n();
