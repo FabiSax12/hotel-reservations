@@ -6,7 +6,7 @@ import { useSidebarCollapsed } from "../../hooks/useSidebarCollapsed";
 import { SidebarFooter } from "../SidebarFooter/SidebarFooter";
 import { SidebarHeader } from "../SidebarHeader/SidebarHeader";
 import { SidebarRoutesSection } from "../SidebarRoutesSection/SidebarRoutesSection";
-import { SIDEBAR_STYLES as S } from "./SidebarWrapper.styles";
+import { SIDEBAR_STYLES as STYLES } from "./SidebarWrapper.styles";
 
 export const SidebarWrapper = () => {
   const { isCollapsed, toggleCollapsed } = useSidebarCollapsed();
@@ -14,12 +14,12 @@ export const SidebarWrapper = () => {
 
   return (
     <aside
-      className={`${S.wrapper} ${isCollapsed ? S.collapsed : S.expanded}`}
+      className={`${STYLES.wrapper} ${isCollapsed ? STYLES.collapsed : STYLES.expanded}`}
       aria-label={t.SIDEBAR.WRAPPER.ARIA_LABEL}
     >
       <SidebarHeader isCollapsed={isCollapsed} toggleCollapsed={toggleCollapsed} />
 
-      <div className={S.body}>
+      <div className={STYLES.body}>
         {SIDEBAR_SECTIONS.map((section) => (
           <SidebarRoutesSection
             key={section.sectionKey}

@@ -4,7 +4,7 @@ import { useI18n } from "@/locales";
 import { isActiveRoute } from "../../utils/isActiveRoute";
 import { SidebarLink } from "../SidebarLink/SidebarLink";
 import type { SidebarRoutesSectionProps } from "./SidebarRoutesSection.interface";
-import { SIDEBAR_ROUTES_SECTION_STYLES as S } from "./SidebarRoutesSection.styles";
+import { SIDEBAR_ROUTES_SECTION_STYLES as STYLES } from "./SidebarRoutesSection.styles";
 
 export const SidebarRoutesSection = ({ section, isCollapsed }: SidebarRoutesSectionProps) => {
   const pathname = usePathname();
@@ -12,8 +12,8 @@ export const SidebarRoutesSection = ({ section, isCollapsed }: SidebarRoutesSect
   const sectionTitle = t.SIDEBAR.ROUTES_SECTIONS.SECTIONS[section.sectionKey];
 
   return (
-    <div className={S.section}>
-      {!isCollapsed && <p className={S.sectionTitle}>{sectionTitle}</p>}
+    <div className={STYLES.section}>
+      {!isCollapsed && <p className={STYLES.sectionTitle}>{sectionTitle}</p>}
       {section.items.map((item) => (
         <SidebarLink
           key={item.route}
