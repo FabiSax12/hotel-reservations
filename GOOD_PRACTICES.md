@@ -34,6 +34,9 @@ types/               ← Shared TypeScript interfaces and types
 - [ ] Each logical concern (products, filters, auth, i18n, cart) has its own top-level feature folder.
 - [ ] `domain/` files contain zero JSX, zero hooks, zero `fetch` calls.
 - [ ] `components/` files contain zero business logic (no filtering, sorting, data transformation).
+- [ ] `components/[ComponentName]/[ComponentName].tsx` Only UI HTML RENDERING. tsx files must import custom hooks, server actions, constants, etc. Its unique responsability is render.
+- [ ] `components/[ComponentName]/[ComponentName].interface.ts` Only exports the interface of its component
+- [ ] `components/[ComponentName]/[ComponentName].styles.ts` Only exportas a constant that defines each className used in the component
 - [ ] `services/` files only perform async I/O — no JSX, no hooks.
 - [ ] `hooks/` orchestrate but do not render — they return data/handlers, not JSX.
 - [ ] `app/` pages only import and compose feature components — no inline logic.
@@ -147,6 +150,20 @@ fetch(ENV.API_URL + API_CONFIG.ENDPOINTS.PRODUCTS)
 - [ ] All constant objects are frozen with `Object.freeze()` and typed with `as const`.
 - [ ] All CSS values are CSS variables or Tailwind tokens — no hardcoded colors or sizes.
 
+### 2.6 Form Field Names
+
+BAD
+```tsx
+<input name="confirmPassword"/>
+```
+
+GOOD
+```tsx
+<input name={REGISTER_FORM_FIELD.CONFIRM_PASSWORD}/>
+```
+
+
+
 ---
 
 ## 3. Single Responsibility Principle
@@ -157,8 +174,8 @@ Each file does ONE thing. Each component does ONE thing.
 
 | File | Allowed | Not Allowed |
 |------|---------|-------------|
-| `components/ProductCard.tsx` | Render JSX, handle UI events | Fetch data, business logic |
-| `components/ProductList.tsx` | Compose `ProductCard` components | Filter/sort products |
+| `components/ProductCard/ProductCard.tsx` | Render JSX, handle UI events | Fetch data, business logic |
+| `components/ProductList/ProductList.tsx` | Compose `ProductCard` components | Filter/sort products |
 | `hooks/useProducts.ts` | Fetch + manage product state | Render JSX |
 | `hooks/useProductFilters.ts` | Manage filter state + derived data | Render JSX, fetch |
 | `domain/filterProducts.ts` | Pure filter functions | JSX, hooks, fetch |
@@ -325,6 +342,23 @@ import styles from './ProductCard.module.css'
 - [ ] No abbreviated names that lose meaning (`usr`, `prod`, `btn`, `cfg`).
 - [ ] CSS Modules classes follow BEM, camelCase when needed by JS.
 
+### 4.7 Imported ClassNames Constants
+
+Class names constants usually are too long or complex.
+
+BAD
+```tsx
+import {ACTIVATION_FORM_WRAPPER_STYLES} from "./ACTIVATION_FORM_WRAPPER_STYLES.styles"
+
+<form className={ACTIVATION_FORM_WRAPPER_STYLES.form}>
+```
+
+GOOD
+```tsx
+import {ACTIVATION_FORM_WRAPPER_STYLES as STYLES} from "./ACTIVATION_FORM_WRAPPER_STYLES.styles"
+
+<form className={STYLES.form}>
+``
 ---
 
 ## 5. State Management
@@ -624,41 +658,7 @@ export const sortProducts = (products: Product[], sortKey: SortKey): Product[] =
 
 ## 9. Internationalization (i18n)
 
-Use `next-intl` or `next-i18next`. All user-visible strings come from the i18n layer.
-
-```ts
-// messages/en.json
-{
-  "products": {
-    "pageTitle": "Product Catalog",
-    "resultsCount": "{count, plural, one {# result} other {# results}}",
-    "loading": "Loading products...",
-    "error": "Failed to load products."
-  }
-}
-```
-
-```tsx
-// features/products/components/ProductList.tsx
-import { useTranslations } from 'next-intl'
-
-export const ProductList = ({ products }: ProductListProps) => {
-  const t = useTranslations('products')
-  return (
-    <>
-      <h1>{t('pageTitle')}</h1>
-      <p>{t('resultsCount', { count: products.length })}</p>
-    </>
-  )
-}
-```
-
-**Checkpoints:**
-- [ ] Zero hardcoded user-visible strings in components.
-- [ ] Currency formatting uses `Intl.NumberFormat` or i18n format functions — not template literals.
-- [ ] Pluralization uses i18n plural rules — not ternary `count === 1 ? 'result' : 'results'`.
-- [ ] Language values come from a `LOCALES` constant — no `'en'`/`'es'` string literals.
-- [ ] Date formatting uses `Intl.DateTimeFormat` or i18n functions.
+Use @packages/i18n/README.md
 
 ---
 

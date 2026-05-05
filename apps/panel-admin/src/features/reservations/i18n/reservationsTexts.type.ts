@@ -25,6 +25,30 @@ export type ReservationsTexts = {
   };
   ACTIONS: {
     VIEW_DETAIL: string;
+    VIEW_MORE: string;
+    VIEW_LESS: string;
+    COPY_CODE: string;
+  };
+  DETAIL: {
+    SECTION_CLIENT: string;
+    SECTION_ROOM: string;
+    SECTION_PAYMENT: string;
+    LABEL_EMAIL: string;
+    LABEL_PHONE: string;
+    LABEL_CATEGORY: string;
+    LABEL_GUESTS_TOTAL: string;
+    LABEL_ADULTS: string;
+    LABEL_CHILDREN: string;
+    LABEL_PETS: string;
+    LABEL_CHECKIN: string;
+    LABEL_CHECKOUT: string;
+    LABEL_PRICE_PER_NIGHT: string;
+    LABEL_NIGHTS: string;
+    LABEL_NIGHT: string;
+    LABEL_SUBTOTAL: string;
+    LABEL_CURRENCY: string;
+    ARRIVES_TODAY: string;
+    BTN_CANCEL: string;
   };
   EMPTY: {
     TITLE: string;

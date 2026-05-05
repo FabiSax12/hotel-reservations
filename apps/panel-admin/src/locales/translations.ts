@@ -6,6 +6,8 @@ import { RESERVATIONS_TEXTS } from "@/features/reservations/i18n/reservations.te
 import type { ReservationsTexts } from "@/features/reservations/i18n/reservationsTexts.type";
 import { SIDEBAR_TEXTS } from "@/features/sidebar/i18n/sidebar.texts";
 import type { SidebarTexts } from "@/features/sidebar/i18n/sidebar.type";
+import { ROOMS_TEXTS } from "@/features/rooms/i18n/rooms.texts";
+import type { RoomsTexts } from "@/features/rooms/i18n/roomsTexts.type";
 import { COMMON_TEXTS } from "@/shared/i18n/commonTexts";
 import type { CommonTexts } from "@/shared/i18n/commonTexts.type";
 
@@ -14,6 +16,7 @@ export type AppTranslations = {
   AUTH: AuthTexts;
   RESERVATIONS: ReservationsTexts;
   SIDEBAR: SidebarTexts;
+  ROOMS: RoomsTexts;
 };
 
 export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
@@ -22,12 +25,14 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
     AUTH: AUTH_TEXTS.es,
     RESERVATIONS: RESERVATIONS_TEXTS.es,
     SIDEBAR: SIDEBAR_TEXTS.es,
+    ROOMS: ROOMS_TEXTS.es,
   },
   [LOCALES.EN]: {
     COMMON: COMMON_TEXTS.en,
     AUTH: AUTH_TEXTS.en,
     RESERVATIONS: RESERVATIONS_TEXTS.en,
     SIDEBAR: SIDEBAR_TEXTS.en,
+    ROOMS: ROOMS_TEXTS.en,
   },
 };
 
