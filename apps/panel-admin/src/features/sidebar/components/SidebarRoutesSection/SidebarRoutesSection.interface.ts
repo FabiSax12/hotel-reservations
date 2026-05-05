@@ -1,4 +1,4 @@
-import type { SidebarSection } from "../../constants/sidebar-links";
+import type { SidebarSection } from "../../types/sidebarSection";
 
 export interface SidebarRoutesSectionProps {
   section: SidebarSection;

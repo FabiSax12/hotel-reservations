@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
-import { SIDEBAR_SECTIONS } from "../../constants/sidebar-links";
+import { SIDEBAR_SECTIONS } from "../../constants/sidebarSections";
 import { useSidebarCollapsed } from "../../hooks/useSidebarCollapsed";
 import { SidebarFooter } from "../SidebarFooter/SidebarFooter";
 import { SidebarHeader } from "../SidebarHeader/SidebarHeader";
