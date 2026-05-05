@@ -35,12 +35,23 @@ export type AuthTexts = {
     PASSWORD_PLACEHOLDER: string;
     CONFIRM_PASSWORD_LABEL: string;
     CONFIRM_PASSWORD_PLACEHOLDER: string;
+    HIDE_PASSWORD: string;
+    SHOW_PASSWORD: string;
+    HIDE_CONFIRM_PASSWORD: string;
+    SHOW_CONFIRM_PASSWORD: string;
     SUBMIT_BUTTON: string;
     SUBMITTING: string;
     SUCCESS_TITLE: string;
     SUCCESS_MESSAGE: string;
     SUCCESS_LOGIN_LINK: string;
     LOADING: string;
+    PASSWORD_CHECKLIST: {
+      MIN_LENGTH: string;
+      HAS_UPPERCASE: string;
+      HAS_LOWERCASE: string;
+      HAS_DIGIT: string;
+      HAS_SPECIAL_CHAR: string;
+    };
     ERRORS: {
       INVALID_TOKEN: string;
       EXPIRED_TOKEN: string;
