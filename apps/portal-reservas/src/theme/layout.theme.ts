@@ -3,10 +3,13 @@
 
 export const ROOT_LAYOUT_STYLES = {
   body: "min-h-screen bg-forest-950 text-stone-50 antialiased",
+  grainOverlay: "grain-overlay",
 } as const;
 
 export const PAGE_STYLES = {
   main: "min-h-screen relative overflow-x-hidden selection:bg-gold-500/30 selection:text-stone-50",
+  roomsWrapper: (hasSearched: boolean, heroCalendarActive: boolean) =>
+    `transition-opacity duration-500 ease-in-out ${hasSearched ? "pt-48" : ""} ${heroCalendarActive ? "opacity-0 pointer-events-none" : "opacity-100"}`,
 } as const;
 
 export const BACKGROUND_STYLES = {

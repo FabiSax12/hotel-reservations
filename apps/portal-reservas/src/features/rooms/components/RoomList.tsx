@@ -39,7 +39,7 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
 
         <div className={S.countBadge} role="status" aria-live="polite">
           {isLoading ? (
-            <span className="animate-pulse">{t.ROOMS.SEARCHING_ROOMS}</span>
+            <span className={S.searchingText}>{t.ROOMS.SEARCHING_ROOMS}</span>
           ) : (
             <>
               <span className={S.countValue}>{rooms.length}</span> {t.ROOMS.ROOMS_FOUND}

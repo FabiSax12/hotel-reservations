@@ -12,11 +12,11 @@ export interface SearchBarContextValue {
 
   // SearchBarState
   active: ActiveSection;
-  setActive: Dispatch<SetStateAction<ActiveSection>>;
+  setActive: (section: ActiveSection) => void;
   hasHeroCalendarOpened: boolean;
-  setHasHeroCalendarOpened: Dispatch<SetStateAction<boolean>>;
+  setHasHeroCalendarOpened: (opened: boolean) => void;
   isSearching: boolean;
-  setIsSearching: Dispatch<SetStateAction<boolean>>;
+  setIsSearching: (searching: boolean) => void;
   lastUserActivatedSection: RefObject<ActiveSection | null>;
   activateSection: (sec: ActiveSection, clearErrFn?: () => void) => void;
   onHeroCalendarOpen?: () => void;
@@ -35,7 +35,7 @@ export interface SearchBarContextValue {
 
   // Location / Destination (Managed mostly in ModernSearchBar)
   destination: string;
-  setDestination: Dispatch<SetStateAction<string>>;
+  setDestination: (destination: string) => void;
   onlyOneSede: string | null;
 
   // DateSelection

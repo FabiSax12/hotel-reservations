@@ -1,6 +1,6 @@
 # Good Practices — Monorepo Architecture & Code Review Checklist
 
-> **Reference stack:** Next.js 14+ (App Router), React 18+, TypeScript, Tailwind CSS, HeroUI, TanStack Query.
+> **Reference stack:** Next.js 14+ (App Router), React 18+, TypeScript, Tailwind CSS, HeroUI, TanStack Query. Monorepo made with Turborepo.
 > **Architecture:** Feature-Sliced Design (FSD) + Spec-Driven Development + Strict Theme Decoupling.
 
 ---
@@ -9,7 +9,7 @@
 
 The workspace strictly separates application logic from reusable generic UI elements:
 
-* **`apps/portal-reservas/`**: The main Next.js application. Contains all business logic, routing, domain features, and complex orchestrator components.
+* **`apps/portal-reservas/`**: The main Next.js application we are developing. It is one of three applications in the monorepo. The other two are `portal-admin` and `landing`.
 * **`packages/ui/`** (or `@hotel/ui`): A shared, pure-presentation component library (e.g., `Button`, `Calendar`, `Stepper`). It has no knowledge of business logic, feature contexts, or translations. Exposes a strict public API via `src/index.ts`. All reusable components MUST be exported in this barrel file; if it is not in the barrel file, it cannot be used by the applications.
 * **`packages/i18n/`** (or `@hotel/i18n`): Centralized internationalization engine.
 

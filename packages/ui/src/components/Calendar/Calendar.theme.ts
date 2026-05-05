@@ -15,6 +15,7 @@ export const CALENDAR_STYLES = {
   frame: (isHero: boolean) => `flex ${isHero ? "items-start" : "items-start"}`,
   padding: (isHero: boolean) => (isHero ? "p-8 gap-10" : "p-4 gap-4"),
   customWrapper: "w-full",
+  bottomContentWrapper: "w-full mt-4 pt-4 border-t border-neutral-100",
 
   monthCol: (isHero: boolean) => (isHero ? "flex-1 min-w-0" : "w-[302px] flex-none"),
   monthHeader: (isHero: boolean) =>

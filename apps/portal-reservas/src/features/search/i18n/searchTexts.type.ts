@@ -2,6 +2,7 @@ export type SearchTexts = {
   HERO: {
     TITLE: string;
     SUBTITLE: string;
+    BROWSE_ROOMS: string;
   };
   SEARCH_BAR: {
     DESTINATION: {

@@ -39,4 +39,9 @@ export const ROOM_MOCK = Object.freeze({
    * Offset in days from today before first available slot.
    */
   FIRST_AVAILABLE_OFFSET: 3,
+  /**
+   * Stable i18n key returned by `useRoomAvailability` on error.
+   * Resolved to a locale string by the consuming component via `t.ROOMS`.
+   */
+  AVAILABILITY_ERROR_KEY: "AVAILABILITY_ERROR",
 } as const);

@@ -85,7 +85,7 @@ export function CalendarPopover({
         />
       ))}
       {bottomContent && (
-        <div className="w-full mt-4 pt-4 border-t border-neutral-100">
+        <div className={S.bottomContentWrapper}>
           {bottomContent}
         </div>
       )}

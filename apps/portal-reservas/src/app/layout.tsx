@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang={defaultLocale} className={`dark ${playfair.variable} ${dmSans.variable}`}>
       <body className={S.body}>
-        <div className="grain-overlay" aria-hidden="true" />
+        <div className={S.grainOverlay} aria-hidden="true" />
         <I18nProvider defaultLocale={defaultLocale} translations={TRANSLATIONS}>
           {children}
         </I18nProvider>

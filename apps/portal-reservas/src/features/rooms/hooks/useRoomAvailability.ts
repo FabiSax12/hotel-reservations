@@ -66,7 +66,8 @@ export function useRoomAvailability(
         setIsAvailable(available);
         setIsLoading(false);
       } catch {
-        setError("No se pudo verificar la disponibilidad. Intenta de nuevo.");
+        // Return an i18n key so the UI layer can translate it
+        setError(ROOM_MOCK.AVAILABILITY_ERROR_KEY);
         setIsLoading(false);
       }
     }, ROOM_MOCK.AVAILABILITY_DELAY_MS);

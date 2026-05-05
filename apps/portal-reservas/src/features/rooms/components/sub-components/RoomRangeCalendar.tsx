@@ -124,7 +124,7 @@ export function RoomRangeCalendar({
       <CalendarPopover
         variant="compact"
         isInline
-        className="w-full"
+        className={S.availCalInner}
         checkIn={checkIn}
         checkOut={checkOut}
         hideTooltips={true}

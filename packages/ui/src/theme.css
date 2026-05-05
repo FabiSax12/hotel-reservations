@@ -52,6 +52,16 @@
     pointer-events: none;
     z-index: 9999;
   }
+
+  .animate-scroll-arrow {
+    animation: scrollArrow 2s infinite;
+  }
+}
+
+@keyframes scrollArrow {
+  0% { opacity: 0; transform: translateY(-4px); }
+  50% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(4px); }
 }
 
 @keyframes grain {

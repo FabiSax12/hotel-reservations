@@ -29,4 +29,17 @@ export type RoomsTexts = {
   NO_LOCATION_HINT: string;
   BROWSE_ROOMS: string;
   SEARCHING_ROOMS: string;
+  AVAIL_DIALOG_EMPTY: string;
+  AVAIL_DIALOG_CLOSE: string;
+  VERIFYING: string;
+  AVAILABILITY_ERROR: string;
+  ADULTS_LABEL: string;
+  ADULTS_AGE: string;
+  CHILDREN_LABEL: string;
+  CHILDREN_AGE: string;
+  CANCEL: string;
+  DECREASE_ADULTS: string;
+  INCREASE_ADULTS: string;
+  DECREASE_CHILDREN: string;
+  INCREASE_CHILDREN: string;
 };
