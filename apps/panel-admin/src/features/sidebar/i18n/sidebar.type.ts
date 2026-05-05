@@ -1,3 +1,6 @@
+import type { SidebarItemKey } from "../types/sidebarItemKey";
+import type { SidebarSectionKey } from "../types/sidebarSectionKey";
+
 export type SidebarTexts = {
   WRAPPER: {
     ARIA_LABEL: string;
@@ -9,20 +12,10 @@ export type SidebarTexts = {
   };
   ROUTES_SECTIONS: {
     SECTIONS: {
-      ADMINISTRATION: string;
-      RESERVATIONS: string;
-      INVENTORY: string;
-      FINANCE: string;
-      CMS: string;
+      [k in SidebarSectionKey]: string;
     };
     ITEMS: {
-      DASHBOARD: string;
-      ADMINS: string;
-      RESERVATIONS: string;
-      CLIENTS: string;
-      ROOMS: string;
-      INVOICES: string;
-      CMS_LANDING: string;
+      [item in SidebarItemKey]: string;
     };
   };
   FOOTER: {
