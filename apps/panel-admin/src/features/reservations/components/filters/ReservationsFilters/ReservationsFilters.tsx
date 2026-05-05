@@ -15,6 +15,7 @@ export const ReservationsFilters = ({
   totalCount,
   filteredCount,
   statusCounts,
+  rooms,
 }: ReservationsFiltersProps) => {
   const { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange } =
     useReservationFilters(filters, onFiltersChange);
@@ -37,7 +38,7 @@ export const ReservationsFilters = ({
         <div className={S.spacer} />
 
         <div className={S.rightSection}>
-          <RoomSelector value={selectedRoomKey} onChange={handleRoomChange} />
+          <RoomSelector value={selectedRoomKey} rooms={rooms} onChange={handleRoomChange} />
 
           <DateRangePicker
             checkIn={filters.dateFrom}

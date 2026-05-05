@@ -70,4 +70,8 @@ export type ReservationsTexts = {
     RESULTS_SUFFIX: string;
     RESULTS_OF: string;
   };
+  ERRORS: {
+    FETCH_RESERVATIONS: string;
+    FETCH_ROOMS: string;
+  };
 };

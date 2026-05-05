@@ -74,6 +74,10 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       RESULTS_SUFFIX: "reservaciones",
       RESULTS_OF: "de",
     },
+    ERRORS: {
+      FETCH_RESERVATIONS: "Error al obtener reservaciones",
+      FETCH_ROOMS: "Error al obtener habitaciones",
+    },
   },
   en: {
     PAGE: {
@@ -146,6 +150,10 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       CLEAR: "Clear filters",
       RESULTS_SUFFIX: "reservations",
       RESULTS_OF: "of",
+    },
+    ERRORS: {
+      FETCH_RESERVATIONS: "Error fetching reservations",
+      FETCH_ROOMS: "Error fetching rooms",
     },
   },
 } as const;

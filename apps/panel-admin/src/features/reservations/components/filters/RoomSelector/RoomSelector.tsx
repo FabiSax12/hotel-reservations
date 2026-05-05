@@ -3,10 +3,10 @@
 import { ListBox, Select } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
-import { ROOM_ALL_KEY, ROOM_LIST } from "../../../constants/room-list";
+import { ROOM_ALL_KEY } from "../../../constants/reservation-filters";
 import type { RoomSelectorProps } from "./RoomSelector.interface";
 
-export const RoomSelector = ({ value, onChange }: RoomSelectorProps) => {
+export const RoomSelector = ({ value, rooms, onChange }: RoomSelectorProps) => {
   const { t } = useI18n();
 
   return (
@@ -20,7 +20,7 @@ export const RoomSelector = ({ value, onChange }: RoomSelectorProps) => {
           <ListBox.Item id={ROOM_ALL_KEY}>
             {t.RESERVATIONS.FILTERS.PLACEHOLDER_ROOM}
           </ListBox.Item>
-          {ROOM_LIST.map((room) => (
+          {rooms.map((room) => (
             <ListBox.Item id={room} key={room}>
               {room}
             </ListBox.Item>
