@@ -21,5 +21,18 @@ export type CommonTexts = {
     META_TITLE: string;
     META_DESCRIPTION: string;
     META_OG_DESCRIPTION: string;
+    SOCIAL: {
+      INSTAGRAM_LABEL: string;
+      FACEBOOK_LABEL: string;
+      WHATSAPP_LABEL: string;
+    };
+    LEGAL: {
+      PRIVACY: string;
+      TERMS: string;
+    };
+    CONTACT: {
+      EMAIL_LABEL: string;
+      WHATSAPP_LABEL: string;
+    };
   };
 };
