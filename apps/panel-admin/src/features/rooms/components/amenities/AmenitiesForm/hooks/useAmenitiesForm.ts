@@ -68,7 +68,16 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
     }
   };
 
-  const filteredAmenities = amenities.filter((a) =>
+  const localizedAmenities = amenities.map((amenity) => {
+    const translation = texts.AMENITIES.ITEMS[amenity.id];
+    return {
+      ...amenity,
+      name: translation ? translation.name : amenity.name,
+      description: translation ? translation.description : amenity.description,
+    };
+  });
+
+  const filteredAmenities = localizedAmenities.filter((a) =>
     a.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

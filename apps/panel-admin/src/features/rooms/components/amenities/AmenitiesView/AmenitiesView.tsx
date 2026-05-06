@@ -1,7 +1,7 @@
 "use client";
 
 import { AmenitiesForm } from "../AmenitiesForm/AmenitiesForm";
-import { NEW_ROOM_VIEW_STYLES } from "@/features/rooms/components/create/NewRoomView/NewRoomView.styles";
+import { AMENITIES_VIEW_STYLES as s } from "./AmenitiesView.styles";
 import { DEFAULT_ROOM_ID } from "@/features/rooms/constants/amenities.constants";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
@@ -10,23 +10,22 @@ export const AmenitiesView = () => {
   const router = useRouter();
 
   const handleSuccess = () => {
-    // For now, redirect to dashboard or next step when available
     router.push(ROUTES.ADMIN.DASHBOARD);
   };
 
   return (
-    <main className={NEW_ROOM_VIEW_STYLES.main}>
+    <main className={s.main}>
       <div 
-        className={NEW_ROOM_VIEW_STYLES.background}
+        className={s.background}
         style={{ 
-          backgroundImage: `url('${NEW_ROOM_VIEW_STYLES.bgImage}')` 
+          backgroundImage: `url('${s.bgImage}')` 
         }}
       />
-      <div className={NEW_ROOM_VIEW_STYLES.overlay} />
-      <div className={NEW_ROOM_VIEW_STYLES.blob} />
+      <div className={s.overlay} />
+      <div className={s.blob} />
       
-      <div className={`${NEW_ROOM_VIEW_STYLES.content} max-w-3xl mx-auto`}>
-        <div className="bg-white/50 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
+      <div className={s.content}>
+        <div className={s.cardContainer}>
           <AmenitiesForm roomId={DEFAULT_ROOM_ID} onSuccess={handleSuccess} />
         </div>
       </div>

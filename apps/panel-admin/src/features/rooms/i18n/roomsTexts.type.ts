@@ -54,5 +54,7 @@ export interface RoomsTexts {
     SEARCH_PLACEHOLDER: string;
     EMPTY_STATE: string;
     HINT: string;
+    ITEMS: Record<string, { name: string; description: string }>;
+    LOADING: string;
   };
 }

@@ -29,9 +29,9 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
 
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <div className={s.loadingContainer}>
         <Spinner color="success" size="lg" />
-        <p className="text-emerald-700 animate-pulse font-medium">Cargando servicios...</p>
+        <p className={s.loadingText}>{texts.AMENITIES.LOADING}</p>
       </div>
     );
   }
@@ -74,9 +74,9 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
       </div>
 
       {amenities.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
-          <LucideIcons.BoxSelect className="text-slate-300 mb-4" size={48} />
-          <p className="text-slate-500 font-medium">{texts.AMENITIES.EMPTY_STATE}</p>
+        <div className={s.emptyContainer}>
+          <LucideIcons.BoxSelect className={s.emptyIcon} size={48} />
+          <p className={s.emptyText}>{texts.AMENITIES.EMPTY_STATE}</p>
         </div>
       )}
 
