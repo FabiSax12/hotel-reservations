@@ -6,9 +6,9 @@ import { useI18n } from "@/locales";
 import { PROPERTIES } from "@/features/landing/properties/constants/styles";
 import type { PropertyConfig } from "@/features/landing/properties/constants/properties-config";
 
-type PropertyVisualPanelProps = {
+interface PropertyVisualPanelProps {
   config: PropertyConfig;
-};
+}
 
 export function PropertyVisualPanel({ config }: PropertyVisualPanelProps) {
   const { t } = useI18n();

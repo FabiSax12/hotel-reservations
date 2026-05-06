@@ -4,14 +4,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 import { ABOUT } from "@/features/landing/about/constants/styles";
-import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { MOSAIC_ITEM } from "@/features/landing/about/constants/animations";
 
-const MOSAIC_ITEM = {
-  hidden: { opacity: 0, scale: 0.96 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 1.1, ease: EXPO_OUT } },
-};
-
-type MosaicPanelProps = {
+interface MosaicPanelProps {
   src: string;
   alt: string;
   sizes: string;
@@ -19,7 +14,7 @@ type MosaicPanelProps = {
   parallaxTransform: MotionValue<string>;
   minHeight: number;
   tall?: boolean;
-};
+}
 
 export function MosaicPanel({
   src,

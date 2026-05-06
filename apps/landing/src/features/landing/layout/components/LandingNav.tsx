@@ -3,9 +3,15 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useI18n } from "@/locales";
 import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { ROUTES } from "@/config/routes";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 
-const NAV_LINKS_KEYS = ["HOME", "ABOUT", "ROOMS", "CONTACT"] as const;
+const NAV_LINKS: { key: "HOME" | "ABOUT" | "ROOMS" | "CONTACT"; href: string }[] = [
+  { key: "HOME", href: ROUTES.HOME },
+  { key: "ABOUT", href: ROUTES.ANCHORS.ABOUT },
+  { key: "ROOMS", href: ROUTES.ANCHORS.ROOMS },
+  { key: "CONTACT", href: ROUTES.ANCHORS.CONTACT },
+];
 
 export function LandingNav() {
   const { t } = useI18n();
@@ -24,13 +30,14 @@ export function LandingNav() {
         className={LAYOUT.NAV_BORDER}
         style={{ opacity: borderOpacity }}
       />
-      <nav className={LAYOUT.NAV_INNER}>
+      <nav className={LAYOUT.NAV_INNER} aria-label="Main navigation">
         <motion.a
-          href="#"
+          href={ROUTES.HOME}
           className={LAYOUT.NAV_LOGO}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: EXPO_OUT }}
+          aria-label={t.COMMON.LAYOUT.HOTEL_NAME}
         >
           {t.COMMON.LAYOUT.HOTEL_NAME}
         </motion.a>
@@ -41,9 +48,9 @@ export function LandingNav() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: EXPO_OUT }}
         >
-          {NAV_LINKS_KEYS.map((key) => (
+          {NAV_LINKS.map(({ key, href }) => (
             <li key={key}>
-              <a href="#" className={LAYOUT.NAV_LINK}>
+              <a href={href} className={LAYOUT.NAV_LINK}>
                 {t.COMMON.NAV[key]}
               </a>
             </li>
@@ -51,7 +58,7 @@ export function LandingNav() {
         </motion.ul>
 
         <motion.a
-          href="#"
+          href={ROUTES.PORTAL}
           className={LAYOUT.NAV_CTA}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}

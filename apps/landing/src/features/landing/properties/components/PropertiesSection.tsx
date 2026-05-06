@@ -50,7 +50,7 @@ export function PropertiesSection() {
   const variants = prefersReducedMotion ? SLIDE_VARIANTS_REDUCED : SLIDE_VARIANTS;
 
   return (
-    <section className={PROPERTIES.SECTION}>
+    <section id="rooms" className={PROPERTIES.SECTION}>
       <div className={PROPERTIES.CONTAINER}>
         <PropertiesHeader />
 

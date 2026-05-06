@@ -3,17 +3,7 @@
 import { motion } from "framer-motion";
 import { useI18n } from "@/locales";
 import { PROPERTIES } from "@/features/landing/properties/constants/styles";
-
-type PropertiesControlsProps = {
-  current: number;
-  total: number;
-  isHovered: boolean;
-  prefersReducedMotion: boolean;
-  autoInterval: number;
-  dragHint: string;
-  onGoTo: (i: number) => void;
-  onNavigate: (dir: number) => void;
-};
+import type { PropertiesControlsProps } from "./PropertiesControls.types";
 
 export function PropertiesControls({
   current, total, isHovered, prefersReducedMotion,
