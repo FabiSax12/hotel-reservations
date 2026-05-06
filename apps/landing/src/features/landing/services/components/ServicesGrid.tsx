@@ -7,10 +7,7 @@ import { SERVICES } from "@/features/landing/services/constants/styles";
 import { SERVICES_CONFIG } from "@/features/landing/services/constants/services-config";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import { ServiceCard } from "./ServiceCard";
-
-interface ServicesGridProps {
-  prefersReducedMotion: boolean;
-}
+import type { ServicesGridProps } from "./ServicesGrid.types";
 
 export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
   const { t } = useI18n();

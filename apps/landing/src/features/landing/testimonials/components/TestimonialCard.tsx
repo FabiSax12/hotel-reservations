@@ -1,12 +1,7 @@
 import { Star } from "lucide-react";
 import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
 import { RATING_MAX } from "@/features/landing/testimonials/constants/testimonials-config";
-import type { TestimonialItemTexts } from "@/features/landing/testimonials/i18n/testimonialsTexts.type";
-
-interface TestimonialCardProps {
-  texts: TestimonialItemTexts;
-  rating: number;
-}
+import type { TestimonialCardProps } from "./TestimonialCard.types";
 
 const getInitials = (name: string): string =>
   name

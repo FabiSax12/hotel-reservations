@@ -6,6 +6,7 @@ import { useI18n } from "@/locales";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
 import { GALLERY_CONFIG } from "@/features/landing/gallery/constants/gallery-config";
 import { CARD_W, CARD_H, SPREAD, SCALE_STEP, OPACITY_STEP, VISIBLE_RANGE } from "@/features/landing/gallery/constants/carousel";
+import { CARD_OVERLAY_PATTERN_BG, CARD_GRADIENT_BOTTOM_BG } from "@/features/landing/gallery/constants/gradients";
 
 function computeOffset(index: number, current: number, total: number): number {
   let offset = index - current;
@@ -57,10 +58,8 @@ export function GalleryCarousel({ current, onSelect, onHoverChange }: GalleryCar
                 <div className={GALLERY.CARD_INNER}>
                   <Image src={item.imageUrl} alt={item.id} fill className="object-cover" sizes="310px" />
                   <div className={GALLERY.CARD_OVERLAY} style={{ background: item.overlay }} />
-                  <div className={GALLERY.CARD_OVERLAY_PATTERN}
-                    style={{ background: "repeating-linear-gradient(135deg, transparent, transparent 18px, white 18px, white 19px)" }} />
-                  <div className={GALLERY.CARD_GRADIENT_BOTTOM}
-                    style={{ background: "linear-gradient(to top, oklch(8% 0.03 143 / 0.9), oklch(8% 0.03 143 / 0.4) 50%, transparent)" }} />
+                  <div className={GALLERY.CARD_OVERLAY_PATTERN} style={{ background: CARD_OVERLAY_PATTERN_BG }} />
+                  <div className={GALLERY.CARD_GRADIENT_BOTTOM} style={{ background: CARD_GRADIENT_BOTTOM_BG }} />
                   <div className={GALLERY.CARD_TEXT_AREA}>
                     <div className={GALLERY.CARD_ACCENT_LINE} />
                     <p className={GALLERY.CARD_TITLE}>{texts.TITLE}</p>

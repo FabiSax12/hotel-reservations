@@ -2,15 +2,8 @@
 
 import { motion } from "framer-motion";
 import { SERVICES } from "@/features/landing/services/constants/styles";
-import type { ServiceConfig } from "@/features/landing/services/constants/services-config";
-import type { ServiceItemTexts } from "@/features/landing/services/i18n/servicesTexts.type";
 import { CARD_VARIANT } from "@/features/landing/services/constants/animations";
-
-interface ServiceCardProps {
-  service: ServiceConfig;
-  texts: ServiceItemTexts;
-  index: number;
-}
+import type { ServiceCardProps } from "./ServiceCard.types";
 
 export function ServiceCard({ service, texts, index }: ServiceCardProps) {
   const { Icon } = service;

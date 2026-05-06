@@ -7,10 +7,7 @@ import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
 import { TESTIMONIALS_CONFIG } from "@/features/landing/testimonials/constants/testimonials-config";
 import { TestimonialCard } from "./TestimonialCard";
 import { CARD_VARIANTS, CARD_VARIANTS_REDUCED } from "@/features/landing/testimonials/constants/animations";
-
-interface TestimonialsGridProps {
-  prefersReducedMotion: boolean;
-}
+import type { TestimonialsGridProps } from "./TestimonialsGrid.types";
 
 export function TestimonialsGrid({ prefersReducedMotion }: TestimonialsGridProps) {
   const { t } = useI18n();
