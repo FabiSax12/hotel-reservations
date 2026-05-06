@@ -69,6 +69,8 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       BACK_TO_LOGIN: "Volver al inicio de sesión",
       ERROR_BOUNDARY_TITLE: "¡Ups! Algo salió mal.",
       TRY_AGAIN: "Intentar de nuevo",
+      EMAIL_RATE_LIMIT_REACHED:
+        "Has solicitado demasiados correos. Por favor espera y vuelve a intentarlo",
     },
   },
   en: {
@@ -137,6 +139,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       BACK_TO_LOGIN: "Back to sign in",
       ERROR_BOUNDARY_TITLE: "Oops! Something went wrong.",
       TRY_AGAIN: "Try again",
+      EMAIL_RATE_LIMIT_REACHED: "You have requested too many emails. Please wait and try again.",
     },
   },
 } as const;
