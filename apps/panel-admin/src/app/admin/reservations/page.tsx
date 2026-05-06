@@ -1,7 +1,6 @@
-import { MOCK_RESERVATIONS } from "@/features/reservaciones/constants/mock-data";
-import { ReservationsList } from "@/features/reservaciones/components/ReservationsList";
+import { MOCK_RESERVATIONS } from "@/features/reservations/constants/mock-data";
+import { ReservationsView } from "@/features/reservations/components/list/ReservationsView/ReservationsView";
 
-export default async function ReservationsPage() {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  return <ReservationsList reservations={MOCK_RESERVATIONS} />;
+export default function ReservationsPage() {
+  return <ReservationsView reservations={MOCK_RESERVATIONS} />;
 }

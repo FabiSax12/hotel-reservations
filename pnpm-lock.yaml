@@ -29,6 +29,12 @@ importers:
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      framer-motion:
+        specifier: ^12.38.0
+        version: 12.38.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      lucide-react:
+        specifier: ^1.8.0
+        version: 1.8.0(react@19.2.4)
       next:
         specifier: ^15.3.0
         version: 15.5.14(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -38,6 +44,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.0
@@ -66,6 +75,9 @@ importers:
       '@heroui/styles':
         specifier: ^3.0.1
         version: 3.0.1(tailwind-merge@3.4.0)(tailwindcss@4.2.2)
+      '@hookform/resolvers':
+        specifier: ^5.2.2
+        version: 5.2.2(react-hook-form@7.74.0(react@19.2.4))
       '@hotel/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -78,6 +90,12 @@ importers:
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@internationalized/date':
+        specifier: ^3.12.1
+        version: 3.12.1
+      lucide-react:
+        specifier: ^1.11.0
+        version: 1.11.0(react@19.2.4)
       next:
         specifier: ^15.3.0
         version: 15.5.14(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -87,6 +105,12 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.4(react@19.2.4)
+      react-hook-form:
+        specifier: ^7.74.0
+        version: 7.74.0(react@19.2.4)
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.0
@@ -130,6 +154,12 @@ importers:
       '@hotel/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@supabase/supabase-js':
+        specifier: ^2.104.0
+        version: 2.104.0
+      lucide-react:
+        specifier: ^1.11.0
+        version: 1.11.0(react@19.2.4)
       next:
         specifier: ^15.3.0
         version: 15.5.14(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -182,7 +212,7 @@ importers:
     dependencies:
       '@supabase/ssr':
         specifier: ^0.10.0
-        version: 0.10.0(@supabase/supabase-js@2.100.1)
+        version: 0.10.0(@supabase/supabase-js@2.104.0)
     devDependencies:
       '@types/node':
         specifier: ^22.0.0
@@ -214,6 +244,9 @@ importers:
       '@heroui/styles':
         specifier: ^3.0.1
         version: 3.0.1(tailwind-merge@3.4.0)(tailwindcss@4.2.2)
+      '@hotel/i18n':
+        specifier: workspace:^
+        version: link:../i18n
       react:
         specifier: ^19.1.0
         version: 19.2.4
@@ -328,6 +361,11 @@ packages:
     resolution: {integrity: sha512-ZGXz6nse8713f3uZMNapa8STkiyERgE7P5qOJlWTGnO8qHC+OHCB9TRJOdz1JR+daAhxu68pBO1qdWlzvud1cw==}
     peerDependencies:
       tailwindcss: '>=4.0.0'
+
+  '@hookform/resolvers@5.2.2':
+    resolution: {integrity: sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==}
+    peerDependencies:
+      react-hook-form: ^7.55.0
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -466,8 +504,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@internationalized/date@3.12.0':
-    resolution: {integrity: sha512-/PyIMzK29jtXaGU23qTvNZxvBXRtKbNnGDFD+PY6CZw/Y8Ex8pFUzkuCJCG9aOqmShjqhS9mPqP6Dk5onQY8rQ==}
+  '@internationalized/date@3.12.1':
+    resolution: {integrity: sha512-6IedsVWXyq4P9Tj+TxuU8WGWM70hYLl12nbYU8jkikVpa6WXapFazPUcHUMDMoWftIDE2ILDkFFte6W2nFCkRQ==}
 
   '@internationalized/message@3.1.8':
     resolution: {integrity: sha512-Rwk3j/TlYZhn3HQ6PyXUV0XP9Uv42jqZGNegt0BXlxjE6G3+LwHjbQZAGHhCnCPdaA6Tvd3ma/7QzLlLkJxAWA==}
@@ -1329,23 +1367,26 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@supabase/auth-js@2.100.1':
-    resolution: {integrity: sha512-c5FB4nrG7cs1mLSzFGuIVl2iR2YO5XkSJ96uF4zubYm8YDn71XOi2emE9sBm/avfGCj61jaRBLOvxEAVnpys0Q==}
+  '@standard-schema/utils@0.3.0':
+    resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+
+  '@supabase/auth-js@2.104.0':
+    resolution: {integrity: sha512-Vs0ndL+s5an7rOmXtS/nbYnGXL8m+KXlCSrPIcw9bR96ma6qyLYILnE6syuM+rpDnf+Tg4PVNxNB2+oDwoy6mA==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/functions-js@2.100.1':
-    resolution: {integrity: sha512-mo8QheoV4KR+wSubtyEWhZUxWnCM7YZ23TncccMAlbWAHb8YTDqRGRm9IalWCAswniKyud6buZCk9snRqI86KA==}
+  '@supabase/functions-js@2.104.0':
+    resolution: {integrity: sha512-O8EyEz/RT1kfWhyJNpVc/VbLeBsohHGBVif/CI83zoMB+Iul/t/NIekH1/7RsH6kuO+b2D4wJhfiaW8Qr47sRg==}
     engines: {node: '>=20.0.0'}
 
   '@supabase/phoenix@0.4.0':
     resolution: {integrity: sha512-RHSx8bHS02xwfHdAbX5Lpbo6PXbgyf7lTaXTlwtFDPwOIw64NnVRwFAXGojHhjtVYI+PEPNSWwkL90f4agN3bw==}
 
-  '@supabase/postgrest-js@2.100.1':
-    resolution: {integrity: sha512-OIh4mOSo2LdqF2kox76OAPDtcSs+PwKABJOjc6plUV4/LXhFEsI2uwdEEIs7K7fd141qehWEVl/Y+Ts0fNvYsw==}
+  '@supabase/postgrest-js@2.104.0':
+    resolution: {integrity: sha512-ynylEq6wduQEycj6pL3P+/yIfDQ+CTnBC5I6p+PzcAO2ybj9coAITVtMfboi+g/dacgMslN5MH73rXsRMB29+Q==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/realtime-js@2.100.1':
-    resolution: {integrity: sha512-FHuRWPX4qZQ4x+0Q+ZrKaBZnOiVGiwsgiAUJM98pYRib1yeaE/fOM1lZ1ozd+4gA8Udw23OyaD8SxKS5mT5NYw==}
+  '@supabase/realtime-js@2.104.0':
+    resolution: {integrity: sha512-9fUVDoTVAhn7a79+AmEx+asUlRtf2yBrji7TQckcKn/WK4hvAA9Lia9er+lnhuz3WNiF1x6kkA4x7bRCJrU+KA==}
     engines: {node: '>=20.0.0'}
 
   '@supabase/ssr@0.10.0':
@@ -1353,12 +1394,12 @@ packages:
     peerDependencies:
       '@supabase/supabase-js': ^2.100.1
 
-  '@supabase/storage-js@2.100.1':
-    resolution: {integrity: sha512-x9xpEIoWM4xKiAlwfWTgHPSN6N4Y0aS4FVU4F6ZPbq7Gayw08SrtC6/YH/gOr8CjXQr0HxXYXDop2xGTSjubYA==}
+  '@supabase/storage-js@2.104.0':
+    resolution: {integrity: sha512-s2NHtuAWb9nldJ/fS62WnJE6edvCWn31rrO+FJKlAohs99qdVgtLegUReTU2H9WnZiQlVqaBtu386wt6/6lrRw==}
     engines: {node: '>=20.0.0'}
 
-  '@supabase/supabase-js@2.100.1':
-    resolution: {integrity: sha512-CAeFm5sfX8sbTzxoxRafhohreIzl9a7R6qHTck3MrgTqm5M5g/u0IHfEKYzI9w/17r8NINl8UZrw2i08wrO7Iw==}
+  '@supabase/supabase-js@2.104.0':
+    resolution: {integrity: sha512-hILwhIjCB53G31jlHUe73NDEmrXudcjcYlVRuvNfEhzf0gyFQaFf7j6rd1UGmYZkFMOg//DFE8Iy9ZbNEgosVw==}
     engines: {node: '>=20.0.0'}
 
   '@swc/helpers@0.5.15':
@@ -1659,6 +1700,20 @@ packages:
     resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
     engines: {node: '>=12.20.0'}
 
+  framer-motion@12.38.0:
+    resolution: {integrity: sha512-rFYkY/pigbcswl1XQSb7q424kSTQ8q6eAC+YUsSKooHQYuLdzdHjrt6uxUC+PRAO++q5IS7+TamgIw1AphxR+g==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -1768,6 +1823,16 @@ packages:
     resolution: {integrity: sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ==}
     engines: {node: '>= 12.0.0'}
 
+  lucide-react@1.11.0:
+    resolution: {integrity: sha512-UOhjdztXCgdBReRcIhsvz2siIBogfv/lhJEIViCpLt924dO+GDms9T7DNoucI23s6kEPpe988m5N0D2ajnzb2g==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  lucide-react@1.8.0:
+    resolution: {integrity: sha512-WuvlsjngSk7TnTBJ1hsCy3ql9V9VOdcPkd3PKcSmM34vJD8KG6molxz7m7zbYFgICwsanQWmJ13JlYs4Zp7Arw==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
@@ -1778,6 +1843,12 @@ packages:
   minizlib@3.1.0:
     resolution: {integrity: sha512-KZxYo1BUkWD2TVFLr0MQoM8vUUigWD3LlD83a/75BqC+4qE0Hb1Vo5v1FgcfaNXvfXzr+5EhQ6ing/CaBijTlw==}
     engines: {node: '>= 18'}
+
+  motion-dom@12.38.0:
+    resolution: {integrity: sha512-pdkHLD8QYRp8VfiNLb8xIBJis1byQ9gPT3Jnh2jqfFtAsWUA3dEepDlsWe/xMpO8McV+VdpKVcp+E+TGJEtOoA==}
+
+  motion-utils@12.36.0:
+    resolution: {integrity: sha512-eHWisygbiwVvf6PZ1vhaHCLamvkSbPIeAYxWUuL3a2PD/TROgE7FvfHWTIH4vMl798QLfMw15nRqIaRDXTlYRg==}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -1874,6 +1945,12 @@ packages:
     peerDependencies:
       react: ^19.2.4
 
+  react-hook-form@7.74.0:
+    resolution: {integrity: sha512-yR6wHr99p9wFv686jhRWVSFhUvDvNbdUf2dKlbno8/VKOCuoNobDGC6S+M2dua9A9Yo8vpcrp8assIYbsZCQ9g==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+
   react-promise-suspense@0.3.4:
     resolution: {integrity: sha512-I42jl7L3Ze6kZaq+7zXWSunBa3b1on5yfvUW6Eo/3fFOj6dZ5Bqmcd264nJbTK/gn1HjjILAjSwnZbV4RpSaNQ==}
 
@@ -1909,6 +1986,9 @@ packages:
     resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
     engines: {node: '>=10'}
     hasBin: true
+
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
 
   sharp@0.34.5:
     resolution: {integrity: sha512-Ou9I5Ft9WNcCbXrU9cMgPBcCK8LiwLqcbywW3t4oDV37n1pzpuNLsYiAV8eODnjbtQlSDwZ2cUEeQz4E54Hltg==}
@@ -2242,6 +2322,11 @@ snapshots:
     transitivePeerDependencies:
       - tailwind-merge
 
+  '@hookform/resolvers@5.2.2(react-hook-form@7.74.0(react@19.2.4))':
+    dependencies:
+      '@standard-schema/utils': 0.3.0
+      react-hook-form: 7.74.0(react@19.2.4)
+
   '@img/colour@1.1.0':
     optional: true
 
@@ -2339,7 +2424,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@internationalized/date@3.12.0':
+  '@internationalized/date@3.12.1':
     dependencies:
       '@swc/helpers': 0.5.20
 
@@ -2518,7 +2603,7 @@ snapshots:
 
   '@react-aria/calendar@3.9.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-aria/i18n': 3.12.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-aria/interactions': 3.27.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-aria/live-announcer': 3.4.4
@@ -2600,7 +2685,7 @@ snapshots:
 
   '@react-aria/datepicker@3.16.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/number': 3.6.5
       '@internationalized/string': 3.2.7
       '@react-aria/focus': 3.21.5(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -2713,7 +2798,7 @@ snapshots:
 
   '@react-aria/i18n@3.12.16(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/message': 3.1.8
       '@internationalized/number': 3.6.5
       '@internationalized/string': 3.2.7
@@ -3125,7 +3210,7 @@ snapshots:
 
   '@react-stately/calendar@3.9.3(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-stately/utils': 3.11.0(react@19.2.4)
       '@react-types/calendar': 3.8.3(react@19.2.4)
       '@react-types/shared': 3.33.1(react@19.2.4)
@@ -3180,7 +3265,7 @@ snapshots:
 
   '@react-stately/datepicker@3.16.1(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/number': 3.6.5
       '@internationalized/string': 3.2.7
       '@react-stately/form': 3.2.4(react@19.2.4)
@@ -3395,7 +3480,7 @@ snapshots:
 
   '@react-types/calendar@3.8.3(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-types/shared': 3.33.1(react@19.2.4)
       react: 19.2.4
 
@@ -3417,7 +3502,7 @@ snapshots:
 
   '@react-types/datepicker@3.13.5(react@19.2.4)':
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@react-types/calendar': 3.8.3(react@19.2.4)
       '@react-types/overlays': 3.9.4(react@19.2.4)
       '@react-types/shared': 3.33.1(react@19.2.4)
@@ -3585,21 +3670,23 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@supabase/auth-js@2.100.1':
+  '@standard-schema/utils@0.3.0': {}
+
+  '@supabase/auth-js@2.104.0':
     dependencies:
       tslib: 2.8.1
 
-  '@supabase/functions-js@2.100.1':
+  '@supabase/functions-js@2.104.0':
     dependencies:
       tslib: 2.8.1
 
   '@supabase/phoenix@0.4.0': {}
 
-  '@supabase/postgrest-js@2.100.1':
+  '@supabase/postgrest-js@2.104.0':
     dependencies:
       tslib: 2.8.1
 
-  '@supabase/realtime-js@2.100.1':
+  '@supabase/realtime-js@2.104.0':
     dependencies:
       '@supabase/phoenix': 0.4.0
       '@types/ws': 8.18.1
@@ -3609,23 +3696,23 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@supabase/ssr@0.10.0(@supabase/supabase-js@2.100.1)':
+  '@supabase/ssr@0.10.0(@supabase/supabase-js@2.104.0)':
     dependencies:
-      '@supabase/supabase-js': 2.100.1
+      '@supabase/supabase-js': 2.104.0
       cookie: 1.1.1
 
-  '@supabase/storage-js@2.100.1':
+  '@supabase/storage-js@2.104.0':
     dependencies:
       iceberg-js: 0.8.1
       tslib: 2.8.1
 
-  '@supabase/supabase-js@2.100.1':
+  '@supabase/supabase-js@2.104.0':
     dependencies:
-      '@supabase/auth-js': 2.100.1
-      '@supabase/functions-js': 2.100.1
-      '@supabase/postgrest-js': 2.100.1
-      '@supabase/realtime-js': 2.100.1
-      '@supabase/storage-js': 2.100.1
+      '@supabase/auth-js': 2.104.0
+      '@supabase/functions-js': 2.104.0
+      '@supabase/postgrest-js': 2.104.0
+      '@supabase/realtime-js': 2.104.0
+      '@supabase/storage-js': 2.104.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -3886,6 +3973,15 @@ snapshots:
     dependencies:
       fetch-blob: 3.2.0
 
+  framer-motion@12.38.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      motion-dom: 12.38.0
+      motion-utils: 12.36.0
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
   fsevents@2.3.3:
     optional: true
 
@@ -3980,6 +4076,14 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.32.0
       lightningcss-win32-x64-msvc: 1.32.0
 
+  lucide-react@1.11.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+
+  lucide-react@1.8.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+
   magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -3989,6 +4093,12 @@ snapshots:
   minizlib@3.1.0:
     dependencies:
       minipass: 7.1.3
+
+  motion-dom@12.38.0:
+    dependencies:
+      motion-utils: 12.36.0
+
+  motion-utils@12.36.0: {}
 
   ms@2.1.3: {}
 
@@ -4060,7 +4170,7 @@ snapshots:
 
   react-aria-components@1.16.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
-      '@internationalized/date': 3.12.0
+      '@internationalized/date': 3.12.1
       '@internationalized/string': 3.2.7
       '@react-aria/autocomplete': 3.0.0-rc.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@react-aria/collections': 3.0.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -4144,6 +4254,10 @@ snapshots:
       react: 19.2.4
       scheduler: 0.27.0
 
+  react-hook-form@7.74.0(react@19.2.4):
+    dependencies:
+      react: 19.2.4
+
   react-promise-suspense@0.3.4:
     dependencies:
       fast-deep-equal: 2.0.1
@@ -4218,6 +4332,8 @@ snapshots:
 
   semver@7.7.4:
     optional: true
+
+  server-only@0.0.1: {}
 
   sharp@0.34.5:
     dependencies:

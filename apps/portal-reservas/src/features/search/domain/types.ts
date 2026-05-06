@@ -5,9 +5,11 @@
  * page orchestrator, the hero search, and the compact search bar.
  */
 
+import { SEARCH_VALS } from "../components/search-bar/constants/search.constants";
+
 /** Parameters captured from the search bar when a user submits a query. */
 export interface SearchParams {
-  /** Selected resort destination (e.g. "Monteverde", "Arenal & La Fortuna", or "Todos"). */
+  /** Selected resort destination (e.g. "Monteverde", "Arenal & La Fortuna", or SEARCH_VALS.DESTINATION_ALL). */
   destination: string;
   /** Check-in date, formatted as a short locale string (e.g. "15 Oct"). */
   checkIn: string;

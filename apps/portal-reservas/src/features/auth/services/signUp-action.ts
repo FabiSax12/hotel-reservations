@@ -10,18 +10,25 @@ import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
 import type { AuthErrorKey, ValidationKey } from "@/features/auth/constants/errors";
 import { AUTH_ERRORS, ERROR_KEYS } from "@/features/auth/constants/errors";
-import { REGISTER_FIELDS } from "../constants/fields";
+import { REGISTER_FORM_FIELDS } from "../constants/registerFormFields";
+import { checkPasswordCriteria } from "../utils/checkPasswordCriteria";
+import { isPasswordValid } from "../utils/isPasswordValid";
 
 const RegisterSchema = z
   .object({
     fullName: z.string().min(2, "FULL_NAME_TOO_SHORT" satisfies ValidationKey),
     email: z.email("INVALID_EMAIL" satisfies ValidationKey),
-    password: z.string().min(8, "PASSWORD_TOO_SHORT" satisfies ValidationKey),
+    password: z
+      .string()
+      .min(8, "PASSWORD_TOO_SHORT" satisfies ValidationKey)
+      .refine((p) => isPasswordValid(checkPasswordCriteria(p)), {
+        message: "PASSWORD_WEAK" satisfies ValidationKey,
+      }),
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
     message: "PASSWORDS_DO_NOT_MATCH" satisfies ValidationKey,
-    path: [REGISTER_FIELDS.CONFIRM_PASSWORD],
+    path: [REGISTER_FORM_FIELDS.CONFIRM_PASSWORD],
   });
 
 export type ActionResult =
@@ -33,12 +40,21 @@ export async function registerAction(
   _prevState: ActionResult,
   formData: FormData,
 ): Promise<ActionResult> {
-  const result = RegisterSchema.safeParse({
-    fullName: formData.get(REGISTER_FIELDS.FULL_NAME),
-    email: formData.get(REGISTER_FIELDS.EMAIL),
-    password: formData.get(REGISTER_FIELDS.PASSWORD),
-    confirmPassword: formData.get(REGISTER_FIELDS.CONFIRM_PASSWORD),
+  console.log("Register action called with:", {
+    fullName: formData.get(REGISTER_FORM_FIELDS.FULL_NAME),
+    email: formData.get(REGISTER_FORM_FIELDS.EMAIL),
+    password: formData.get(REGISTER_FORM_FIELDS.PASSWORD) ? "******" : null,
+    confirmPassword: formData.get(REGISTER_FORM_FIELDS.CONFIRM_PASSWORD) ? "******" : null,
   });
+
+  const result = RegisterSchema.safeParse({
+    fullName: formData.get(REGISTER_FORM_FIELDS.FULL_NAME),
+    email: formData.get(REGISTER_FORM_FIELDS.EMAIL),
+    password: formData.get(REGISTER_FORM_FIELDS.PASSWORD),
+    confirmPassword: formData.get(REGISTER_FORM_FIELDS.CONFIRM_PASSWORD),
+  });
+
+  console.log("Validation result:", result);
 
   if (!result.success) {
     return {

@@ -5,9 +5,14 @@ import type { SupportedLocale } from "../constants/locales";
 import { I18nContext } from "./I18nContext";
 import type { I18nProviderProps } from "./I18nProvider.interface";
 
-export function I18nProvider<T>({ defaultLocale, translations, storage, children }: I18nProviderProps<T>) {
+export function I18nProvider<T>({
+  defaultLocale,
+  translations,
+  storage,
+  children,
+}: I18nProviderProps<T>) {
   const [locale, setLocale] = useState<SupportedLocale>(defaultLocale);
-  const t = translations[locale] ?? translations[defaultLocale];
+  const t = (translations[locale] ?? translations[defaultLocale]) as T;
 
   useEffect(() => {
     const saved = storage?.get();
@@ -19,5 +24,9 @@ export function I18nProvider<T>({ defaultLocale, translations, storage, children
     setLocale(next);
   }
 
-  return <I18nContext.Provider value={{ locale, t, setLocale: handleSetLocale }}>{children}</I18nContext.Provider>;
+  return (
+    <I18nContext.Provider value={{ locale, t, setLocale: handleSetLocale }}>
+      {children}
+    </I18nContext.Provider>
+  );
 }

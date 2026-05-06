@@ -13,13 +13,18 @@
   "dependencies": {
     "@heroui/react": "^3.0.1",
     "@heroui/styles": "^3.0.1",
+    "@hookform/resolvers": "^5.2.2",
     "@hotel/core": "workspace:*",
     "@hotel/db": "workspace:*",
     "@hotel/i18n": "workspace:*",
     "@hotel/ui": "workspace:*",
+    "@internationalized/date": "^3.12.1",
+    "lucide-react": "^1.11.0",
     "next": "^15.3.0",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.74.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
