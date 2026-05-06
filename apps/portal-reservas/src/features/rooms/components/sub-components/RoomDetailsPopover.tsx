@@ -1,3 +1,10 @@
+/**
+ * @file RoomDetailsPopover.tsx — Fixed overlay popover for expanded room details.
+ *
+ * Locks body scroll, handles Escape key dismissal, and renders the full
+ * image gallery + description inside a centered modal panel.
+ */
+
 "use client";
 
 import { useEffect } from "react";
@@ -33,6 +40,7 @@ export function RoomDetailsPopover({ room, isOpen, onClose }: RoomDetailsPopover
     <div
       className={S.detailOverlay(isOpen)}
       aria-hidden={!isOpen}
+      // Close when clicking the backdrop (outside the panel)
       onMouseDown={onClose}
     >
       <div
@@ -40,6 +48,7 @@ export function RoomDetailsPopover({ room, isOpen, onClose }: RoomDetailsPopover
         role="dialog"
         aria-modal="true"
         aria-label={room.title}
+        // Prevent clicks inside the panel from bubbling to the backdrop
         onMouseDown={(event) => event.stopPropagation()}
       >
         <button

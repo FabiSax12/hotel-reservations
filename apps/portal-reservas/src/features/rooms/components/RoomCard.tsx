@@ -45,7 +45,8 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
     room.availableDates,
   );
 
-  // A room is visually unavailable when dates are set, loading is done, and it's not free
+  // A room is visually unavailable when dates are set, loading is done, and it's not free.
+  // We keep it fully opaque while expanded so the user can still read the details panel.
   const isUnavailable = hasDates && !isLoading && !isAvailable && !isExpanded;
 
   return (

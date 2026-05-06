@@ -47,13 +47,20 @@ export function RoomsInnerPage({
   onReset,
 }: RoomsInnerPageProps) {
   const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
+  const [roomsHidden, setRoomsHidden] = useState(false);
 
   useEffect(() => {
     if (heroCalendarActive || isSearchingData) {
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 50);
+      // Scroll to top immediately so the user sees the calendar / loading state
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      // Hide rooms after the calendar finishes its entrance animation.
+      // This prevents the room list from flashing underneath while the hero
+      // calendar slides in; the 500 ms must match the CSS transition duration.
+      const timer = setTimeout(() => setRoomsHidden(true), 500);
+      return () => clearTimeout(timer);
     }
+    // When calendar closes or search finishes, show rooms again immediately
+    setRoomsHidden(false);
   }, [heroCalendarActive, isSearchingData]);
 
   const roomsContextValue = {
@@ -89,7 +96,7 @@ export function RoomsInnerPage({
           />
         )}
 
-        {selectedLocation && (
+        {selectedLocation && !roomsHidden && (
           <div className={S.roomsWrapper(hasSearched, heroCalendarActive)}>
             <RoomList
               rooms={filteredRooms}

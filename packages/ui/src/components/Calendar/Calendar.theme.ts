@@ -30,48 +30,47 @@ export const CALENDAR_STYLES = {
     `grid grid-cols-7 text-center font-bold ${isHero ? "gap-y-4 gap-x-2 mb-4 text-sm uppercase tracking-widest text-stone-400" : "gap-y-2 gap-x-1 mb-2 text-[11px] uppercase tracking-widest text-stone-400"}`,
 
   daysGrid: (isHero: boolean) =>
-    `grid grid-cols-7 text-center ${isHero ? "gap-y-2 gap-x-2" : "gap-y-1 gap-x-1 auto-rows-[2.5rem]"}`,
+    `grid grid-cols-7 text-center ${isHero ? "gap-y-2" : "gap-y-1 auto-rows-[2.5rem]"}`,
 
   dayBtn: (
     isHero: boolean,
     isPast: boolean,
     isStart: boolean,
     isEnd: boolean,
+    hasRange: boolean,
     isSelected: boolean,
     isToday: boolean,
     isHovered: boolean,
   ) =>
     [
-      "group relative flex items-center justify-center w-full mx-auto",
-      isHero ? "h-14 text-xl" : "h-10 w-10 text-base",
-      "font-bold transition-colors outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]",
+      "group relative flex items-center justify-center w-full mx-auto px-0.5",
+      isHero ? "h-14 text-xl" : "h-10 text-base",
+      "font-bold transition-colors duration-150 outline-none focus:outline-none [-webkit-tap-highlight-color:transparent]",
       isPast ? "opacity-30 cursor-not-allowed pointer-events-none text-stone-600" : "",
-      isSelected && !isStart && !isEnd
-        ? "text-forest-950 font-extrabold"
+      hasRange && isSelected && !isStart && !isEnd
+        ? "text-forest-950 font-extrabold bg-gold-500/20"
         : !isPast
           ? "text-stone-200"
           : "",
-      isStart || isEnd ? "text-forest-950 z-10" : "",
-      isToday && !isSelected
-        ? "underline decoration-gold-500 decoration-4 underline-offset-4"
-        : "",
+      hasRange && (isStart || isEnd) ? "text-forest-950 z-10" : "",
+      isToday && !isSelected ? "underline decoration-gold-500 decoration-4 underline-offset-4" : "",
       isHovered ? "!z-50" : "",
+      hasRange && isStart && !isEnd
+        ? "bg-[linear-gradient(to_right,transparent_50%,rgba(202,138,4,0.2)_50%)]"
+        : "",
+      hasRange && isEnd && !isStart
+        ? "bg-[linear-gradient(to_left,transparent_50%,rgba(202,138,4,0.2)_50%)]"
+        : "",
     ]
       .filter(Boolean)
       .join(" "),
 
-  rangeHighlightStart:
-    "absolute top-1/2 -translate-y-1/2 right-0 w-1/2 h-[80%] bg-gold-500/20 z-0 pointer-events-none",
-  rangeHighlightEnd:
-    "absolute top-1/2 -translate-y-1/2 left-0 w-1/2 h-[80%] bg-gold-500/20 z-0 pointer-events-none",
-  rangeHighlightMid:
-    "absolute top-1/2 -translate-y-1/2 left-0 right-0 w-full h-[80%] bg-gold-500/20 z-0 pointer-events-none",
   hoverRing:
     "absolute h-[85%] aspect-square rounded-full bg-transparent group-hover:bg-forest-800/80 transition-colors pointer-events-none",
   selectedStart:
-    "absolute h-[85%] aspect-square bg-gold-500 rounded-full z-10 shadow-sm transition-transform active:scale-95 group-hover:scale-105",
+    "absolute h-[85%] aspect-square rounded-full z-10 shadow-sm transition-[background-color,box-shadow] duration-150 ring-2 ring-offset-1",
   selectedEnd:
-    "absolute h-[85%] aspect-square bg-gold-500 rounded-full z-10 shadow-sm transition-transform active:scale-95 ring-2 ring-gold-500 ring-offset-1 ring-offset-forest-900 group-hover:scale-105",
+    "absolute h-[85%] aspect-square rounded-full z-10 shadow-sm transition-[background-color,box-shadow] duration-150 ring-2 ring-offset-1",
 
   invalidDot: (isFading: boolean) =>
     `absolute h-[85%] aspect-square bg-red-900/50 border border-red-500/50 rounded-full z-20 shadow-[0_0_15px_rgba(239,68,68,0.2)] transition-all ease-in-out ${isFading ? "opacity-0 duration-300" : "opacity-100 animate-search-bar-shake duration-300"}`,

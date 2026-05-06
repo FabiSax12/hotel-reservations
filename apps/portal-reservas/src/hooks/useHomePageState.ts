@@ -19,6 +19,8 @@ import { REGIONS_CONFIG } from "../features/search/components/search-bar/constan
 import { useScrollLock } from "./useScrollLock";
 import { ROUTES } from "../config/routes";
 
+// If the hotel only operates in a single region, auto-select it so the user
+// skips the destination picker and sees rooms immediately (US-DM-02 AC #1).
 const AUTO_SELECTED_LOCATION =
   REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
 
@@ -40,6 +42,9 @@ export function useHomePageState() {
 
   const hasDates = !!(searchParams.checkIn && searchParams.checkOut);
 
+  // Lock body scroll until a destination is chosen (US-DM-02 AC #1).
+  // If there is only one region, AUTO_SELECTED_LOCATION triggers immediately
+  // and the lock releases on first render.
   useScrollLock(!selectedLocation);
 
   const handleDestinationChange = (dest: string) => {
@@ -55,8 +60,10 @@ export function useHomePageState() {
     }
     setHasSearched(true);
     setHeroCalendarActive(false);
+    // Simulate async data fetching so skeleton loaders and transitions feel realistic
     setIsSearchingData(true);
     setTimeout(() => {
+      // Incrementing searchKey forces RoomList to remount, replaying the entrance cascade
       setSearchKey((prev) => prev + 1);
       setIsSearchingData(false);
     }, TIMEOUTS.SEARCH_TRIGGER_DELAY);

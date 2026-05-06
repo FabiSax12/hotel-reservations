@@ -6,14 +6,13 @@
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
-
-
 interface CalendarDayProps {
   d: number;
   dayStr: string;
   isPast: boolean;
   isStart: boolean;
   isEnd: boolean;
+  hasRange: boolean;
   isSelected: boolean;
   isToday: boolean;
   isHovered: boolean;
@@ -22,8 +21,6 @@ interface CalendarDayProps {
   invalidAnimationKey?: number;
   isHero: boolean;
   hideTooltips?: boolean;
-  inVal: number;
-  outVal: number;
   onPickDate: (dayStr: string) => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -38,6 +35,7 @@ export function CalendarDay({
   isPast,
   isStart,
   isEnd,
+  hasRange,
   isSelected,
   isToday,
   isHovered,
@@ -46,8 +44,6 @@ export function CalendarDay({
   invalidAnimationKey,
   isHero,
   hideTooltips,
-  inVal,
-  outVal,
   onPickDate,
   onMouseEnter,
   onMouseLeave,
@@ -65,21 +61,28 @@ export function CalendarDay({
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`${S.dayBtn(isHero, isPast, isStart, isEnd, isSelected, isToday, isHovered)} ${!isAvailable && !isPast ? "opacity-30 cursor-not-allowed" : ""}`}
+      className={`${S.dayBtn(isHero, isPast, isStart, isEnd, hasRange, isSelected, isToday, isHovered)} ${!isAvailable && !isPast ? "opacity-30 cursor-not-allowed" : ""}`}
       type="button"
     >
-      {isStart && outVal > 0 && outVal !== inVal && <div className={S.rangeHighlightStart}></div>}
-      {isEnd && inVal > 0 && outVal !== inVal && <div className={S.rangeHighlightEnd}></div>}
-      {isSelected && !isStart && !isEnd && <div className={S.rangeHighlightMid}></div>}
+      {/* Visual stacking order (bottom → top): hoverRing < selectedStart/End < invalidDot < tooltip < dayNumber */}
 
+      {/* 1. Hover ring — only visible when the day is not already selected or past */}
       {!isSelected && !isStart && !isEnd && !isPast && <div className={S.hoverRing}></div>}
 
-      {isStart && <div className={S.selectedStart}></div>}
-      {isEnd && !isStart && <div className={S.selectedEnd}></div>}
-      {isStart && isEnd && <div className={S.selectedStart}></div>}
+      {/* 2. Start / end selection circles — rendered for every day but only visible when active */}
+      <div
+        className={`${S.selectedStart} ${isStart && !isEnd ? "bg-gold-500 ring-gold-500 ring-offset-forest-900" : "bg-transparent ring-transparent ring-offset-transparent"}`}
+      ></div>
+      <div
+        className={`${S.selectedEnd} ${isEnd && !isStart ? "bg-gold-500 ring-gold-500 ring-offset-forest-900" : "bg-transparent ring-transparent ring-offset-transparent"}`}
+      ></div>
 
-      {isInvalid && <div key={`invalid-${invalidAnimationKey}`} className={S.invalidDot(isFading)}></div>}
+      {/* 3. Invalid indicator — red dot with shake animation when the user picks a blocked date */}
+      {isInvalid && (
+        <div key={`invalid-${invalidAnimationKey}`} className={S.invalidDot(isFading)}></div>
+      )}
 
+      {/* 4. Tooltip — appears on hover for the start or end of the selected range */}
       {!hideTooltips && isStart && isHovered && !isInvalid && (
         <div className={S.tooltip(isHero)}>
           {startLabel}
@@ -93,6 +96,7 @@ export function CalendarDay({
         </div>
       )}
 
+      {/* 5. Day number — highest z-index so it sits above all decorative layers */}
       <span className={S.dayNumber(isInvalid)}>{d}</span>
     </button>
   );

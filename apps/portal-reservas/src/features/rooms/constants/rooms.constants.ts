@@ -56,4 +56,10 @@ export const ROOM_MOCK = Object.freeze({
    * Milliseconds per day (used for date offset calculations).
    */
   MS_PER_DAY: 86400000,
+  /**
+   * Delay (ms) before auto-submitting after the second date is picked
+   * in the check-availability calendar. Gives the user a moment to see
+   * their selection before the UI transitions.
+   */
+  CALENDAR_SUBMIT_DELAY_MS: 120,
 } as const);

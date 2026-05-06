@@ -52,6 +52,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
 
   return (
     <div ref={wrapperRef} className={S.ctaWrapperRelative}>
+      {/* Inline calendar popover — rendered for both "no dates" and "unavailable" states */}
       {isCalendarOpen && (
         <RoomRangeCalendar
           availableDates={room.availableDates}
@@ -60,6 +61,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
         />
       )}
 
+      {/* STATE 1 — No dates selected: prompt the user to pick dates inside a calendar */}
       {!hasDates && (
         <button type="button" className={S.checkDatesBtn} onClick={toggleCalendar}
           aria-expanded={isCalendarOpen} aria-label={t.ROOMS.CHECK_DATES_ACTION}>
@@ -70,12 +72,14 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
         </button>
       )}
 
+      {/* STATE 2 — Dates selected, availability still loading: show disabled verifying button */}
       {hasDates && isLoading && (
         <button type="button" className={S.reserveBtn} disabled aria-busy="true">
           <CTASpinner /> {t.ROOMS.VERIFYING}
         </button>
       )}
 
+      {/* STATE 3a — Dates selected, room available: primary reserve action */}
       {hasDates && !isLoading && isAvailable && (
         <button type="button" className={S.reserveBtn} onClick={handleReserve}
           disabled={isReserving} aria-busy={isReserving}>
@@ -92,6 +96,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
         </button>
       )}
 
+      {/* STATE 3b — Dates selected, room unavailable: show opaque label + free-dates trigger */}
       {hasDates && !isLoading && !isAvailable && (
         <>
           <p className={S.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>

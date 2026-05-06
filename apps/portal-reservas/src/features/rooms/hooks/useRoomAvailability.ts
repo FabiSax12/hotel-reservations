@@ -54,6 +54,7 @@ export function useRoomAvailability(
       try {
         const availableDateSet = new Set(availableDates);
         const stayNightDates: string[] = [];
+        // Walk every night from check-in (inclusive) to check-out (exclusive)
         const cursor = new Date(`${checkIn}T00:00:00`);
         const target = new Date(`${checkOut}T00:00:00`);
 
@@ -62,6 +63,7 @@ export function useRoomAvailability(
           cursor.setDate(cursor.getDate() + 1);
         }
 
+        // The room is available only if EVERY night in the range exists in its availableDates
         const available = stayNightDates.every((isoDay) => availableDateSet.has(isoDay));
         setIsAvailable(available);
         setIsLoading(false);
