@@ -22,3 +22,13 @@ export const subscribeToAuthChanges = (callback: (user: User | null) => void): S
   
   return subscription;
 };
+
+export const signOut = async (): Promise<void> => {
+  const supabase = createSupabaseClient();
+  const { error } = await supabase.auth.signOut();
+  
+  if (error) {
+    console.error(LOG.SESSION_FETCH_ERROR, error); // Using same log for now or could add a specific one
+    throw error;
+  }
+};

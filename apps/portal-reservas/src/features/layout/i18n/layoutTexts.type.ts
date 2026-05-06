@@ -4,5 +4,7 @@ export type LayoutTexts = {
     BRAND_HIGHLIGHT: string;
     HELP: string;
     MY_RESERVATIONS: string;
+    LOGOUT: string;
+    SIGN_IN: string;
   };
 };

@@ -1,17 +1,17 @@
 "use client";
  
-import { useEffect, useState } from "react";
-import type { User } from "@supabase/supabase-js";
+import { useEffect } from "react";
 import { getSession, subscribeToAuthChanges } from "../services/authSessionService";
 import { AUTH_LOG_MESSAGES as LOG } from "../constants/log-messages";
+import { useUserStore } from "@/store/userStore";
  
 export function useAuthSession() {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, isLoading, setUser, setIsLoading } = useUserStore();
  
   useEffect(() => {
     const fetchSession = async () => {
       try {
+        setIsLoading(true);
         const currentUser = await getSession();
         setUser(currentUser);
       } catch (error) {
@@ -30,7 +30,7 @@ export function useAuthSession() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [setUser, setIsLoading]);
  
   return { user, isLoading };
 }

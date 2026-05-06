@@ -8,6 +8,8 @@ export const LAYOUT_TEXTS: Record<SupportedLocale, LayoutTexts> = {
       BRAND_HIGHLIGHT: "CR",
       HELP: "¿Necesita Ayuda?",
       MY_RESERVATIONS: "Mis Reservas",
+      LOGOUT: "Cerrar Sesión",
+      SIGN_IN: "Iniciar Sesión",
     },
   },
   en: {
@@ -16,6 +18,8 @@ export const LAYOUT_TEXTS: Record<SupportedLocale, LayoutTexts> = {
       BRAND_HIGHLIGHT: "CR",
       HELP: "Need Help?",
       MY_RESERVATIONS: "My Reservations",
+      LOGOUT: "Logout",
+      SIGN_IN: "Sign In",
     },
   },
 } as const;
