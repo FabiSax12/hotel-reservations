@@ -53,6 +53,39 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       LABEL_CURRENCY: "Moneda",
       ARRIVES_TODAY: "Llega hoy",
       BTN_CANCEL: "Cancelar",
+      BTN_SAVE: "Guardar",
+      BTN_APPROVE: "Aprobar reserva",
+      BTN_CANCELATION: "Cancelar reserva",
+      BTN_COMPLETE: "Completar reserva",
+    },
+    STATUS_MANAGEMENT: {
+      LABEL_CURRENT_STATUS: "Estado actual:",
+      LABEL_CANCELLATION_REASON: "Razón:",
+      BTN_APPROVE: "Aprobar reserva",
+      BTN_CANCEL_RESERVATION: "Cancelar reserva",
+      BTN_COMPLETE_RESERVATION: "Completar reserva",
+      BTN_REVERT: "Revertir cambios",
+      BTN_SAVE_CHANGES: "Guardar cambios",
+    },
+    CANCELLATION_MODAL: {
+      TITLE: "Razón de cancelación",
+      TEXTAREA_LABEL: "Razón",
+      TEXTAREA_PLACEHOLDER: "Ingrese la razón de cancelación...",
+      CHAR_COUNTER_LABEL: "caracteres",
+      BTN_CONFIRM: "Confirmar",
+    },
+    SAVE_DIALOG: {
+      TITLE: "¿Guardar cambios?",
+      DESCRIPTION:
+        "Una vez guardados, los cambios no podrán revertirse. ¿Desea continuar?",
+      BTN_CONFIRM: "Confirmar",
+      BTN_CANCEL: "Cancelar",
+    },
+    UNSAVED_CHANGES_MODAL: {
+      TITLE: "Cambios sin guardar",
+      DESCRIPTION:
+        "Hay cambios pendientes por guardar o cancelar. Resuelva los cambios antes de cerrar.",
+      BTN_STAY: "Permanecer aquí",
     },
     EMPTY: {
       TITLE: "Sin reservaciones",
@@ -77,6 +110,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     ERRORS: {
       FETCH_RESERVATIONS: "Error al obtener reservaciones",
       FETCH_ROOMS: "Error al obtener habitaciones",
+      UPDATE_STATUS: "Error al actualizar el estado de la reservación",
     },
   },
   en: {
@@ -130,6 +164,38 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       LABEL_CURRENCY: "Currency",
       ARRIVES_TODAY: "Arrives today",
       BTN_CANCEL: "Cancel",
+      BTN_SAVE: "Save",
+      BTN_APPROVE: "Approve reservation",
+      BTN_CANCELATION: "Cancel reservation",
+      BTN_COMPLETE: "Complete reservation",
+    },
+    STATUS_MANAGEMENT: {
+      LABEL_CURRENT_STATUS: "Current status:",
+      LABEL_CANCELLATION_REASON: "Reason:",
+      BTN_APPROVE: "Approve reservation",
+      BTN_CANCEL_RESERVATION: "Cancel reservation",
+      BTN_COMPLETE_RESERVATION: "Complete reservation",
+      BTN_REVERT: "Revert changes",
+      BTN_SAVE_CHANGES: "Save changes",
+    },
+    CANCELLATION_MODAL: {
+      TITLE: "Cancellation reason",
+      TEXTAREA_LABEL: "Reason",
+      TEXTAREA_PLACEHOLDER: "Enter cancellation reason...",
+      CHAR_COUNTER_LABEL: "characters",
+      BTN_CONFIRM: "Confirm",
+    },
+    SAVE_DIALOG: {
+      TITLE: "Save changes?",
+      DESCRIPTION: "Once saved, changes cannot be reverted. Do you want to continue?",
+      BTN_CONFIRM: "Confirm",
+      BTN_CANCEL: "Cancel",
+    },
+    UNSAVED_CHANGES_MODAL: {
+      TITLE: "Unsaved changes",
+      DESCRIPTION:
+        "There are pending changes to save or cancel. Please resolve them before closing.",
+      BTN_STAY: "Stay here",
     },
     EMPTY: {
       TITLE: "No reservations",
@@ -154,6 +220,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     ERRORS: {
       FETCH_RESERVATIONS: "Error fetching reservations",
       FETCH_ROOMS: "Error fetching rooms",
+      UPDATE_STATUS: "Error updating reservation status",
     },
   },
 } as const;

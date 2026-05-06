@@ -1,9 +1,16 @@
 import { createSupabaseServiceClient } from "@hotel/db/client";
 import type { Reservation, ReservationStatus } from "../domain/reservation";
 import { MS_PER_DAY } from "../constants/timing";
+import { RESERVATION_STATUS } from "../constants/reservation-statuses";
 import { RESERVATIONS_TEXTS } from "../i18n/reservations.texts";
 
 const ERRORS = RESERVATIONS_TEXTS.es.ERRORS;
+
+type ReservationStatusUpdate = {
+  status: string;
+  updated_at: string;
+  cancellation_reason?: string;
+};
 
 type DbReservation = {
   id: string;
@@ -20,6 +27,7 @@ type DbReservation = {
   total_amount: number;
   currency: string;
   status: string;
+  cancellation_reason: string | null;
   rooms: { name: string; category: string } | null;
 };
 
@@ -60,6 +68,7 @@ function mapToReservation(row: DbReservation): Reservation {
     totalUSD: Number(row.total_amount),
     currency: row.currency,
     status: row.status as ReservationStatus,
+    ...(row.cancellation_reason && { cancellationReason: row.cancellation_reason }),
   };
 }
 
@@ -77,6 +86,30 @@ export async function getAllReservations(): Promise<Reservation[]> {
   return (data as DbReservation[]).map(mapToReservation);
 }
 
+export async function updateReservationStatus(
+  id: string,
+  status: ReservationStatus,
+  cancellationReason?: string,
+): Promise<void> {
+  const supabase = createSupabaseServiceClient();
+
+  const updateData: ReservationStatusUpdate = {
+    status,
+    updated_at: new Date().toISOString(),
+    ...(status === RESERVATION_STATUS.CANCELLED && cancellationReason
+      ? { cancellation_reason: cancellationReason }
+      : {}),
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await (supabase as any)
+    .from("reservations")
+    .update(updateData)
+    .eq("id", id);
+
+  if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
+}
+
 export async function getRoomNames(): Promise<string[]> {
   const supabase = createSupabaseServiceClient();
 
@@ -88,5 +121,6 @@ export async function getRoomNames(): Promise<string[]> {
 
   if (error) throw new Error(`${ERRORS.FETCH_ROOMS}: ${error.message}`);
 
-  return (data as { name: string }[]).map((r) => r.name);
+  const names = (data as { name: string }[]).map((r) => r.name);
+  return Array.from(new Set(names));
 }
