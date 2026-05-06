@@ -2,12 +2,13 @@
 
 import type { ReactNode } from "react";
 import { SidebarWrapper } from "@/features/sidebar/components/SidebarWrapper/SidebarWrapper";
+import { ADMIN_LAYOUT_STYLES as STYLES } from "./layout.styles";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="flex h-screen overflow-hidden w-screen bg-gray-50">
+    <main className={STYLES.main}>
       <SidebarWrapper />
-      <section className="flex-1 overflow-y-scroll">{children}</section>
+      <section className={STYLES.section}>{children}</section>
     </main>
   );
 }
