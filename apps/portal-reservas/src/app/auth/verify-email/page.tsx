@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
-import { defaultLocale, TRANSLATIONS } from "@/locales";
 import { AUTH_FORM_STYLES as S, VERIFY_EMAIL_STYLES as V } from "@/features/auth/theme/auth.theme";
+import { defaultLocale, TRANSLATIONS } from "@/locales";
 
 const t = TRANSLATIONS[defaultLocale];
 

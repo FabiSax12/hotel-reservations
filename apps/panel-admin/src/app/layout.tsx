@@ -3,6 +3,7 @@ import { defaultLocale } from "@/locales";
 import { AuthProvider } from "@/shared/auth/context/AuthProvider";
 import { getInitialAuthStatus } from "@/shared/services/getInitialAuthStatus";
 import { LocaleProvider } from "./_providers/LocaleProvider";
+import { ROOT_LAYOUT_STYLES as STYLES } from "./layout.styles";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={defaultLocale}>
-      <body className="min-h-screen bg-white antialiased">
+      <body className={STYLES.body}>
         <LocaleProvider>
           <AuthProvider
             initialSession={initialSession}
