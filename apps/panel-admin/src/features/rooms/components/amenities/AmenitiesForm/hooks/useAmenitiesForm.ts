@@ -5,11 +5,15 @@ import { mockAmenitiesService } from "@/features/rooms/services/mockAmenitiesSer
 import { Amenity } from "@/features/rooms/domain/amenity.interface";
 import { ROOMS_TEXTS } from "@/features/rooms/i18n/rooms.texts";
 import { useI18n } from "@/locales";
+import { useCustomAmenities } from "./useCustomAmenities";
+import { AMENITIES_FORM_CONSTANTS } from "../constants/amenitiesForm.constants";
+
+const { FORM_FIELD, LOG_MESSAGES } = AMENITIES_FORM_CONSTANTS;
 
 export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
   const { locale } = useI18n();
   const texts = ROOMS_TEXTS[locale as keyof typeof ROOMS_TEXTS] || ROOMS_TEXTS.en;
-  
+
   const [amenities, setAmenities] = useState<Amenity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,12 +25,10 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
     handleSubmit,
     formState: { errors },
   } = useForm<AmenitiesFormValues>({
-    defaultValues: {
-      amenityIds: [],
-    },
+    defaultValues: { [FORM_FIELD]: [] },
   });
 
-  const selectedIds = watch("amenityIds");
+  const selectedIds = watch(FORM_FIELD);
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,96 +38,48 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
           mockAmenitiesService.getRoomAmenities(roomId),
         ]);
         setAmenities(predefined);
-        setValue("amenityIds", roomSelected);
+        setValue(FORM_FIELD, roomSelected);
       } catch (error) {
-        console.error("Error loading amenities:", error);
+        console.error(LOG_MESSAGES.LOAD_ERROR, error);
       } finally {
         setIsLoading(false);
       }
     };
-
     loadData();
   }, [roomId, setValue]);
 
   const toggleAmenity = (id: string) => {
-    const current = selectedIds;
-    if (current.includes(id)) {
-      setValue("amenityIds", current.filter((i) => i !== id), { shouldValidate: true });
-    } else {
-      setValue("amenityIds", [...current, id], { shouldValidate: true });
-    }
+    const next = selectedIds.includes(id)
+      ? selectedIds.filter((i) => i !== id)
+      : [...selectedIds, id];
+    setValue(FORM_FIELD, next, { shouldValidate: true });
   };
 
-  const [isAddingCustom, setIsAddingCustom] = useState(false);
-
-  const handleAddCustom = async (name: string, icon: string = "Sparkles", description: string = "") => {
-    const trimmed = name.trim();
-    if (!trimmed || trimmed.length > 25) return;
-    
-    // Check if it already exists (case insensitive)
-    const exists = amenities.some(
-      (a) => a.name.toLowerCase() === trimmed.toLowerCase()
-    );
-    if (exists) return;
-
-    setIsAddingCustom(true);
-    try {
-      const newAmenity = await mockAmenitiesService.addCustomAmenity(trimmed, icon, description);
-      setAmenities((prev) => [...prev, newAmenity]);
-      setValue("amenityIds", [...selectedIds, newAmenity.id], { shouldValidate: true });
-    } catch (error) {
-      console.error("Error adding custom amenity:", error);
-    } finally {
-      setIsAddingCustom(false);
-    }
-  };
-
-  const handleUpdateCustom = async (id: string, name: string, icon: string, description: string = "") => {
-    const trimmed = name.trim();
-    if (!trimmed || trimmed.length > 25) return;
-
-    setIsAddingCustom(true);
-    try {
-      const updated = await mockAmenitiesService.updateCustomAmenity(id, trimmed, icon, description);
-      setAmenities((prev) => prev.map((a) => (a.id === id ? updated : a)));
-    } catch (error) {
-      console.error("Error updating custom amenity:", error);
-    } finally {
-      setIsAddingCustom(false);
-    }
-  };
-
-  const handleDeleteCustom = async (id: string) => {
-    setIsAddingCustom(true);
-    try {
-      await mockAmenitiesService.deleteCustomAmenity(id);
-      setAmenities((prev) => prev.filter((a) => a.id !== id));
-      setValue("amenityIds", selectedIds.filter((i) => i !== id), { shouldValidate: true });
-    } catch (error) {
-      console.error("Error deleting custom amenity:", error);
-    } finally {
-      setIsAddingCustom(false);
-    }
-  };
+  const {
+    isAddingCustom,
+    handleAddCustom,
+    handleUpdateCustom,
+    handleDeleteCustom,
+  } = useCustomAmenities(amenities, setAmenities, selectedIds, setValue);
 
   const onSubmit = async (data: AmenitiesFormValues) => {
     setIsSubmitting(true);
     try {
       await mockAmenitiesService.saveRoomAmenities(roomId, data.amenityIds);
-      if (onSuccess) onSuccess();
+      onSuccess?.();
     } catch (error) {
-      console.error("Error saving amenities:", error);
+      console.error(LOG_MESSAGES.SAVE_ERROR, error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const localizedAmenities = amenities.map((amenity) => {
-    const translation = texts.AMENITIES.ITEMS[amenity.id];
+  const localizedAmenities = amenities.map((a) => {
+    const trans = texts.AMENITIES.ITEMS[a.id];
     return {
-      ...amenity,
-      name: translation ? translation.name : amenity.name,
-      description: translation ? translation.description : amenity.description,
+      ...a,
+      name: trans?.name ?? a.name,
+      description: trans?.description ?? a.description,
     };
   });
 

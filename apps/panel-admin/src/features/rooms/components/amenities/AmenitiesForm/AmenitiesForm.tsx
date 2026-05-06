@@ -8,6 +8,8 @@ import { AmenitiesFormProps } from "./AmenitiesForm.interface";
 import { useAmenitiesForm } from "./hooks/useAmenitiesForm";
 import { AmenityCard } from "./components/AmenityCard";
 import { AmenityEditorCard } from "./components/AmenityEditorCard";
+import { AmenitiesEmptyState } from "./components/AmenitiesEmptyState";
+import { AMENITIES_CONFIG } from "@/features/rooms/constants/amenities.constants";
 
 export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess }) => {
   const {
@@ -30,12 +32,12 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
   const [isAdding, setIsAdding] = React.useState(false);
   const [customName, setCustomName] = React.useState("");
   const [customDesc, setCustomDesc] = React.useState("");
-  const [selectedIcon, setSelectedIcon] = React.useState<string>("Sparkles");
+  const [selectedIcon, setSelectedIcon] = React.useState<string>(AMENITIES_CONFIG.DEFAULT_ICON);
 
   const [editingId, setEditingId] = React.useState<string | null>(null);
   const [editingName, setEditingName] = React.useState("");
   const [editingDesc, setEditingDesc] = React.useState("");
-  const [editingIcon, setEditingIcon] = React.useState<string>("Sparkles");
+  const [editingIcon, setEditingIcon] = React.useState<string>(AMENITIES_CONFIG.DEFAULT_ICON);
 
   const [activeDescId, setActiveDescId] = React.useState<string | null>(null);
 
@@ -44,7 +46,7 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
     await handleAddCustom(customName.trim(), selectedIcon, customDesc.trim());
     setCustomName("");
     setCustomDesc("");
-    setSelectedIcon("Sparkles");
+    setSelectedIcon(AMENITIES_CONFIG.DEFAULT_ICON);
     setIsAdding(false);
   };
 
@@ -117,7 +119,7 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
                   setEditingId(amenity.id);
                   setEditingName(amenity.name);
                   setEditingDesc(amenity.description || "");
-                  setEditingIcon(amenity.icon || "Sparkles");
+                  setEditingIcon(amenity.icon || AMENITIES_CONFIG.DEFAULT_ICON);
                 }}
                 onDelete={() => handleDeleteCustom(amenity.id)}
                 onFlipToggle={() => setActiveDescId(activeDescId === amenity.id ? null : amenity.id)}
@@ -140,7 +142,7 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
                 setIsAdding(false);
                 setCustomName("");
                 setCustomDesc("");
-                setSelectedIcon("Sparkles");
+                setSelectedIcon(AMENITIES_CONFIG.DEFAULT_ICON);
               }}
               isSubmitting={isAddingCustom}
               placeholderName={texts.AMENITIES.ADD_CUSTOM_PLACEHOLDER}
@@ -157,16 +159,9 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
           )}
         </div>
 
-        {amenities.length === 0 && (
-          <div className={s.emptyContainer}>
-            <LucideIcons.BoxSelect className={s.emptyIcon} size={48} />
-            <p className={s.emptyText}>{texts.AMENITIES.EMPTY_STATE}</p>
-          </div>
-        )}
+        {amenities.length === 0 && <AmenitiesEmptyState text={texts.AMENITIES.EMPTY_STATE} />}
 
-        {errors.amenityIds && (
-          <p className={s.errorText}>{texts.AMENITIES.SELECT_AT_LEAST_ONE}</p>
-        )}
+        {errors.amenityIds && <p className={s.errorText}>{texts.AMENITIES.SELECT_AT_LEAST_ONE}</p>}
       </div>
 
       <div className={s.actions}>

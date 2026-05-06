@@ -1,34 +1,10 @@
 import React from "react";
 import { Spinner } from "@heroui/react";
 import * as LucideIcons from "lucide-react";
-import { IconRenderer } from "./IconRenderer";
-import { AMENITIES_FORM_STYLES as s } from "../AmenitiesForm.styles";
-
-const CUSTOM_ICON_OPTIONS = [
-  "Wifi",
-  "Tv",
-  "Coffee",
-  "Bed",
-  "Bath",
-  "Dumbbell",
-  "Waves",
-  "Sparkles",
-] as const;
-
-interface AmenityEditorCardProps {
-  name: string;
-  setName: (val: string) => void;
-  desc: string;
-  setDesc: (val: string) => void;
-  selectedIcon: string;
-  setSelectedIcon: (val: string) => void;
-  onSave: () => void;
-  onCancel: () => void;
-  isSubmitting: boolean;
-  placeholderName: string;
-  placeholderDesc: string;
-  autoFocus?: boolean;
-}
+import { IconRenderer } from "../IconRenderer";
+import { AMENITY_EDITOR_CARD_STYLES as s } from "./AmenityEditorCard.styles";
+import { AmenityEditorCardProps } from "./AmenityEditorCard.interface";
+import { AMENITIES_CONFIG, AMENITIES_VALIDATION, KEYBOARD_KEYS } from "@/features/rooms/constants/amenities.constants";
 
 export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
   name,
@@ -50,14 +26,14 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
         type="text"
         className={s.customInput}
         placeholder={placeholderName}
-        maxLength={25}
+        maxLength={AMENITIES_VALIDATION.MAX_NAME_LENGTH}
         value={name}
         onChange={(e) => setName(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === KEYBOARD_KEYS.ENTER) {
             e.preventDefault();
             onSave();
-          } else if (e.key === "Escape") {
+          } else if (e.key === KEYBOARD_KEYS.ESCAPE) {
             onCancel();
           }
         }}
@@ -68,14 +44,14 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
         type="text"
         className={s.customInput}
         placeholder={placeholderDesc}
-        maxLength={50}
+        maxLength={AMENITIES_VALIDATION.MAX_DESC_LENGTH}
         value={desc}
         onChange={(e) => setDesc(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === "Enter") {
+          if (e.key === KEYBOARD_KEYS.ENTER) {
             e.preventDefault();
             onSave();
-          } else if (e.key === "Escape") {
+          } else if (e.key === KEYBOARD_KEYS.ESCAPE) {
             onCancel();
           }
         }}
@@ -84,7 +60,7 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
 
       {/* Icon Picker Grid */}
       <div className={s.iconPickerGrid}>
-        {CUSTOM_ICON_OPTIONS.map((iconName) => (
+        {AMENITIES_CONFIG.CUSTOM_ICON_OPTIONS.map((iconName) => (
           <button
             key={iconName}
             type="button"
@@ -105,11 +81,7 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
           onClick={onSave}
           disabled={isSubmitting || !name.trim()}
         >
-          {isSubmitting ? (
-            <Spinner size="sm" color="current" />
-          ) : (
-            <LucideIcons.Check size={14} />
-          )}
+          {isSubmitting ? <Spinner size="sm" color="current" /> : <LucideIcons.Check size={14} />}
         </button>
         <button
           type="button"

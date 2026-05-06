@@ -21,6 +21,20 @@ export const AMENITIES_THEME = {
 
 export const AMENITIES_VALIDATION = {
   MIN_SELECTION: 1,
+  MAX_NAME_LENGTH: 25,
+  MAX_DESC_LENGTH: 50,
+} as const;
+
+export const AMENITIES_CONFIG = {
+  DEFAULT_ICON: "Sparkles",
+  FALLBACK_ICON: "HelpCircle",
+  CUSTOM_PREFIX: "custom-",
+  CUSTOM_ICON_OPTIONS: ["Wifi", "Tv", "Coffee", "Bed", "Bath", "Dumbbell", "Waves", "Sparkles"] as const,
+} as const;
+
+export const KEYBOARD_KEYS = {
+  ENTER: "Enter",
+  ESCAPE: "Escape",
 } as const;
 
 export const MOCK_AMENITIES_STORAGE_KEY = "hotel_room_amenities_mock";

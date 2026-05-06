@@ -25,6 +25,8 @@ export interface RoomsTexts {
     SUBMIT_CREATE: string;
     SUBMIT_EDIT: string;
     CANCEL: string;
+    EDIT: string;
+    DELETE: string;
     SECTION_CAPACITY: string;
     SECTION_FEES: string;
     SECTION_BASIC_INFO: string;
@@ -59,5 +61,6 @@ export interface RoomsTexts {
     ADD_CUSTOM: string;
     ADD_CUSTOM_PLACEHOLDER: string;
     ADD_DESC_PLACEHOLDER: string;
+    DETAILS: string;
   };
 }
