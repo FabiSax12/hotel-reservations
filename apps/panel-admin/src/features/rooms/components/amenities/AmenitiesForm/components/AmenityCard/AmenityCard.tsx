@@ -28,8 +28,8 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
             <Dropdown>
               <Button
                 type={c.TYPE_BUTTON}
-                className={s.cardTriggerBtn(isSelected, "left")}
-                aria-label={texts.FORM?.EDIT || "Editar"}
+                className={s.cardTriggerBtn(isSelected, c.POS_LEFT)}
+                aria-label={texts.FORM?.EDIT || c.FALLBACK_EDIT}
               >
                 <LucideIcons.Pencil size={c.TRIGGER_ICON_SIZE} />
               </Button>
@@ -44,16 +44,16 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
                     }
                   }}
                 >
-                  <Dropdown.Item id={c.ACTION_EDIT} textValue={texts.FORM?.EDIT || "Editar"}>
-                    <div className={s.dropdownItemContent("edit")}>
+                  <Dropdown.Item id={c.ACTION_EDIT} textValue={texts.FORM?.EDIT || c.FALLBACK_EDIT}>
+                    <div className={s.dropdownItemContent(c.ACTION_EDIT)}>
                       <LucideIcons.Pencil size={c.TRIGGER_ICON_SIZE} />
-                      <Label className={s.dropdownItemLabel}>{texts.FORM?.EDIT || "Editar"}</Label>
+                      <Label className={s.dropdownItemLabel}>{texts.FORM?.EDIT || c.FALLBACK_EDIT}</Label>
                     </div>
                   </Dropdown.Item>
-                  <Dropdown.Item id={c.ACTION_DELETE} textValue={texts.FORM?.DELETE || "Eliminar"} variant={c.VARIANT_DANGER}>
-                    <div className={s.dropdownItemContent("delete")}>
+                  <Dropdown.Item id={c.ACTION_DELETE} textValue={texts.FORM?.DELETE || c.FALLBACK_DELETE} variant={c.VARIANT_DANGER}>
+                    <div className={s.dropdownItemContent(c.ACTION_DELETE)}>
                       <LucideIcons.Trash2 size={c.TRIGGER_ICON_SIZE} />
-                      <Label className={s.dropdownItemLabel}>{texts.FORM?.DELETE || "Eliminar"}</Label>
+                      <Label className={s.dropdownItemLabel}>{texts.FORM?.DELETE || c.FALLBACK_DELETE}</Label>
                     </div>
                   </Dropdown.Item>
                 </Dropdown.Menu>
@@ -66,9 +66,9 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
             <div className={s.rightBtnWrapper} onClick={(e) => e.stopPropagation()}>
               <Button
                 type={c.TYPE_BUTTON}
-                className={s.cardTriggerBtn(isSelected, "right")}
+                className={s.cardTriggerBtn(isSelected, c.POS_RIGHT)}
                 onPress={onFlipToggle}
-                aria-label={texts.AMENITIES?.DETAILS || "Ver descripción"}
+                aria-label={texts.AMENITIES?.DETAILS || c.FALLBACK_DETAILS}
               >
                 <LucideIcons.Info size={c.TRIGGER_ICON_SIZE} />
               </Button>
@@ -88,9 +88,9 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
             <div className={s.rightBtnWrapper} onClick={(e) => e.stopPropagation()}>
               <Button
                 type={c.TYPE_BUTTON}
-                className={s.cardTriggerBtn(isSelected, "right")}
+                className={s.cardTriggerBtn(isSelected, c.POS_RIGHT)}
                 onPress={onFlipToggle}
-                aria-label={texts.AMENITIES?.DETAILS || "Ver menos"}
+                aria-label={texts.AMENITIES?.DETAILS || c.FALLBACK_LESS}
               >
                 <LucideIcons.Info size={c.TRIGGER_ICON_SIZE} />
               </Button>

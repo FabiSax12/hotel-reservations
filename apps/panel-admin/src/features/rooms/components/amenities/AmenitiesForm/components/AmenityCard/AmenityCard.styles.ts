@@ -21,9 +21,9 @@ export const AMENITY_CARD_STYLES = {
   `,
   checkIcon: "absolute bottom-1.5 left-1.5 text-white/90 z-10",
   
-  cardTriggerBtn: (isSelected: boolean, position: "left" | "right") => `
+  cardTriggerBtn: (isSelected: boolean, position: typeof AMENITY_CARD_CONSTANTS.POS_LEFT | typeof AMENITY_CARD_CONSTANTS.POS_RIGHT) => `
     absolute top-1.5 z-30 p-1 rounded-lg transition-all hover:scale-110 active:scale-95 cursor-pointer flex items-center justify-center w-7 h-7 min-w-0 bg-transparent border-none shadow-none outline-none
-    ${position === "left" ? "left-1.5" : "right-1.5"}
+    ${position === AMENITY_CARD_CONSTANTS.POS_LEFT ? "left-1.5" : "right-1.5"}
     ${isSelected 
       ? "text-emerald-100 hover:text-white hover:bg-white/10" 
       : "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-500/10"
@@ -44,9 +44,9 @@ export const AMENITY_CARD_STYLES = {
   leftBtnWrapper: "absolute top-1.5 left-1.5 z-30",
   rightBtnWrapper: "absolute top-1.5 right-1.5 z-30",
 
-  dropdownItemContent: (type: "edit" | "delete") => `
+  dropdownItemContent: (type: typeof AMENITY_CARD_CONSTANTS.ACTION_EDIT | typeof AMENITY_CARD_CONSTANTS.ACTION_DELETE) => `
     flex items-center gap-2
-    ${type === "edit" ? "text-slate-700 hover:text-emerald-700" : "text-rose-600 hover:text-rose-700"}
+    ${type === AMENITY_CARD_CONSTANTS.ACTION_EDIT ? "text-slate-700 hover:text-emerald-700" : "text-rose-600 hover:text-rose-700"}
   `,
   dropdownItemLabel: "text-sm font-medium",
 };
@@ -59,4 +59,10 @@ export const AMENITY_CARD_CONSTANTS = {
   MENU_ARIA_LABEL: "Amenity Actions",
   VARIANT_DANGER: "danger" as const,
   TYPE_BUTTON: "button" as const,
+  POS_LEFT: "left" as const,
+  POS_RIGHT: "right" as const,
+  FALLBACK_EDIT: "Editar",
+  FALLBACK_DELETE: "Eliminar",
+  FALLBACK_DETAILS: "Ver descripción",
+  FALLBACK_LESS: "Ver menos",
 } as const;
