@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
-import * as LucideIcons from "lucide-react";
 import { Button, Spinner } from "@heroui/react";
+import * as LucideIcons from "lucide-react";
+import type React from "react";
+import type { AmenitiesFormProps } from "./AmenitiesForm.interface";
 import { AMENITIES_FORM_STYLES as s } from "./AmenitiesForm.styles";
-import { AmenitiesFormProps } from "./AmenitiesForm.interface";
-import { useAmenitiesForm } from "./hooks/useAmenitiesForm";
 import { AmenitiesEmptyState } from "./components/AmenitiesEmptyState";
 import { AmenitiesGrid } from "./components/AmenitiesGrid";
+import { useAmenitiesForm } from "./hooks/useAmenitiesForm";
 
 export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess }) => {
   const {

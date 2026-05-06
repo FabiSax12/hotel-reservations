@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AmenitiesFormValues } from "../AmenitiesForm.interface";
-import { mockAmenitiesService } from "@/features/rooms/services/mockAmenitiesService";
-import { Amenity } from "@/features/rooms/domain/amenity.interface";
+import type { Amenity } from "@/features/rooms/domain/amenity.interface";
 import { ROOMS_TEXTS } from "@/features/rooms/i18n/rooms.texts";
+import { mockAmenitiesService } from "@/features/rooms/services/mockAmenitiesService";
 import { useI18n } from "@/locales";
-import { useCustomAmenities } from "./useCustomAmenities";
+import type { AmenitiesFormValues } from "../AmenitiesForm.interface";
 import { AMENITIES_FORM_CONSTANTS } from "../constants/amenitiesForm.constants";
+import { useCustomAmenities } from "./useCustomAmenities";
 
 const { FORM_FIELD, LOG_MESSAGES } = AMENITIES_FORM_CONSTANTS;
 
@@ -55,12 +55,8 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
     setValue(FORM_FIELD, next, { shouldValidate: true });
   };
 
-  const {
-    isAddingCustom,
-    handleAddCustom,
-    handleUpdateCustom,
-    handleDeleteCustom,
-  } = useCustomAmenities(amenities, setAmenities, selectedIds, setValue);
+  const { isAddingCustom, handleAddCustom, handleUpdateCustom, handleDeleteCustom } =
+    useCustomAmenities(amenities, setAmenities, selectedIds, setValue);
 
   const onSubmit = async (data: AmenitiesFormValues) => {
     setIsSubmitting(true);
@@ -84,7 +80,7 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
   });
 
   const filteredAmenities = localizedAmenities.filter((a) =>
-    a.name.toLowerCase().includes(searchTerm.toLowerCase())
+    a.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return {

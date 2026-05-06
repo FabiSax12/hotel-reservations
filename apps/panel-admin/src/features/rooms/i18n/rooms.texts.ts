@@ -77,6 +77,10 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       ADD_CUSTOM_PLACEHOLDER: "Nombre (máx 25 car.)",
       ADD_DESC_PLACEHOLDER: "Descripción (máx 50 car.)",
       DETAILS: "Ver detalles",
+      DELETE_WARNING_TITLE: "¿Eliminar servicio?",
+      DELETE_WARNING_DESCRIPTION: "Esta acción eliminará de forma permanente el servicio \"{name}\". ¿Estás seguro de que deseas continuar?",
+      DELETE_WARNING_CONFIRM: "Aceptar",
+      DELETE_WARNING_CANCEL: "Cancelar",
     },
   },
   en: {
@@ -154,6 +158,10 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       ADD_CUSTOM_PLACEHOLDER: "Name (max 25 char.)",
       ADD_DESC_PLACEHOLDER: "Description (max 50 char.)",
       DETAILS: "View details",
+      DELETE_WARNING_TITLE: "Delete amenity?",
+      DELETE_WARNING_DESCRIPTION: "This action will permanently delete the amenity \"{name}\". Are you sure you want to proceed?",
+      DELETE_WARNING_CONFIRM: "Accept",
+      DELETE_WARNING_CANCEL: "Cancel",
     },
   },
 } as const;

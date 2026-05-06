@@ -1,7 +1,7 @@
-import React from "react";
 import * as LucideIcons from "lucide-react";
+import type React from "react";
+import type { AmenitiesEmptyStateProps } from "./AmenitiesEmptyState.interface";
 import { AMENITIES_EMPTY_STATE_STYLES as s } from "./AmenitiesEmptyState.styles";
-import { AmenitiesEmptyStateProps } from "./AmenitiesEmptyState.interface";
 
 export const AmenitiesEmptyState: React.FC<AmenitiesEmptyStateProps> = ({ text }) => {
   return (

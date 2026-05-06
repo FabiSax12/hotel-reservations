@@ -62,5 +62,9 @@ export interface RoomsTexts {
     ADD_CUSTOM_PLACEHOLDER: string;
     ADD_DESC_PLACEHOLDER: string;
     DETAILS: string;
+    DELETE_WARNING_TITLE: string;
+    DELETE_WARNING_DESCRIPTION: string;
+    DELETE_WARNING_CONFIRM: string;
+    DELETE_WARNING_CANCEL: string;
   };
 }

@@ -1,5 +1,5 @@
-import { Amenity } from "@/features/rooms/domain/amenity.interface";
-import { RoomsTexts } from "@/features/rooms/i18n/roomsTexts.type";
+import type { Amenity } from "@/features/rooms/domain/amenity.interface";
+import type { RoomsTexts } from "@/features/rooms/i18n/roomsTexts.type";
 
 export interface AmenityCardProps {
   amenity: Amenity;

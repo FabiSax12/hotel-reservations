@@ -1,4 +1,4 @@
-import { Amenity } from "@/features/rooms/domain/amenity.interface";
+import type { Amenity } from "@/features/rooms/domain/amenity.interface";
 
 export interface AmenitiesFormProps {
   roomId: string;

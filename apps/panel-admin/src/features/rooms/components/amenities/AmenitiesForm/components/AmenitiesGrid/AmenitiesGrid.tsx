@@ -1,10 +1,12 @@
-import React from "react";
 import * as LucideIcons from "lucide-react";
-import { AmenitiesGridProps } from "./AmenitiesGrid.interface";
+import React from "react";
+import { AMENITIES_CONFIG } from "@/features/rooms/constants/amenities.constants";
+import type { Amenity } from "@/features/rooms/domain/amenity.interface";
+import { AMENITIES_FORM_STYLES as s } from "../../AmenitiesForm.styles";
 import { AmenityCard } from "../AmenityCard";
 import { AmenityEditorCard } from "../AmenityEditorCard";
-import { AMENITIES_FORM_STYLES as s } from "../../AmenitiesForm.styles";
-import { AMENITIES_CONFIG } from "@/features/rooms/constants/amenities.constants";
+import { DeleteAmenityDialog } from "../DeleteAmenityDialog";
+import type { AmenitiesGridProps } from "./AmenitiesGrid.interface";
 
 export const AmenitiesGrid: React.FC<AmenitiesGridProps> = ({
   amenities,
@@ -27,6 +29,7 @@ export const AmenitiesGrid: React.FC<AmenitiesGridProps> = ({
   const [editingIcon, setEditingIcon] = React.useState<string>(AMENITIES_CONFIG.DEFAULT_ICON);
 
   const [activeDescId, setActiveDescId] = React.useState<string | null>(null);
+  const [amenityToDelete, setAmenityToDelete] = React.useState<Amenity | null>(null);
 
   const handleSaveCustom = async () => {
     if (!customName.trim()) return;
@@ -82,14 +85,13 @@ export const AmenitiesGrid: React.FC<AmenitiesGridProps> = ({
               setEditingDesc(amenity.description || "");
               setEditingIcon(amenity.icon || AMENITIES_CONFIG.DEFAULT_ICON);
             }}
-            onDelete={() => handleDeleteCustom(amenity.id)}
+            onDelete={() => setAmenityToDelete(amenity)}
             onFlipToggle={() => setActiveDescId(activeDescId === amenity.id ? null : amenity.id)}
             texts={texts}
           />
         );
       })}
 
-      {/* Interactive Custom Amenity Creator Card */}
       {isAdding ? (
         <AmenityEditorCard
           name={customName}
@@ -118,6 +120,19 @@ export const AmenitiesGrid: React.FC<AmenitiesGridProps> = ({
           <span className={s.customTriggerText}>{texts.AMENITIES.ADD_CUSTOM}</span>
         </div>
       )}
+
+      <DeleteAmenityDialog
+        amenity={amenityToDelete}
+        onOpenChange={(open) => {
+          if (!open) setAmenityToDelete(null);
+        }}
+        onConfirm={async () => {
+          if (amenityToDelete) {
+            await handleDeleteCustom(amenityToDelete.id);
+          }
+        }}
+        texts={texts}
+      />
     </div>
   );
 };

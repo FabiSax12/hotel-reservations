@@ -1,7 +1,7 @@
-import React from "react";
 import * as LucideIcons from "lucide-react";
-import { IconRendererProps } from "./IconRenderer.interface";
+import type React from "react";
 import { AMENITIES_CONFIG } from "@/features/rooms/constants/amenities.constants";
+import type { IconRendererProps } from "./IconRenderer.interface";
 
 export const IconRenderer: React.FC<IconRendererProps> = ({ name, size = 24 }) => {
   const Icon = (LucideIcons as any)[name];

@@ -1,10 +1,10 @@
-import React from "react";
+import { Button, Dropdown, Label } from "@heroui/react";
 import * as LucideIcons from "lucide-react";
-import { Dropdown, Button, Label } from "@heroui/react";
-import { IconRenderer } from "../IconRenderer";
-import { AMENITY_CARD_STYLES as s, AMENITY_CARD_CONSTANTS as c } from "./AmenityCard.styles";
-import { AmenityCardProps } from "./AmenityCard.interface";
+import type React from "react";
 import { AMENITIES_CONFIG } from "@/features/rooms/constants/amenities.constants";
+import { IconRenderer } from "../IconRenderer";
+import type { AmenityCardProps } from "./AmenityCard.interface";
+import { AMENITY_CARD_CONSTANTS as c, AMENITY_CARD_STYLES as s } from "./AmenityCard.styles";
 
 export const AmenityCard: React.FC<AmenityCardProps> = ({
   amenity,
@@ -19,11 +19,11 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
   return (
     <div className={s.flipWrapper}>
       <div className={s.flipInner(isFlipped)}>
-        {/* Front Side of Card */}
         <div className={s.flipFront(isSelected)} onClick={onToggle}>
-          {isSelected && <LucideIcons.CheckCircle2 className={s.checkIcon} size={c.CHECK_ICON_SIZE} />}
+          {isSelected && (
+            <LucideIcons.CheckCircle2 className={s.checkIcon} size={c.CHECK_ICON_SIZE} />
+          )}
 
-          {/* Universal Edit and Delete Dropdown */}
           <div className={s.leftBtnWrapper} onClick={(e) => e.stopPropagation()}>
             <Dropdown>
               <Button
@@ -47,13 +47,21 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
                   <Dropdown.Item id={c.ACTION_EDIT} textValue={texts.FORM?.EDIT || c.FALLBACK_EDIT}>
                     <div className={s.dropdownItemContent(c.ACTION_EDIT)}>
                       <LucideIcons.Pencil size={c.TRIGGER_ICON_SIZE} />
-                      <Label className={s.dropdownItemLabel}>{texts.FORM?.EDIT || c.FALLBACK_EDIT}</Label>
+                      <Label className={s.dropdownItemLabel}>
+                        {texts.FORM?.EDIT || c.FALLBACK_EDIT}
+                      </Label>
                     </div>
                   </Dropdown.Item>
-                  <Dropdown.Item id={c.ACTION_DELETE} textValue={texts.FORM?.DELETE || c.FALLBACK_DELETE} variant={c.VARIANT_DANGER}>
+                  <Dropdown.Item
+                    id={c.ACTION_DELETE}
+                    textValue={texts.FORM?.DELETE || c.FALLBACK_DELETE}
+                    variant={c.VARIANT_DANGER}
+                  >
                     <div className={s.dropdownItemContent(c.ACTION_DELETE)}>
                       <LucideIcons.Trash2 size={c.TRIGGER_ICON_SIZE} />
-                      <Label className={s.dropdownItemLabel}>{texts.FORM?.DELETE || c.FALLBACK_DELETE}</Label>
+                      <Label className={s.dropdownItemLabel}>
+                        {texts.FORM?.DELETE || c.FALLBACK_DELETE}
+                      </Label>
                     </div>
                   </Dropdown.Item>
                 </Dropdown.Menu>
@@ -61,7 +69,6 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
             </Dropdown>
           </div>
 
-          {/* Info switch trigger button */}
           {amenity.description && (
             <div className={s.rightBtnWrapper} onClick={(e) => e.stopPropagation()}>
               <Button
@@ -81,10 +88,8 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
           <span className={s.amenityName(isSelected)}>{amenity.name}</span>
         </div>
 
-        {/* Back Side of Card */}
         {amenity.description && (
           <div className={s.flipBack(isSelected)} onClick={onToggle}>
-            {/* Info switch close trigger */}
             <div className={s.rightBtnWrapper} onClick={(e) => e.stopPropagation()}>
               <Button
                 type={c.TYPE_BUTTON}
@@ -96,7 +101,9 @@ export const AmenityCard: React.FC<AmenityCardProps> = ({
               </Button>
             </div>
 
-            {isSelected && <LucideIcons.CheckCircle2 className={s.checkIcon} size={c.CHECK_ICON_SIZE} />}
+            {isSelected && (
+              <LucideIcons.CheckCircle2 className={s.checkIcon} size={c.CHECK_ICON_SIZE} />
+            )}
 
             <p className={s.descText}>{amenity.description}</p>
           </div>

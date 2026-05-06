@@ -1,4 +1,4 @@
-import { Amenity } from "@/features/rooms/domain/amenity.interface";
+import type { Amenity } from "@/features/rooms/domain/amenity.interface";
 
 export interface AmenitiesGridProps {
   amenities: Amenity[];
@@ -7,6 +7,11 @@ export interface AmenitiesGridProps {
   texts: any;
   toggleAmenity: (id: string) => void;
   handleAddCustom: (name: string, icon?: string, description?: string) => Promise<void>;
-  handleUpdateCustom: (id: string, name: string, icon: string, description?: string) => Promise<void>;
+  handleUpdateCustom: (
+    id: string,
+    name: string,
+    icon: string,
+    description?: string,
+  ) => Promise<void>;
   handleDeleteCustom: (id: string) => Promise<void>;
 }

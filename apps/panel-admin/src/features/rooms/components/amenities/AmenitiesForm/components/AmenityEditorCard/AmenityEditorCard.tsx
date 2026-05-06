@@ -1,10 +1,14 @@
-import React from "react";
 import { Spinner } from "@heroui/react";
 import * as LucideIcons from "lucide-react";
+import type React from "react";
+import {
+  AMENITIES_CONFIG,
+  AMENITIES_VALIDATION,
+  KEYBOARD_KEYS,
+} from "@/features/rooms/constants/amenities.constants";
 import { IconRenderer } from "../IconRenderer";
+import type { AmenityEditorCardProps } from "./AmenityEditorCard.interface";
 import { AMENITY_EDITOR_CARD_STYLES as s } from "./AmenityEditorCard.styles";
-import { AmenityEditorCardProps } from "./AmenityEditorCard.interface";
-import { AMENITIES_CONFIG, AMENITIES_VALIDATION, KEYBOARD_KEYS } from "@/features/rooms/constants/amenities.constants";
 
 export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
   name,
@@ -58,7 +62,6 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
         disabled={isSubmitting}
       />
 
-      {/* Icon Picker Grid */}
       <div className={s.iconPickerGrid}>
         {AMENITIES_CONFIG.CUSTOM_ICON_OPTIONS.map((iconName) => (
           <button
