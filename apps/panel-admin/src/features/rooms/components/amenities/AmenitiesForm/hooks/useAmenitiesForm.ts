@@ -56,6 +56,58 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
     }
   };
 
+  const [isAddingCustom, setIsAddingCustom] = useState(false);
+
+  const handleAddCustom = async (name: string, icon: string = "Sparkles", description: string = "") => {
+    const trimmed = name.trim();
+    if (!trimmed || trimmed.length > 25) return;
+    
+    // Check if it already exists (case insensitive)
+    const exists = amenities.some(
+      (a) => a.name.toLowerCase() === trimmed.toLowerCase()
+    );
+    if (exists) return;
+
+    setIsAddingCustom(true);
+    try {
+      const newAmenity = await mockAmenitiesService.addCustomAmenity(trimmed, icon, description);
+      setAmenities((prev) => [...prev, newAmenity]);
+      setValue("amenityIds", [...selectedIds, newAmenity.id], { shouldValidate: true });
+    } catch (error) {
+      console.error("Error adding custom amenity:", error);
+    } finally {
+      setIsAddingCustom(false);
+    }
+  };
+
+  const handleUpdateCustom = async (id: string, name: string, icon: string, description: string = "") => {
+    const trimmed = name.trim();
+    if (!trimmed || trimmed.length > 25) return;
+
+    setIsAddingCustom(true);
+    try {
+      const updated = await mockAmenitiesService.updateCustomAmenity(id, trimmed, icon, description);
+      setAmenities((prev) => prev.map((a) => (a.id === id ? updated : a)));
+    } catch (error) {
+      console.error("Error updating custom amenity:", error);
+    } finally {
+      setIsAddingCustom(false);
+    }
+  };
+
+  const handleDeleteCustom = async (id: string) => {
+    setIsAddingCustom(true);
+    try {
+      await mockAmenitiesService.deleteCustomAmenity(id);
+      setAmenities((prev) => prev.filter((a) => a.id !== id));
+      setValue("amenityIds", selectedIds.filter((i) => i !== id), { shouldValidate: true });
+    } catch (error) {
+      console.error("Error deleting custom amenity:", error);
+    } finally {
+      setIsAddingCustom(false);
+    }
+  };
+
   const onSubmit = async (data: AmenitiesFormValues) => {
     setIsSubmitting(true);
     try {
@@ -86,11 +138,15 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
     selectedIds,
     isLoading,
     isSubmitting,
+    isAddingCustom,
     errors,
     texts,
     searchTerm,
     setSearchTerm,
     toggleAmenity,
+    handleAddCustom,
+    handleUpdateCustom,
+    handleDeleteCustom,
     handleSubmit: handleSubmit(onSubmit),
   };
 };

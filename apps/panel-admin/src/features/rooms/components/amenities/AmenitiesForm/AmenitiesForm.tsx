@@ -6,12 +6,8 @@ import { Button, Spinner } from "@heroui/react";
 import { AMENITIES_FORM_STYLES as s } from "./AmenitiesForm.styles";
 import { AmenitiesFormProps } from "./AmenitiesForm.interface";
 import { useAmenitiesForm } from "./hooks/useAmenitiesForm";
-
-const IconRenderer = ({ name, size = 24 }: { name: string; size?: number }) => {
-  const Icon = (LucideIcons as any)[name];
-  if (!Icon) return <LucideIcons.HelpCircle size={size} />;
-  return <Icon size={size} />;
-};
+import { AmenityCard } from "./components/AmenityCard";
+import { AmenityEditorCard } from "./components/AmenityEditorCard";
 
 export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess }) => {
   const {
@@ -19,13 +15,44 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
     selectedIds,
     isLoading,
     isSubmitting,
+    isAddingCustom,
     errors,
     texts,
     searchTerm,
     setSearchTerm,
     toggleAmenity,
+    handleAddCustom,
+    handleUpdateCustom,
+    handleDeleteCustom,
     handleSubmit,
   } = useAmenitiesForm(roomId, onSuccess);
+
+  const [isAdding, setIsAdding] = React.useState(false);
+  const [customName, setCustomName] = React.useState("");
+  const [customDesc, setCustomDesc] = React.useState("");
+  const [selectedIcon, setSelectedIcon] = React.useState<string>("Sparkles");
+
+  const [editingId, setEditingId] = React.useState<string | null>(null);
+  const [editingName, setEditingName] = React.useState("");
+  const [editingDesc, setEditingDesc] = React.useState("");
+  const [editingIcon, setEditingIcon] = React.useState<string>("Sparkles");
+
+  const [activeDescId, setActiveDescId] = React.useState<string | null>(null);
+
+  const handleSaveCustom = async () => {
+    if (!customName.trim()) return;
+    await handleAddCustom(customName.trim(), selectedIcon, customDesc.trim());
+    setCustomName("");
+    setCustomDesc("");
+    setSelectedIcon("Sparkles");
+    setIsAdding(false);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingId || !editingName.trim()) return;
+    await handleUpdateCustom(editingId, editingName.trim(), editingIcon, editingDesc.trim());
+    setEditingId(null);
+  };
 
   if (isLoading) {
     return (
@@ -42,50 +69,108 @@ export const AmenitiesForm: React.FC<AmenitiesFormProps> = ({ roomId, onSuccess 
         <h1 className={s.title}>{texts.AMENITIES.TITLE}</h1>
       </header>
 
-      <div className={s.searchWrapper}>
-        <LucideIcons.Search className={s.searchIcon} size={20} />
-        <input
-          type="text"
-          className={s.searchInput}
-          placeholder={texts.AMENITIES.SEARCH_PLACEHOLDER}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-
-      <div className={s.grid}>
-        {amenities.map((amenity) => {
-          const isSelected = selectedIds.includes(amenity.id);
-          return (
-            <div
-              key={amenity.id}
-              className={s.card(isSelected)}
-              onClick={() => toggleAmenity(amenity.id)}
-            >
-              {isSelected && <LucideIcons.CheckCircle2 className={s.checkIcon} size={20} />}
-              <div className={s.iconWrapper(isSelected)}>
-                <IconRenderer name={amenity.icon || "HelpCircle"} />
-              </div>
-              <span className={s.amenityName(isSelected)}>{amenity.name}</span>
-            </div>
-          );
-        })}
-      </div>
-
-      {amenities.length === 0 && (
-        <div className={s.emptyContainer}>
-          <LucideIcons.BoxSelect className={s.emptyIcon} size={48} />
-          <p className={s.emptyText}>{texts.AMENITIES.EMPTY_STATE}</p>
+      <div className={s.formCard}>
+        <div className={s.searchWrapper}>
+          <LucideIcons.Search className={s.searchIcon} size={20} />
+          <input
+            type="text"
+            className={s.searchInput}
+            placeholder={texts.AMENITIES.SEARCH_PLACEHOLDER}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-      )}
 
-      {errors.amenityIds && (
-        <p className={s.errorText}>{texts.AMENITIES.SELECT_AT_LEAST_ONE}</p>
-      )}
+        <div className={s.grid}>
+          {amenities.map((amenity) => {
+            const isSelected = selectedIds.includes(amenity.id);
+            const isCurrentEditing = editingId === amenity.id;
+
+            if (isCurrentEditing) {
+              return (
+                <AmenityEditorCard
+                  key={amenity.id}
+                  name={editingName}
+                  setName={setEditingName}
+                  desc={editingDesc}
+                  setDesc={setEditingDesc}
+                  selectedIcon={editingIcon}
+                  setSelectedIcon={setEditingIcon}
+                  onSave={handleSaveEdit}
+                  onCancel={() => setEditingId(null)}
+                  isSubmitting={isAddingCustom}
+                  placeholderName={texts.AMENITIES.ADD_CUSTOM_PLACEHOLDER}
+                  placeholderDesc={texts.AMENITIES.ADD_DESC_PLACEHOLDER}
+                  autoFocus
+                />
+              );
+            }
+
+            return (
+              <AmenityCard
+                key={amenity.id}
+                amenity={amenity}
+                isSelected={isSelected}
+                isFlipped={activeDescId === amenity.id}
+                onToggle={() => toggleAmenity(amenity.id)}
+                onEdit={() => {
+                  setEditingId(amenity.id);
+                  setEditingName(amenity.name);
+                  setEditingDesc(amenity.description || "");
+                  setEditingIcon(amenity.icon || "Sparkles");
+                }}
+                onDelete={() => handleDeleteCustom(amenity.id)}
+                onFlipToggle={() => setActiveDescId(activeDescId === amenity.id ? null : amenity.id)}
+                texts={texts}
+              />
+            );
+          })}
+
+          {/* Interactive Custom Amenity Creator Card */}
+          {isAdding ? (
+            <AmenityEditorCard
+              name={customName}
+              setName={setCustomName}
+              desc={customDesc}
+              setDesc={setCustomDesc}
+              selectedIcon={selectedIcon}
+              setSelectedIcon={setSelectedIcon}
+              onSave={handleSaveCustom}
+              onCancel={() => {
+                setIsAdding(false);
+                setCustomName("");
+                setCustomDesc("");
+                setSelectedIcon("Sparkles");
+              }}
+              isSubmitting={isAddingCustom}
+              placeholderName={texts.AMENITIES.ADD_CUSTOM_PLACEHOLDER}
+              placeholderDesc={texts.AMENITIES.ADD_DESC_PLACEHOLDER}
+              autoFocus
+            />
+          ) : (
+            <div className={s.customTriggerCard} onClick={() => setIsAdding(true)}>
+              <div className={s.customTriggerIconWrapper}>
+                <LucideIcons.Plus size={24} />
+              </div>
+              <span className={s.customTriggerText}>{texts.AMENITIES.ADD_CUSTOM}</span>
+            </div>
+          )}
+        </div>
+
+        {amenities.length === 0 && (
+          <div className={s.emptyContainer}>
+            <LucideIcons.BoxSelect className={s.emptyIcon} size={48} />
+            <p className={s.emptyText}>{texts.AMENITIES.EMPTY_STATE}</p>
+          </div>
+        )}
+
+        {errors.amenityIds && (
+          <p className={s.errorText}>{texts.AMENITIES.SELECT_AT_LEAST_ONE}</p>
+        )}
+      </div>
 
       <div className={s.actions}>
-        <Button className={s.cancelButton} variant="ghost">
+        <Button className={s.cancelButton} onPress={() => window.history.back()}>
           {texts.FORM.CANCEL}
         </Button>
         <Button

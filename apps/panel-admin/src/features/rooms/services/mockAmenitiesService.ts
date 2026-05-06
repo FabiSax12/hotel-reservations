@@ -3,6 +3,7 @@ import { MOCK_AMENITIES, MOCK_AMENITIES_STORAGE_KEY } from "@/features/rooms/con
 import { MOCK_SERVICE_DELAYS } from "@/features/rooms/constants/info.constants";
 
 const STORAGE_KEY = MOCK_AMENITIES_STORAGE_KEY;
+const AMENITIES_LIST_KEY = "hotel_amenities_list_mock";
 
 const simulateNetworkDelay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -17,10 +18,25 @@ const saveRoomAmenities = (roomAmenities: RoomAmenity[]) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(roomAmenities));
 };
 
+const getStoredAmenities = (): Amenity[] => {
+  if (typeof window === "undefined") return MOCK_AMENITIES;
+  const stored = localStorage.getItem(AMENITIES_LIST_KEY);
+  if (!stored) {
+    localStorage.setItem(AMENITIES_LIST_KEY, JSON.stringify(MOCK_AMENITIES));
+    return MOCK_AMENITIES;
+  }
+  return JSON.parse(stored);
+};
+
+const saveAmenities = (amenities: Amenity[]) => {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(AMENITIES_LIST_KEY, JSON.stringify(amenities));
+};
+
 export const mockAmenitiesService = {
   getPredefinedAmenities: async (): Promise<Amenity[]> => {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.GET_ALL);
-    return MOCK_AMENITIES;
+    return getStoredAmenities();
   },
 
   getRoomAmenities: async (roomId: string): Promise<string[]> => {
@@ -46,5 +62,44 @@ export const mockAmenitiesService = {
     }));
     
     saveRoomAmenities([...otherRoomsAmenities, ...newRoomAmenities]);
+  },
+
+  addCustomAmenity: async (name: string, icon: string = "Sparkles", description: string = ""): Promise<Amenity> => {
+    await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
+    const list = getStoredAmenities();
+    const newId = `custom-${Date.now()}`;
+    const newAmenity: Amenity = {
+      id: newId,
+      name,
+      icon,
+      description,
+    };
+    saveAmenities([...list, newAmenity]);
+    return newAmenity;
+  },
+
+  updateCustomAmenity: async (id: string, name: string, icon: string, description: string = ""): Promise<Amenity> => {
+    await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
+    const list = getStoredAmenities();
+    let updatedAmenity: Amenity | null = null;
+    const updatedList = list.map((a) => {
+      if (a.id === id) {
+        updatedAmenity = { ...a, name, icon, description };
+        return updatedAmenity;
+      }
+      return a;
+    });
+    saveAmenities(updatedList);
+    return updatedAmenity || { id, name, icon, description };
+  },
+
+  deleteCustomAmenity: async (id: string): Promise<void> => {
+    await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
+    const list = getStoredAmenities();
+    saveAmenities(list.filter((a) => a.id !== id));
+
+    // Clean up room associations
+    const roomAmenities = getStoredRoomAmenities();
+    saveRoomAmenities(roomAmenities.filter((ra) => ra.amenity_id !== id));
   },
 };

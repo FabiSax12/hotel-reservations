@@ -56,5 +56,8 @@ export interface RoomsTexts {
     HINT: string;
     ITEMS: Record<string, { name: string; description: string }>;
     LOADING: string;
+    ADD_CUSTOM: string;
+    ADD_CUSTOM_PLACEHOLDER: string;
+    ADD_DESC_PLACEHOLDER: string;
   };
 }

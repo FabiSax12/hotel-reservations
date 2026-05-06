@@ -1,7 +1,7 @@
 # Feature Specification: Add amenities to the room while creating it.
 
 **Status:** in-progress
-**Version:** 1.3
+**Version:** 1.4
 
 ## 1. Objective 
 As an administrator, after I added info of a room, I need a new page that let me add amenities to this rooms, before creating the room, but also to be a separated page, I want the workflow to feel like stages/phases of a creation, in order to avoid scrolling, instead, feel like each stage refers to something in specific and I can concentrate on each step.
@@ -38,5 +38,5 @@ As an administrator, after I added info of a room, I need a new page that let me
 * [ ] Condition 4: As a logged admin, I want to make sure that the room has at least one amenity before creating it.
 
 ## 5. Handoff & Status Notes
-* **Current State:** Base refactor completed
-* **Next Step:** Browsing the feature to ensure everything works and follow the aligns.
+* **Current State:** Browsed the feature and identified problems.
+* **Next Step:** Solve problems.

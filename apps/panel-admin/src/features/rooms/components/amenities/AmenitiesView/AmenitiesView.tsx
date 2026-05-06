@@ -25,9 +25,7 @@ export const AmenitiesView = () => {
       <div className={s.blob} />
       
       <div className={s.content}>
-        <div className={s.cardContainer}>
-          <AmenitiesForm roomId={DEFAULT_ROOM_ID} onSuccess={handleSuccess} />
-        </div>
+        <AmenitiesForm roomId={DEFAULT_ROOM_ID} onSuccess={handleSuccess} />
       </div>
     </main>
   );

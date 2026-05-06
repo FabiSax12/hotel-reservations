@@ -71,6 +71,9 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
         "10": { name: "Gimnasio", description: "Acceso al gimnasio" },
       },
       LOADING: "Cargando servicios...",
+      ADD_CUSTOM: "Personalizado...",
+      ADD_CUSTOM_PLACEHOLDER: "Nombre (máx 25 car.)",
+      ADD_DESC_PLACEHOLDER: "Descripción (máx 50 car.)",
     },
   },
   en: {
@@ -142,6 +145,9 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
         "10": { name: "Gym", description: "Access to the fitness center" },
       },
       LOADING: "Loading amenities...",
+      ADD_CUSTOM: "Custom...",
+      ADD_CUSTOM_PLACEHOLDER: "Name (max 25 char.)",
+      ADD_DESC_PLACEHOLDER: "Description (max 50 char.)",
     },
   },
 } as const;

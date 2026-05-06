@@ -6,6 +6,5 @@ export const AMENITIES_VIEW_STYLES = {
   bgImage: NEW_ROOM_VIEW_STYLES.bgImage,
   overlay: NEW_ROOM_VIEW_STYLES.overlay,
   blob: NEW_ROOM_VIEW_STYLES.blob,
-  content: `${NEW_ROOM_VIEW_STYLES.content} max-w-3xl mx-auto`,
-  cardContainer: "bg-white/50 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/30 overflow-hidden",
+  content: NEW_ROOM_VIEW_STYLES.content,
 };
