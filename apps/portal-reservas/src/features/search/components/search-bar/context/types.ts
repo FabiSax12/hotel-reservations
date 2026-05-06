@@ -3,7 +3,7 @@
  */
 
 import type { Dispatch, SetStateAction, RefObject } from "react";
-import type { ActiveSection, SearchBarVariant } from "../domain/types";
+import type { ActiveSection, SearchBarVariant, ValidationError } from "../domain/types";
 
 export interface SearchBarContextValue {
   // Config
@@ -22,7 +22,7 @@ export interface SearchBarContextValue {
   onHeroCalendarOpen?: () => void;
 
   // SearchValidation
-  validationError: any;
+  validationError: ValidationError | null;
   isShaking: boolean;
   clearError: () => void;
   validateSearch: (
@@ -33,7 +33,7 @@ export interface SearchBarContextValue {
   ) => boolean;
   fieldHasError: (k: string) => boolean;
 
-  // Location / Destination (Managed mostly in ModernSearchBar)
+  // Location / Destination
   destination: string;
   setDestination: (destination: string) => void;
   onlyOneSede: string | null;

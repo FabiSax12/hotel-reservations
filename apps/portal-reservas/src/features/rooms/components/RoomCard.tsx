@@ -57,6 +57,9 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
       }}
       aria-label={room.title}
     >
+      {/* Hover glow overlay — separate element so transitions never interfere with entry animation */}
+      <div className={S.cardHoverGlow} aria-hidden="true" />
+
       {/* Left: image panel with urgency badge, admin tip, and expand toggle */}
       <RoomImagePanel room={room} isExpanded={isExpanded} onToggleExpand={handleToggle} />
 

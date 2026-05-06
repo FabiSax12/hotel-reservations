@@ -5,8 +5,8 @@
  * exists, and notifies the parent component on changes.
  */
 
-import { useState, useCallback, useEffect, useMemo } from "react";
-import { REGIONS_CONFIG } from "../constants/regionsMock";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { SEARCH_VALS } from "../constants/search.constants";
 
 interface UseDestinationStateOptions {
@@ -37,7 +37,7 @@ export function useDestinationState({
     [onDestinationChange],
   );
 
-  // Notify parent of the initial (auto-selected) destination on mount only
+  // Notify parent of the auto-selected destination on mount
   useEffect(() => {
     if (destination) {
       onDestinationChange?.(destination);

@@ -1,3 +1,10 @@
+/**
+ * @file SearchBarContext.tsx — React Context for the search bar feature.
+ *
+ * Distributes aggregated search bar state (destination, dates, guests,
+ * validation, UI state) to all sub-components without prop drilling.
+ */
+
 "use client";
 
 import React from "react";

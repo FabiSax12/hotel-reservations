@@ -1,8 +1,11 @@
-/**
+﻿/**
  * @file GuestStepper.tsx — Reusable stepper for guest count (adults/children).
+ *
+ * Delegates to the shared @hotel/ui Stepper component, wrapping it with
+ * the rooms feature theme styles.
  */
 
-import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import { Stepper } from "@hotel/ui";
 
 interface GuestStepperProps {
   label: string;
@@ -21,22 +24,16 @@ export function GuestStepper({
   decrementLabel, incrementLabel,
 }: GuestStepperProps) {
   return (
-    <div className={S.guestRow}>
-      <div>
-        <p className={S.guestLabel}>{label}</p>
-        <p className={S.guestSub}>{subtitle}</p>
-      </div>
-      <div className={S.guestStepper}>
-        <button type="button" className={S.guestStepBtn}
-          onClick={onDecrement} disabled={value <= min} aria-label={decrementLabel}>
-          −
-        </button>
-        <span className={S.guestCount} aria-live="polite">{value}</span>
-        <button type="button" className={S.guestStepBtn}
-          onClick={onIncrement} aria-label={incrementLabel}>
-          +
-        </button>
-      </div>
-    </div>
+    <Stepper
+      title={label}
+      subtitle={subtitle}
+      value={value}
+      setter={(v: number) => {
+        if (v < min) return;
+        if (v < value) onDecrement();
+        else onIncrement();
+      }}
+      min={min}
+    />
   );
 }

@@ -12,16 +12,13 @@ import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useRoomsContext } from "../../context/RoomsContext";
 import { useI18n } from "@/locales";
 import { GuestStepper } from "./GuestStepper";
+import { ROOM_MOCK } from "../../constants/rooms.constants";
 
 interface QuickSearchDialogProps {
   isOpen: boolean;
   location: string;
   onClose: () => void;
 }
-
-const DAYS_OFFSET_IN = 7;
-const DAYS_OFFSET_OUT = 10;
-const MS_PER_DAY = 86400000;
 
 export function QuickSearchDialog({ isOpen, location, onClose }: QuickSearchDialogProps) {
   const { t } = useI18n();
@@ -32,8 +29,8 @@ export function QuickSearchDialog({ isOpen, location, onClose }: QuickSearchDial
   const [children, setChildren] = useState(0);
 
   const today = new Date();
-  const defaultCheckIn = new Date(today.getTime() + DAYS_OFFSET_IN * MS_PER_DAY).toISOString().slice(0, 10);
-  const defaultCheckOut = new Date(today.getTime() + DAYS_OFFSET_OUT * MS_PER_DAY).toISOString().slice(0, 10);
+  const defaultCheckIn = new Date(today.getTime() + ROOM_MOCK.QUICK_SEARCH_DAYS_OFFSET_IN * ROOM_MOCK.MS_PER_DAY).toISOString().slice(0, 10);
+  const defaultCheckOut = new Date(today.getTime() + ROOM_MOCK.QUICK_SEARCH_DAYS_OFFSET_OUT * ROOM_MOCK.MS_PER_DAY).toISOString().slice(0, 10);
 
   const handleConfirm = () => {
     onSearch({ destination: location, checkIn: defaultCheckIn, checkOut: defaultCheckOut, adults, children, pets: 0 });

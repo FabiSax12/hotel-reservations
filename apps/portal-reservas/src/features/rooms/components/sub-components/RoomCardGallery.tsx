@@ -14,6 +14,7 @@
 import type { Room } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import Image from "next/image";
 
 interface RoomCardGalleryProps {
   room: Room;
@@ -29,12 +30,14 @@ export function RoomCardGallery({ room }: RoomCardGalleryProps) {
         <div className={S.galleryStrip} role="list" aria-label="Imágenes adicionales">
           {room.images.map((src, i) => (
             <div key={src} className={S.galleryImage} role="listitem">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={src}
                 alt={`${room.title} — imagen ${i + 1}`}
                 className={S.galleryImg}
                 loading="lazy"
+                width={144}
+                height={96}
+                unoptimized
               />
             </div>
           ))}

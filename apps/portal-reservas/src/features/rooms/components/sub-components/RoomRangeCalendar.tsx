@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file RoomRangeCalendar.tsx — 2-month range calendar for room availability.
  *
  * Uses the @hotel/ui CalendarPopover to allow the user to select a check-in
@@ -13,6 +13,7 @@ import { CalendarPopover } from "@hotel/ui";
 import { useRoomsContext } from "../../context/RoomsContext";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { getBlockedDatesBetween } from "../../domain/date-range.utils";
 
 interface RoomRangeCalendarProps {
   availableDates: string[];
@@ -39,26 +40,10 @@ export function RoomRangeCalendar({
     setInvalidState({ dayStrs, isFading: false, animationKey });
     setTimeout(() => {
       setInvalidState({ dayStrs, isFading: true, animationKey });
-    }, 400); // Wait longer before fading out
+    }, 400);
     setTimeout(() => {
       setInvalidState((current) => (current?.animationKey === animationKey ? null : current));
     }, 700);
-  };
-
-  const getDatesBetween = (start: string, end: string): string[] => {
-    const result: string[] = [];
-    const cursor = new Date(`${start}T00:00:00`);
-    const target = new Date(`${end}T00:00:00`);
-    while (cursor < target) {
-      result.push(cursor.toISOString().slice(0, 10));
-      cursor.setDate(cursor.getDate() + 1);
-    }
-    return result;
-  };
-
-  const getBlockedDatesBetween = (start: string, end: string): string[] => {
-    const stayNights = getDatesBetween(start, end);
-    return stayNights.filter((isoDay) => !availableDateSet.has(isoDay));
   };
 
   const submitRange = (start: string, end: string) => {
@@ -79,37 +64,31 @@ export function RoomRangeCalendar({
   const handlePickDate = (dayStr: string) => {
     if (invalidState) setInvalidState(null);
 
-    // If both dates are selected, clicking starts a fresh selection
     if (checkIn && checkOut) {
       setCheckIn(dayStr);
       setCheckOut("");
       return;
     }
 
-    // First click
     if (!checkIn) {
       setCheckIn(dayStr);
       return;
     }
 
-    // Second click on the same date: unselect
     if (dayStr === checkIn) {
       setCheckIn("");
       return;
     }
 
-    // Second click on a different date: determine chronological order
     const start = dayStr < checkIn ? dayStr : checkIn;
     const end = dayStr < checkIn ? checkIn : dayStr;
 
-    // Check for blocked dates in the resulting range
-    const blockedDates = getBlockedDatesBetween(start, end);
+    const blockedDates = getBlockedDatesBetween(start, end, availableDateSet);
     if (blockedDates.length > 0) {
       dismissInvalidState(blockedDates);
       return;
     }
 
-    // Valid range: update state and submit
     setCheckIn(start);
     setCheckOut(end);
     submitRange(start, end);

@@ -44,4 +44,16 @@ export const ROOM_MOCK = Object.freeze({
    * Resolved to a locale string by the consuming component via `t.ROOMS`.
    */
   AVAILABILITY_ERROR_KEY: "AVAILABILITY_ERROR",
+  /**
+   * Default days offset from today for quick search check-in.
+   */
+  QUICK_SEARCH_DAYS_OFFSET_IN: 7,
+  /**
+   * Default days offset from today for quick search check-out.
+   */
+  QUICK_SEARCH_DAYS_OFFSET_OUT: 10,
+  /**
+   * Milliseconds per day (used for date offset calculations).
+   */
+  MS_PER_DAY: 86400000,
 } as const);

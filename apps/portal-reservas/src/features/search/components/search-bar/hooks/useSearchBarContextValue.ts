@@ -9,7 +9,7 @@
 import { useMemo } from "react";
 import type { RefObject, Dispatch, SetStateAction } from "react";
 import type { SearchBarContextValue } from "../context/types";
-import type { SearchBarVariant, ActiveSection } from "../domain/types";
+import type { SearchBarVariant, ActiveSection, ValidationError } from "../domain/types";
 
 interface UseSearchBarContextValueDeps {
   size: SearchBarVariant;
@@ -24,7 +24,7 @@ interface UseSearchBarContextValueDeps {
     isHero: boolean;
   };
   validation: {
-    validationError: any;
+    validationError: ValidationError | null;
     isShaking: boolean;
     clearError: () => void;
     validateSearch: (dest: string, inDate: string, outDate: string, onlyOneSede: string | null) => boolean;

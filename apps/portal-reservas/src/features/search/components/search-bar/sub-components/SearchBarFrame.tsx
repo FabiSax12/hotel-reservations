@@ -6,6 +6,8 @@
  * hero once a destination is selected.
  */
 
+"use client";
+
 import React from "react";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";

@@ -95,7 +95,13 @@ export const SEARCH_BAR_STYLES = {
       transition: `transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 150ms, opacity ${isDimmed ? "200ms ease-out" : "800ms ease 100ms"}`,
       transform: hasOpened ? "translateY(0)" : "translateY(-40px)",
       opacity: hasOpened ? (isDimmed ? 0.3 : 1) : 0,
-      pointerEvents: (hasOpened && !isDimmed ? "auto" : "none") as any,
+      pointerEvents: (hasOpened && !isDimmed ? "auto" : "none") as "auto" | "none",
+    }),
+    expandTab: (hasOpened: boolean) => ({
+      transition: "opacity 300ms ease, transform 300ms ease",
+      opacity: hasOpened ? 0 : 1,
+      transform: hasOpened ? "translateY(-10px)" : "translateY(0)",
+      pointerEvents: (hasOpened ? "none" : "auto") as "auto" | "none",
     }),
   },
 

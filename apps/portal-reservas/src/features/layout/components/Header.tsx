@@ -22,7 +22,7 @@ interface HeaderProps {
   /** Callback to reset the page to the hero (State A). */
   onReset: () => void;
   /** Callback when a new search is submitted from the compact bar. */
-  onSearch: (params: any) => void;
+  onSearch: (params: SearchParams) => void;
 }
 
 export function Header({ hasSearched, searchParams, onReset, onSearch }: HeaderProps) {

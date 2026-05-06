@@ -25,16 +25,16 @@ interface AvailabilityCalendarDialogProps {
 }
 
 /** Formats an ISO date string into a readable short date (e.g. "15 oct"). */
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string): string {
   const d = new Date(iso + "T00:00:00");
-  return d.toLocaleDateString("es-CR", { day: "numeric", month: "short" });
+  return d.toLocaleDateString(locale, { day: "numeric", month: "short" });
 }
 
 /** Groups dates by "Month Year" label. */
-function groupByMonth(dates: string[]): Record<string, string[]> {
+function groupByMonth(dates: string[], locale: string): Record<string, string[]> {
   return dates.reduce<Record<string, string[]>>((acc, iso) => {
     const d = new Date(iso + "T00:00:00");
-    const key = d.toLocaleDateString("es-CR", { month: "long", year: "numeric" });
+    const key = d.toLocaleDateString(locale, { month: "long", year: "numeric" });
     (acc[key] ??= []).push(iso);
     return acc;
   }, {});
@@ -45,8 +45,8 @@ export function AvailabilityCalendarDialog({
   availableDates,
   onClose,
 }: AvailabilityCalendarDialogProps) {
-  const { t } = useI18n();
-  const groups = groupByMonth(availableDates.slice(0, 12)); // Show first 12 slots
+  const { t, locale } = useI18n();
+  const groups = groupByMonth(availableDates.slice(0, 12), locale); // Show first 12 slots
 
   return (
     <div
@@ -81,7 +81,7 @@ export function AvailabilityCalendarDialog({
                   <div className={S.dialogDatesWrapper}>
                     {dates.map((iso) => (
                       <span key={iso} className={S.dialogDateBadge}>
-                        {formatDate(iso)}
+                        {formatDate(iso, locale)}
                       </span>
                     ))}
                   </div>

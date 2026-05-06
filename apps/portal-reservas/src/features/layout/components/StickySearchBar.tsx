@@ -15,7 +15,7 @@ interface StickySearchBarProps {
   /** The current search parameters to pre-fill the compact bar fields. */
   searchParams: SearchParams;
   /** Callback invoked when the user submits a new search. */
-  onSearch: (params: any) => void;
+  onSearch: (params: SearchParams) => void;
 }
 
 export function StickySearchBar({ searchParams, onSearch }: StickySearchBarProps) {

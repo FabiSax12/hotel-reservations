@@ -18,9 +18,11 @@ export const ROOM_LIST_STYLES = {
 export const ROOM_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:border-gold-500/30 transition-[box-shadow,border-color,opacity] duration-500 animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
+  cardHoverGlow:
+    "pointer-events-none absolute inset-0 rounded-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
   skeletonCard:
     "relative flex flex-col lg:flex-row bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in duration-500",
   skeletonImagePanel: "bg-forest-800/80 animate-pulse",

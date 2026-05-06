@@ -6,17 +6,13 @@
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarDay } from "./CalendarDay";
-
+import { MonthHeader } from "./MonthHeader";
 import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
+import { getDayHeaders, getMonthHeader, getDaysInMonth } from "../../utils/calendar.utils";
 import { useI18n } from "@hotel/i18n";
+import type { CalendarInvalidState } from "../../types/calendar.types";
 
 const C = UI_PACKAGE_CONSTANTS.CALENDAR;
-
-interface CalendarInvalidState {
-  dayStrs: string[];
-  isFading: boolean;
-  animationKey?: number;
-}
 
 interface CalendarMonthProps {
   monthIndexLocal: 0 | 1;
@@ -63,136 +59,55 @@ export function CalendarMonth({
 
   const { locale } = useI18n();
 
-  const DAYS_HEADER = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date(1970, 0, 4 + i); // Jan 4, 1970 was a Sunday
-    const dayStr = new Intl.DateTimeFormat(locale, { weekday: "short" }).format(d);
-    return dayStr.slice(0, 2).toUpperCase();
-  });
-
-  const monthStr = new Intl.DateTimeFormat(locale, {
-    month: UI_PACKAGE_CONSTANTS.DATE_FORMATS.MONTH_LONG as any,
-  }).format(targetDate);
-  const monthHeader = monthStr.charAt(0).toUpperCase() + monthStr.slice(1);
-
+  const daysHeader = getDayHeaders(locale);
   const showYear = year !== today.getFullYear() || (absoluteMonthOffset > 0 && month === 0);
-
+  const monthHeader = getMonthHeader(year, month, locale, showYear);
   const firstDayOfWeek = targetDate.getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = getDaysInMonth(year, month);
   const dates = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
     <div className={S.monthCol(isHero)}>
-      <div className={S.monthHeader(isHero)}>
-        {monthIndexLocal === 0 ? (
-          <button
-            type="button"
-            disabled={currentMonthOffset === 0}
-            onClick={(e) => {
-              e.stopPropagation();
-              onPrev();
-            }}
-            className={S.navBtn}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox={S.icons.prev.viewBox}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={S.icons.prev.strokeWidth}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d={S.icons.prev.path} />
-            </svg>
-          </button>
-        ) : (
-          <div className={S.navSpacer} />
-        )}
-
-        <h3 className={S.monthTitle(isHero)}>
-          {monthHeader} {showYear ? year : ""}
-        </h3>
-
-        {monthIndexLocal === 1 ? (
-          <button
-            type="button"
-            disabled={currentMonthOffset >= C.MAX_MONTHS - 2}
-            onClick={(e) => {
-              e.stopPropagation();
-              onNext();
-            }}
-            className={S.navBtn}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox={S.icons.next.viewBox}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={S.icons.next.strokeWidth}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d={S.icons.next.path} />
-            </svg>
-          </button>
-        ) : (
-          <div className={S.navSpacer} />
-        )}
-      </div>
+      <MonthHeader
+        monthIndexLocal={monthIndexLocal}
+        currentMonthOffset={currentMonthOffset}
+        maxMonths={C.MAX_MONTHS}
+        monthHeader={monthHeader}
+        isHero={isHero}
+        onPrev={onPrev}
+        onNext={onNext}
+      />
 
       <div className={S.daysHeader(isHero)}>
-        {DAYS_HEADER.map((d) => (
-          <div key={d}>{d}</div>
-        ))}
+        {daysHeader.map((d) => <div key={d}>{d}</div>)}
       </div>
 
       <div className={S.daysGrid(isHero)}>
-        {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-          <div key={`empty-${i}`} />
-        ))}
+        {Array.from({ length: firstDayOfWeek }).map((_, i) => <div key={`empty-${i}`} />)}
         {dates.map((d) => {
           const dayStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
           const currDate = new Date(year, month, d);
           const currVal = currDate.getTime();
-
           const isPast = currDate < today;
           const isStart = currVal === inVal;
           const isEnd = currVal === outVal;
-          const isSelected =
-            isStart || isEnd || (inVal > 0 && outVal > 0 && currVal > inVal && currVal < outVal);
+          const isSelected = isStart || isEnd || (inVal > 0 && outVal > 0 && currVal > inVal && currVal < outVal);
           const isToday = currVal === today.getTime();
           const isHovered = hoveredDay === dayStr;
           const isInvalid = !!invalidState?.dayStrs.includes(dayStr);
           const isFading = isInvalid && !!invalidState?.isFading;
-          const invalidAnimationKey = isInvalid ? invalidState?.animationKey : undefined;
 
           return (
-            <CalendarDay
-              key={d}
-              d={d}
-              dayStr={dayStr}
-              isPast={isPast}
-              isStart={isStart}
-              isEnd={isEnd}
-              isSelected={isSelected}
-              isToday={isToday}
-              isHovered={isHovered}
-              isInvalid={isInvalid}
-              isFading={isFading}
-              invalidAnimationKey={invalidAnimationKey}
-              isHero={isHero}
-              hideTooltips={hideTooltips}
-              inVal={inVal}
-              outVal={outVal}
-              onPickDate={onPickDate}
+            <CalendarDay key={d} d={d} dayStr={dayStr}
+              isPast={isPast} isStart={isStart} isEnd={isEnd}
+              isSelected={isSelected} isToday={isToday} isHovered={isHovered}
+              isInvalid={isInvalid} isFading={isFading}
+              invalidAnimationKey={isInvalid ? invalidState?.animationKey : undefined}
+              isHero={isHero} hideTooltips={hideTooltips}
+              inVal={inVal} outVal={outVal} onPickDate={onPickDate}
               onMouseEnter={() => !isPast && onHoverDay(dayStr)}
               onMouseLeave={() => !isPast && onHoverDay(null)}
-              startLabel={startLabel}
-              endLabel={endLabel}
+              startLabel={startLabel} endLabel={endLabel}
               isAvailable={availableDates ? availableDates.includes(dayStr) : true}
             />
           );

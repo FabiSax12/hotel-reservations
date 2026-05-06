@@ -9,19 +9,21 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { SearchParams } from "../features/search/domain/types";
 import { mockRooms } from "../features/rooms/mock-data/rooms";
 import { filterRoomsByDestination } from "../features/rooms/domain/filters";
-import { SEARCH_VALS } from "../features/search/components/search-bar/constants/search.constants";
+import { SEARCH_VALS, TIMEOUTS } from "../features/search/components/search-bar/constants/search.constants";
 import { REGIONS_CONFIG } from "../features/search/components/search-bar/constants/regionsConfig";
+import { useScrollLock } from "./useScrollLock";
+import { ROUTES } from "../config/routes";
 
 const AUTO_SELECTED_LOCATION =
   REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
 
-const SEARCH_DELAY_MS = 800;
-
 export function useHomePageState() {
+  const router = useRouter();
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(AUTO_SELECTED_LOCATION);
   const [heroCalendarActive, setHeroCalendarActive] = useState(false);
@@ -38,15 +40,7 @@ export function useHomePageState() {
 
   const hasDates = !!(searchParams.checkIn && searchParams.checkOut);
 
-  // Scroll lock until a location is selected
-  useEffect(() => {
-    if (!selectedLocation) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [selectedLocation]);
+  useScrollLock(!selectedLocation);
 
   const handleDestinationChange = (dest: string) => {
     if (dest && dest !== SEARCH_VALS.DESTINATION_ALL) {
@@ -65,10 +59,10 @@ export function useHomePageState() {
     setTimeout(() => {
       setSearchKey((prev) => prev + 1);
       setIsSearchingData(false);
-    }, SEARCH_DELAY_MS);
+    }, TIMEOUTS.SEARCH_TRIGGER_DELAY);
   };
 
-  const handleReset = () => { window.location.href = "/"; };
+  const handleReset = () => { router.push(ROUTES.HOME); };
 
   const filteredRooms = filterRoomsByDestination(
     mockRooms,

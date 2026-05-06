@@ -8,13 +8,8 @@ import { useState } from "react";
 import { parseDateHelper } from "../../utils/date.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
-import { UI_VARIANTS } from "../../constants/ui.constants";
-
-interface CalendarInvalidState {
-  dayStrs: string[];
-  isFading: boolean;
-  animationKey?: number;
-}
+import { UI_VARIANTS, UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
+import type { CalendarInvalidState } from "../../types/calendar.types";
 
 interface CalendarPopoverProps {
   checkIn: string;
@@ -78,7 +73,7 @@ export function CalendarPopover({
           onPickDate={onPickDate}
           onHoverDay={setHoveredDay}
           onPrev={() => setCurrentMonthOffset((prev) => Math.max(0, prev - 1))}
-          onNext={() => setCurrentMonthOffset((prev) => Math.min(22, prev + 1))}
+          onNext={() => setCurrentMonthOffset((prev) => Math.min(UI_PACKAGE_CONSTANTS.CALENDAR.MAX_MONTHS - 2, prev + 1))}
           startLabel={startLabel}
           endLabel={endLabel}
           availableDates={availableDates}
