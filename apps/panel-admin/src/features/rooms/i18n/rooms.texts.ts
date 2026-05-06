@@ -50,6 +50,15 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       ERROR_GENERIC: "Ocurrió un error. Intentá de nuevo.",
       ERROR_NOT_FOUND: "Habitación no encontrada",
     },
+    AMENITIES: {
+      TITLE: "Servicios y Comodidades",
+      SUBTITLE: "Seleccioná los servicios que ofrece esta habitación",
+      SELECT_AT_LEAST_ONE: "Seleccioná al menos un servicio",
+      SUBMIT: "Guardar Servicios",
+      SEARCH_PLACEHOLDER: "Buscar servicio...",
+      EMPTY_STATE: "No se encontraron servicios",
+      HINT: "Los servicios ayudan a que tu habitación destaque. Asegurate de incluir todo lo que haga la estancia más cómoda.",
+    },
   },
   en: {
     FORM: {
@@ -98,6 +107,15 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUCCESS_EDIT: "Changes successfully saved",
       ERROR_GENERIC: "An error occurred. Please try again.",
       ERROR_NOT_FOUND: "Room not found",
+    },
+    AMENITIES: {
+      TITLE: "Room Amenities",
+      SUBTITLE: "Select the services and features offered in this room",
+      SELECT_AT_LEAST_ONE: "Select at least one amenity",
+      SUBMIT: "Save Amenities",
+      SEARCH_PLACEHOLDER: "Search amenity...",
+      EMPTY_STATE: "No amenities found",
+      HINT: "Amenities help your room stand out. Make sure to include everything that makes the stay more comfortable.",
     },
   },
 } as const;

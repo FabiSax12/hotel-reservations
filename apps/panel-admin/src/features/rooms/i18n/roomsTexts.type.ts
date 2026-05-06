@@ -46,4 +46,13 @@ export interface RoomsTexts {
     ERROR_GENERIC: string;
     ERROR_NOT_FOUND: string;
   };
+  AMENITIES: {
+    TITLE: string;
+    SUBTITLE: string;
+    SELECT_AT_LEAST_ONE: string;
+    SUBMIT: string;
+    SEARCH_PLACEHOLDER: string;
+    EMPTY_STATE: string;
+    HINT: string;
+  };
 }
