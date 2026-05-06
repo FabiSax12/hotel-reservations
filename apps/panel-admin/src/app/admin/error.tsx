@@ -2,14 +2,18 @@
 
 import { useI18n } from "@/locales";
 
-export default function AdminError({
-  error,
-  reset,
-}: {
+interface AdminErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+}
+
+export default function AdminError({ error, reset }: AdminErrorProps) {
   const { t } = useI18n();
+
+  const handleRetry = () => {
+    reset();
+    window.location.reload();
+  };
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center p-8 text-gray-800">
@@ -22,10 +26,7 @@ export default function AdminError({
         </p>
         <button
           type="button"
-          onClick={() => {
-            reset();
-            window.location.reload();
-          }}
+          onClick={handleRetry}
           className="rounded-md bg-gray-800 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700"
         >
           {t.COMMON.STATUS.TRY_AGAIN}
