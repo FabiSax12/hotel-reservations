@@ -1,13 +1,11 @@
 "use client";
 
-import { Mail, MessageCircle } from "lucide-react";
 import { useI18n } from "@/locales";
 import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { ROUTES } from "@/config/routes";
-import { CONTACT } from "@/config/contact";
-import { SOCIAL } from "@/config/social";
-import { InstagramIcon, FacebookIcon } from "./SocialIcons";
 import { NAV_KEYS, NAV_HREFS, CURRENT_YEAR } from "@/features/landing/layout/constants/nav";
+import { FooterContactLinks } from "./FooterContactLinks";
+import { FooterSocialLinks } from "./FooterSocialLinks";
 
 export function LandingFooter() {
   const { t } = useI18n();
@@ -40,59 +38,8 @@ export function LandingFooter() {
         </div>
 
         <div className={LAYOUT.FOOTER_MIDDLE}>
-          <div className={LAYOUT.FOOTER_CONTACT}>
-            <a
-              href={`mailto:${CONTACT.EMAIL}`}
-              className={LAYOUT.FOOTER_CONTACT_LINK}
-              aria-label={layout.CONTACT.EMAIL_LABEL}
-            >
-              <Mail className={LAYOUT.FOOTER_CONTACT_ICON} aria-hidden="true" />
-              {CONTACT.EMAIL}
-            </a>
-            <a
-              href={CONTACT.WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={LAYOUT.FOOTER_CONTACT_LINK}
-              aria-label={layout.CONTACT.WHATSAPP_LABEL}
-            >
-              <MessageCircle className={LAYOUT.FOOTER_CONTACT_ICON} aria-hidden="true" />
-              {CONTACT.PHONE}
-            </a>
-          </div>
-
-          <div className={LAYOUT.FOOTER_SOCIAL} role="list" aria-label="Social media">
-            <a
-              href={SOCIAL.INSTAGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={LAYOUT.FOOTER_SOCIAL_LINK}
-              aria-label={layout.SOCIAL.INSTAGRAM_LABEL}
-              role="listitem"
-            >
-              <InstagramIcon className={LAYOUT.FOOTER_SOCIAL_ICON} />
-            </a>
-            <a
-              href={SOCIAL.FACEBOOK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={LAYOUT.FOOTER_SOCIAL_LINK}
-              aria-label={layout.SOCIAL.FACEBOOK_LABEL}
-              role="listitem"
-            >
-              <FacebookIcon className={LAYOUT.FOOTER_SOCIAL_ICON} />
-            </a>
-            <a
-              href={SOCIAL.WHATSAPP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={LAYOUT.FOOTER_SOCIAL_LINK}
-              aria-label={layout.SOCIAL.WHATSAPP_LABEL}
-              role="listitem"
-            >
-              <MessageCircle className={LAYOUT.FOOTER_SOCIAL_ICON} aria-hidden="true" />
-            </a>
-          </div>
+          <FooterContactLinks />
+          <FooterSocialLinks />
         </div>
 
         <div className={LAYOUT.FOOTER_BOTTOM}>

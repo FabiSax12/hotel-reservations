@@ -1,4 +1,4 @@
-export type CommonTexts = {
+export interface CommonTexts {
   NAV: {
     HOME: string;
     ABOUT: string;
@@ -22,6 +22,7 @@ export type CommonTexts = {
     META_DESCRIPTION: string;
     META_OG_DESCRIPTION: string;
     SOCIAL: {
+      SECTION_LABEL: string;
       INSTAGRAM_LABEL: string;
       FACEBOOK_LABEL: string;
       WHATSAPP_LABEL: string;
@@ -33,6 +34,7 @@ export type CommonTexts = {
     CONTACT: {
       EMAIL_LABEL: string;
       WHATSAPP_LABEL: string;
+      ADDRESS_LABEL: string;
     };
   };
-};
+}
