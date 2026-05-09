@@ -98,6 +98,8 @@ export type ReservationsTexts = {
     ALL: string;
     PLACEHOLDER_ROOM: string;
     ARIA_LABEL_ROOM_FILTER: string;
+    PLACEHOLDER_GUEST_SEARCH: string;
+    ARIA_LABEL_GUEST_SEARCH: string;
     DATE_RANGE_PICKER_LABEL: string;
     ARIA_LABEL_DATE_RANGE: string;
     CLEAR: string;

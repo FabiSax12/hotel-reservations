@@ -28,6 +28,7 @@ export const CancellationReasonField = ({
       >
         <Label>{texts.TEXTAREA_LABEL}</Label>
         <TextArea
+          className={S.textArea}
           placeholder={isReadOnly ? undefined : texts.TEXTAREA_PLACEHOLDER}
           maxLength={CANCELLATION_REASON_MAX_LENGTH}
           rows={2}

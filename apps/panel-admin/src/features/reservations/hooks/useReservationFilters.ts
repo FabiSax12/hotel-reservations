@@ -10,6 +10,7 @@ interface UseReservationFiltersReturn {
   isFiltered: boolean;
   selectedRoomKey: string;
   handleRoomChange: (key: string | number | null) => void;
+  handleGuestNameChange: (value: string) => void;
 }
 
 export const useReservationFilters = (
@@ -32,6 +33,7 @@ export const useReservationFilters = (
 
   const isFiltered =
     filters.statuses.length > FILTERED_RESULTS.EMPTY ||
+    filters.guestName !== DEFAULT_FILTERS.guestName ||
     filters.roomName !== DEFAULT_FILTERS.roomName ||
     filters.dateFrom !== DEFAULT_FILTERS.dateFrom ||
     filters.dateTo !== DEFAULT_FILTERS.dateTo;
@@ -43,5 +45,7 @@ export const useReservationFilters = (
     update({ roomName: key === ROOM_ALL_KEY ? "" : String(key) });
   };
 
-  return { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange };
+  const handleGuestNameChange = (value: string) => update({ guestName: value });
+
+  return { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange, handleGuestNameChange };
 };

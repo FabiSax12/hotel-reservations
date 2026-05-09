@@ -71,7 +71,7 @@ export const ReservationStatusFooter = (props: ReservationStatusFooterProps) => 
             isDisabled={!hasPendingChanges}
             onPress={handleRevertChanges}
           >
-            <X size={15} />
+            <X size={S.icon_size} />
             {texts.BTN_REVERT}
           </Button>
           <Button
@@ -79,7 +79,7 @@ export const ReservationStatusFooter = (props: ReservationStatusFooterProps) => 
             isDisabled={isSaveDisabled}
             onPress={handleOpenSaveDialog}
           >
-            <Save size={15} />
+            <Save size={S.icon_size} />
             {texts.BTN_SAVE_CHANGES}
           </Button>
         </div>

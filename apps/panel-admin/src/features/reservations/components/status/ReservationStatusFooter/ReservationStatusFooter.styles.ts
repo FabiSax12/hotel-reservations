@@ -11,4 +11,5 @@ export const RESERVATION_STATUS_FOOTER_STYLES = {
     "bg-white text-rose-600 text-sm font-medium tracking-wide px-7 py-4 rounded-full border-2 border-rose-100 transition-all hover:bg-rose-50 hover:border-rose-200 active:scale-95",
   saveButton:
     "bg-emerald-900 text-white text-sm font-medium tracking-wide px-7 py-4 rounded-full transition-all duration-300 hover:scale-105 hover:bg-emerald-600 hover:shadow-[0_15px_40px_-10px_rgba(16,185,129,0.4)] active:scale-95",
+  icon_size: 15,
 } as const;
