@@ -66,6 +66,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       BTN_COMPLETE_RESERVATION: "Completar reserva",
       BTN_REVERT: "Revertir cambios",
       BTN_SAVE_CHANGES: "Guardar cambios",
+      LOG_PAYMENT_PROCESSED: "[Pasarela de pagos] Pago procesado exitosamente para la reservación",
     },
     CANCELLATION_MODAL: {
       TITLE: "Razón de cancelación",
@@ -102,7 +103,9 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     FILTERS: {
       ALL: "Todo",
       PLACEHOLDER_ROOM: "Todas las habitaciones",
+      ARIA_LABEL_ROOM_FILTER: "Filtro de habitación",
       DATE_RANGE_PICKER_LABEL: "Fecha",
+      ARIA_LABEL_DATE_RANGE: "Rango de fechas",
       CLEAR: "Limpiar filtros",
       RESULTS_SUFFIX: "reservaciones",
       RESULTS_OF: "de",
@@ -177,6 +180,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       BTN_COMPLETE_RESERVATION: "Complete reservation",
       BTN_REVERT: "Revert changes",
       BTN_SAVE_CHANGES: "Save changes",
+      LOG_PAYMENT_PROCESSED: "[Payment gateway] Payment successfully processed for reservation",
     },
     CANCELLATION_MODAL: {
       TITLE: "Cancellation reason",
@@ -212,7 +216,9 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     FILTERS: {
       ALL: "All",
       PLACEHOLDER_ROOM: "All rooms",
+      ARIA_LABEL_ROOM_FILTER: "Room filter",
       DATE_RANGE_PICKER_LABEL: "Date",
+      ARIA_LABEL_DATE_RANGE: "Date range",
       CLEAR: "Clear filters",
       RESULTS_SUFFIX: "reservations",
       RESULTS_OF: "of",

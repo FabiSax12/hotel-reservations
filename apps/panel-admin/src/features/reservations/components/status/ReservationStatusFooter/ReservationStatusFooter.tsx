@@ -55,14 +55,14 @@ export const ReservationStatusFooter = (props: ReservationStatusFooterProps) => 
               isReadOnly={cancellationFieldIsReadOnly}
               onChange={handleReasonChange}
             />
-          ) : (
+          ) : !hasPendingChanges ? (
             <FooterActionButtons
               currentStatus={currentStatus}
               onApprove={handleApprove}
               onCancelReservation={handleCancelReservation}
               onComplete={handleComplete}
             />
-          )}
+          ) : null}
         </div>
 
         <div className={S.rightActions}>

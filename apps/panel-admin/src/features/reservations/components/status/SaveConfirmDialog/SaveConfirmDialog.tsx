@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
-  AlertDialog,
   AlertDialogBackdrop,
   AlertDialogContainer,
   AlertDialogDialog,
@@ -31,28 +30,26 @@ export const SaveConfirmDialog = ({ isOpen, onConfirm, onCancel }: SaveConfirmDi
   };
 
   const dialogContent = (
-    <AlertDialog isOpen={isOpen} onOpenChange={handleOpenChange}>
-      <AlertDialogBackdrop isDismissable={false} isKeyboardDismissDisabled>
-        <AlertDialogContainer>
-          <AlertDialogDialog>
-            <AlertDialogHeader>
-              <AlertDialogHeading>{texts.TITLE}</AlertDialogHeading>
-            </AlertDialogHeader>
-            <AlertDialogBody>
-              <p className={S.description}>{texts.DESCRIPTION}</p>
-            </AlertDialogBody>
-            <AlertDialogFooter className={S.footer}>
-              <Button className={S.cancelButton} onPress={onCancel}>
-                {texts.BTN_CANCEL}
-              </Button>
-              <Button className={S.confirmButton} onPress={onConfirm}>
-                {texts.BTN_CONFIRM}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogDialog>
-        </AlertDialogContainer>
-      </AlertDialogBackdrop>
-    </AlertDialog>
+    <AlertDialogBackdrop isOpen={isOpen} onOpenChange={handleOpenChange} isDismissable={false} isKeyboardDismissDisabled>
+      <AlertDialogContainer>
+        <AlertDialogDialog>
+          <AlertDialogHeader>
+            <AlertDialogHeading>{texts.TITLE}</AlertDialogHeading>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <p className={S.description}>{texts.DESCRIPTION}</p>
+          </AlertDialogBody>
+          <AlertDialogFooter className={S.footer}>
+            <Button className={S.cancelButton} onPress={onCancel}>
+              {texts.BTN_CANCEL}
+            </Button>
+            <Button className={S.confirmButton} onPress={onConfirm}>
+              {texts.BTN_CONFIRM}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogDialog>
+      </AlertDialogContainer>
+    </AlertDialogBackdrop>
   );
 
   if (!isMounted) return null;

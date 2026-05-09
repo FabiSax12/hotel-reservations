@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/locales";
 import { useReservationStatusReducer } from "../reducer/reservations.reducer";
 import { RESERVATION_STATUS_ACTIONS as A } from "../reducer/reservations.reducer.constants";
 import { RESERVATION_STATUS as S } from "../constants/reservation-statuses";
@@ -15,6 +16,7 @@ export function useReservationStatusFooter({
   onRegisterClose,
   onSave,
 }: ReservationStatusFooterProps) {
+  const { t } = useI18n();
   const { state, dispatch } = useReservationStatusReducer(
     originalCancellationReason,
   );
@@ -90,6 +92,10 @@ export function useReservationStatusFooter({
     dispatch({ type: A.SAVE_COMMITTED });
     setIsSaveConfirmDialogOpen(false);
     if (statusToSave !== null) {
+      // TODO: implementar comunicacion con la pasarela de pagos
+      if (currentSavedStatus === S.PENDING && statusToSave === S.APPROVED) {
+        console.log(`${t.RESERVATIONS.STATUS_MANAGEMENT.LOG_PAYMENT_PROCESSED} ${reservationId}.`);
+      }
       const cancellationReason =
         statusToSave === S.CANCELLED ? reasonToSave : undefined;
       onSave?.(statusToSave, cancellationReason);

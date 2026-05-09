@@ -17,7 +17,7 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
   };
 
   return (
-    <HeroDateRangePicker value={value} onChange={handleChange}>
+    <HeroDateRangePicker value={value} onChange={handleChange} aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_DATE_RANGE}>
       <DateField.Group fullWidth className={S.group}>
         <DateField.Input slot="start">
           {(segment) => <DateField.Segment segment={segment} className={S.segment} />}

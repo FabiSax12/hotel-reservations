@@ -10,7 +10,7 @@ export const RoomSelector = ({ value, rooms, onChange }: RoomSelectorProps) => {
   const { t } = useI18n();
 
   return (
-    <Select value={value} onChange={onChange}>
+    <Select value={value} onChange={onChange} aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_ROOM_FILTER}>
       <Select.Trigger className={`${S.pill} ${S.pillInactive} ${S.selectTrigger}`}>
         <Select.Value />
         <Select.Indicator />

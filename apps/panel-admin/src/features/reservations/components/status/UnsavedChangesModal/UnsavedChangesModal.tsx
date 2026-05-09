@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Modal,
   ModalBackdrop,
   ModalContainer,
   ModalDialog,
@@ -24,24 +23,22 @@ export const UnsavedChangesModal = ({ isOpen, onStay }: UnsavedChangesModalProps
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleOpenChange}>
-      <ModalBackdrop isDismissable={false} isKeyboardDismissDisabled>
-        <ModalContainer>
-          <ModalDialog>
-            <ModalHeader>
-              <ModalHeading>{texts.TITLE}</ModalHeading>
-            </ModalHeader>
-            <ModalBody>
-              <p className={S.description}>{texts.DESCRIPTION}</p>
-            </ModalBody>
-            <ModalFooter className={S.footer}>
-              <Button className={S.stayButton} onPress={onStay}>
-                {texts.BTN_STAY}
-              </Button>
-            </ModalFooter>
-          </ModalDialog>
-        </ModalContainer>
-      </ModalBackdrop>
-    </Modal>
+    <ModalBackdrop isOpen={isOpen} onOpenChange={handleOpenChange}>
+      <ModalContainer>
+        <ModalDialog>
+          <ModalHeader>
+            <ModalHeading>{texts.TITLE}</ModalHeading>
+          </ModalHeader>
+          <ModalBody>
+            <p className={S.description}>{texts.DESCRIPTION}</p>
+          </ModalBody>
+          <ModalFooter className={S.footer}>
+            <Button className={S.stayButton} onPress={onStay}>
+              {texts.BTN_STAY}
+            </Button>
+          </ModalFooter>
+        </ModalDialog>
+      </ModalContainer>
+    </ModalBackdrop>
   );
 };

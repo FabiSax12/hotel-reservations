@@ -62,6 +62,7 @@ export type ReservationsTexts = {
     BTN_COMPLETE_RESERVATION: string;
     BTN_REVERT: string;
     BTN_SAVE_CHANGES: string;
+    LOG_PAYMENT_PROCESSED: string;
   };
   CANCELLATION_MODAL: {
     TITLE: string;
@@ -96,7 +97,9 @@ export type ReservationsTexts = {
   FILTERS: {
     ALL: string;
     PLACEHOLDER_ROOM: string;
+    ARIA_LABEL_ROOM_FILTER: string;
     DATE_RANGE_PICKER_LABEL: string;
+    ARIA_LABEL_DATE_RANGE: string;
     CLEAR: string;
     RESULTS_SUFFIX: string;
     RESULTS_OF: string;
