@@ -5,9 +5,9 @@ import { PROPERTIES } from "@/features/landing/properties/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import type { PropertyItemTexts } from "@/features/landing/properties/i18n/propertiesTexts.type";
 
-type PropertyInfoPanelProps = {
+interface PropertyInfoPanelProps {
   texts: PropertyItemTexts;
-};
+}
 
 export function PropertyInfoPanel({ texts }: PropertyInfoPanelProps) {
   return (

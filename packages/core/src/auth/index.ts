@@ -1,8 +1,106 @@
+/**
+ * @fileoverview Auth package for @hotel/core.
+ *
+ * Unified authentication layer for both panel-admin and portal-reservas.
+ * Guarantees non-null session/user/profile after login.
+ *
+ * @example
+ * ```ts
+ * // Server component (layout.tsx)
+ * import { getServerAuthContext, AuthProvider } from "@hotel/core/auth";
+ *
+ * const { session, user, profile, isAdmin } = await getServerAuthContext();
+ *
+ * return (
+ *   <AuthProvider
+ *     initialSession={session}
+ *     initialUser={user}
+ *     initialProfile={profile}
+ *     initialIsAdmin={isAdmin}
+ *   >
+ *     {children}
+ *   </AuthProvider>
+ * );
+ * ```
+ *
+ * @example
+ * ```ts
+ * // Client component
+ * import { useAuth } from "@hotel/core/auth";
+ *
+ * const { session, user, profile, loading, refresh } = useAuth();
+ * ```
+ */
+
 import type { SupabaseServerClient } from "@hotel/db";
 import { createSupabaseServerActionClient, createSupabaseServiceClient } from "@hotel/db";
 import type { AdminUser } from "@hotel/db/types";
 import type { ActivationErrorCode } from "./config/constants";
 import { ACTIVATION_ERROR_CODES, AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
+
+// ============================================================================
+// Re-exported types from shared/
+// ============================================================================
+
+export type { UseAuthSessionResult } from "./client/useAuthSession";
+
+export type {
+  CookieStore,
+  LoginActionOptions,
+  ServerAuthContext,
+  SignOutOptions,
+  SignOutResult,
+} from "./server/types";
+
+export type {
+  AdminProfile,
+  AuthContextValue,
+  AuthError,
+  AuthProviderProps,
+  AuthState,
+  ClientProfile,
+  LoginResult,
+  Session,
+  SupabaseUser,
+} from "./shared/types";
+
+// ============================================================================
+// Re-export server functions
+// ============================================================================
+
+export { getInitialAuthStatus, getServerAuthContext } from "./server/getServerAuthContext";
+export { loginAction, loginFormAction } from "./server/loginAction";
+export { getAuthContextAction, refreshSession } from "./server/refreshSession";
+export { redirectToLogin, signOutAction } from "./server/signOutAction";
+
+// ============================================================================
+// Re-export client functions
+// ============================================================================
+
+export { AuthProvider, useAuth, withAuth } from "./client/AuthProvider";
+export {
+  getClientSession,
+  signOutClient,
+  subscribeToAuthChanges,
+} from "./client/authSessionService";
+export { useAuthSession } from "./client/useAuthSession";
+
+// ============================================================================
+// Re-export utils
+// ============================================================================
+
+export {
+  createAuthError,
+  getRedirectUrl,
+  getUserId,
+  isAdminUser,
+  isSessionValid,
+  validateProfile,
+} from "./shared/utils";
+
+// ============================================================================
+// Original auth helpers (server-side only)
+// ============================================================================
 
 export type RegisterPayload = {
   email: string;
@@ -10,10 +108,14 @@ export type RegisterPayload = {
   full_name: string;
 };
 
-export type AuthError =
+export type AuthErrorOld =
   | { code: "EMAIL_ALREADY_REGISTERED" }
   | { code: "UNKNOWN_ERROR"; message: string };
 
+/**
+ * Sign in with email and password.
+ * @deprecated Use loginAction instead for unified login with profile fetch.
+ */
 export async function signInWithPassword(email: string, password: string) {
   const supabase = createSupabaseServerActionClient();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -21,12 +123,20 @@ export async function signInWithPassword(email: string, password: string) {
   return data;
 }
 
+/**
+ * Sign out the current user.
+ * @deprecated Use signOutAction instead.
+ */
 export async function signOut() {
   const supabase = createSupabaseServerActionClient();
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
 }
 
+/**
+ * Get current session.
+ * @deprecated Use getServerAuthContext (server) or refreshSession (client).
+ */
 export async function getSession() {
   const supabase = createSupabaseServerActionClient();
   const { data, error } = await supabase.auth.getSession();
@@ -34,6 +144,9 @@ export async function getSession() {
   return data;
 }
 
+/**
+ * Register a new user.
+ */
 export async function signUp(
   payload: RegisterPayload,
   supabase: SupabaseServerClient,
@@ -53,23 +166,26 @@ export async function signUp(
 
   if (error) {
     if (error.code === "user_already_exists") {
-      throw { code: "EMAIL_ALREADY_REGISTERED" } satisfies AuthError;
+      throw { code: "EMAIL_ALREADY_REGISTERED" } satisfies AuthErrorOld;
     }
-    throw { code: "UNKNOWN_ERROR", message: error.message } satisfies AuthError;
+    throw { code: "UNKNOWN_ERROR", message: error.message } satisfies AuthErrorOld;
   }
 
   const userId = data.user?.id;
   if (!userId) {
-    throw { code: "UNKNOWN_ERROR", message: "User creation returned no ID" } satisfies AuthError;
+    throw { code: "UNKNOWN_ERROR", message: "User creation returned no ID" } satisfies AuthErrorOld;
   }
 
   if (!data.user?.identities || data.user.identities.length === 0) {
-    throw { code: "EMAIL_ALREADY_REGISTERED" } satisfies AuthError;
+    throw { code: "EMAIL_ALREADY_REGISTERED" } satisfies AuthErrorOld;
   }
 
   return { success: true };
 }
 
+/**
+ * Invite a new admin by email.
+ */
 export async function inviteAdminByEmail(email: string, redirectTo: string): Promise<void> {
   const supabase = createSupabaseServiceClient();
   const { error } = await supabase.auth.admin.inviteUserByEmail(email, { redirectTo });
@@ -80,6 +196,9 @@ export type ActivationTokenResult =
   | { userId: string; email: string }
   | { error: ActivationErrorCode };
 
+/**
+ * Verify activation token from email.
+ */
 export async function verifyActivationToken(
   accessToken: string,
   refreshToken: string,
@@ -97,6 +216,9 @@ export async function verifyActivationToken(
   return { userId: data.user.id, email: data.user.email ?? "" };
 }
 
+/**
+ * Complete admin activation (set password and role).
+ */
 export async function completeAdminActivation(
   accessToken: string,
   refreshToken: string,
@@ -125,6 +247,17 @@ export async function completeAdminActivation(
   if (roleError) throw new Error(roleError.message);
 }
 
+/**
+ * Verify if user has admin role and is active.
+ *
+ * @example
+ * ```ts
+ * const admin = await verifyAdminRole(userId);
+ * if (!admin) {
+ *   throw new Error("Admin access required");
+ * }
+ * ```
+ */
 export async function verifyAdminRole(userId: string): Promise<AdminUser | null> {
   const supabase = createSupabaseServiceClient();
 

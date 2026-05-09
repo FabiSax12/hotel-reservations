@@ -6,6 +6,7 @@ import { AboutSection } from "@/features/landing/about/components/AboutSection";
 import { PropertiesSection } from "@/features/landing/properties/components/PropertiesSection";
 import { ServicesSection } from "@/features/landing/services/components/ServicesSection";
 import { GallerySection } from "@/features/landing/gallery/components/GallerySection";
+import { TestimonialsSection } from "@/features/landing/testimonials/components/TestimonialsSection";
 import { LandingFooter } from "@/features/landing/layout/components/LandingFooter";
 
 export default function LandingPage() {
@@ -19,6 +20,7 @@ export default function LandingPage() {
       <PropertiesSection />
       <ServicesSection />
       <GallerySection />
+      <TestimonialsSection />
       <LandingFooter />
     </main>
   );

@@ -10,7 +10,7 @@ export const SERVICES = Object.freeze({
   GRID_DESKTOP: "hidden lg:grid lg:grid-cols-4 gap-px bg-forest-800",
   GRID_MOBILE: "lg:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none",
   GRID_MOBILE_CARD: "snap-start shrink-0 w-[76vw] bg-forest-900 border border-forest-800",
-  CARD: "group relative p-8 lg:p-10 bg-forest-900 flex flex-col gap-6 transition-colors duration-500 hover:bg-forest-800 cursor-default",
+  CARD: "group relative p-8 lg:p-10 bg-forest-900 flex flex-col gap-6 transition-colors duration-500 hover:bg-forest-800 cursor-default h-full",
   CARD_ACCENT: "w-8 h-px bg-gold-500 transition-all duration-500 group-hover:w-16",
   CARD_ICON: "text-gold-500 w-8 h-8 transition-transform duration-500 group-hover:scale-110",
   CARD_TITLE: "font-serif text-xl text-stone-100 group-hover:text-gold-300 transition-colors duration-300",

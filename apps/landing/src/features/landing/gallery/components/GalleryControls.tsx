@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/locales";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
 
-type GalleryControlsProps = {
+interface GalleryControlsProps {
   current: number;
   total: number;
   isHovered: boolean;
   prefersReducedMotion: boolean;
   autoInterval: number;
   onSelect: (i: number) => void;
-};
+}
 
 export function GalleryControls({
   current, total, isHovered, prefersReducedMotion, autoInterval, onSelect,

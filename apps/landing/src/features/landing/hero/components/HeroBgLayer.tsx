@@ -4,10 +4,11 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { HERO_ORBS } from "@/features/landing/hero/constants/orbs";
+import { BG_GRADIENT } from "@/features/landing/hero/constants/gradients";
 
-type HeroBgLayerProps = {
+interface HeroBgLayerProps {
   bgTransform: MotionValue<string>;
-};
+}
 
 export function HeroBgLayer({ bgTransform }: HeroBgLayerProps) {
   const prefersReducedMotion = useReducedMotion() ?? false;
@@ -17,13 +18,7 @@ export function HeroBgLayer({ bgTransform }: HeroBgLayerProps) {
       className={HERO.BG_LAYER}
       style={{ transform: prefersReducedMotion ? undefined : bgTransform }}
     >
-      <div
-        className={HERO.BG_INNER}
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 70% at 75% 40%, oklch(22% 0.06 143), transparent 70%), radial-gradient(ellipse 50% 60% at 15% 80%, oklch(67% 0.15 68 / 0.07), transparent 60%), oklch(11% 0.04 143)",
-        }}
-      />
+      <div className={HERO.BG_INNER} style={{ background: BG_GRADIENT }} />
       <svg className={HERO.BG_SVG} xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">

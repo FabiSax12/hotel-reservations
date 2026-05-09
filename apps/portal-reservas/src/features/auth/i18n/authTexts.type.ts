@@ -40,7 +40,7 @@ export type AuthTexts = {
     CONTINUE_WITH_GOOGLE: string;
     LOADING: string;
   };
- 
+
   VERIFY_EMAIL: {
     TITLE: string;
     DESCRIPTION: string;
@@ -63,5 +63,6 @@ export type AuthTexts = {
     BACK_TO_LOGIN: string;
     ERROR_BOUNDARY_TITLE: string;
     TRY_AGAIN: string;
+    EMAIL_RATE_LIMIT_REACHED: string;
   };
 };

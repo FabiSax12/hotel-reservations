@@ -12,6 +12,8 @@ import { PROPERTIES_TEXTS } from "@/features/landing/properties/i18n/properties.
 import type { PropertiesTexts } from "@/features/landing/properties/i18n/propertiesTexts.type";
 import { GALLERY_TEXTS } from "@/features/landing/gallery/i18n/gallery.texts";
 import type { GalleryTexts } from "@/features/landing/gallery/i18n/galleryTexts.type";
+import { TESTIMONIALS_TEXTS } from "@/features/landing/testimonials/i18n/testimonials.texts";
+import type { TestimonialsTexts } from "@/features/landing/testimonials/i18n/testimonialsTexts.type";
 
 export type LandingTexts = {
   HERO: HeroTexts;
@@ -19,6 +21,7 @@ export type LandingTexts = {
   SERVICES: ServicesTexts;
   PROPERTIES: PropertiesTexts;
   GALLERY: GalleryTexts;
+  TESTIMONIALS: TestimonialsTexts;
 };
 
 export type AppTranslations = {
@@ -35,6 +38,7 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
       SERVICES: SERVICES_TEXTS.es,
       PROPERTIES: PROPERTIES_TEXTS.es,
       GALLERY: GALLERY_TEXTS.es,
+      TESTIMONIALS: TESTIMONIALS_TEXTS.es,
     },
   },
   [LOCALES.EN]: {
@@ -45,6 +49,7 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
       SERVICES: SERVICES_TEXTS.en,
       PROPERTIES: PROPERTIES_TEXTS.en,
       GALLERY: GALLERY_TEXTS.en,
+      TESTIMONIALS: TESTIMONIALS_TEXTS.en,
     },
   },
 };
