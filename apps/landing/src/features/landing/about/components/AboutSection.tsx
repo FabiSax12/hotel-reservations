@@ -5,7 +5,7 @@ import { AboutStats } from "./AboutStats";
 
 export function AboutSection() {
   return (
-    <section className={ABOUT.SECTION}>
+    <section id="about" className={ABOUT.SECTION}>
       <div className={ABOUT.CONTAINER}>
         <div className={ABOUT.GRID}>
           <AboutTextPanel />

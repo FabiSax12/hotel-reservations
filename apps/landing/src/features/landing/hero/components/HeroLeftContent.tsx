@@ -4,13 +4,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/locales";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-
-const WORDMARK_CHARS = Array.from("ALTAVERDE");
-
-const CHAR_CONTAINER = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.045, delayChildren: 0.25 } },
-};
+import { WORDMARK_CHARS, CHAR_CONTAINER } from "@/features/landing/hero/constants/animations";
+import { ARROW_RIGHT_PATH } from "@/features/landing/hero/constants/icons";
+import { ROUTES } from "@/config/routes";
 
 export function HeroLeftContent() {
   const { t } = useI18n();
@@ -68,13 +64,13 @@ export function HeroLeftContent() {
         <motion.p className={HERO.SUBHEADLINE} variants={FADE_UP}>{hero.SUBHEADLINE}</motion.p>
 
         <motion.div className={HERO.CTA_ROW} variants={FADE_UP}>
-          <motion.a href="#" className={HERO.CTA_PRIMARY} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <motion.a href={ROUTES.PORTAL} className={HERO.CTA_PRIMARY} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             {hero.CTA_PRIMARY}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
+              <path d={ARROW_RIGHT_PATH} />
             </svg>
           </motion.a>
-          <motion.a href="#" className={HERO.CTA_SECONDARY} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <motion.a href={ROUTES.ANCHORS.ROOMS} className={HERO.CTA_SECONDARY} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             {hero.CTA_SECONDARY}
           </motion.a>
         </motion.div>

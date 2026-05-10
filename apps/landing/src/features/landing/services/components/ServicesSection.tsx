@@ -10,7 +10,7 @@ export function ServicesSection() {
   const prefersReducedMotion = useReducedMotion() ?? false;
 
   return (
-    <section className={SERVICES.SECTION}>
+    <section id="services" className={SERVICES.SECTION}>
       <div className={SERVICES.CONTAINER}>
         <ServicesHeader />
         <ServicesGrid prefersReducedMotion={prefersReducedMotion} />

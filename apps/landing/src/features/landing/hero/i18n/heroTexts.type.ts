@@ -1,4 +1,4 @@
-export type HeroTexts = {
+export interface HeroTexts {
   EYEBROW: string;
   HOTEL_NAME: string;
   HEADLINE_LINE1: string;
@@ -11,4 +11,4 @@ export type HeroTexts = {
   IMAGE_ALT: string;
   FEATURED_LABEL: string;
   FEATURED_PROPERTY: string;
-};
+}

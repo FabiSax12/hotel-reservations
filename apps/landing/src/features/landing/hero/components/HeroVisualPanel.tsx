@@ -6,10 +6,11 @@ import type { MotionValue } from "framer-motion";
 import { useI18n } from "@/locales";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { HERO_IMAGE_URL, VISUAL_OVERLAY_1, VISUAL_OVERLAY_2, VISUAL_OVERLAY_3 } from "@/features/landing/hero/constants/gradients";
 
-type HeroVisualPanelProps = {
+interface HeroVisualPanelProps {
   scale: MotionValue<number>;
-};
+}
 
 export function HeroVisualPanel({ scale }: HeroVisualPanelProps) {
   const { t } = useI18n();
@@ -26,16 +27,16 @@ export function HeroVisualPanel({ scale }: HeroVisualPanelProps) {
       <div className={HERO.VISUAL_PANEL}>
         <motion.div className={HERO.VISUAL_INNER} style={{ scale: prefersReducedMotion ? 1 : scale }}>
           <Image
-            src="https://picsum.photos/seed/altaverde-hero/600/800"
+            src={HERO_IMAGE_URL}
             alt={hero.IMAGE_ALT}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 480px"
             priority
           />
-          <div className={HERO.VISUAL_INNER} style={{ background: "linear-gradient(160deg, oklch(28% 0.07 143 / 0.55) 0%, oklch(16% 0.05 143 / 0.45) 50%, oklch(11% 0.04 143 / 0.65) 100%)" }} />
-          <div className={HERO.VISUAL_INNER} style={{ background: "radial-gradient(ellipse 70% 50% at 50% 20%, oklch(36% 0.08 143 / 0.5), transparent)" }} />
-          <div className={HERO.VISUAL_INNER} style={{ background: "radial-gradient(ellipse 60% 40% at 30% 70%, oklch(67% 0.15 68 / 0.1), transparent)" }} />
+          <div className={HERO.VISUAL_INNER} style={{ background: VISUAL_OVERLAY_1 }} />
+          <div className={HERO.VISUAL_INNER} style={{ background: VISUAL_OVERLAY_2 }} />
+          <div className={HERO.VISUAL_INNER} style={{ background: VISUAL_OVERLAY_3 }} />
           <svg className={HERO.VISUAL_SVG} viewBox="0 0 400 533" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
             <circle cx="200" cy="200" r="120" stroke="oklch(67% 0.15 68)" strokeWidth="0.5" />
             <circle cx="200" cy="200" r="80" stroke="oklch(67% 0.15 68)" strokeWidth="0.5" />

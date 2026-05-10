@@ -1,5 +1,7 @@
+import type { Easing } from "framer-motion";
+
 type OrbAnimate = { opacity: number[]; y?: number[]; x?: number[] };
-type OrbTransition = { duration: number; repeat: number; ease: string; delay?: number };
+type OrbTransition = { duration: number; repeat: number; ease: Easing; delay?: number };
 type OrbStyle = { top: string; left?: string; right?: string };
 
 export type OrbConfig = {
