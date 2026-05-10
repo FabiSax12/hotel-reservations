@@ -8,9 +8,9 @@ import {
 } from "@/features/rooms/constants/amenities.constants";
 import { IconRenderer } from "../IconRenderer";
 import type { AmenityEditorCardProps } from "./AmenityEditorCard.interface";
-import { AMENITY_EDITOR_CARD_STYLES as s } from "./AmenityEditorCard.styles";
+import { AMENITY_EDITOR_CARD_STYLES as STYLES } from "./AmenityEditorCard.styles";
 
-export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
+export const AmenityEditorCard = ({
   name,
   setName,
   desc,
@@ -23,52 +23,59 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
   placeholderName,
   placeholderDesc,
   autoFocus = false,
-}) => {
+}: AmenityEditorCardProps) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  const handleDescChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDesc(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === KEYBOARD_KEYS.ENTER) {
+      e.preventDefault();
+      onSave();
+    } else if (e.key === KEYBOARD_KEYS.ESCAPE) {
+      onCancel();
+    }
+  };
+
+  const handleIconSelect = (iconName: string) => {
+    setSelectedIcon(iconName);
+  };
+
   return (
-    <div className={s.customInputCard}>
+    <div className={STYLES.customInputCard}>
       <input
         type="text"
-        className={s.customInput}
+        className={STYLES.customInput}
         placeholder={placeholderName}
         maxLength={AMENITIES_VALIDATION.MAX_NAME_LENGTH}
         value={name}
-        onChange={(e) => setName(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === KEYBOARD_KEYS.ENTER) {
-            e.preventDefault();
-            onSave();
-          } else if (e.key === KEYBOARD_KEYS.ESCAPE) {
-            onCancel();
-          }
-        }}
+        onChange={handleNameChange}
+        onKeyDown={handleKeyDown}
         disabled={isSubmitting}
         autoFocus={autoFocus}
       />
       <input
         type="text"
-        className={s.customInput}
+        className={STYLES.customInput}
         placeholder={placeholderDesc}
         maxLength={AMENITIES_VALIDATION.MAX_DESC_LENGTH}
         value={desc}
-        onChange={(e) => setDesc(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === KEYBOARD_KEYS.ENTER) {
-            e.preventDefault();
-            onSave();
-          } else if (e.key === KEYBOARD_KEYS.ESCAPE) {
-            onCancel();
-          }
-        }}
+        onChange={handleDescChange}
+        onKeyDown={handleKeyDown}
         disabled={isSubmitting}
       />
 
-      <div className={s.iconPickerGrid}>
+      <div className={STYLES.iconPickerGrid}>
         {AMENITIES_CONFIG.CUSTOM_ICON_OPTIONS.map((iconName) => (
           <button
             key={iconName}
             type="button"
-            className={s.iconPickerBtn(selectedIcon === iconName)}
-            onClick={() => setSelectedIcon(iconName)}
+            className={STYLES.iconPickerBtn(selectedIcon === iconName)}
+            onClick={() => handleIconSelect(iconName)}
             disabled={isSubmitting}
             title={iconName}
           >
@@ -77,10 +84,10 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
         ))}
       </div>
 
-      <div className={s.customActionWrapper}>
+      <div className={STYLES.customActionWrapper}>
         <button
           type="button"
-          className={s.customSaveBtn}
+          className={STYLES.customSaveBtn}
           onClick={onSave}
           disabled={isSubmitting || !name.trim()}
         >
@@ -88,7 +95,7 @@ export const AmenityEditorCard: React.FC<AmenityEditorCardProps> = ({
         </button>
         <button
           type="button"
-          className={s.customCancelBtn}
+          className={STYLES.customCancelBtn}
           onClick={onCancel}
           disabled={isSubmitting}
         >

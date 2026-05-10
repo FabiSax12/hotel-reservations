@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Amenity } from "@/features/rooms/domain/amenity.interface";
-import { ROOMS_TEXTS } from "@/features/rooms/i18n/rooms.texts";
 import { mockAmenitiesService } from "@/features/rooms/services/mockAmenitiesService";
 import { useI18n } from "@/locales";
 import type { AmenitiesFormValues } from "../AmenitiesForm.interface";
@@ -11,8 +10,8 @@ import { useCustomAmenities } from "./useCustomAmenities";
 const { FORM_FIELD, LOG_MESSAGES } = AMENITIES_FORM_CONSTANTS;
 
 export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
-  const { locale } = useI18n();
-  const texts = ROOMS_TEXTS[locale as keyof typeof ROOMS_TEXTS] || ROOMS_TEXTS.en;
+  const { t } = useI18n();
+  const texts = t.ROOMS;
 
   const [amenities, setAmenities] = useState<Amenity[]>([]);
   const [isLoading, setIsLoading] = useState(true);

@@ -1,18 +1,17 @@
 import { AlertDialog, Button } from "@heroui/react";
-import type React from "react";
 import type { DeleteAmenityDialogProps } from "./DeleteAmenityDialog.interface";
-import { DELETE_AMENITY_DIALOG_STYLES as s } from "./DeleteAmenityDialog.styles";
+import { DELETE_AMENITY_DIALOG_STYLES as STYLES } from "./DeleteAmenityDialog.styles";
 
-export const DeleteAmenityDialog: React.FC<DeleteAmenityDialogProps> = ({
+export const DeleteAmenityDialog = ({
   amenity,
   onOpenChange,
   onConfirm,
   texts,
-}) => {
+}: DeleteAmenityDialogProps) => {
   return (
     <AlertDialog.Backdrop isOpen={!!amenity} onOpenChange={onOpenChange}>
       <AlertDialog.Container>
-        <AlertDialog.Dialog className={s.dialog}>
+        <AlertDialog.Dialog className={STYLES.dialog}>
           <AlertDialog.CloseTrigger />
           <AlertDialog.Header>
             <AlertDialog.Icon status="danger" />

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { DEFAULT_ROOM_ID } from "@/features/rooms/constants/amenities.constants";
 import { AmenitiesForm } from "../AmenitiesForm/AmenitiesForm";
-import { AMENITIES_VIEW_STYLES as s } from "./AmenitiesView.styles";
+import { AMENITIES_VIEW_STYLES as STYLES } from "./AmenitiesView.styles";
 
 export const AmenitiesView = () => {
   const router = useRouter();
@@ -14,17 +14,17 @@ export const AmenitiesView = () => {
   };
 
   return (
-    <main className={s.main}>
+    <main className={STYLES.main}>
       <div
-        className={s.background}
+        className={STYLES.background}
         style={{
-          backgroundImage: `url('${s.bgImage}')`,
+          backgroundImage: `url('${STYLES.bgImage}')`,
         }}
       />
-      <div className={s.overlay} />
-      <div className={s.blob} />
+      <div className={STYLES.overlay} />
+      <div className={STYLES.blob} />
 
-      <div className={s.content}>
+      <div className={STYLES.content}>
         <AmenitiesForm roomId={DEFAULT_ROOM_ID} onSuccess={handleSuccess} />
       </div>
     </main>
