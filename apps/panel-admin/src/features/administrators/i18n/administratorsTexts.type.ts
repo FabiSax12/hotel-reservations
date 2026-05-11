@@ -1,0 +1,28 @@
+export type AdministratorsTexts = {
+  PAGE: {
+    TITLE_PREFIX: string;
+    TITLE_ACCENT: string;
+    SUBTITLE:     string;
+  };
+  STAT: {
+    TOTAL_LABEL:   string;
+    TOTAL_CAPTION: string;
+  };
+  TABLE: {
+    COL_EMAIL:       string;
+    COL_STATUS:      string;
+    COL_CREATED_AT:  string;
+    BADGE_YOU:       string;
+    STATUS_ACTIVE:   string;
+    STATUS_INACTIVE: string;
+  };
+  PAGINATION: {
+    ARIA_LABEL: string;
+    PREVIOUS:   string;
+    NEXT:       string;
+  };
+  EMPTY: {
+    TITLE:       string;
+    DESCRIPTION: string;
+  };
+};
