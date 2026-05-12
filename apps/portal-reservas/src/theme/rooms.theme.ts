@@ -185,33 +185,32 @@ export const ROOM_CARD_STYLES = {
 } as const;
 
 // ─── Package Card Styles (US-DM-04) ─────────────────────────────────────────
-// Border-based depth model (no box-shadow), consistent with landing page aesthetics.
 
 export const PACKAGE_CARD_STYLES = {
-  /** Outer wrapper that stacks primary + shadows + badge as a single unit. */
-  wrapper: "relative",
+  /** Outer wrapper for the entire package card including banner and expansion. */
+  wrapper: "relative mb-4",
 
-  /** Shadow card stack container — positions shadow cards behind the primary. */
-  shadowStack: "relative",
+  /** Package banner at the top indicating this is a package. */
+  packageBanner:
+    "flex items-center gap-3 px-5 py-2.5 bg-gold-600/20 border border-gold-500/30 rounded-t-[2rem] text-gold-400",
+  packageBannerIcon: "text-lg",
+  packageBannerText: "text-xs font-bold uppercase tracking-widest",
+  packageBannerCapacity: "ml-auto text-xs font-medium text-gold-500/80",
 
-  /** Individual decorative shadow card behind the primary RoomCard. */
-  shadowCard: (peekIndex: number) =>
-    `absolute left-0 right-0 bg-forest-800/30 border border-forest-700/15 rounded-[1.5rem] pointer-events-none select-none ${
-      peekIndex === 0 ? "h-7 -bottom-3" : "h-5 -bottom-5"
+  /** Expand/collapse button below the primary card. */
+  expandBtn:
+    "w-full flex items-center justify-center gap-2 py-3 bg-forest-800/40 hover:bg-forest-800/60 border-x border-b border-forest-700/30 rounded-b-[2rem] text-sm font-medium text-stone-300 hover:text-stone-100 transition-colors cursor-pointer",
+  expandIcon: (isExpanded: boolean) =>
+    `text-xs transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`,
+
+  /** Expansion grid for component rooms. */
+  expansionGrid: (isExpanded: boolean) =>
+    `grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      isExpanded ? "grid-rows-[1fr] mt-4" : "grid-rows-[0fr] mt-0"
     }`,
-  /** Room type label inside the shadow card. */
-  shadowLabel: "absolute bottom-1.5 left-7 text-[10px] font-medium text-stone-500/60 uppercase tracking-wider",
-
-  /** Package indicator badge below the stack. */
-  badgeWrapper: "flex justify-center mt-4",
-  badge:
-    "inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-800/60 border border-forest-700/30 rounded-lg text-xs font-bold text-stone-300 uppercase tracking-widest",
-  badgeIcon: "w-3 h-3 text-gold-500",
-
-  /** Package total price block (shown in place of individual room price). */
-  priceBlock: "flex flex-col",
-  priceLabel: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-0.5",
-  priceRow: "flex items-baseline gap-1.5",
-  priceAmount: "text-3xl font-black text-stone-50 tracking-tighter",
-  priceCurrency: "text-sm font-bold text-stone-400",
+  expansionInner: "overflow-hidden",
+  expansionContent: "pb-4",
+  expansionTitle:
+    "text-sm font-bold text-stone-400 uppercase tracking-wider mb-4 px-2",
+  expansionGridInner: "flex flex-col gap-6",
 } as const;

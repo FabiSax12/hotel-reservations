@@ -1,9 +1,12 @@
 /**
  * @file grouping.ts — Smart room grouping algorithm (US-DM-04).
  *
- * Pure function that takes a list of rooms and a guest count, and returns
- * a mixed list of individual rooms and room packages. Uses greedy bin-packing
- * with constraints to reject absurd splits.
+ * Generates ALL valid room combinations (packages) that can accommodate
+ * the guest count, then sorts them by total price. Individual rooms that
+ * can accommodate all guests are also included.
+ *
+ * Uses backtracking to enumerate all valid combinations with repetition
+ * (respecting room inventory), then filters by MAX_WASTE and MAX_ROOMS.
  *
  * Deterministic: same inputs always produce the same output.
  * No hooks, no JSX, no side effects, no fetch.
@@ -17,16 +20,16 @@ export type GroupedRoom = Room | RoomPackage;
 
 /**
  * Groups rooms into packages when no single room can accommodate all guests.
+ * Generates ALL valid combinations, not just greedy fills.
  *
  * Algorithm:
  * 1. If guestCount <= 0 or rooms empty -> return rooms as-is.
- * 2. Filter rooms with capacity >= 1.
- * 3. Sort by capacity DESC, then price DESC (tie-break).
- * 4. For each room:
- *    a. If capacity >= guestCount -> emit as individual.
- *    b. Else -> build a package with greedy fill.
- * 5. Deduplicate identical packages (keep cheaper).
- * 6. Sort: individual rooms first, then packages by totalPricePerNight ASC.
+ * 2. Separate rooms that can accommodate all guests (individuals).
+ * 3. For remaining rooms, generate all valid combinations via backtracking.
+ * 4. Filter combinations: waste <= MAX_WASTE, rooms <= MAX_ROOMS.
+ * 5. Convert valid combinations to RoomPackage objects.
+ * 6. Deduplicate identical packages.
+ * 7. Sort: individual rooms first (by price ASC), then packages (by price ASC).
  */
 export function groupRoomsIntoPackages(
   rooms: readonly Room[],
@@ -41,131 +44,112 @@ export function groupRoomsIntoPackages(
     return [...rooms];
   }
 
-  // Sort: capacity DESC, then price DESC
-  const sorted = [...eligible].sort((a, b) => {
-    if (b.capacity !== a.capacity) return b.capacity - a.capacity;
-    return b.price - a.price;
-  });
+  // Separate individual rooms (can accommodate all guests alone)
+  const individuals: Room[] = eligible
+    .filter((r) => r.capacity >= guestCount)
+    .sort((a, b) => a.price - b.price);
 
-  const individuals: Room[] = [];
-  const packages: RoomPackage[] = [];
+  // Rooms that need to be combined
+  const combinable = eligible.filter((r) => r.capacity < guestCount);
 
-  for (const room of sorted) {
-    if (room.capacity >= guestCount) {
-      individuals.push(room);
-      continue;
-    }
+  // Generate all valid packages from combinable rooms
+  const packages = generateAllPackages(combinable, guestCount);
 
-    const pkg = buildPackage(sorted, room, guestCount);
-    if (pkg) {
-      packages.push(pkg);
-    }
-  }
-
-  // Deduplicate: if two packages cover the same room IDs, keep the cheaper one.
+  // Deduplicate and sort
   const deduped = deduplicatePackages(packages);
-
-  // Sort: individuals first (by price ASC), then packages by totalPricePerNight ASC
-  const sortedIndividuals = [...individuals].sort((a, b) => a.price - b.price);
   const sortedPackages = [...deduped].sort(
     (a, b) => a.totalPricePerNight - b.totalPricePerNight,
   );
 
-  return [...sortedIndividuals, ...sortedPackages];
+  return [...individuals, ...sortedPackages];
 }
 
 /**
- * Attempts to build a package starting with `primaryRoom`, filling remaining
- * capacity with the smallest sufficient rooms. Returns null if no valid
- * package can be formed.
- *
- * Rooms already in the package are excluded from being reused as fill.
+ * Generates all valid room combinations via backtracking.
+ * Each combination is a multiset of rooms whose total capacity >= guestCount.
  */
-function buildPackage(
-  sortedRooms: readonly Room[],
-  primaryRoom: Room,
+function generateAllPackages(
+  rooms: readonly Room[],
   guestCount: number,
-): RoomPackage | null {
+): RoomPackage[] {
   const { MAX_WASTE, MAX_ROOMS } = ROOM_GROUPING;
+  const packages: RoomPackage[] = [];
 
-  const packageRooms: Room[] = [primaryRoom];
-  const usedIds = new Set<string>([primaryRoom.id]);
-  let remaining = guestCount - primaryRoom.capacity;
+  // Use backtracking to find all valid combinations
+  // We allow using the same room multiple times (up to inventory)
+  // To avoid duplicate permutations, we enforce non-decreasing index order
+  function backtrack(
+    current: Room[],
+    startIndex: number,
+    usedCounts: Map<string, number>,
+  ) {
+    const totalCapacity = current.reduce((s, r) => s + r.capacity, 0);
 
-  while (remaining > 0) {
-    if (packageRooms.length >= MAX_ROOMS) {
-      return null; // Too many rooms
+    // If we have enough capacity, check if it's a valid package
+    if (totalCapacity >= guestCount) {
+      const waste = totalCapacity - guestCount;
+      if (waste <= MAX_WASTE && current.length >= 2) {
+        const pkg = buildPackageFromRooms(current);
+        if (pkg) packages.push(pkg);
+      }
+      // Don't return here — adding more rooms might also be valid
+      // But if we've hit MAX_ROOMS, stop
+      if (current.length >= MAX_ROOMS) return;
     }
 
-    // Find the smallest room whose capacity <= remaining + MAX_WASTE,
-    // excluding rooms already in this package.
-    const candidate = findSmallestRoom(sortedRooms, remaining, MAX_WASTE, usedIds);
-    if (!candidate) {
-      return null; // No valid room found
+    // If we haven't reached max rooms, try adding more
+    if (current.length >= MAX_ROOMS) return;
+
+    for (let i = startIndex; i < rooms.length; i++) {
+      const room = rooms[i];
+      const used = usedCounts.get(room.id) ?? 0;
+
+      // Respect inventory limits
+      if (used >= room.inventory) continue;
+
+      usedCounts.set(room.id, used + 1);
+      current.push(room);
+      backtrack(current, i, usedCounts); // allow same index (repetition)
+      current.pop();
+      usedCounts.set(room.id, used);
     }
-
-    packageRooms.push(candidate);
-    usedIds.add(candidate.id);
-    remaining -= candidate.capacity;
   }
 
-  if (packageRooms.length < 2) {
-    return null; // Not a package
-  }
+  backtrack([], 0, new Map());
+  return packages;
+}
+
+/**
+ * Builds a RoomPackage from a flat list of rooms.
+ */
+function buildPackageFromRooms(rooms: Room[]): RoomPackage | null {
+  if (rooms.length < 2) return null;
 
   // Sort by price DESC to find primary
-  const byPrice = [...packageRooms].sort((a, b) => b.price - a.price);
+  const byPrice = [...rooms].sort((a, b) => b.price - a.price);
   const primary = byPrice[0];
   const secondaries = byPrice.slice(1);
 
-  const totalCapacity = packageRooms.reduce((sum, r) => sum + r.capacity, 0);
-  const totalPricePerNight = packageRooms.reduce((sum, r) => sum + r.price, 0);
-  const isHomogeneous = new Set(packageRooms.map((r) => r.type)).size === 1;
-  const indicatorLabel = isHomogeneous
-    ? `x${packageRooms.length}`
-    : `+${packageRooms.length - 1}`;
+  const totalCapacity = rooms.reduce((s, r) => s + r.capacity, 0);
+  const totalPricePerNight = rooms.reduce((s, r) => s + r.price, 0);
+  const isHomogeneous = new Set(rooms.map((r) => r.type)).size === 1;
 
   return {
-    id: `pkg-${packageRooms.map((r) => r.id).join("-")}`,
+    id: `pkg-${rooms.map((r) => r.id).join("-")}`,
     primaryRoom: primary,
     secondaryRooms: secondaries,
     totalCapacity,
     totalPricePerNight,
     isHomogeneous,
-    indicatorLabel,
   };
 }
 
 /**
- * Finds the smallest room whose capacity does not exceed `remaining + maxWaste`,
- * excluding rooms whose IDs are in `excludeIds`.
- * Returns null if no eligible room is found.
+ * Groups secondary rooms by type for display purposes.
  */
-function findSmallestRoom(
-  sortedRooms: readonly Room[],
-  remaining: number,
-  maxWaste: number,
-  excludeIds: ReadonlySet<string>,
-): Room | null {
-  // sortedRooms is sorted by capacity DESC, so iterate in reverse for smallest first
-  for (let i = sortedRooms.length - 1; i >= 0; i--) {
-    const room = sortedRooms[i];
-    if (
-      !excludeIds.has(room.id) &&
-      room.capacity <= remaining + maxWaste &&
-      room.capacity >= 1
-    ) {
-      return room;
-    }
-  }
-  return null;
-}
-
-/**
- * Groups secondary rooms by type, counting duplicates.
- * Returns an array of { type, room, count } for display purposes.
- */
-export function groupSecondaryRooms(rooms: Room[]): Array<{ type: string; room: Room; count: number }> {
+export function groupSecondaryRooms(
+  rooms: Room[],
+): Array<{ type: string; room: Room; count: number }> {
   const grouped = new Map<string, { room: Room; count: number }>();
 
   for (const room of rooms) {
@@ -191,7 +175,8 @@ function deduplicatePackages(packages: RoomPackage[]): RoomPackage[] {
   const seen = new Map<string, RoomPackage>();
 
   for (const pkg of packages) {
-    const roomIds = [pkg.primaryRoom, ...pkg.secondaryRooms]
+    const allRooms = [pkg.primaryRoom, ...pkg.secondaryRooms];
+    const roomIds = allRooms
       .map((r) => r.id)
       .sort()
       .join(",");

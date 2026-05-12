@@ -146,8 +146,6 @@ export interface RoomPackage {
   totalPricePerNight: number;
   /** Whether all rooms in the package are the same type. */
   isHomogeneous: boolean;
-  /** Display label for the package indicator (e.g. "+1 habitacion", "x2"). */
-  indicatorLabel: string;
 }
 
 export interface PackageCardProps {

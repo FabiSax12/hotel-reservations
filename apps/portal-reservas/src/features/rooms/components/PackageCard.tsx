@@ -1,81 +1,86 @@
 /**
- * @file PackageCard.tsx — Room package orchestrator (US-DM-04).
+ * @file PackageCard.tsx — Room package card with expand/collapse (US-DM-04).
  *
- * Renders a room package as a stacked card composition:
- * - Primary RoomCard (most expensive room, fully rendered).
- * - Decorative shadow cards peeking from behind.
- * - Package indicator badge below the stack.
- * - Total package price replacing individual room price.
- *
- * The shadow cards are purely decorative — zero data loaded.
- * Click behavior for exploring package details is deferred to US-DM-05.
+ * A package card shows the primary room's info with a clear package indicator.
+ * It can be expanded to reveal all component room cards inside.
+ * When expanded, component rooms render as regular RoomCards.
  */
 
 "use client";
 
-import type { PackageCardProps, RoomPackage } from "../domain/types";
+import { useState } from "react";
+import type { PackageCardProps } from "../domain/types";
 import { PACKAGE_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { RoomCard } from "./RoomCard";
-import { PackageShadow } from "./sub-components/PackageShadow";
-import { PackageBadge } from "./sub-components/PackageBadge";
 import { groupSecondaryRooms } from "../domain/grouping";
 
 export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  const indicatorLabel = resolveIndicatorLabel(pkg, t);
-  const groupedSecondaries = groupSecondaryRooms(pkg.secondaryRooms);
+  const allRooms = [pkg.primaryRoom, ...pkg.secondaryRooms];
+  const grouped = groupSecondaryRooms(pkg.secondaryRooms);
+  const roomCount = allRooms.length;
 
   return (
     <div className={S.wrapper}>
-      {/* Shadow cards — positioned behind the primary card via z-index */}
-      <div className={S.shadowStack} aria-hidden="true">
-        {groupedSecondaries.map((entry, i) =>
-          Array.from({ length: entry.count }, (_, j) => (
-            <PackageShadow
-              key={`${entry.type}-${i}-${j}`}
-              roomType={entry.type}
-              peekIndex={i + j}
-            />
-          )),
-        )}
+      {/* Package header banner */}
+      <div className={S.packageBanner}>
+        <span className={S.packageBannerIcon}>⨁</span>
+        <span className={S.packageBannerText}>
+          {pkg.isHomogeneous
+            ? `${roomCount}× ${pkg.primaryRoom.type}`
+            : t.ROOMS.PACKAGE_MIXED_LABEL.replace("{count}", String(roomCount))}
+        </span>
+        <span className={S.packageBannerCapacity}>
+          {pkg.totalCapacity} {t.ROOMS.CAPACITY_LABEL.toLowerCase()}
+        </span>
       </div>
 
-      {/* Primary card — the most expensive room, rendered as a full RoomCard */}
+      {/* Primary room card */}
       <RoomCard
         room={pkg.primaryRoom}
         index={index}
         selectedDest={selectedDest}
       />
 
-      {/* Package indicator badge */}
-      <PackageBadge pkg={pkg} label={indicatorLabel} />
+      {/* Expand/collapse button */}
+      <button
+        type="button"
+        className={S.expandBtn}
+        onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+      >
+        <span>
+          {isExpanded
+            ? t.ROOMS.PACKAGE_COLLAPSE
+            : t.ROOMS.PACKAGE_EXPAND.replace("{count}", String(roomCount))}
+        </span>
+        <span className={S.expandIcon(isExpanded)}>▼</span>
+      </button>
+
+      {/* Expanded component rooms */}
+      <div
+        className={S.expansionGrid(isExpanded)}
+        aria-hidden={!isExpanded}
+      >
+        <div className={S.expansionInner}>
+          <div className={S.expansionContent}>
+            <p className={S.expansionTitle}>{t.ROOMS.PACKAGE_ROOMS_TITLE}</p>
+            <div className={S.expansionGridInner}>
+              {allRooms.map((room, i) => (
+                <RoomCard
+                  key={`${pkg.id}-${room.id}-${i}`}
+                  room={room}
+                  index={i}
+                  selectedDest={selectedDest}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-}
-
-/**
- * Resolves the indicator label using i18n pluralization rules.
- * Homogeneous: "x2", "x3", etc. (no pluralization needed).
- * Mixed: "+1 habitacion" / "+2 habitaciones" (pluralization based on count).
- */
-function resolveIndicatorLabel(
-  pkg: RoomPackage,
-  t: ReturnType<typeof useI18n>["t"],
-): string {
-  if (pkg.isHomogeneous) {
-    return t.ROOMS.PACKAGE_INDICATOR_SAME.replace(
-      "{count}",
-      String(pkg.secondaryRooms.length + 1),
-    );
-  }
-
-  const secondaryCount = pkg.secondaryRooms.length;
-  const template =
-    secondaryCount === 1
-      ? t.ROOMS.PACKAGE_INDICATOR_MIXED_ONE
-      : t.ROOMS.PACKAGE_INDICATOR_MIXED_OTHER;
-
-  return template.replace("{count}", String(secondaryCount));
 }
