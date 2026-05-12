@@ -39,6 +39,12 @@ export interface RoomsContextValue {
    * a full search from within a room card without prop drilling.
    */
   onSearch: (params: SearchParams) => void;
+  /**
+   * Total guest count (adults + children) from search params.
+   * Used by the room grouping algorithm to create packages.
+   * When 0 or undefined, rooms are shown individually (no grouping).
+   */
+  guestCount: number;
 }
 
 const RoomsContext = createContext<RoomsContextValue | null>(null);

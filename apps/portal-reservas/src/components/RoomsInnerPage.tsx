@@ -56,6 +56,7 @@ export function RoomsInnerPage({
     expandedRoomId,
     setExpandedRoomId,
     onSearch: onSearchTrigger,
+    guestCount: (searchParams.adults ?? 0) + (searchParams.children ?? 0),
   };
 
   return (

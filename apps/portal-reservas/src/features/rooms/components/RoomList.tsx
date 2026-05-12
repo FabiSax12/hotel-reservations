@@ -6,16 +6,28 @@
  *    has a value (rooms section activates as soon as a destination is chosen).
  *  - `searchKey` is still used as a React key to re-trigger entrance animations
  *    when a new search is submitted.
+ *
+ * Updated in US-DM-04:
+ *  - Renders room packages (PackageCard) alongside individual RoomCards.
+ *  - Listing header counts packages as single items ("opciones encontradas").
+ *  - Consumes `useRoomPackages` hook for smart grouping.
  */
 
 import type { RoomListProps } from "../domain/types";
 import { RoomCard } from "./RoomCard";
+import { PackageCard } from "./PackageCard";
 import { RoomCardSkeleton } from "./RoomCardSkeleton";
 import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { useRoomsContext } from "../context/RoomsContext";
+import { useRoomPackages, isRoomPackage } from "../hooks/useRoomPackages";
 
 export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
+  const { guestCount } = useRoomsContext();
+
+  const groupedRooms = useRoomPackages(rooms, guestCount);
+  const optionCount = groupedRooms.length;
 
   return (
     <section id="rooms-section" className={S.section} aria-label={t.ROOMS.BROWSE_ROOMS}>
@@ -31,7 +43,7 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
             <span className={S.searchingText}>{t.ROOMS.SEARCHING_ROOMS}</span>
           ) : (
             <>
-              <span className={S.countValue}>{rooms.length}</span> {t.ROOMS.ROOMS_FOUND}
+              <span className={S.countValue}>{optionCount}</span> {t.ROOMS.ROOMS_OPTIONS_FOUND}
             </>
           )}
         </div>
@@ -43,9 +55,23 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
           ? Array.from({ length: 3 }).map((_, index) => (
               <RoomCardSkeleton key={`skel-${index}`} />
             ))
-          : rooms.map((room, index) => (
-              <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />
-            ))}
+          : groupedRooms.map((item, index) =>
+              isRoomPackage(item) ? (
+                <PackageCard
+                  key={item.id}
+                  pkg={item}
+                  index={index}
+                  selectedDest={selectedDest}
+                />
+              ) : (
+                <RoomCard
+                  key={item.id}
+                  room={item}
+                  index={index}
+                  selectedDest={selectedDest}
+                />
+              ),
+            )}
       </div>
     </section>
   );

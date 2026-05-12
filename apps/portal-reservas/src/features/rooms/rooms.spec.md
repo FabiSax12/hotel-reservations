@@ -51,15 +51,18 @@ In Phase 3 (US-DM-04), the guest count from the search bar influences the room l
 * **Package grouping algorithm** (`domain/grouping.ts`):
   - Greedy bin-packing: sort rooms by capacity descending, then fill remaining guests with the smallest sufficient room.
   - Rejects absurd splits: a room's capacity must not exceed the remaining guest count by more than `MAX_WASTE` (e.g., 2 extra spots). This prevents suggesting a 7-person room for 1 remaining guest.
+  - Concrete example: for 3 guests, the algorithm must NOT suggest a package of 1× Standard (cap 2) + 1× Villa (cap 8) = 10 total capacity for 3 guests. The Villa exceeds the remaining 1 guest by 7, which violates MAX_WASTE=2.
   - Prefers fewer rooms: if a single room covers all guests, it's not a package.
   - Prefers same-type packages: when possible, group identical rooms (shown as "x2", "x3" indicators).
 * **Package card UI:**
   - The primary card (most expensive room) renders exactly like a normal `RoomCard`.
-  - Behind it, 1-2 decorative "shadow cards" are rendered offset below (purely visual, no data loaded until click).
-  - A **package indicator badge** appears below the primary card:
+  - Behind it, 1-3 decorative **shadow cards** are rendered offset below and behind the primary card. Shadow cards are **purely decorative** — they load ZERO data: no images, no amenities, no price, no description. They render as dark semi-transparent rectangles (`bg-forest-800/30 border border-forest-700/15`) with only the room type label (e.g., "Standard") in muted text. This follows the landing page's border-based depth model (no box-shadow on shadow cards).
+  - Shadow cards are non-interactive: `cursor-default`, no hover effects, no click handlers.
+  - A **package indicator badge** appears centered below the shadow card stack:
     - Same-type packages: `"x2"`, `"x3"` etc.
     - Mixed-type packages: `"+1 habitación"`, `"+2 habitaciones"`.
-  - The price shown is the **total package price per night** (sum of all rooms in the package).
+  - The price shown is the **total package price per night** (sum of all rooms in the package), displayed with a "Total por noche" label.
+* **Listing count header:** The room list header counts packages as single items ("X opciones encontradas"), not by individual rooms within packages.
 * **Package CTA:** Same logic as individual rooms (conditional on dates/availability), but the "Reservar" action will be handled in US-DM-05 (package detail exploration).
 * **RoomsContext extension:** The context now also distributes `guestCount` (from search params) so the grouping algorithm can run.
 * **No absurd suggestions:** The grouping algorithm is deterministic and rejects wasteful combinations.
@@ -80,12 +83,12 @@ In Phase 3 (US-DM-04), the guest count from the search bar influences the room l
 ```
 features/rooms/
 ├── domain/
-│   ├── types.ts              (modified: +RoomPackage, +PackageRoomEntry)
+│   ├── types.ts              (modified: +RoomPackage, +PackageRoomEntry, +PackageCardProps)
 │   └── grouping.ts           (NEW: smart room grouping algorithm)
 ├── hooks/
-│   └── useRoomPackages.ts    (NEW: consumes guestCount + rooms → RoomPackage[])
+│   └── useRoomPackages.ts    (NEW: consumes guestCount + rooms → (Room | RoomPackage)[])
 ├── components/
-│   ├── RoomList.tsx           (modified: renders RoomCard or PackageCard)
+│   ├── RoomList.tsx           (modified: renders RoomCard or PackageCard, counts options)
 │   ├── PackageCard.tsx        (NEW: orchestrator for a room package)
 │   └── sub-components/
 │       ├── PackageBadge.tsx   (NEW: "+1 habitación" / "x2" indicator)
@@ -93,8 +96,8 @@ features/rooms/
 ├── constants/
 │   └── rooms.constants.ts    (modified: +GROUPING_MAX_WASTE, +GROUPING_MAX_ROOMS)
 └── i18n/
-    ├── rooms.texts.ts        (modified: +package indicator keys)
-    └── roomsTexts.type.ts    (modified: +package indicator types)
+    ├── rooms.texts.ts        (modified: +package indicator keys, +ROOMS_OPTIONS_FOUND)
+    └── roomsTexts.type.ts    (modified: +package indicator types, +ROOMS_OPTIONS_FOUND)
 ```
 
 ### Core Files Involved
@@ -110,12 +113,14 @@ features/rooms/
 ### System Constraints & Known Pitfalls
 * The grouping algorithm must be a **pure function** in `domain/grouping.ts` — no hooks, no JSX, no side effects.
 * `RoomPackage.primaryRoom` is always the most expensive room in the group.
-* Shadow cards are **decorative only** — they do not load room data, images, or amenities. Data is loaded in US-DM-05 when the user clicks to explore.
+* Shadow cards are **decorative only** — they render a dark semi-transparent rectangle with only the room type label. No images, no amenities, no price, no description. Data is loaded in US-DM-05 when the user clicks to explore.
+* Shadow cards use **border-based depth** (no box-shadow), consistent with the landing page's visual language.
 * The package indicator text must use i18n keys (pluralization rules: "1 habitación" vs "habitaciones").
 * `guestCount` flows from the search bar → `page.tsx` → `RoomsContext`. It is `adults + children`.
 * The grouping algorithm runs **after** location filtering but **before** rendering. It's a `useMemo` in `useRoomPackages`.
 * Package cards use the same entrance animation as individual cards (stagger continues seamlessly).
-* Total package price = sum of `room.price` for all rooms in the package. Display as "desde $X/noche".
+* Total package price = sum of `room.price` for all rooms in the package. Display as "Total por noche".
+* Listing header counts packages as single items ("opciones encontradas"), not individual rooms within packages.
 
 ---
 
@@ -192,17 +197,20 @@ OUTPUT: (Room | RoomPackage)[]
 
 * [ ] When guest count > 0 and no single room can accommodate all guests, the listing shows room packages instead of (or alongside) individual rooms.
 * [ ] A package displays the most expensive room as the primary card, with decorative shadow cards stacked behind it.
+* [ ] Shadow cards are purely decorative — zero data loaded (no images, no amenities, no price, no description). They render as dark semi-transparent rectangles with only the room type label in muted text.
+* [ ] Shadow cards are non-interactive: cursor-default, no hover effects, no click handlers.
 * [ ] Package indicator badge shows "+1 habitación" or "+X habitaciones" for mixed-type packages.
 * [ ] Package indicator badge shows "x2" or "xX" for homogeneous packages (all same room type).
-* [ ] Package total price = sum of all room prices per night, displayed as the card's price.
-* [ ] The grouping algorithm rejects absurd splits (e.g., 7-person room for 1 remaining guest).
+* [ ] Package total price = sum of all room prices per night, displayed as the card's price with "Total por noche" label.
+* [ ] The grouping algorithm rejects absurd splits. Concrete example: for 3 guests, it must NOT suggest 1× Standard (cap 2) + 1× Villa (cap 8), because the Villa exceeds remaining 1 guest by 7, violating MAX_WASTE=2.
 * [ ] The grouping algorithm prefers fewer rooms and same-type groupings when possible.
-* [ ] Shadow cards are purely decorative — no room data loaded until the user clicks (US-DM-05 scope).
+* [ ] Shadow cards use border-based depth (no box-shadow), consistent with the landing page's visual language.
 * [ ] Package cards use the same entrance animation as individual cards.
+* [ ] Listing header counts packages as single items: "X opciones encontradas" (not individual rooms within packages).
 * [ ] `guestCount` is distributed via `RoomsContext` (sourced from search params).
 * [ ] New i18n keys for package indicators are type-safe and registered in `translations.ts`.
 * [ ] All existing US-DM-02 acceptance criteria continue to pass (no regressions).
-* [ ] `domain/grouping.ts` has unit tests covering edge cases (0 guests, single room sufficient, no valid package, homogeneous, heterogeneous, MAX_WASTE rejection).
+* [ ] `domain/grouping.ts` has unit tests covering edge cases (0 guests, single room sufficient, no valid package, homogeneous, heterogeneous, MAX_WASTE rejection, the "3 guests not 2+7" case).
 
 ---
 
@@ -214,6 +222,7 @@ OUTPUT: (Room | RoomPackage)[]
 | `PACKAGE_INDICATOR_MIXED` | `"+{count} habitación"` / `"+{count} habitaciones"` | `"+{count} room"` / `"+{count} rooms"` |
 | `PACKAGE_TOTAL_PRICE_LABEL` | `"Total por noche"` | `"Total per night"` |
 | `PACKAGE_ROOMS_LABEL` | `"habitaciones"` | `"rooms"` |
+| `ROOMS_OPTIONS_FOUND` | `"opciones encontradas"` | `"options found"` |
 
 ---
 

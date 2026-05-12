@@ -183,3 +183,35 @@ export const ROOM_CARD_STYLES = {
   detailSubtitle: "mt-1 text-sm uppercase tracking-[0.16em] text-gold-500 font-semibold",
   detailBody: "max-h-[calc(88vh-120px)] overflow-auto px-7 pb-7 sm:px-9 sm:pb-9",
 } as const;
+
+// ─── Package Card Styles (US-DM-04) ─────────────────────────────────────────
+// Border-based depth model (no box-shadow), consistent with landing page aesthetics.
+
+export const PACKAGE_CARD_STYLES = {
+  /** Outer wrapper that stacks primary + shadows + badge as a single unit. */
+  wrapper: "relative",
+
+  /** Shadow card stack container — positions shadow cards behind the primary. */
+  shadowStack: "relative",
+
+  /** Individual decorative shadow card behind the primary RoomCard. */
+  shadowCard: (peekIndex: number) =>
+    `absolute left-0 right-0 bg-forest-800/30 border border-forest-700/15 rounded-[1.5rem] pointer-events-none select-none ${
+      peekIndex === 0 ? "h-7 -bottom-3" : "h-5 -bottom-5"
+    }`,
+  /** Room type label inside the shadow card. */
+  shadowLabel: "absolute bottom-1.5 left-7 text-[10px] font-medium text-stone-500/60 uppercase tracking-wider",
+
+  /** Package indicator badge below the stack. */
+  badgeWrapper: "flex justify-center mt-4",
+  badge:
+    "inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-800/60 border border-forest-700/30 rounded-lg text-xs font-bold text-stone-300 uppercase tracking-widest",
+  badgeIcon: "w-3 h-3 text-gold-500",
+
+  /** Package total price block (shown in place of individual room price). */
+  priceBlock: "flex flex-col",
+  priceLabel: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-0.5",
+  priceRow: "flex items-baseline gap-1.5",
+  priceAmount: "text-3xl font-black text-stone-50 tracking-tighter",
+  priceCurrency: "text-sm font-bold text-stone-400",
+} as const;
