@@ -1,1 +1,1 @@
-export type LoginLoadingProps = {};
+export interface LoginLoadingProps {}

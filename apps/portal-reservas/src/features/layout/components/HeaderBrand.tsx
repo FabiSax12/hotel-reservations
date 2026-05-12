@@ -6,13 +6,9 @@
  */
 
 import { BrandLogo } from "@hotel/ui";
-import { useI18n } from "@/locales";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
-
-interface HeaderBrandProps {
-  /** Callback invoked on click to reset the page to the hero landing state. */
-  onReset: () => void;
-}
+import { useI18n } from "@/locales";
+import type { HeaderBrandProps } from "../domain/types";
 
 export function HeaderBrand({ onReset }: HeaderBrandProps) {
   const { t } = useI18n();

@@ -2,8 +2,8 @@
  * @file types.ts — SearchBar context types.
  */
 
-import type { Dispatch, RefObject, SetStateAction } from "react";
-import type { ActiveSection, SearchBarVariant } from "../domain/types";
+import type { Dispatch, SetStateAction, RefObject } from "react";
+import type { ActiveSection, SearchBarVariant, ValidationError } from "../domain/types";
 
 export interface SearchBarContextValue {
   // Config
@@ -12,17 +12,17 @@ export interface SearchBarContextValue {
 
   // SearchBarState
   active: ActiveSection;
-  setActive: Dispatch<SetStateAction<ActiveSection>>;
+  setActive: (section: ActiveSection) => void;
   hasHeroCalendarOpened: boolean;
-  setHasHeroCalendarOpened: Dispatch<SetStateAction<boolean>>;
+  setHasHeroCalendarOpened: (opened: boolean) => void;
   isSearching: boolean;
-  setIsSearching: Dispatch<SetStateAction<boolean>>;
+  setIsSearching: (searching: boolean) => void;
   lastUserActivatedSection: RefObject<ActiveSection | null>;
   activateSection: (sec: ActiveSection, clearErrFn?: () => void) => void;
   onHeroCalendarOpen?: () => void;
 
   // SearchValidation
-  validationError: any;
+  validationError: ValidationError | null;
   isShaking: boolean;
   clearError: () => void;
   validateSearch: (
@@ -33,15 +33,15 @@ export interface SearchBarContextValue {
   ) => boolean;
   fieldHasError: (k: string) => boolean;
 
-  // Location / Destination (Managed mostly in ModernSearchBar)
+  // Location / Destination
   destination: string;
-  setDestination: Dispatch<SetStateAction<string>>;
+  setDestination: (destination: string) => void;
   onlyOneSede: string | null;
 
   // DateSelection
   checkIn: string;
   checkOut: string;
-  invalidState: { dayStr: string; isFading: boolean } | null;
+  invalidState: { dayStrs: string[]; isFading: boolean; animationKey?: number } | null;
   handlePickDate: (dayStr: string) => void;
 
   // GuestsSelection

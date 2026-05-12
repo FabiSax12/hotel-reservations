@@ -2,8 +2,8 @@
  * @file search-bar.utils.ts — Utility functions for the ModernSearchBar.
  */
 
-import type { SearchTexts } from "../../../i18n/searchTexts.type";
 import { LOCALES } from "../constants/search.constants";
+import type { SearchTexts } from "../../../i18n/searchTexts.type";
 
 /**
  * Formats an ISO date string (YYYY-MM-DD) into a human-readable format for the UI.
@@ -26,7 +26,7 @@ export const formatGuests = (
   adults: number,
   children: number,
   pets: number,
-  tGuests: SearchTexts["SEARCH_BAR"]["GUESTS"],
+  tGuests: SearchTexts["SEARCH_BAR"]["GUESTS"]
 ) => {
   let text = `${adults} ${adults === 1 ? tGuests.SINGLE_ADULT : tGuests.PLURAL_ADULTS}`;
 

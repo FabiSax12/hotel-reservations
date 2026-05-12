@@ -8,10 +8,10 @@
  *  3. Returns only rooms matching the given destination string.
  */
 
-import { describe, expect, it } from "vitest";
-import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
+import { describe, it, expect } from "vitest";
 import { filterRoomsByDestination } from "./filters";
 import type { Room } from "./types";
+import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
 
 describe("filterRoomsByDestination", () => {
   /** Minimal stub rooms — only `id` and `location` are needed by the filter. */

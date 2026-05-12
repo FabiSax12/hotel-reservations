@@ -4,15 +4,21 @@
 
 "use client";
 
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 import { CalendarPopover } from "@hotel/ui";
 import { useI18n } from "@/locales";
-import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 
 export function HeroCalendarFloat() {
-  const { active, hasHeroCalendarOpened, checkIn, checkOut, invalidState, handlePickDate } =
-    useSearchBarContext();
+  const {
+    active,
+    hasHeroCalendarOpened,
+    checkIn,
+    checkOut,
+    invalidState,
+    handlePickDate,
+  } = useSearchBarContext();
 
   const isDimmed = active === SEARCH_SECTIONS.WHERE || active === SEARCH_SECTIONS.WHO;
   const { t } = useI18n();

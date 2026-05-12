@@ -1,47 +1,45 @@
 "use client";
-import { Button, Form, InputGroup, Label, TextField } from "@heroui/react";
-import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
-
+ 
 import { useActionState } from "react";
+import Link from "next/link";
+import { Form, TextField, Label, InputGroup, Button } from "@heroui/react";
+import { Eye, EyeOff } from "lucide-react";
 import { ROUTES } from "@/config/routes";
-import { GoogleIcon } from "@/features/auth/components/icons/GoogleIcon";
-import type { LoginFormProps } from "@/features/auth/components/LoginForm/LoginForm.interface";
-import { LOGIN_FORM_STYLES as LS } from "@/features/auth/components/LoginForm/LoginForm.styles";
 import { LOGIN_FORM_FIELDS } from "@/features/auth/constants/loginFormFields";
-import {
-  AUTOCOMPLETE as AC,
-  ARIA_ROLES as AR,
-  BUTTON_UI as BU,
-  INPUT_TYPES as IT,
-} from "@/features/auth/constants/ui";
+import { INPUT_TYPES as IT, AUTOCOMPLETE as AC, BUTTON_UI as BU, ARIA_ROLES as AR } from "@/features/auth/constants/ui";
 import type { LoginActionState } from "@/features/auth/domain/credentials";
 import { useLoginForm } from "@/features/auth/hooks/useLoginForm";
-import { AUTH_STYLES as AS, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
 import { useI18n } from "@/locales";
-
+import { GoogleIcon } from "@/features/auth/components/icons/GoogleIcon";
+import { AUTH_STYLES as AS, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
+import { LOGIN_FORM_STYLES as LS } from "@/features/auth/components/LoginForm/LoginForm.styles";
+import type { LoginFormProps } from "@/features/auth/components/LoginForm/LoginForm.interface";
+ 
 export const LoginForm = ({ action }: LoginFormProps) => {
   const [state, formAction, isPending] = useActionState<LoginActionState, FormData>(action, null);
   const { t } = useI18n();
   const { callbackUrl, showPassword, handleTogglePassword, handleGoogleLogin } = useLoginForm();
-
+ 
   return (
     <main className={AS.main}>
       <div className={AS.background}>
-        <div className={AS.bgImage} style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }} />
+        <div 
+          className={AS.bgImage} 
+          style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }} 
+        />
         <div className={AS.bgOverlay} />
         <div className={AS.bgGradient} />
       </div>
-
+ 
       <div className={AS.card}>
         <div className={LS.header}>
           <h1 className={AS.title}>{t.AUTH.LOGIN.TITLE}</h1>
           <p className={AS.subtitle}>{t.AUTH.LOGIN.SUBTITLE}</p>
         </div>
-
+ 
         <Form className={AS.form} action={formAction}>
           <input type={IT.HIDDEN} name={LOGIN_FORM_FIELDS.CALLBACK_URL} value={callbackUrl} />
-
+ 
           <TextField
             id={LOGIN_FORM_FIELDS.EMAIL}
             name={LOGIN_FORM_FIELDS.EMAIL}
@@ -52,10 +50,13 @@ export const LoginForm = ({ action }: LoginFormProps) => {
           >
             <Label className={AS.label}>{t.AUTH.LOGIN.EMAIL_LABEL}</Label>
             <InputGroup>
-              <InputGroup.Input placeholder={t.AUTH.LOGIN.EMAIL_PLACEHOLDER} className={AS.input} />
+              <InputGroup.Input
+                placeholder={t.AUTH.LOGIN.EMAIL_PLACEHOLDER}
+                className={AS.input}
+              />
             </InputGroup>
           </TextField>
-
+ 
           <TextField
             id={LOGIN_FORM_FIELDS.PASSWORD}
             name={LOGIN_FORM_FIELDS.PASSWORD}
@@ -78,9 +79,7 @@ export const LoginForm = ({ action }: LoginFormProps) => {
                   className={LS.passwordToggleBtn}
                   type={IT.BUTTON}
                   onPress={handleTogglePassword}
-                  aria-label={
-                    showPassword ? t.AUTH.LOGIN.HIDE_PASSWORD : t.AUTH.LOGIN.SHOW_PASSWORD
-                  }
+                  aria-label={showPassword ? t.AUTH.LOGIN.HIDE_PASSWORD : t.AUTH.LOGIN.SHOW_PASSWORD}
                 >
                   {showPassword ? (
                     <EyeOff className={LS.eyeIcon} />
@@ -91,18 +90,22 @@ export const LoginForm = ({ action }: LoginFormProps) => {
               </InputGroup.Suffix>
             </InputGroup>
           </TextField>
-
+ 
           {state?.error && (
             <p role={AR.ALERT} className={AS.error}>
               {t.AUTH.ERRORS[state.error]}
             </p>
           )}
-
+ 
           <div className={LS.actionsWrapper}>
-            <Button type={IT.SUBMIT} isPending={isPending} className={AS.submitBtn}>
+            <Button 
+              type={IT.SUBMIT} 
+              isPending={isPending}
+              className={AS.submitBtn}
+            >
               {isPending ? t.AUTH.LOGIN.SUBMITTING_BUTTON : t.AUTH.LOGIN.SUBMIT_BUTTON}
             </Button>
-
+ 
             <div className={AS.dividerWrapper}>
               <div className={AS.dividerLine}>
                 <div className={AS.dividerStroke} />
@@ -111,13 +114,17 @@ export const LoginForm = ({ action }: LoginFormProps) => {
                 <span className={AS.dividerText}>{t.AUTH.LOGIN.OR}</span>
               </div>
             </div>
-
-            <Button type={IT.BUTTON} className={AS.googleBtn} onPress={handleGoogleLogin}>
+ 
+            <Button
+              type={IT.BUTTON}
+              className={AS.googleBtn}
+              onPress={handleGoogleLogin}
+            >
               <GoogleIcon className={LS.googleIcon} />
               {t.AUTH.LOGIN.CONTINUE_WITH_GOOGLE}
             </Button>
           </div>
-
+ 
           <Link href={ROUTES.AUTH.REGISTER} className={AS.link}>
             {t.AUTH.LOGIN.REGISTER_LINK}
           </Link>

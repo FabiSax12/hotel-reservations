@@ -5,17 +5,7 @@
 "use client";
 
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
-
-interface DateSectionProps {
-  label: string;
-  placeholder: string;
-  displayValue: string;
-  sizing: { label: string; value: string };
-  sectionClass: string;
-  onActivate: () => void;
-  hasError?: boolean;
-  isShaking?: boolean;
-}
+import type { DateSectionProps } from "../../domain/types";
 
 export function DateSection({
   label,

@@ -4,17 +4,10 @@
 
 "use client";
 
-import { useI18n } from "@/locales";
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { GuestsPopover } from "../GuestsPopover";
-
-interface GuestsSectionProps {
-  isActive: boolean;
-  guestsText: string;
-  sizing: { label: string; value: string };
-  sectionClass: string;
-  onActivate: () => void;
-}
+import { useI18n } from "@/locales";
+import type { GuestsSectionProps } from "../../domain/types";
 
 export function GuestsSection({
   isActive,
@@ -30,7 +23,9 @@ export function GuestsSection({
     <div onClick={onActivate} className={sectionClass}>
       <div className={`${sizing.label} ${S.fieldLabel}`}>{C.LABEL}</div>
       <div className={`${S.fieldValueGuests} ${sizing.value}`}>{guestsText}</div>
-      {isActive && <GuestsPopover />}
+      {isActive && (
+        <GuestsPopover />
+      )}
     </div>
   );
 }

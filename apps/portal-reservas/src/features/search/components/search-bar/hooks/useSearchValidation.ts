@@ -2,12 +2,12 @@
  * @file useSearchValidation.ts — Hook for managing search bar validation state.
  */
 
-import { parseDateHelper } from "@hotel/ui";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useI18n } from "@/locales";
-import { REGIONS_CONFIG } from "../constants/regionsMock";
+import { useState, useCallback, useRef, useEffect } from "react";
+import type { ValidationError, ActiveSection } from "../domain/types";
 import { TIMEOUTS } from "../constants/search.constants";
-import type { ValidationError } from "../domain/types";
+import { REGIONS_CONFIG } from "../constants/regionsConfig";
+import { parseDateHelper } from "@hotel/ui";
+import { useI18n } from "@/locales";
 
 export function useSearchValidation() {
   const [validationError, setValidationError] = useState<ValidationError | null>(null);
@@ -86,7 +86,7 @@ export function useSearchValidation() {
   );
 
   const fieldHasError = useCallback(
-    (key: string): boolean => validationError?.fields.includes(key as any) ?? false,
+    (key: string): boolean => validationError?.fields.includes(key as ActiveSection) ?? false,
     [validationError],
   );
 
@@ -99,3 +99,4 @@ export function useSearchValidation() {
     fieldHasError,
   };
 }
+

@@ -4,18 +4,9 @@
 
 "use client";
 
-import { useI18n } from "@/locales";
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
-
-interface DestinationSectionProps {
-  isActive: boolean;
-  destination: string;
-  sizing: { label: string; value: string };
-  sectionClass: string;
-  onActivate: () => void;
-  hasError?: boolean;
-  isShaking?: boolean;
-}
+import { useI18n } from "@/locales";
+import type { DestinationSectionProps } from "../../domain/types";
 
 export function DestinationSection({
   isActive,

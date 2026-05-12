@@ -5,14 +5,22 @@
 "use client";
 
 import { Stepper } from "@hotel/ui";
-import { useI18n } from "@/locales";
-import { SEARCH_VARIANTS } from "../constants/search.constants";
-import { useSearchBarContext } from "../hooks/useSearchBarContext";
 import { GUESTS_POPOVER_STYLES as S } from "../theme/guests.theme";
+import { SEARCH_VARIANTS } from "../constants/search.constants";
+import { useI18n } from "@/locales";
+import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 export function GuestsPopover() {
-  const { adults, setAdults, children, setChildren, pets, setPets, size, hasHeroCalendarOpened } =
-    useSearchBarContext();
+  const {
+    adults,
+    setAdults,
+    children,
+    setChildren,
+    pets,
+    setPets,
+    size,
+    hasHeroCalendarOpened,
+  } = useSearchBarContext();
 
   const isHero = size === SEARCH_VARIANTS.HERO;
   const { t } = useI18n();

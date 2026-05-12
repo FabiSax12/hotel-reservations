@@ -1,26 +1,29 @@
 /**
  * @file ModernSearchBar.tsx — Top-level search bar orchestrator.
  *
- * This component acts as the high-level manager, connecting data-fetching
- * (initial state), custom hooks (logic blocks), and the presentation layer.
+ * This component acts as the high-level manager, connecting custom hooks
+ * (logic blocks) and the presentation layer via a Context Provider.
+ * It contains zero business logic — all logic is delegated to hooks.
  */
 
 "use client";
 
-import React, { useMemo } from "react";
-import { REGIONS_CONFIG } from "../constants/regionsMock";
-import { SEARCH_VALS, SEARCH_VARIANTS, TIMEOUTS } from "../constants/search.constants";
-import { SearchBarProvider } from "../context/SearchBarContext";
 import type { SearchBarProps } from "../domain/types";
-import { useDateSelection } from "../hooks/useDateSelection";
-import { useGuestsSelection } from "../hooks/useGuestsSelection";
-// Custom Hooks
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_VARIANTS } from "../constants/search.constants";
+
 import { useSearchBarState } from "../hooks/useSearchBarState";
 import { useSearchValidation } from "../hooks/useSearchValidation";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-// Sub-components
+import { useDateSelection } from "../hooks/useDateSelection";
+import { useGuestsSelection } from "../hooks/useGuestsSelection";
+import { useDestinationState } from "../hooks/useDestinationState";
+import { useSearchBarContextValue } from "../hooks/useSearchBarContextValue";
+import { useSearchTrigger } from "../hooks/useSearchTrigger";
+import { useI18n } from "@/locales";
+
 import { HeroCalendarFloat } from "./HeroCalendarFloat";
 import { SearchBarFrame } from "./SearchBarFrame";
+import { SearchBarProvider } from "../context/SearchBarContext";
 
 export function ModernSearchBar({
   onSearch,
@@ -28,110 +31,65 @@ export function ModernSearchBar({
   size = SEARCH_VARIANTS.COMPACT,
   initialState,
   onHeroCalendarOpen,
+  onDestinationChange,
 }: SearchBarProps) {
-  // 1. Logic Hooks
-  const {
-    active,
-    setActive,
-    hasHeroCalendarOpened,
-    setHasHeroCalendarOpened,
-    isSearching,
-    setIsSearching,
-    lastUserActivatedSection,
-    containerRef,
-    activateSection,
-    isHero,
-  } = useSearchBarState(size, onHeroCalendarOpen);
+  const { t } = useI18n();
 
-  const { validationError, isShaking, clearError, validateSearch, fieldHasError } =
-    useSearchValidation();
-
-  const onlyOneSede = useMemo(
-    () => (REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null),
-    [],
-  );
-
-  const [destination, setDestination] = React.useState(() => {
-    if (initialState?.destination && initialState?.destination !== SEARCH_VALS.DESTINATION_ALL)
-      return initialState.destination;
-    return onlyOneSede || "";
+  const barState = useSearchBarState(size, onHeroCalendarOpen);
+  const validation = useSearchValidation();
+  const destState = useDestinationState({
+    initialDestination: initialState?.destination,
+    onDestinationChange,
   });
 
-  const { checkIn, checkOut, invalidState, handlePickDate } = useDateSelection(
+  const dateState = useDateSelection(
     initialState?.checkIn || "",
     initialState?.checkOut || "",
-    active,
-    setActive,
-    lastUserActivatedSection,
+    barState.active,
+    barState.setActive,
+    barState.lastUserActivatedSection,
   );
 
-  const {
-    adults,
-    setAdults,
-    children: childrenCount,
-    setChildren,
-    pets,
-    setPets,
-  } = useGuestsSelection(initialState?.adults, initialState?.children, initialState?.pets);
+  const guestState = useGuestsSelection(
+    initialState?.adults,
+    initialState?.children,
+    initialState?.pets,
+  );
 
-  // 2. Event Handlers
-  const handleSearchTrigger = () => {
-    if (!validateSearch(destination, checkIn, checkOut, onlyOneSede)) return;
-    clearError();
-    setActive(null);
-    setIsSearching(true);
-    setTimeout(() => {
-      setIsSearching(false);
-      if (onSearch)
-        onSearch({
-          destination: destination || SEARCH_VALS.DESTINATION_ALL,
-          checkIn,
-          checkOut,
-          adults,
-          children: childrenCount,
-          pets,
-        });
-    }, TIMEOUTS.SEARCH_TRIGGER_DELAY);
-  };
+  const { handleSearchTrigger, activateSectionIntercepted } = useSearchTrigger({
+    destination: destState.destination,
+    checkIn: dateState.checkIn,
+    checkOut: dateState.checkOut,
+    adults: guestState.adults,
+    childrenCount: guestState.children,
+    pets: guestState.pets,
+    onlyOneSede: destState.onlyOneSede,
+    validateSearch: validation.validateSearch,
+    clearError: validation.clearError,
+    showError: validation.showError,
+    setActive: barState.setActive,
+    setIsSearching: barState.setIsSearching,
+    activateSection: barState.activateSection,
+    onSearch,
+    missingSedeMessage: t.SEARCH.SEARCH_BAR.VALIDATION.MISSING_SEDE,
+  });
 
-  // 3. Construct Context Value
-  const contextValue = {
+  const contextValue = useSearchBarContextValue({
     size,
-    isHero,
-    active,
-    setActive,
-    hasHeroCalendarOpened,
-    setHasHeroCalendarOpened,
-    isSearching,
-    setIsSearching,
-    lastUserActivatedSection,
-    activateSection,
+    barState,
+    validation,
+    destState,
+    dateState,
+    guestState,
+    activateSection: activateSectionIntercepted,
     onHeroCalendarOpen,
-    validationError,
-    isShaking,
-    clearError,
-    validateSearch,
-    fieldHasError,
-    destination,
-    setDestination,
-    onlyOneSede,
-    checkIn,
-    checkOut,
-    invalidState,
-    handlePickDate,
-    adults,
-    setAdults,
-    children: childrenCount,
-    setChildren,
-    pets,
-    setPets,
     handleSearchTrigger,
-  };
+  });
 
   return (
     <SearchBarProvider value={contextValue}>
-      <div ref={containerRef} className={`${S.container} ${className}`}>
-        {isHero && <HeroCalendarFloat />}
+      <div ref={barState.containerRef} className={`${S.container} ${className}`}>
+        {barState.isHero && <HeroCalendarFloat />}
         <SearchBarFrame />
       </div>
     </SearchBarProvider>
