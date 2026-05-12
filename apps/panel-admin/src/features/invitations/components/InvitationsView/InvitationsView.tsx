@@ -1,3 +1,5 @@
+"use client"
+
 import type { PendingInvitation } from "@hotel/db";
 import { useCallback, useState } from "react";
 import { PendingInvitationsTable } from "@/features/admins-table/components/PendingInvitationsTable/PendingInvitationsTable";

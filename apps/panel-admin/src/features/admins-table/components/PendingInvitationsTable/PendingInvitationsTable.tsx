@@ -2,6 +2,7 @@
 
 import { Button, Chip, EmptyState, Table } from "@heroui/react";
 import { Inbox, RotateCcw, X } from "lucide-react";
+import { CreateInvitationModal } from "@/features/invitations/components/CreateInvitationModal/CreateInvitationModal";
 import { useI18n } from "@/locales";
 import type { PendingInvitationsTableProps } from "./PendingInvitationsTable.interface";
 import { PENDING_INVITATIONS_SECTION_STYLES as STYLES } from "./PendingInvitationsTable.styles";
@@ -19,7 +20,7 @@ export const PendingInvitationsTable = ({
     <section className={STYLES.section}>
       <header className="flex items-center justify-between">
         <h2 className={STYLES.title}>{t.ADMINS.INVITATIONS.SECTION_TITLE}</h2>
-        <Button size="sm">Invitar</Button>
+        <CreateInvitationModal />
       </header>
 
       <Table>
@@ -82,7 +83,6 @@ export const PendingInvitationsTable = ({
           </Table.Content>
         </Table.ScrollContainer>
       </Table>
-
 
     </section>
   );

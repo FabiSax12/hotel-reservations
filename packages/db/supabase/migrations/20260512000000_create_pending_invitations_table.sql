@@ -4,7 +4,7 @@ create type invitation_status as enum ('pending', 'accepted', 'revoked', 'expire
 create table public.pending_invitations (
   id              uuid              primary key default gen_random_uuid(),
   email           text              not null,
-  invited_by      uuid              references auth.users(id) on delete set null,
+  invited_by      uuid              references auth.users(id) on delete set null default auth.uid(),
   status          invitation_status not null default 'pending',
   expires_at      timestamptz       not null default (now() + interval '7 days'),
   created_at      timestamptz       not null default now(),

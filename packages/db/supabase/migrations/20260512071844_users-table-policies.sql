@@ -54,14 +54,14 @@ begin
 
   -- Insertar rol: prioriza app_metadata (invitación admin) sobre raw_user_meta_data,
   -- y si no hay nada, asigna 'user' por defecto
-  insert into public.user_roles (id, role)
+  insert into public.user_roles (user_id, role)
   values (
     new.id,
-    coalesce(
+    CAST(coalesce(
       new.raw_app_meta_data ->> 'role',
       new.raw_user_meta_data ->> 'role',
       'client'
-    )
+    ) as public.user_role)
   );
 
   return new;

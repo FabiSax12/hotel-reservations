@@ -192,6 +192,7 @@ export async function inviteAdminByEmail(email: string, redirectTo: string): Pro
     redirectTo,
     data: { role: "admin" },
   });
+  console.log(error);
   if (error) throw new Error(error.message);
 }
 

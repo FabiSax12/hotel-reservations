@@ -26,44 +26,44 @@ export const CreateAdminForm = ({ action }: CreateAdminFormProps) => {
   }
 
   return (
-    <main className={S.wrapper}>
-      <div className={S.card}>
-        <h1 className={S.title}>{CREATE_ADMIN.TITLE}</h1>
+    // <main className={S.wrapper}>
+    <div className={S.card}>
+      <h1 className={S.title}>{CREATE_ADMIN.TITLE}</h1>
 
-        <Form className={S.form} action={formAction}>
-          <TextField
-            isRequired
-            name="name"
-            type="text"
-            validate={(v) => (v.trim().length >= 2 ? null : VALIDATION.NAME_TOO_SHORT)}
-          >
-            <Label>{CREATE_ADMIN.NAME_LABEL}</Label>
-            <Input placeholder={CREATE_ADMIN.NAME_PLACEHOLDER} autoComplete="name" />
-            <FieldError />
-          </TextField>
+      <Form className={S.form} action={formAction}>
+        <TextField
+          isRequired
+          name="name"
+          type="text"
+          validate={(v) => (v.trim().length >= 2 ? null : VALIDATION.NAME_TOO_SHORT)}
+        >
+          <Label>{CREATE_ADMIN.NAME_LABEL}</Label>
+          <Input placeholder={CREATE_ADMIN.NAME_PLACEHOLDER} autoComplete="name" />
+          <FieldError />
+        </TextField>
 
-          <TextField
-            isRequired
-            name="email"
-            type="email"
-            validate={(v) => (EMAIL_REGEX.test(v) ? null : VALIDATION.INVALID_EMAIL)}
-          >
-            <Label>{CREATE_ADMIN.EMAIL_LABEL}</Label>
-            <Input placeholder={CREATE_ADMIN.EMAIL_PLACEHOLDER} autoComplete="email" />
-            <FieldError />
-          </TextField>
+        <TextField
+          isRequired
+          name="email"
+          type="email"
+          validate={(v) => (EMAIL_REGEX.test(v) ? null : VALIDATION.INVALID_EMAIL)}
+        >
+          <Label>{CREATE_ADMIN.EMAIL_LABEL}</Label>
+          <Input placeholder={CREATE_ADMIN.EMAIL_PLACEHOLDER} autoComplete="email" />
+          <FieldError />
+        </TextField>
 
-          {state !== null && "error" in state && (
-            <p role="alert" className={S.errorAlert}>
-              {ERRORS[state.error]}
-            </p>
-          )}
+        {state !== null && "error" in state && (
+          <p role="alert" className={S.errorAlert}>
+            {ERRORS[state.error]}
+          </p>
+        )}
 
-          <Button type="submit" isDisabled={isPending} fullWidth>
-            {isPending ? CREATE_ADMIN.SUBMITTING : CREATE_ADMIN.SUBMIT_BUTTON}
-          </Button>
-        </Form>
-      </div>
-    </main>
+        <Button type="submit" isDisabled={isPending} fullWidth>
+          {isPending ? CREATE_ADMIN.SUBMITTING : CREATE_ADMIN.SUBMIT_BUTTON}
+        </Button>
+      </Form>
+    </div>
+    // </main>
   );
 };
