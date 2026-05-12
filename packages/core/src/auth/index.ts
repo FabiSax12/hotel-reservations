@@ -188,7 +188,10 @@ export async function signUp(
  */
 export async function inviteAdminByEmail(email: string, redirectTo: string): Promise<void> {
   const supabase = createSupabaseServiceClient();
-  const { error } = await supabase.auth.admin.inviteUserByEmail(email, { redirectTo });
+  const { error } = await supabase.auth.admin.inviteUserByEmail(email, {
+    redirectTo,
+    data: { role: "admin" },
+  });
   if (error) throw new Error(error.message);
 }
 
