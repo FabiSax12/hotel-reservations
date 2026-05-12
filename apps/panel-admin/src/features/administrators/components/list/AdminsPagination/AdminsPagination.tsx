@@ -1,94 +1,91 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Pagination } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { ADMINS_PAGINATION_STYLES as S } from "./AdminsPagination.styles";
+import {
+  PAGINATION_MAX_VISIBLE_PAGES,
+  PAGINATION_ELLIPSIS_THRESHOLD,
+  PAGINATION_NEIGHBOR_WINDOW,
+} from "../../../constants/administrators.constants";
+import { ADMINS_PAGINATION_STYLES } from "./AdminsPagination.styles";
 import type { AdminsPaginationProps } from "./AdminsPagination.interfaces";
 
-const MAX_VISIBLE_PAGES  = 5;
-const ELLIPSIS_THRESHOLD = 2;
+function getPageNumbers(page: number, totalPages: number): (number | "ellipsis")[] {
+  const pages: (number | "ellipsis")[] = [];
 
-function buildPageRange(current: number, total: number): (number | "…")[] {
-  if (total <= MAX_VISIBLE_PAGES) {
-    return Array.from({ length: total }, (_, i) => i + 1);
+  if (totalPages <= PAGINATION_MAX_VISIBLE_PAGES) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+    return pages;
   }
 
-  const pages: (number | "…")[] = [1];
+  pages.push(1);
+  if (page > PAGINATION_ELLIPSIS_THRESHOLD) pages.push("ellipsis");
 
-  if (current > ELLIPSIS_THRESHOLD + 1) pages.push("…");
+  const start = Math.max(2, page - PAGINATION_NEIGHBOR_WINDOW);
+  const end   = Math.min(totalPages - 1, page + PAGINATION_NEIGHBOR_WINDOW);
+  for (let i = start; i <= end; i++) pages.push(i);
 
-  const start = Math.max(2, current - 1);
-  const end   = Math.min(total - 1, current + 1);
+  if (page < totalPages - (PAGINATION_NEIGHBOR_WINDOW + 1)) pages.push("ellipsis");
+  pages.push(totalPages);
 
-  for (let p = start; p <= end; p++) pages.push(p);
-
-  if (current < total - ELLIPSIS_THRESHOLD) pages.push("…");
-
-  pages.push(total);
   return pages;
 }
 
-export const AdminsPagination = ({ page, totalPages }: AdminsPaginationProps) => {
-  const { t }  = useI18n();
-  const router = useRouter();
+export const AdminsPagination = ({
+  page,
+  totalPages,
+  totalItems,
+  pageSize,
+  onPageChange,
+}: AdminsPaginationProps) => {
+  const { t } = useI18n();
 
-  const navigateToPage = (target: number) => {
-    router.push(`?page=${target}`);
-  };
+  const startItem = (page - 1) * pageSize + 1;
+  const endItem   = Math.min(page * pageSize, totalItems);
 
-  const handlePrevious = () => navigateToPage(page - 1);
-  const handleNext     = () => navigateToPage(page + 1);
+  const handlePrevious  = () => onPageChange(page - 1);
+  const handleNext      = () => onPageChange(page + 1);
+  const buildPageHandler = (p: number) => () => onPageChange(p);
 
-  const buildPageHandler = (target: number) => () => navigateToPage(target);
-
-  const pageRange = buildPageRange(page, totalPages);
+  const pageNumbers = getPageNumbers(page, totalPages);
 
   return (
-    <div className={S.wrapper}>
-      <Pagination>
-        <Pagination.Content className={S.content}>
-          <Pagination.Item>
-            <Pagination.Previous
-              isDisabled={page <= 1}
-              onPress={handlePrevious}
-              aria-label={t.ADMINISTRATORS.PAGINATION.PREVIOUS}
-              className={S.navButton}
-            >
-              <Pagination.PreviousIcon />
-            </Pagination.Previous>
-          </Pagination.Item>
+    <Pagination className={ADMINS_PAGINATION_STYLES.wrapper}>
+      <Pagination.Summary>
+        {t.ADMINISTRATORS.PAGINATION.SHOWING} {startItem}–{endItem}{" "}
+        {t.ADMINISTRATORS.PAGINATION.OF} {totalItems}{" "}
+        {t.ADMINISTRATORS.PAGINATION.ITEMS}
+      </Pagination.Summary>
 
-          {pageRange.map((item, idx) =>
-            item === "…" ? (
-              <Pagination.Item key={`ellipsis-${idx}`}>
-                <Pagination.Ellipsis className={S.ellipsis} />
-              </Pagination.Item>
-            ) : (
-              <Pagination.Item key={item}>
-                <Pagination.Link
-                  isActive={item === page}
-                  onPress={buildPageHandler(item)}
-                  className={item === page ? S.pageLinkActive : S.pageLink}
-                >
-                  {item}
-                </Pagination.Link>
-              </Pagination.Item>
-            ),
-          )}
+      <Pagination.Content>
+        <Pagination.Item>
+          <Pagination.Previous isDisabled={page === 1} onPress={handlePrevious}>
+            <Pagination.PreviousIcon />
+            <span>{t.ADMINISTRATORS.PAGINATION.PREVIOUS}</span>
+          </Pagination.Previous>
+        </Pagination.Item>
 
-          <Pagination.Item>
-            <Pagination.Next
-              isDisabled={page >= totalPages}
-              onPress={handleNext}
-              aria-label={t.ADMINISTRATORS.PAGINATION.NEXT}
-              className={S.navButton}
-            >
-              <Pagination.NextIcon />
-            </Pagination.Next>
-          </Pagination.Item>
-        </Pagination.Content>
-      </Pagination>
-    </div>
+        {pageNumbers.map((p, i) =>
+          p === "ellipsis" ? (
+            <Pagination.Item key={`ellipsis-${i}`}>
+              <Pagination.Ellipsis />
+            </Pagination.Item>
+          ) : (
+            <Pagination.Item key={p}>
+              <Pagination.Link isActive={p === page} onPress={buildPageHandler(p)}>
+                {p}
+              </Pagination.Link>
+            </Pagination.Item>
+          ),
+        )}
+
+        <Pagination.Item>
+          <Pagination.Next isDisabled={page === totalPages} onPress={handleNext}>
+            <span>{t.ADMINISTRATORS.PAGINATION.NEXT}</span>
+            <Pagination.NextIcon />
+          </Pagination.Next>
+        </Pagination.Item>
+      </Pagination.Content>
+    </Pagination>
   );
 };

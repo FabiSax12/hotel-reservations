@@ -1,11 +1,18 @@
-// Column widths — shared between floating header and card rows
-export const COL_EMAIL  = "flex-1 min-w-0"        as const;
-export const COL_STATUS = "w-36 shrink-0"          as const;
-export const COL_DATE   = "w-44 shrink-0"          as const;
-
 export const ADMINS_TABLE_STYLES = {
-  wrapper:     "flex flex-col gap-1",
-  colHeader:   "text-[10px] font-bold uppercase tracking-widest text-white/55",
-  headerRow:   "flex items-center px-5 pb-1",
-  cardList:    "flex flex-col gap-2",
+  root:    "w-full bg-transparent shadow-none rounded-none",
+  scroll:  "overflow-x-auto w-full",
+  content: "w-full min-w-full border-collapse",
+  thead:   "border-b border-gray-200",
+  th:
+    "px-4 py-3 text-left text-[10px] font-bold uppercase " +
+    "tracking-widest text-gray-400 whitespace-nowrap bg-transparent",
+
+  // Table.Row — `group` enables child cells to react to hover
+  row:        "group border-b border-gray-100 transition-colors hover:bg-gray-50/50",
+  rowSession: "group border-b border-emerald-100 !bg-emerald-50 hover:!bg-emerald-50/80 transition-colors",
+
+  // Table.Cell — subtle expand on hover: py-4 → py-[18px]
+  cell:
+    "px-4 py-4 whitespace-nowrap align-middle " +
+    "group-hover:py-[18px] transition-[padding] duration-200",
 } as const;

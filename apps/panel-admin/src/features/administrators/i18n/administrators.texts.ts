@@ -13,6 +13,7 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
       TOTAL_CAPTION: "Administradores",
     },
     TABLE: {
+      ARIA_LABEL:      "Tabla de administradores",
       COL_EMAIL:       "Correo electrónico",
       COL_STATUS:      "Estado",
       COL_CREATED_AT:  "Miembro desde",
@@ -22,8 +23,11 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
     },
     PAGINATION: {
       ARIA_LABEL: "Paginación de administradores",
-      PREVIOUS:   "Página anterior",
-      NEXT:       "Página siguiente",
+      PREVIOUS:   "Anterior",
+      NEXT:       "Siguiente",
+      SHOWING:    "Mostrando",
+      OF:         "de",
+      ITEMS:      "administradores",
     },
     EMPTY: {
       TITLE:       "Sin administradores",
@@ -41,6 +45,7 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
       TOTAL_CAPTION: "Administrators",
     },
     TABLE: {
+      ARIA_LABEL:      "Administrators table",
       COL_EMAIL:       "Email",
       COL_STATUS:      "Status",
       COL_CREATED_AT:  "Member since",
@@ -50,8 +55,11 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
     },
     PAGINATION: {
       ARIA_LABEL: "Administrators pagination",
-      PREVIOUS:   "Previous page",
-      NEXT:       "Next page",
+      PREVIOUS:   "Previous",
+      NEXT:       "Next",
+      SHOWING:    "Showing",
+      OF:         "of",
+      ITEMS:      "administrators",
     },
     EMPTY: {
       TITLE:       "No administrators",

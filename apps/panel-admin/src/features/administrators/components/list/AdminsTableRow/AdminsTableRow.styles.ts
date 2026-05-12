@@ -1,25 +1,24 @@
 export const ADMINS_TABLE_ROW_STYLES = {
-  // Base card row
-  row:
-    "flex items-center px-5 py-3.5 rounded-xl bg-white/95 shadow-sm " +
-    "hover:scale-[1.015] hover:shadow-xl hover:bg-white " +
-    "transition-all duration-200 cursor-default select-none",
+  // group on <tr> enables group-hover on children
+  row:        "group border-b border-gray-100 transition-colors hover:bg-gray-50/50",
+  rowSession: "group border-b border-emerald-100 transition-colors",
 
-  // Session user — emerald tint
-  rowSession:
-    "flex items-center px-5 py-3.5 rounded-xl bg-emerald-50 border border-emerald-100 shadow-sm " +
-    "hover:scale-[1.015] hover:shadow-xl hover:bg-emerald-50/90 " +
-    "transition-all duration-200 cursor-default select-none",
+  // Normal cells — subtle expand on hover
+  cell:
+    "px-4 py-4 whitespace-nowrap align-middle " +
+    "group-hover:py-[18px] transition-[padding] duration-200",
 
-  // Email column content
-  emailCol:   "flex-1 min-w-0 flex items-center gap-3",
-  emailInner: "flex items-center gap-2 min-w-0",
+  // Session-user cells — same expand + persistent emerald tint
+  cellSession:
+    "px-4 py-4 whitespace-nowrap align-middle bg-emerald-50 " +
+    "group-hover:py-[18px] group-hover:bg-emerald-50/80 transition-[padding,background-color] duration-200",
+
+  // Email cell content
+  emailCell:  "flex items-center gap-3",
+  emailBlock: "flex min-w-0 flex-col gap-0.5",
+  emailRow:   "flex items-center gap-2",
   emailText:  "text-sm font-medium text-gray-900 truncate",
 
-  // Status column
-  statusCol: "w-36 shrink-0",
-
-  // Date column — tabular-nums for clean alignment
-  dateCol:  "w-44 shrink-0",
-  dateText: "text-sm tabular-nums text-gray-500",
+  // Date
+  dateText: "text-sm tabular-nums text-gray-600",
 } as const;

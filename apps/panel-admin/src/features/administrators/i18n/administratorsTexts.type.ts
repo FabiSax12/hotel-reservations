@@ -9,6 +9,7 @@ export type AdministratorsTexts = {
     TOTAL_CAPTION: string;
   };
   TABLE: {
+    ARIA_LABEL:      string;
     COL_EMAIL:       string;
     COL_STATUS:      string;
     COL_CREATED_AT:  string;
@@ -20,6 +21,9 @@ export type AdministratorsTexts = {
     ARIA_LABEL: string;
     PREVIOUS:   string;
     NEXT:       string;
+    SHOWING:    string;
+    OF:         string;
+    ITEMS:      string;
   };
   EMPTY: {
     TITLE:       string;
