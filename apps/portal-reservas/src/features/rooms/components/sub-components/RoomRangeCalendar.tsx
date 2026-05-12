@@ -16,12 +16,7 @@ import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { ROOM_MOCK } from "../../constants/rooms.constants";
 import { useI18n } from "@/locales";
 import { getBlockedDatesBetween } from "../../domain/date-range.utils";
-
-interface RoomRangeCalendarProps {
-  availableDates: string[];
-  location: string;
-  onClose: () => void;
-}
+import type { RoomRangeCalendarProps } from "../../domain/types";
 
 const SUBMIT_DELAY_MS = ROOM_MOCK.CALENDAR_SUBMIT_DELAY_MS;
 

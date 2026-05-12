@@ -8,29 +8,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { SearchParams } from "../features/search/domain/types";
+import type { RoomsInnerPageProps } from "./RoomsInnerPage.types";
 import { Background } from "../features/layout/components/Background";
 import { Header } from "../features/layout/components/Header";
 import { HeroSearch } from "../features/search/components/HeroSearch";
 import { RoomList } from "../features/rooms/components/RoomList";
 import { RoomsProvider } from "../features/rooms/context/RoomsContext";
 import { PAGE_STYLES as S } from "../theme/layout.theme";
-import type { Room } from "../features/rooms/domain/types";
-
-interface RoomsInnerPageProps {
-  hasSearched: boolean;
-  selectedLocation: string | null;
-  heroCalendarActive: boolean;
-  setHeroCalendarActive: (v: boolean) => void;
-  searchParams: SearchParams;
-  searchKey: number;
-  hasDates: boolean;
-  isSearchingData: boolean;
-  filteredRooms: Room[];
-  onSearchTrigger: (params: SearchParams) => void;
-  onDestinationChange: (dest: string) => void;
-  onReset: () => void;
-}
 
 export function RoomsInnerPage({
   hasSearched,

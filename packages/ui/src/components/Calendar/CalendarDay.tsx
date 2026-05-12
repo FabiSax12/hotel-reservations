@@ -5,29 +5,7 @@
 "use client";
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
-
-interface CalendarDayProps {
-  d: number;
-  dayStr: string;
-  isPast: boolean;
-  isStart: boolean;
-  isEnd: boolean;
-  hasRange: boolean;
-  isSelected: boolean;
-  isToday: boolean;
-  isHovered: boolean;
-  isInvalid: boolean;
-  isFading: boolean;
-  invalidAnimationKey?: number;
-  isHero: boolean;
-  hideTooltips?: boolean;
-  onPickDate: (dayStr: string) => void;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
-  startLabel?: string;
-  endLabel?: string;
-  isAvailable?: boolean;
-}
+import type { CalendarDayProps } from "../../types/calendar.types";
 
 export function CalendarDay({
   d,

@@ -3,16 +3,7 @@
  */
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
-
-interface MonthHeaderProps {
-  monthIndexLocal: 0 | 1;
-  currentMonthOffset: number;
-  maxMonths: number;
-  monthHeader: string;
-  isHero: boolean;
-  onPrev: () => void;
-  onNext: () => void;
-}
+import type { MonthHeaderProps } from "../../types/calendar.types";
 
 export function MonthHeader({
   monthIndexLocal,

@@ -47,6 +47,7 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     INCREASE_ADULTS: "Aumentar adultos",
     DECREASE_CHILDREN: "Reducir niños",
     INCREASE_CHILDREN: "Aumentar niños",
+    GALLERY_IMAGES_LABEL: "Imágenes adicionales",
   },
   en: {
     REALTIME_AVAIL: "Real-time availability",
@@ -94,5 +95,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     INCREASE_ADULTS: "Increase adults",
     DECREASE_CHILDREN: "Decrease children",
     INCREASE_CHILDREN: "Increase children",
+    GALLERY_IMAGES_LABEL: "Additional images",
   },
 } as const;

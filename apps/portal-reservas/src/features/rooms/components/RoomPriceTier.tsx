@@ -11,11 +11,7 @@ import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useI18n } from "@/locales";
 import { RoomCardCTA } from "./sub-components/RoomCardCTA";
-import type { Room } from "../domain/types";
-
-interface RoomPriceTierProps {
-  room: Room;
-}
+import type { RoomPriceTierProps } from "../domain/types";
 
 export function RoomPriceTier({ room }: RoomPriceTierProps) {
   const { t } = useI18n();

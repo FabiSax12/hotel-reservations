@@ -9,12 +9,8 @@
  * proper reading context and removing clutter from the image panel.
  */
 
-import type { Room } from "../../domain/types";
+import type { RoomCardMetaProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
-
-interface RoomCardMetaProps {
-  room: Room;
-}
 
 export function RoomCardMeta({ room }: RoomCardMetaProps) {
   return (

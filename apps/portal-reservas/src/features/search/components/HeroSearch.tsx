@@ -13,15 +13,7 @@ import { HERO_SEARCH_ANIMATIONS } from "../../../theme/search.animations";
 import { useI18n } from "@/locales";
 import { ScrollIndicator } from "./ScrollIndicator";
 
-import type { SearchParams } from "../domain/types";
-
-interface HeroSearchProps {
-  onDestinationChange?: (dest: string) => void;
-  onSearch: (params: SearchParams) => void;
-  heroCalendarActive: boolean;
-  setHeroCalendarActive: (active: boolean) => void;
-  hasLocation: boolean;
-}
+import type { HeroSearchProps } from "../domain/types";
 
 export function HeroSearch({
   onSearch,

@@ -6,33 +6,13 @@
 
 import { useI18n } from "@hotel/i18n";
 import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
-import type { CalendarInvalidState } from "../../types/calendar.types";
+import type { CalendarMonthProps } from "../../types/calendar.types";
 import { getDayHeaders, getDaysInMonth, getMonthHeader } from "../../utils/calendar.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarDay } from "./CalendarDay";
 import { MonthHeader } from "./MonthHeader";
 
 const C = UI_PACKAGE_CONSTANTS.CALENDAR;
-
-interface CalendarMonthProps {
-  monthIndexLocal: 0 | 1;
-  absoluteMonthOffset: number;
-  currentMonthOffset: number;
-  today: Date;
-  inVal: number;
-  outVal: number;
-  invalidState: CalendarInvalidState | null;
-  hoveredDay: string | null;
-  isHero: boolean;
-  hideTooltips?: boolean;
-  onPickDate: (dayStr: string) => void;
-  onHoverDay: (dayStr: string | null) => void;
-  onPrev: () => void;
-  onNext: () => void;
-  startLabel?: string;
-  endLabel?: string;
-  availableDates?: string[];
-}
 
 export function CalendarMonth({
   monthIndexLocal,

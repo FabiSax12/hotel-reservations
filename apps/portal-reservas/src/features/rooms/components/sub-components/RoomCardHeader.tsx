@@ -7,17 +7,12 @@
  *  - When hasDates = true, shows inventory relative to selected dates.
  */
 
-import type { Room } from "../../domain/types";
+import type { RoomCardHeaderProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { useRoomsContext } from "../../context/RoomsContext";
 import { SEARCH_VALS } from "../../../search/components/search-bar/constants/search.constants";
 import { ROOM_THRESHOLDS } from "../../constants/rooms.constants";
-
-interface RoomCardHeaderProps {
-  room: Room;
-  selectedDest?: string | null;
-}
 
 export function RoomCardHeader({ room, selectedDest }: RoomCardHeaderProps) {
   const { t } = useI18n();

@@ -6,17 +6,7 @@
  */
 
 import { Stepper } from "@hotel/ui";
-
-interface GuestStepperProps {
-  label: string;
-  subtitle: string;
-  value: number;
-  min: number;
-  onDecrement: () => void;
-  onIncrement: () => void;
-  decrementLabel: string;
-  incrementLabel: string;
-}
+import type { GuestStepperProps } from "../../domain/types";
 
 export function GuestStepper({
   label, subtitle, value, min,

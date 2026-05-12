@@ -8,25 +8,7 @@
 
 import { useCallback } from "react";
 import { SEARCH_VALS, TIMEOUTS, SEARCH_SECTIONS } from "../constants/search.constants";
-import type { ActiveSection, ValidationError } from "../domain/types";
-
-interface UseSearchTriggerDeps {
-  destination: string;
-  checkIn: string;
-  checkOut: string;
-  adults: number;
-  childrenCount: number;
-  pets: number;
-  onlyOneSede: string | null;
-  validateSearch: (dest: string, inDate: string, outDate: string, onlyOneSede: string | null) => boolean;
-  clearError: () => void;
-  showError: (error: ValidationError) => void;
-  setActive: (s: ActiveSection) => void;
-  setIsSearching: (v: boolean) => void;
-  activateSection: (sec: ActiveSection, clearErrFn?: () => void) => void;
-  onSearch?: (params: any) => void;
-  missingSedeMessage: string;
-}
+import type { UseSearchTriggerDeps } from "../domain/types";
 
 export function useSearchTrigger({
   destination,

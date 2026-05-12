@@ -13,12 +13,7 @@ import { useRoomsContext } from "../../context/RoomsContext";
 import { useI18n } from "@/locales";
 import { GuestStepper } from "./GuestStepper";
 import { ROOM_MOCK } from "../../constants/rooms.constants";
-
-interface QuickSearchDialogProps {
-  isOpen: boolean;
-  location: string;
-  onClose: () => void;
-}
+import type { QuickSearchDialogProps } from "../../domain/types";
 
 export function QuickSearchDialog({ isOpen, location, onClose }: QuickSearchDialogProps) {
   const { t } = useI18n();

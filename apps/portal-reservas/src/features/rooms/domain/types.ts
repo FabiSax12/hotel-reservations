@@ -41,3 +41,83 @@ export interface Room {
    */
   availableDates: string[];
 }
+
+// ─── Sub-Component Props ────────────────────────────────────────────────────
+
+export interface AvailabilityCalendarDialogProps {
+  /** Whether the inline panel is currently open. */
+  isOpen: boolean;
+  /** ISO date strings (YYYY-MM-DD) representing available check-in days. */
+  availableDates: string[];
+  /** Callback to close the panel. */
+  onClose: () => void;
+}
+
+export interface GuestStepperProps {
+  label: string;
+  subtitle: string;
+  value: number;
+  min: number;
+  onDecrement: () => void;
+  onIncrement: () => void;
+  decrementLabel: string;
+  incrementLabel: string;
+}
+
+export interface QuickSearchDialogProps {
+  isOpen: boolean;
+  location: string;
+  onClose: () => void;
+}
+
+export interface RoomCardCTAProps {
+  room: Room;
+}
+
+export interface RoomCardGalleryProps {
+  room: Room;
+}
+
+export interface RoomCardHeaderProps {
+  room: Room;
+  selectedDest?: string | null;
+}
+
+export interface RoomCardMetaProps {
+  room: Room;
+}
+
+export interface RoomImagePanelProps {
+  room: Room;
+  isExpanded: boolean;
+  onToggleExpand: () => void;
+}
+
+export interface RoomCardProps {
+  room: Room;
+  index: number;
+  selectedDest?: string | null;
+}
+
+export interface RoomListProps {
+  rooms: Room[];
+  selectedDest: string;
+  searchKey: number;
+  isLoading?: boolean;
+}
+
+export interface RoomPriceTierProps {
+  room: Room;
+}
+
+export interface RoomDetailsPopoverProps {
+  room: Room;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export interface RoomRangeCalendarProps {
+  availableDates: string[];
+  location: string;
+  onClose: () => void;
+}

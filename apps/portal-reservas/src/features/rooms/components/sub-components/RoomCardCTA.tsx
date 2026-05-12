@@ -17,9 +17,7 @@ import { useI18n } from "@/locales";
 import { ROOM_MOCK } from "../../constants/rooms.constants";
 import { RoomRangeCalendar } from "./RoomRangeCalendar";
 import { CTASpinner } from "./CTASpinner";
-import type { Room } from "../../domain/types";
-
-interface RoomCardCTAProps { room: Room; }
+import type { RoomCardCTAProps } from "../../domain/types";
 
 export function RoomCardCTA({ room }: RoomCardCTAProps) {
   const { t } = useI18n();

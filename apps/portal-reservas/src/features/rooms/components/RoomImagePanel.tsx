@@ -6,16 +6,10 @@
  * The expand/collapse toggle button remains in the bottom-right corner.
  */
 
-import type { Room } from "../domain/types";
+import type { RoomImagePanelProps } from "../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { ROOM_THRESHOLDS } from "../constants/rooms.constants";
-
-interface RoomImagePanelProps {
-  room: Room;
-  isExpanded: boolean;
-  onToggleExpand: () => void;
-}
 
 export function RoomImagePanel({ room, isExpanded, onToggleExpand }: RoomImagePanelProps) {
   const { t } = useI18n();

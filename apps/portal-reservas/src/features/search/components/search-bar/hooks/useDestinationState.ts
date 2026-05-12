@@ -8,11 +8,7 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { SEARCH_VALS } from "../constants/search.constants";
-
-interface UseDestinationStateOptions {
-  initialDestination?: string;
-  onDestinationChange?: (dest: string) => void;
-}
+import type { UseDestinationStateOptions } from "../domain/types";
 
 export function useDestinationState({
   initialDestination,

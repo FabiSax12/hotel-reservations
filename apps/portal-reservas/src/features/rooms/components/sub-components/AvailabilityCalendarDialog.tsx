@@ -14,15 +14,7 @@
 
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
-
-interface AvailabilityCalendarDialogProps {
-  /** Whether the inline panel is currently open. */
-  isOpen: boolean;
-  /** ISO date strings (YYYY-MM-DD) representing available check-in days. */
-  availableDates: string[];
-  /** Callback to close the panel. */
-  onClose: () => void;
-}
+import type { AvailabilityCalendarDialogProps } from "../../domain/types";
 
 /** Formats an ISO date string into a readable short date (e.g. "15 oct"). */
 function formatDate(iso: string, locale: string): string {

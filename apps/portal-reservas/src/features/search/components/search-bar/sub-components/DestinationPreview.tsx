@@ -5,20 +5,7 @@
 import {
   DESTINATION_POPOVER_STYLES as S,
 } from "../theme/destination.theme";
-
-interface DestinationPreviewProps {
-  data: {
-    name: string;
-    image: string;
-    priceFrom: number;
-    highlights: readonly string[];
-  };
-  isHero: boolean;
-  positionClasses: string;
-  fromLabel: string;
-  usdNightLabel: string;
-  onMouseLeave: () => void;
-}
+import type { DestinationPreviewProps } from "../domain/types";
 
 export function DestinationPreview({
   data,

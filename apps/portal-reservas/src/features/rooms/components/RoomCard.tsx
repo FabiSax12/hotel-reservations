@@ -14,7 +14,7 @@
 
 "use client";
 
-import type { Room } from "../domain/types";
+import type { RoomCardProps } from "../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useRoomExpansion } from "../hooks/useRoomExpansion";
@@ -25,15 +25,6 @@ import { RoomCardMeta } from "./sub-components/RoomCardMeta";
 import { RoomDetailsPopover } from "./sub-components/RoomDetailsPopover";
 import { RoomPriceTier } from "./RoomPriceTier";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
-
-interface RoomCardProps {
-  /** Room data to render. */
-  room: Room;
-  /** Zero-based position in the list, used for staggered animation delay. */
-  index: number;
-  /** Active destination filter. When "Todos" or null, the location label shows. */
-  selectedDest?: string | null;
-}
 
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   const { hasDates, searchDates } = useRoomsContext();

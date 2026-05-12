@@ -43,4 +43,5 @@ export type RoomsTexts = {
   INCREASE_ADULTS: string;
   DECREASE_CHILDREN: string;
   INCREASE_CHILDREN: string;
+  GALLERY_IMAGES_LABEL: string;
 };

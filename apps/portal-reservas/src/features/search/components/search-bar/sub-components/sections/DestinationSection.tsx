@@ -6,16 +6,7 @@
 
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { useI18n } from "@/locales";
-
-interface DestinationSectionProps {
-  isActive: boolean;
-  destination: string;
-  sizing: { label: string; value: string };
-  sectionClass: string;
-  onActivate: () => void;
-  hasError?: boolean;
-  isShaking?: boolean;
-}
+import type { DestinationSectionProps } from "../../domain/types";
 
 export function DestinationSection({
   isActive,

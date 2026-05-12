@@ -72,3 +72,128 @@ export interface SearchBarProps {
    */
   onDestinationChange?: (destination: string) => void;
 }
+
+// ─── Hook Dependency Types ──────────────────────────────────────────────────
+
+export interface UseDestinationStateOptions {
+  initialDestination?: string;
+  onDestinationChange?: (dest: string) => void;
+}
+
+export interface UseSearchBarContextValueDeps {
+  size: SearchBarVariant;
+  barState: {
+    active: ActiveSection;
+    setActive: (s: ActiveSection) => void;
+    hasHeroCalendarOpened: boolean;
+    setHasHeroCalendarOpened: (v: boolean) => void;
+    isSearching: boolean;
+    setIsSearching: (v: boolean) => void;
+    lastUserActivatedSection: import("react").RefObject<ActiveSection | null>;
+    isHero: boolean;
+  };
+  validation: {
+    validationError: ValidationError | null;
+    isShaking: boolean;
+    clearError: () => void;
+    validateSearch: (dest: string, inDate: string, outDate: string, onlyOneSede: string | null) => boolean;
+    fieldHasError: (k: string) => boolean;
+  };
+  destState: {
+    destination: string;
+    setDestination: (dest: string) => void;
+    onlyOneSede: string | null;
+  };
+  dateState: {
+    checkIn: string;
+    checkOut: string;
+    invalidState: { dayStrs: string[]; isFading: boolean; animationKey?: number } | null;
+    handlePickDate: (dayStr: string) => void;
+  };
+  guestState: {
+    adults: number;
+    setAdults: import("react").Dispatch<import("react").SetStateAction<number>>;
+    children: number;
+    setChildren: import("react").Dispatch<import("react").SetStateAction<number>>;
+    pets: number;
+    setPets: import("react").Dispatch<import("react").SetStateAction<number>>;
+  };
+  activateSection: (sec: ActiveSection, clearErrFn?: () => void) => void;
+  onHeroCalendarOpen?: () => void;
+  handleSearchTrigger: () => void;
+}
+
+export interface UseSearchTriggerDeps {
+  destination: string;
+  checkIn: string;
+  checkOut: string;
+  adults: number;
+  childrenCount: number;
+  pets: number;
+  onlyOneSede: string | null;
+  validateSearch: (dest: string, inDate: string, outDate: string, onlyOneSede: string | null) => boolean;
+  clearError: () => void;
+  showError: (error: ValidationError) => void;
+  setActive: (s: ActiveSection) => void;
+  setIsSearching: (v: boolean) => void;
+  activateSection: (sec: ActiveSection, clearErrFn?: () => void) => void;
+  onSearch?: (params: any) => void;
+  missingSedeMessage: string;
+}
+
+// ─── Sub-Component Props ────────────────────────────────────────────────────
+
+export interface DestinationPreviewProps {
+  data: {
+    name: string;
+    image: string;
+    priceFrom: number;
+    highlights: readonly string[];
+  };
+  isHero: boolean;
+  positionClasses: string;
+  fromLabel: string;
+  usdNightLabel: string;
+  onMouseLeave: () => void;
+}
+
+export interface SearchButtonProps {
+  isSearching: boolean;
+  iconClass: string;
+  paddingClass: string;
+  onTrigger: () => void;
+  isShaking?: boolean;
+}
+
+export interface DateSectionProps {
+  label: string;
+  placeholder: string;
+  displayValue: string;
+  sizing: { label: string; value: string };
+  sectionClass: string;
+  onActivate: () => void;
+  hasError?: boolean;
+  isShaking?: boolean;
+}
+
+export interface DestinationSectionProps {
+  isActive: boolean;
+  destination: string;
+  sizing: { label: string; value: string };
+  sectionClass: string;
+  onActivate: () => void;
+  hasError?: boolean;
+  isShaking?: boolean;
+}
+
+export interface GuestsSectionProps {
+  isActive: boolean;
+  guestsText: string;
+  sizing: { label: string; value: string };
+  sectionClass: string;
+  onActivate: () => void;
+}
+
+export interface ErrorTooltipProps {
+  message: string;
+}

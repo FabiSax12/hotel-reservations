@@ -8,17 +8,11 @@
 "use client";
 
 import { useEffect } from "react";
-import type { Room } from "../../domain/types";
+import type { RoomDetailsPopoverProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { RoomCardGallery } from "./RoomCardGallery";
 import { useI18n } from "@/locales";
 import { useScrollLock } from "@/hooks/useScrollLock";
-
-interface RoomDetailsPopoverProps {
-  room: Room;
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 export function RoomDetailsPopover({ room, isOpen, onClose }: RoomDetailsPopoverProps) {
   const { t } = useI18n();

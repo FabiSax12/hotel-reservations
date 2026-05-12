@@ -8,32 +8,21 @@
  *    when a new search is submitted.
  */
 
-import type { Room } from "../domain/types";
+import type { RoomListProps } from "../domain/types";
 import { RoomCard } from "./RoomCard";
 import { RoomCardSkeleton } from "./RoomCardSkeleton";
 import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 
-interface RoomListProps {
-  /** Filtered array of rooms to display for the selected location. */
-  rooms: Room[];
-  /** The currently selected destination name. */
-  selectedDest: string;
-  /** Monotonic counter used as a React key to force re-mount and replay entrance animations. */
-  searchKey: number;
-  /** Whether the list is currently simulating a search data load. */
-  isLoading?: boolean;
-}
-
 export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
 
   return (
-    <section id="rooms-section" className={S.section} aria-label="Listado de habitaciones">
+    <section id="rooms-section" className={S.section} aria-label={t.ROOMS.BROWSE_ROOMS}>
       {/* Summary header */}
       <div className={S.header}>
         <div>
-          <div className={S.badge}>Explorar Habitaciones</div>
+          <div className={S.badge}>{t.ROOMS.BROWSE_ROOMS}</div>
           <h2 className={S.heading}>{selectedDest}</h2>
         </div>
 

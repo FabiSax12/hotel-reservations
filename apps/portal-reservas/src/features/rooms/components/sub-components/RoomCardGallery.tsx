@@ -11,14 +11,10 @@
  * markup, relying on the grid animation to show/hide it without layout shifts.
  */
 
-import type { Room } from "../../domain/types";
+import type { RoomCardGalleryProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import Image from "next/image";
-
-interface RoomCardGalleryProps {
-  room: Room;
-}
 
 export function RoomCardGallery({ room }: RoomCardGalleryProps) {
   const { t } = useI18n();
@@ -27,7 +23,7 @@ export function RoomCardGallery({ room }: RoomCardGalleryProps) {
     <div className={S.expansionContent}>
       {/* Additional image strip */}
       {room.images.length > 0 && (
-        <div className={S.galleryStrip} role="list" aria-label="Imágenes adicionales">
+        <div className={S.galleryStrip} role="list" aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}>
           {room.images.map((src, i) => (
             <div key={src} className={S.galleryImage} role="listitem">
               <Image

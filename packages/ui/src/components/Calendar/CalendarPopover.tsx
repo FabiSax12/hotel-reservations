@@ -9,26 +9,7 @@ import { parseDateHelper } from "../../utils/date.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
 import { UI_VARIANTS, UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
-import type { CalendarInvalidState } from "../../types/calendar.types";
-
-interface CalendarPopoverProps {
-  checkIn: string;
-  checkOut: string;
-  invalidState: CalendarInvalidState | null;
-  hideTooltips?: boolean;
-  onPickDate: (dayStr: string) => void;
-  variant?: (typeof UI_VARIANTS)[keyof typeof UI_VARIANTS];
-  startLabel?: string;
-  endLabel?: string;
-  /** Optional array of allowed ISO dates. If provided, all other dates are unselectable. */
-  availableDates?: string[];
-  /** Optional content to render below the calendar (e.g., a confirm button). */
-  bottomContent?: React.ReactNode;
-  /** Optional override for the root container classes */
-  className?: string;
-  /** Whether to render inline in the normal document flow. */
-  isInline?: boolean;
-}
+import type { CalendarPopoverProps } from "../../types/calendar.types";
 
 export function CalendarPopover({
   checkIn,

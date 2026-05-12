@@ -4,10 +4,7 @@
 
 import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 import { useI18n } from "@/locales";
-
-interface ScrollIndicatorProps {
-  heroCalendarActive: boolean;
-}
+import type { ScrollIndicatorProps } from "../domain/types";
 
 export function ScrollIndicator({ heroCalendarActive }: ScrollIndicatorProps) {
   const { t } = useI18n();
