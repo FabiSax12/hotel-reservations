@@ -1,13 +1,14 @@
 "use client";
 
+import { FILTER_BAR_STYLES as S } from "./ReservationsFilters.styles";
 import { useReservationFilters } from "../../../hooks/useReservationFilters";
+import { StatusPillGroup } from "../StatusPillGroup/StatusPillGroup";
+import { RoomSelector } from "../RoomSelector/RoomSelector";
+import { FilterResultsSummary } from "../FilterResultsSummary/FilterResultsSummary";
 import { ClearFiltersButton } from "../ClearFiltersButton/ClearFiltersButton";
 import { DateRangePicker } from "../DateRangePicker/DateRangePicker";
-import { FilterResultsSummary } from "../FilterResultsSummary/FilterResultsSummary";
-import { RoomSelector } from "../RoomSelector/RoomSelector";
-import { StatusPillGroup } from "../StatusPillGroup/StatusPillGroup";
+import { GuestSearchInput } from "../GuestSearchInput/GuestSearchInput";
 import type { ReservationsFiltersProps } from "./ReservationsFilters.interface";
-import { FILTER_BAR_STYLES as S } from "./ReservationsFilters.styles";
 
 export const ReservationsFilters = ({
   filters,
@@ -15,8 +16,9 @@ export const ReservationsFilters = ({
   totalCount,
   filteredCount,
   statusCounts,
+  rooms,
 }: ReservationsFiltersProps) => {
-  const { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange } =
+  const { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange, handleGuestNameChange } =
     useReservationFilters(filters, onFiltersChange);
 
   const handleClearStatuses = () => update({ statuses: [] });
@@ -37,7 +39,9 @@ export const ReservationsFilters = ({
         <div className={S.spacer} />
 
         <div className={S.rightSection}>
-          <RoomSelector value={selectedRoomKey} onChange={handleRoomChange} />
+          <GuestSearchInput value={filters.guestName} onChange={handleGuestNameChange} />
+
+          <RoomSelector value={selectedRoomKey} rooms={rooms} onChange={handleRoomChange} />
 
           <DateRangePicker
             checkIn={filters.dateFrom}

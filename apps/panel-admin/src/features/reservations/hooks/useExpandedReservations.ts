@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState, useCallback } from "react";
 
 export function useExpandedReservations() {
   const [expandedIds, setExpandedIds] = useState<ReadonlySet<string>>(new Set());
@@ -15,7 +15,10 @@ export function useExpandedReservations() {
     });
   }, []);
 
-  const isExpanded = useCallback((id: string) => expandedIds.has(id), [expandedIds]);
+  const isExpanded = useCallback(
+    (id: string) => expandedIds.has(id),
+    [expandedIds],
+  );
 
   return { isExpanded, toggleExpanded };
 }

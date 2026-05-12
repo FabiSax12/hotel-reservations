@@ -3,8 +3,8 @@
 import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
 import { useI18n } from "@/locales";
-import type { DateRange, DateRangePickerProps } from "./DateRangePicker.interface";
 import { DATE_RANGE_PICKER_STYLES as S } from "./DateRangePicker.styles";
+import type { DateRange, DateRangePickerProps } from "./DateRangePicker.interface";
 
 export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePickerProps) {
   const { t } = useI18n();
@@ -17,7 +17,7 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
   };
 
   return (
-    <HeroDateRangePicker value={value} onChange={handleChange}>
+    <HeroDateRangePicker value={value} onChange={handleChange} aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_DATE_RANGE}>
       <DateField.Group fullWidth className={S.group}>
         <DateField.Input slot="start">
           {(segment) => <DateField.Segment segment={segment} className={S.segment} />}

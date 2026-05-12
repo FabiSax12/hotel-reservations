@@ -2,23 +2,21 @@
 
 import { Avatar, Button } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { ICON_PATHS } from "../../../constants/reservations-icons";
-import { formatAmount } from "../../../utils/format-currency";
 import { formatTableDate } from "../../../utils/format-reservation-date";
+import { formatAmount } from "../../../utils/format-currency";
 import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
-import type { ReservationRowProps } from "./ReservationRow.interface";
-import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
+import { Copy, Check, Eye, EyeOff } from "lucide-react";
 import { useCopyCode } from "./useCopyCode";
+import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
+import type { ReservationRowProps } from "./ReservationRow.interface";
 
 export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: ReservationRowProps) => {
   const { t } = useI18n();
   const { copied, handleCopyCode } = useCopyCode(r.code);
 
-  const rowClassName = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
+  const rowClassName    = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
   const toggleClassName = isExpanded ? S.toggleButtonOn : S.toggleButtonOff;
-  const buttonLabel = isExpanded
-    ? t.RESERVATIONS.ACTIONS.VIEW_LESS
-    : t.RESERVATIONS.ACTIONS.VIEW_MORE;
+  const buttonLabel     = isExpanded ? t.RESERVATIONS.ACTIONS.VIEW_LESS : t.RESERVATIONS.ACTIONS.VIEW_MORE;
 
   return (
     <tr className={rowClassName}>
@@ -34,32 +32,9 @@ export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: Reserva
             onPress={handleCopyCode}
           >
             {copied ? (
-              <svg
-                className={S.copyIcon}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-              >
-                <polyline points={ICON_PATHS.COPY_DONE.points} />
-              </svg>
+              <Check className={S.copyIcon} />
             ) : (
-              <svg
-                className={S.copyIcon}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <rect
-                  x={ICON_PATHS.COPY.rect.x}
-                  y={ICON_PATHS.COPY.rect.y}
-                  width={ICON_PATHS.COPY.rect.width}
-                  height={ICON_PATHS.COPY.rect.height}
-                  rx={ICON_PATHS.COPY.rect.rx}
-                />
-                <path d={ICON_PATHS.COPY.path} />
-              </svg>
+              <Copy className={S.copyIcon} />
             )}
           </Button>
         </div>
@@ -103,39 +78,16 @@ export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: Reserva
       </td>
 
       <td className={S.cell}>
-        <Button size="sm" variant="outline" className={toggleClassName} onPress={onToggle}>
+        <Button
+          size="sm"
+          variant="outline"
+          className={toggleClassName}
+          onPress={onToggle}
+        >
           {isExpanded ? (
-            <svg
-              className={S.toggleIcon}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d={ICON_PATHS.EYE_CLOSED.path1} />
-              <path d={ICON_PATHS.EYE_CLOSED.path2} />
-              <line
-                x1={ICON_PATHS.EYE_CLOSED.line.x1}
-                y1={ICON_PATHS.EYE_CLOSED.line.y1}
-                x2={ICON_PATHS.EYE_CLOSED.line.x2}
-                y2={ICON_PATHS.EYE_CLOSED.line.y2}
-              />
-            </svg>
+            <EyeOff className={S.toggleIcon} />
           ) : (
-            <svg
-              className={S.toggleIcon}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d={ICON_PATHS.EYE_OPEN.path1} />
-              <circle
-                cx={ICON_PATHS.EYE_OPEN.circle.cx}
-                cy={ICON_PATHS.EYE_OPEN.circle.cy}
-                r={ICON_PATHS.EYE_OPEN.circle.r}
-              />
-            </svg>
+            <Eye className={S.toggleIcon} />
           )}
           {buttonLabel}
         </Button>

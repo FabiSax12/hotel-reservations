@@ -18,7 +18,8 @@ export const RESERVATION_ROW_STYLES = {
 
   toggleButton:
     "rounded-full border shadow-sm px-3 py-1.5 text-sm font-medium tracking-wide transition-shadow whitespace-nowrap cursor-pointer",
-  toggleButtonOn: "bg-emerald-900 text-white border-emerald-900 hover:shadow-md",
+  toggleButtonOn:
+    "bg-emerald-900 text-white border-emerald-900 hover:shadow-md",
   toggleButtonOff: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100",
-  toggleIcon: "size-3.5 shrink-0",
+  toggleIcon:      "size-3.5 shrink-0",
 } as const;

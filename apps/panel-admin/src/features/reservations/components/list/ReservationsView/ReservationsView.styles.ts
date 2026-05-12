@@ -3,8 +3,8 @@ export const RESERVATIONS_PAGE_STYLES = {
 } as const;
 
 export const CARD_STYLES = {
-  base: "rounded-xl bg-white border border-gray-200 shadow-sm",
-  body: "rounded-xl bg-white border border-gray-200 shadow-sm p-6",
-  bodySmall: "rounded-xl bg-white border border-gray-200 shadow-sm p-4",
+  base:             "rounded-xl bg-white border border-gray-200 shadow-sm",
+  body:             "rounded-xl bg-white border border-gray-200 shadow-sm p-6",
+  bodySmall:        "rounded-xl bg-white border border-gray-200 shadow-sm p-4",
   bodyWithOverflow: "rounded-xl bg-white border border-gray-200 shadow-sm overflow-hidden",
 } as const;
