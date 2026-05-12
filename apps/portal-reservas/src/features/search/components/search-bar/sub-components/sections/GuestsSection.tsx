@@ -7,14 +7,7 @@
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { GuestsPopover } from "../GuestsPopover";
 import { useI18n } from "@/locales";
-
-interface GuestsSectionProps {
-  isActive: boolean;
-  guestsText: string;
-  sizing: { label: string; value: string };
-  sectionClass: string;
-  onActivate: () => void;
-}
+import type { GuestsSectionProps } from "../../domain/types";
 
 export function GuestsSection({
   isActive,

@@ -16,21 +16,6 @@ export function useSearchBarState(size: SearchBarVariant, onHeroCalendarOpen?: (
 
   const isHero = size === SEARCH_VARIANTS.HERO;
 
-  // Sync hero state based on active section
-  useEffect(() => {
-    if (isHero && active && !hasHeroTitleDismissed) {
-      setHasHeroTitleDismissed(true);
-    }
-
-    if (
-      isHero &&
-      (active === SEARCH_SECTIONS.CHECK_IN || active === SEARCH_SECTIONS.CHECK_OUT) &&
-      !hasHeroCalendarOpened
-    ) {
-      setHasHeroCalendarOpened(true);
-      if (onHeroCalendarOpen) onHeroCalendarOpen();
-    }
-  }, [active, isHero, hasHeroCalendarOpened, hasHeroTitleDismissed, onHeroCalendarOpen]);
 
   // Global ESC key listener
   useEffect(() => {
@@ -52,11 +37,27 @@ export function useSearchBarState(size: SearchBarVariant, onHeroCalendarOpen?: (
     return () => window.removeEventListener("mousedown", handleOutsideClick);
   }, [active]);
 
-  const activateSection = useCallback((section: ActiveSection, onClearError?: () => void) => {
-    if (onClearError) onClearError();
-    setActive(section);
-    lastUserActivatedSection.current = section;
-  }, []);
+  const activateSection = useCallback(
+    (section: ActiveSection, onClearError?: () => void) => {
+      if (onClearError) onClearError();
+      setActive(section);
+      lastUserActivatedSection.current = section;
+
+      // Sync hero state based on active section (moved from useEffect)
+      if (isHero && section && !hasHeroTitleDismissed) {
+        setHasHeroTitleDismissed(true);
+      }
+      if (
+        isHero &&
+        (section === SEARCH_SECTIONS.CHECK_IN || section === SEARCH_SECTIONS.CHECK_OUT) &&
+        !hasHeroCalendarOpened
+      ) {
+        setHasHeroCalendarOpened(true);
+        if (onHeroCalendarOpen) onHeroCalendarOpen();
+      }
+    },
+    [isHero, hasHeroTitleDismissed, hasHeroCalendarOpened, onHeroCalendarOpen]
+  );
 
   return {
     active,

@@ -1,6 +1,6 @@
 /**
  * @file HeroExpandTab.tsx — Calendar expansion trigger tab (hero mode only).
- * Important! This file is a placeholder before the next feature (preview of rooms) is implemented.
+ * Placeholder before the next feature (preview of rooms) is implemented.
  */
 
 "use client";
@@ -26,19 +26,10 @@ export function HeroExpandTab() {
     }
   };
 
-  /**
- * Styling here is not moved to constants because this file is subject
- * to change in the future when we implement the "preview of rooms" feature.
- */
   return (
     <button
       type="button"
-      style={{
-        transition: "opacity 300ms ease, transform 300ms ease",
-        opacity: hasHeroCalendarOpened ? 0 : 1,
-        transform: hasHeroCalendarOpened ? "translateY(-10px)" : "translateY(0)",
-        pointerEvents: hasHeroCalendarOpened ? "none" : "auto",
-      }}
+      style={S.transitions.expandTab(hasHeroCalendarOpened)}
       onClick={(e) => {
         e.stopPropagation();
         handleExpand();

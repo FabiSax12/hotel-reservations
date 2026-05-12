@@ -22,9 +22,9 @@ export function BrandLogo({
   highlightClassName = S.highlight,
 }: BrandLogoProps) {
   return (
-    <div className={className} onClick={onClick}>
+    <button type="button" className={className} onClick={onClick}>
       {name}
       <span className={highlightClassName}>{highlight}</span>
-    </div>
+    </button>
   );
 }

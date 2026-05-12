@@ -8,15 +8,8 @@
  */
 
 import { ModernSearchBar } from "../../search/components/search-bar";
-import type { SearchParams } from "../../search/domain/types";
+import type { StickySearchBarProps } from "../domain/types";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
-
-interface StickySearchBarProps {
-  /** The current search parameters to pre-fill the compact bar fields. */
-  searchParams: SearchParams;
-  /** Callback invoked when the user submits a new search. */
-  onSearch: (params: any) => void;
-}
 
 export function StickySearchBar({ searchParams, onSearch }: StickySearchBarProps) {
   return (
