@@ -3,14 +3,13 @@
  */
 
 import React from "react";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import { SEARCH_SECTIONS } from "../constants/search.constants";
-import { formatUIText, formatGuests } from "../utils/search-bar.utils";
 import { useI18n } from "@/locales";
+import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
-
-import { DestinationSection } from "./sections/DestinationSection";
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { formatGuests, formatUIText } from "../utils/search-bar.utils";
 import { DateSection } from "./sections/DateSection";
+import { DestinationSection } from "./sections/DestinationSection";
 import { GuestsSection } from "./sections/GuestsSection";
 import { SearchButton } from "./sections/SearchButton";
 

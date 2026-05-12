@@ -2,7 +2,7 @@
  * @file types.ts — SearchBar context types.
  */
 
-import type { Dispatch, SetStateAction, RefObject } from "react";
+import type { Dispatch, RefObject, SetStateAction } from "react";
 import type { ActiveSection, SearchBarVariant } from "../domain/types";
 
 export interface SearchBarContextValue {

@@ -16,11 +16,7 @@ export const EmptyState = () => {
         strokeWidth={1.5}
         aria-hidden="true"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d={ICON_PATHS.EMPTY_STATE.path}
-        />
+        <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.EMPTY_STATE.path} />
       </svg>
       <p className={S.title}>{t.RESERVATIONS.EMPTY.TITLE}</p>
       <p className={S.description}>{t.RESERVATIONS.EMPTY.DESCRIPTION}</p>

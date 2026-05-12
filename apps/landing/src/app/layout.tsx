@@ -1,9 +1,9 @@
-import { headers } from "next/headers";
-import { I18nProvider } from "@hotel/i18n";
 import type { SupportedLocale } from "@hotel/i18n";
-import { fetchContent } from "@/lib/content";
-import { playfair, dmSans } from "@/config/fonts";
+import { I18nProvider } from "@hotel/i18n";
+import { headers } from "next/headers";
+import { dmSans, playfair } from "@/config/fonts";
 import { generateSiteMetadata } from "@/config/metadata";
+import { fetchContent } from "@/lib/content";
 import "./globals.css";
 
 export const generateMetadata = generateSiteMetadata;

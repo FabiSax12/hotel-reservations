@@ -5,10 +5,10 @@
 "use client";
 
 import { useState } from "react";
+import { UI_VARIANTS } from "../../constants/ui.constants";
 import { parseDateHelper } from "../../utils/date.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
-import { UI_VARIANTS } from "../../constants/ui.constants";
 
 interface CalendarInvalidState {
   dayStr: string;

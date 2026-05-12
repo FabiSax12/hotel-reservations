@@ -6,7 +6,6 @@ import { useCallback, useMemo, useState } from "react";
 import { getAuthContextAction } from "@/features/auth/services/getAuthContextAction";
 import { AuthContext } from "./authContext";
 
-
 export type AuthProviderProps = {
   initialSession: Session | null;
   initialUser: Session["user"] | null;

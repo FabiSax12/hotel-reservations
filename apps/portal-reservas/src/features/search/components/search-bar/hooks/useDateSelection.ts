@@ -2,10 +2,10 @@
  * @file useDateSelection.ts — Hook for managing complex date selection logic.
  */
 
-import { useState, useRef, useEffect } from "react";
 import { parseDateHelper } from "@hotel/ui";
-import type { ActiveSection } from "../domain/types";
+import { useEffect, useRef, useState } from "react";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
+import type { ActiveSection } from "../domain/types";
 
 export function useDateSelection(
   initialCheckIn: string,

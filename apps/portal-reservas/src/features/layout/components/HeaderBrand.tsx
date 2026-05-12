@@ -6,8 +6,8 @@
  */
 
 import { BrandLogo } from "@hotel/ui";
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 import { useI18n } from "@/locales";
+import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 
 interface HeaderBrandProps {
   /** Callback invoked on click to reset the page to the hero landing state. */

@@ -6,8 +6,6 @@
 
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
-
-
 interface CalendarDayProps {
   d: number;
   dayStr: string;

@@ -2,13 +2,13 @@
 
 import { Fragment } from "react";
 import { useI18n } from "@/locales";
-import { useExpandedReservations } from "../../../hooks/useExpandedReservations";
-import { useDelayedUnmount } from "../../../hooks/useDelayedUnmount";
 import { COLLAPSE_DURATION_MS } from "../../../constants/timing";
-import { ReservationRow } from "../ReservationRow/ReservationRow";
+import { useDelayedUnmount } from "../../../hooks/useDelayedUnmount";
+import { useExpandedReservations } from "../../../hooks/useExpandedReservations";
 import { ReservationExpandedPanel } from "../../detail/ReservationExpandedPanel/ReservationExpandedPanel";
+import { ReservationRow } from "../ReservationRow/ReservationRow";
+import type { ExpandedPanelRowProps, ReservationsTableProps } from "./ReservationsTable.interface";
 import { RESERVATIONS_TABLE_STYLES as T, TABLE_COLUMN_COUNT } from "./ReservationsTable.styles";
-import type { ReservationsTableProps, ExpandedPanelRowProps } from "./ReservationsTable.interface";
 
 const ExpandedPanelRow = ({ reservation, isExpanded }: ExpandedPanelRowProps) => {
   const shouldRender = useDelayedUnmount(isExpanded, COLLAPSE_DURATION_MS);
@@ -54,10 +54,7 @@ export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
                 isExpanded={isExpanded(r.id)}
                 onToggle={buildToggleHandler(r.id)}
               />
-              <ExpandedPanelRow
-                reservation={r}
-                isExpanded={isExpanded(r.id)}
-              />
+              <ExpandedPanelRow reservation={r} isExpanded={isExpanded(r.id)} />
             </Fragment>
           ))}
         </tbody>

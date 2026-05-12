@@ -4,25 +4,19 @@
 
 "use client";
 
-import { REGIONS_CONFIG } from "../constants/regionsMock";
-import {
-  DESTINATION_POPOVER_STYLES as S,
-  getDestinationPositionClass,
-} from "../theme/destination.theme";
-import { useDestinationPreview } from "../hooks/useDestinationPreview";
-import { SEARCH_VARIANTS, SEARCH_SECTIONS } from "../constants/search.constants";
 import { useI18n } from "@/locales";
+import { REGIONS_CONFIG } from "../constants/regionsMock";
+import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
+import { useDestinationPreview } from "../hooks/useDestinationPreview";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
+import {
+  getDestinationPositionClass,
+  DESTINATION_POPOVER_STYLES as S,
+} from "../theme/destination.theme";
 
 export function DestinationPopover() {
-  const {
-    size,
-    hasHeroCalendarOpened,
-    destination,
-    setDestination,
-    activateSection,
-    clearError,
-  } = useSearchBarContext();
+  const { size, hasHeroCalendarOpened, destination, setDestination, activateSection, clearError } =
+    useSearchBarContext();
 
   const { hoveredRegion, hoveredData, handleMouseEnter, handleMouseLeave } =
     useDestinationPreview();

@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-
   const { initialSession, initialUser, initialProfile } = await getInitialAuthStatus();
 
   return (

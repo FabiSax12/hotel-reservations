@@ -8,21 +8,19 @@
 "use client";
 
 import React, { useMemo } from "react";
-import type { SearchBarProps } from "../domain/types";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { REGIONS_CONFIG } from "../constants/regionsMock";
-import { SEARCH_VARIANTS, SEARCH_VALS, TIMEOUTS } from "../constants/search.constants";
-
+import { SEARCH_VALS, SEARCH_VARIANTS, TIMEOUTS } from "../constants/search.constants";
+import { SearchBarProvider } from "../context/SearchBarContext";
+import type { SearchBarProps } from "../domain/types";
+import { useDateSelection } from "../hooks/useDateSelection";
+import { useGuestsSelection } from "../hooks/useGuestsSelection";
 // Custom Hooks
 import { useSearchBarState } from "../hooks/useSearchBarState";
 import { useSearchValidation } from "../hooks/useSearchValidation";
-import { useDateSelection } from "../hooks/useDateSelection";
-import { useGuestsSelection } from "../hooks/useGuestsSelection";
-
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 // Sub-components
 import { HeroCalendarFloat } from "./HeroCalendarFloat";
 import { SearchBarFrame } from "./SearchBarFrame";
-import { SearchBarProvider } from "../context/SearchBarContext";
 
 export function ModernSearchBar({
   onSearch,
@@ -67,11 +65,14 @@ export function ModernSearchBar({
     lastUserActivatedSection,
   );
 
-  const { adults, setAdults, children: childrenCount, setChildren, pets, setPets } = useGuestsSelection(
-    initialState?.adults,
-    initialState?.children,
-    initialState?.pets,
-  );
+  const {
+    adults,
+    setAdults,
+    children: childrenCount,
+    setChildren,
+    pets,
+    setPets,
+  } = useGuestsSelection(initialState?.adults, initialState?.children, initialState?.pets);
 
   // 2. Event Handlers
   const handleSearchTrigger = () => {

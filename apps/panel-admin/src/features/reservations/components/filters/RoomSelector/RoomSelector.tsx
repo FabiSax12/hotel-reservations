@@ -2,9 +2,9 @@
 
 import { ListBox, Select } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
 import { ROOM_ALL_KEY, ROOM_LIST } from "../../../constants/room-list";
 import type { RoomSelectorProps } from "./RoomSelector.interface";
+import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
 
 export const RoomSelector = ({ value, onChange }: RoomSelectorProps) => {
   const { t } = useI18n();
@@ -17,9 +17,7 @@ export const RoomSelector = ({ value, onChange }: RoomSelectorProps) => {
       </Select.Trigger>
       <Select.Popover>
         <ListBox>
-          <ListBox.Item id={ROOM_ALL_KEY}>
-            {t.RESERVATIONS.FILTERS.PLACEHOLDER_ROOM}
-          </ListBox.Item>
+          <ListBox.Item id={ROOM_ALL_KEY}>{t.RESERVATIONS.FILTERS.PLACEHOLDER_ROOM}</ListBox.Item>
           {ROOM_LIST.map((room) => (
             <ListBox.Item id={room} key={room}>
               {room}

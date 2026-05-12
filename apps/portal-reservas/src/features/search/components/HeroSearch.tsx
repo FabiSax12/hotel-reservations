@@ -11,9 +11,9 @@
  * easing (`0.22, 1, 0.36, 1`) for a smooth, cinematic feel.
  */
 
-import { ModernSearchBar } from "./search-bar";
-import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 import { useI18n } from "@/locales";
+import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
+import { ModernSearchBar } from "./search-bar";
 
 interface HeroSearchProps {
   /** Callback when the user submits a search. */

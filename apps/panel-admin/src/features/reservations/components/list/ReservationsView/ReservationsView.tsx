@@ -1,13 +1,13 @@
 "use client";
 
-import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
-import { useReservationsFiltering } from "../../../hooks/useReservationsFiltering";
 import { FILTERED_RESULTS } from "../../../constants/filtered-results";
-import { EmptyState } from "../EmptyState/EmptyState";
+import { useReservationsFiltering } from "../../../hooks/useReservationsFiltering";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
+import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
 import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import type { ReservationsViewProps } from "./ReservationsView.interface";
+import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
 
 export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);
@@ -28,11 +28,7 @@ export const ReservationsView = ({ reservations }: ReservationsViewProps) => {
       </div>
 
       <div className={CARD_STYLES.bodyWithOverflow}>
-        {hasResults ? (
-          <ReservationsTable reservations={filtered} />
-        ) : (
-          <EmptyState />
-        )}
+        {hasResults ? <ReservationsTable reservations={filtered} /> : <EmptyState />}
       </div>
     </main>
   );

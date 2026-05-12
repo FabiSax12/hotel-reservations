@@ -10,8 +10,8 @@
  */
 
 import { Button } from "@hotel/ui";
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 
 interface RoomPriceTierProps {
   /** Average nightly price in USD. */

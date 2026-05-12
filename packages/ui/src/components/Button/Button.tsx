@@ -4,7 +4,7 @@
 
 "use client";
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { BUTTON_STYLES as S } from "./Button.theme";
 
 interface ButtonProps {

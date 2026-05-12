@@ -1,6 +1,9 @@
-import { Amenity, RoomAmenity } from "@/features/rooms/domain/amenity.interface";
-import { MOCK_AMENITIES, MOCK_AMENITIES_STORAGE_KEY } from "@/features/rooms/constants/amenities.constants";
+import {
+  MOCK_AMENITIES,
+  MOCK_AMENITIES_STORAGE_KEY,
+} from "@/features/rooms/constants/amenities.constants";
 import { MOCK_SERVICE_DELAYS } from "@/features/rooms/constants/info.constants";
+import type { Amenity, RoomAmenity } from "@/features/rooms/domain/amenity.interface";
 
 const STORAGE_KEY = MOCK_AMENITIES_STORAGE_KEY;
 const AMENITIES_LIST_KEY = "hotel_amenities_list_mock";
@@ -42,29 +45,31 @@ export const mockAmenitiesService = {
   getRoomAmenities: async (roomId: string): Promise<string[]> => {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.GET_BY_ID);
     const allRoomAmenities = getStoredRoomAmenities();
-    return allRoomAmenities
-      .filter((ra) => ra.room_id === roomId)
-      .map((ra) => ra.amenity_id);
+    return allRoomAmenities.filter((ra) => ra.room_id === roomId).map((ra) => ra.amenity_id);
   },
 
   saveRoomAmenities: async (roomId: string, amenityIds: string[]): Promise<void> => {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
     const allRoomAmenities = getStoredRoomAmenities();
-    
+
     // Filter out existing amenities for this room
     const otherRoomsAmenities = allRoomAmenities.filter((ra) => ra.room_id !== roomId);
-    
+
     // Add new ones
     const newRoomAmenities: RoomAmenity[] = amenityIds.map((id) => ({
       room_id: roomId,
       amenity_id: id,
       created_at: new Date().toISOString(),
     }));
-    
+
     saveRoomAmenities([...otherRoomsAmenities, ...newRoomAmenities]);
   },
 
-  addCustomAmenity: async (name: string, icon: string = "Sparkles", description: string = ""): Promise<Amenity> => {
+  addCustomAmenity: async (
+    name: string,
+    icon: string = "Sparkles",
+    description: string = "",
+  ): Promise<Amenity> => {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
     const list = getStoredAmenities();
     const newId = `custom-${Date.now()}`;
@@ -78,7 +83,12 @@ export const mockAmenitiesService = {
     return newAmenity;
   },
 
-  updateCustomAmenity: async (id: string, name: string, icon: string, description: string = ""): Promise<Amenity> => {
+  updateCustomAmenity: async (
+    id: string,
+    name: string,
+    icon: string,
+    description: string = "",
+  ): Promise<Amenity> => {
     await simulateNetworkDelay(MOCK_SERVICE_DELAYS.UPDATE);
     const list = getStoredAmenities();
     let updatedAmenity: Amenity | null = null;

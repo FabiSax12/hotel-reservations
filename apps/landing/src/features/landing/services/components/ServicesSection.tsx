@@ -2,9 +2,9 @@
 
 import { useReducedMotion } from "framer-motion";
 import { SERVICES } from "@/features/landing/services/constants/styles";
-import { ServicesHeader } from "./ServicesHeader";
-import { ServicesGrid } from "./ServicesGrid";
 import { ServicesCta } from "./ServicesCta";
+import { ServicesGrid } from "./ServicesGrid";
+import { ServicesHeader } from "./ServicesHeader";
 
 export function ServicesSection() {
   const prefersReducedMotion = useReducedMotion() ?? false;

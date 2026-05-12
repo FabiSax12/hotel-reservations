@@ -5,5 +5,5 @@
  * inside the portal-reservas app.
  */
 
+export type { SearchBarProps, SearchState, ValidationError } from "./domain/types";
 export { ModernSearchBar } from "./sub-components/ModernSearchBar";
-export type { SearchState, SearchBarProps, ValidationError } from "./domain/types";

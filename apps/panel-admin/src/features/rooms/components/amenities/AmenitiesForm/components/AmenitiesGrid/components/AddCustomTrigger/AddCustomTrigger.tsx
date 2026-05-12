@@ -2,7 +2,7 @@ import * as LucideIcons from "lucide-react";
 import React from "react";
 import { AMENITIES_FORM_STYLES as STYLES } from "../../../../AmenitiesForm.styles";
 import { AmenityEditorCard } from "../../../AmenityEditorCard";
-import { useAmenitiesGridContext } from "../../context/AmenitiesGridContext";
+import { useAmenitiesGridContext } from "../../context";
 
 export const AddCustomTrigger = () => {
   const {

@@ -9,7 +9,6 @@ export const PAGE_STYLES = {
   main: "min-h-screen relative overflow-x-hidden selection:bg-emerald-900 selection:text-emerald-50",
 } as const;
 
-
 export const BACKGROUND_STYLES = {
   wrapper: "fixed inset-0 z-[-1] overflow-hidden pointer-events-none",
   image: "absolute -inset-[2%] bg-cover bg-center",

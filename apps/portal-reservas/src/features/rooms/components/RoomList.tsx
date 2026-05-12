@@ -10,10 +10,10 @@
  * animations.
  */
 
+import { useI18n } from "@/locales";
+import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import type { Room } from "../domain/types";
 import { RoomCard } from "./RoomCard";
-import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
-import { useI18n } from "@/locales";
 
 interface RoomListProps {
   /** Filtered array of rooms to display. */

@@ -2,7 +2,7 @@ import React from "react";
 import type { Amenity } from "@/features/rooms/domain/amenity.interface";
 import { AmenityCard } from "../../../AmenityCard";
 import { AmenityEditorCard } from "../../../AmenityEditorCard";
-import { useAmenitiesGridContext } from "../../context/AmenitiesGridContext";
+import { useAmenitiesGridContext } from "../../context";
 
 interface GridItemProps {
   amenity: Amenity;

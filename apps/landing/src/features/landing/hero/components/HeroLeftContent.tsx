@@ -1,12 +1,12 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useI18n } from "@/locales";
-import { HERO } from "@/features/landing/hero/constants/styles";
-import { EXPO_OUT } from "@/features/landing/constants/animations";
-import { WORDMARK_CHARS, CHAR_CONTAINER } from "@/features/landing/hero/constants/animations";
-import { ARROW_RIGHT_PATH } from "@/features/landing/hero/constants/icons";
 import { ROUTES } from "@/config/routes";
+import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { CHAR_CONTAINER, WORDMARK_CHARS } from "@/features/landing/hero/constants/animations";
+import { ARROW_RIGHT_PATH } from "@/features/landing/hero/constants/icons";
+import { HERO } from "@/features/landing/hero/constants/styles";
+import { useI18n } from "@/locales";
 
 export function HeroLeftContent() {
   const { t } = useI18n();
@@ -15,16 +15,24 @@ export function HeroLeftContent() {
 
   const CHAR_ITEM = prefersReducedMotion
     ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.3 } } }
-    : { hidden: { opacity: 0, y: 18, rotateX: 60 }, visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.55, ease: EXPO_OUT } } };
+    : {
+        hidden: { opacity: 0, y: 18, rotateX: 60 },
+        visible: { opacity: 1, y: 0, rotateX: 0, transition: { duration: 0.55, ease: EXPO_OUT } },
+      };
 
   const STAGGER_CONTENT = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.1, delayChildren: prefersReducedMotion ? 0.3 : 1.2 } },
+    visible: {
+      transition: { staggerChildren: 0.1, delayChildren: prefersReducedMotion ? 0.3 : 1.2 },
+    },
   };
 
   const FADE_UP = prefersReducedMotion
     ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.4 } } }
-    : { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EXPO_OUT } } };
+    : {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EXPO_OUT } },
+      };
 
   return (
     <div className={HERO.LEFT}>
@@ -37,9 +45,19 @@ export function HeroLeftContent() {
         {hero.EYEBROW}
       </motion.span>
 
-      <motion.p className={HERO.WORDMARK} variants={CHAR_CONTAINER} initial="hidden" animate="visible" style={{ perspective: 600 }}>
+      <motion.p
+        className={HERO.WORDMARK}
+        variants={CHAR_CONTAINER}
+        initial="hidden"
+        animate="visible"
+        style={{ perspective: 600 }}
+      >
         {WORDMARK_CHARS.map((char, i) => (
-          <motion.span key={i} variants={CHAR_ITEM} style={{ display: "inline-block", transformOrigin: "bottom" }}>
+          <motion.span
+            key={i}
+            variants={CHAR_ITEM}
+            style={{ display: "inline-block", transformOrigin: "bottom" }}
+          >
             {char}
           </motion.span>
         ))}
@@ -47,40 +65,82 @@ export function HeroLeftContent() {
 
       <h1 className={HERO.HEADLINE} aria-label={`${hero.HEADLINE_LINE1} ${hero.HEADLINE_LINE2}`}>
         <span className={HERO.HEADLINE_LINE_WRAPPER} style={{ lineHeight: "0.97" }}>
-          <motion.span className={HERO.HEADLINE_LINE_ITALIC} initial={{ y: "110%" }} animate={{ y: "0%" }}
-            transition={{ duration: 1.1, delay: prefersReducedMotion ? 0.1 : 0.65, ease: EXPO_OUT }}>
+          <motion.span
+            className={HERO.HEADLINE_LINE_ITALIC}
+            initial={{ y: "110%" }}
+            animate={{ y: "0%" }}
+            transition={{ duration: 1.1, delay: prefersReducedMotion ? 0.1 : 0.65, ease: EXPO_OUT }}
+          >
             {hero.HEADLINE_LINE1}
           </motion.span>
         </span>
         <span className={HERO.HEADLINE_LINE_WRAPPER} style={{ lineHeight: "0.97" }}>
-          <motion.span className={HERO.HEADLINE_LINE} initial={{ y: "110%" }} animate={{ y: "0%" }}
-            transition={{ duration: 1.1, delay: prefersReducedMotion ? 0.2 : 0.82, ease: EXPO_OUT }}>
+          <motion.span
+            className={HERO.HEADLINE_LINE}
+            initial={{ y: "110%" }}
+            animate={{ y: "0%" }}
+            transition={{ duration: 1.1, delay: prefersReducedMotion ? 0.2 : 0.82, ease: EXPO_OUT }}
+          >
             {hero.HEADLINE_LINE2}
           </motion.span>
         </span>
       </h1>
 
-      <motion.div variants={STAGGER_CONTENT} initial="hidden" animate="visible" className={HERO.CONTENT_STAGGER}>
-        <motion.p className={HERO.SUBHEADLINE} variants={FADE_UP}>{hero.SUBHEADLINE}</motion.p>
+      <motion.div
+        variants={STAGGER_CONTENT}
+        initial="hidden"
+        animate="visible"
+        className={HERO.CONTENT_STAGGER}
+      >
+        <motion.p className={HERO.SUBHEADLINE} variants={FADE_UP}>
+          {hero.SUBHEADLINE}
+        </motion.p>
 
         <motion.div className={HERO.CTA_ROW} variants={FADE_UP}>
-          <motion.a href={ROUTES.PORTAL} className={HERO.CTA_PRIMARY} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <motion.a
+            href={ROUTES.PORTAL}
+            className={HERO.CTA_PRIMARY}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
             {hero.CTA_PRIMARY}
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <path d={ARROW_RIGHT_PATH} />
             </svg>
           </motion.a>
-          <motion.a href={ROUTES.ANCHORS.ROOMS} className={HERO.CTA_SECONDARY} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <motion.a
+            href={ROUTES.ANCHORS.ROOMS}
+            className={HERO.CTA_SECONDARY}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
             {hero.CTA_SECONDARY}
           </motion.a>
         </motion.div>
 
         <motion.div className={HERO.LOCATION_BAR} variants={FADE_UP}>
-          <motion.div className={HERO.LOCATION_LINE} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: prefersReducedMotion ? 0.4 : 1.8, ease: EXPO_OUT }} style={{ originX: 0 }} />
+          <motion.div
+            className={HERO.LOCATION_LINE}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.2, delay: prefersReducedMotion ? 0.4 : 1.8, ease: EXPO_OUT }}
+            style={{ originX: 0 }}
+          />
           <span className={HERO.LOCATION_TEXT}>{hero.LOCATIONS}</span>
-          <motion.div className={HERO.LOCATION_LINE} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-            transition={{ duration: 1.2, delay: prefersReducedMotion ? 0.4 : 1.8, ease: EXPO_OUT }} style={{ originX: 1 }} />
+          <motion.div
+            className={HERO.LOCATION_LINE}
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 1.2, delay: prefersReducedMotion ? 0.4 : 1.8, ease: EXPO_OUT }}
+            style={{ originX: 1 }}
+          />
         </motion.div>
       </motion.div>
     </div>

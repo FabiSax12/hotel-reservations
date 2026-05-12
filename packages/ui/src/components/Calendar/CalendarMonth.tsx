@@ -4,11 +4,10 @@
 
 "use client";
 
+import { useI18n } from "@hotel/i18n";
+import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarDay } from "./CalendarDay";
-
-import { UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
-import { useI18n } from "@hotel/i18n";
 
 const C = UI_PACKAGE_CONSTANTS.CALENDAR;
 

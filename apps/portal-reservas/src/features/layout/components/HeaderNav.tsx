@@ -6,8 +6,8 @@
  * be wired to navigation routes in a future iteration.
  */
 
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 import { useI18n } from "@/locales";
+import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 
 export function HeaderNav() {
   const { t } = useI18n();

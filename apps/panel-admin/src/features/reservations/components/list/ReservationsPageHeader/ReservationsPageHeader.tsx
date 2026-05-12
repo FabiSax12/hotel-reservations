@@ -2,8 +2,8 @@
 
 import { useI18n } from "@/locales";
 import { CARD_STYLES } from "../ReservationsView/ReservationsView.styles";
-import { PAGE_HEADER_STYLES, STAT_CARD_STYLES } from "./ReservationsPageHeader.styles";
 import type { ReservationsPageHeaderProps } from "./ReservationsPageHeader.interface";
+import { PAGE_HEADER_STYLES, STAT_CARD_STYLES } from "./ReservationsPageHeader.styles";
 
 export const ReservationsPageHeader = ({
   totalCount,

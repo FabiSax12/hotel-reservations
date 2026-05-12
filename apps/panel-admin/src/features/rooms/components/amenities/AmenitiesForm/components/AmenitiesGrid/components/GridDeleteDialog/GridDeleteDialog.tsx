@@ -1,6 +1,6 @@
 import React from "react";
 import { DeleteAmenityDialog } from "../../../DeleteAmenityDialog";
-import { useAmenitiesGridContext } from "../../context/AmenitiesGridContext";
+import { useAmenitiesGridContext } from "../../context";
 
 export const GridDeleteDialog = () => {
   const { amenityToDelete, handleOpenChange, handleDeleteConfirm, texts } =

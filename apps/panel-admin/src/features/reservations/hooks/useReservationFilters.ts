@@ -1,8 +1,8 @@
-import type { ReservationStatus } from "../domain/reservation";
-import type { ReservationFilters } from "../domain/reservation-filters";
+import { FILTERED_RESULTS } from "../constants/filtered-results";
 import { DEFAULT_FILTERS } from "../constants/reservation-filters";
 import { ROOM_ALL_KEY } from "../constants/room-list";
-import { FILTERED_RESULTS } from "../constants/filtered-results";
+import type { ReservationStatus } from "../domain/reservation";
+import type { ReservationFilters } from "../domain/reservation-filters";
 
 interface UseReservationFiltersReturn {
   toggleStatus: (status: ReservationStatus) => void;

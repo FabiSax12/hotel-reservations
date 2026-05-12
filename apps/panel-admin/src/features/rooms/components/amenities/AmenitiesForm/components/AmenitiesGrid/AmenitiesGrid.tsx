@@ -4,7 +4,7 @@ import type { AmenitiesGridProps } from "./AmenitiesGrid.interface";
 import { AddCustomTrigger } from "./components/AddCustomTrigger/AddCustomTrigger";
 import { GridDeleteDialog } from "./components/GridDeleteDialog/GridDeleteDialog";
 import { GridItem } from "./components/GridItem/GridItem";
-import { AmenitiesGridProvider } from "./context/AmenitiesGridContext";
+import { AmenitiesGridProvider } from "./context";
 
 export const AmenitiesGrid = (props: AmenitiesGridProps) => {
   const { amenities } = props;

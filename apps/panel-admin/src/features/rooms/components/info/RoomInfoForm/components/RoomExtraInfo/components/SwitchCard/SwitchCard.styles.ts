@@ -14,8 +14,6 @@ export const SWITCH_CARD_STYLES = {
   info: "flex flex-col",
   label: `text-[15px] font-black text-[${THEME_COLORS.ACCENT}] tracking-tight`,
   statusText: (isActive: boolean) =>
-    `text-[11px] font-black tracking-wider ${
-      isActive ? "text-emerald-600" : "text-rose-600"
-    }`,
+    `text-[11px] font-black tracking-wider ${isActive ? "text-emerald-600" : "text-rose-600"}`,
   switchWrapper: "mt-auto w-full flex justify-end",
 } as const;

@@ -38,11 +38,23 @@ export const SidebarFooter = ({ isCollapsed }: SidebarFooterProps) => {
           </div>
         )}
       </div>
-      <Button isIconOnly={isCollapsed} onPress={handleSignOut} variant="danger-soft" size="sm" className={STYLES.logoutButton} type="submit" isPending={isSigningOut}>
-        {({ isPending }) => <>
-          {isPending ? <Spinner color="current" size="sm" /> : <LogOut className={STYLES.icon} />}
-          {!isCollapsed && <span>{isPending ? t.SIDEBAR.FOOTER.LOGGING_OUT : t.SIDEBAR.FOOTER.LOGOUT}</span>}
-        </>}
+      <Button
+        isIconOnly={isCollapsed}
+        onPress={handleSignOut}
+        variant="danger-soft"
+        size="sm"
+        className={STYLES.logoutButton}
+        type="submit"
+        isPending={isSigningOut}
+      >
+        {({ isPending }) => (
+          <>
+            {isPending ? <Spinner color="current" size="sm" /> : <LogOut className={STYLES.icon} />}
+            {!isCollapsed && (
+              <span>{isPending ? t.SIDEBAR.FOOTER.LOGGING_OUT : t.SIDEBAR.FOOTER.LOGOUT}</span>
+            )}
+          </>
+        )}
       </Button>
     </div>
   );

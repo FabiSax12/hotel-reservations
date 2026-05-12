@@ -10,12 +10,12 @@
  * "scarce" when inventory ≤ 2, which triggers a red urgency badge.
  */
 
-import type { Room } from "../domain/types";
+import { useI18n } from "@/locales";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
+import type { Room } from "../domain/types";
 import { RoomImagePanel } from "./RoomImagePanel";
 import { RoomPriceTier } from "./RoomPriceTier";
-import { useI18n } from "@/locales";
-import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
 
 interface RoomCardProps {
   /** Room data to render. */

@@ -5,8 +5,10 @@ export const ABOUT = Object.freeze({
   TEXT_PANEL: "flex flex-col",
   EYEBROW: "text-xs tracking-[0.35em] uppercase text-gold-600 font-sans mb-6",
   HEADLINE_WRAPPER: "overflow-hidden mb-8",
-  HEADLINE: "font-serif text-[2.5rem] lg:text-[3.5rem] leading-[1.1] text-forest-900 font-normal text-balance mb-8",
-  HEADLINE_NO_MB: "font-serif text-[2.5rem] lg:text-[3.5rem] leading-[1.1] text-forest-900 font-normal text-balance",
+  HEADLINE:
+    "font-serif text-[2.5rem] lg:text-[3.5rem] leading-[1.1] text-forest-900 font-normal text-balance mb-8",
+  HEADLINE_NO_MB:
+    "font-serif text-[2.5rem] lg:text-[3.5rem] leading-[1.1] text-forest-900 font-normal text-balance",
   BODY: "text-stone-600 text-base lg:text-lg leading-relaxed font-light mb-8",
   QUOTE_WRAPPER: "border-l-2 border-gold-500 pl-6",
   QUOTE: "font-serif text-xl lg:text-2xl italic text-forest-800 leading-relaxed",

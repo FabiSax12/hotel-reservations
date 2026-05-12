@@ -4,8 +4,8 @@
 
 "use client";
 
-import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { useI18n } from "@/locales";
+import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 
 interface SearchButtonProps {
   isSearching: boolean;

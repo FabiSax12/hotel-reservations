@@ -7,9 +7,9 @@
  * re-triggers the results with updated filters.
  */
 
+import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 import { ModernSearchBar } from "../../search/components/search-bar";
 import type { SearchParams } from "../../search/domain/types";
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 
 interface StickySearchBarProps {
   /** The current search parameters to pre-fill the compact bar fields. */

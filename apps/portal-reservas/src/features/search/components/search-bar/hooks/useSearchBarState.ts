@@ -2,9 +2,9 @@
  * @file useSearchBarState.ts — Hook for managing the overall state and interactions of the search bar.
  */
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import type { ActiveSection, SearchBarVariant } from "../domain/types";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
+import type { ActiveSection, SearchBarVariant } from "../domain/types";
 
 export function useSearchBarState(size: SearchBarVariant, onHeroCalendarOpen?: () => void) {
   const [active, setActive] = useState<ActiveSection>(null);

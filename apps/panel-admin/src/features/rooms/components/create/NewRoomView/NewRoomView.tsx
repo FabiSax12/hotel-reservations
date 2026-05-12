@@ -1,10 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/config/routes";
 import { RoomInfoForm } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm";
 import { mockRoomService } from "@/features/rooms/services/mockRoomService";
-import { useRouter } from "next/navigation";
 import { NEW_ROOM_VIEW_STYLES } from "./NewRoomView.styles";
-import { ROUTES } from "@/config/routes";
 
 export const NewRoomView = () => {
   const router = useRouter();
@@ -20,16 +20,16 @@ export const NewRoomView = () => {
 
   return (
     <main className={NEW_ROOM_VIEW_STYLES.main}>
-      <div 
+      <div
         className={NEW_ROOM_VIEW_STYLES.background}
-        style={{ 
-          backgroundImage: `url('${NEW_ROOM_VIEW_STYLES.bgImage}')` 
+        style={{
+          backgroundImage: `url('${NEW_ROOM_VIEW_STYLES.bgImage}')`,
         }}
       />
       <div className={NEW_ROOM_VIEW_STYLES.overlay} />
 
       <div className={NEW_ROOM_VIEW_STYLES.blob} />
-      
+
       <div className={NEW_ROOM_VIEW_STYLES.content}>
         <RoomInfoForm onSubmit={handleSubmit} />
       </div>

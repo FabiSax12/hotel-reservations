@@ -24,9 +24,18 @@ export const LoginForm = ({ action }: LoginFormProps) => {
         <h1 className={S.title}>{t.AUTH.LOGIN.TITLE}</h1>
 
         <Form className={S.form} action={formAction}>
-          <TextField isRequired name={LOGIN_FORM_FIELDS.EMAIL} type="email" validate={validateEmail}>
+          <TextField
+            isRequired
+            name={LOGIN_FORM_FIELDS.EMAIL}
+            type="email"
+            validate={validateEmail}
+          >
             <Label htmlFor={emailInputId}>{t.AUTH.LOGIN.EMAIL_LABEL}</Label>
-            <Input id={emailInputId} placeholder={t.AUTH.LOGIN.EMAIL_PLACEHOLDER} autoComplete="email" />
+            <Input
+              id={emailInputId}
+              placeholder={t.AUTH.LOGIN.EMAIL_PLACEHOLDER}
+              autoComplete="email"
+            />
             <FieldError />
           </TextField>
 

@@ -7,9 +7,9 @@
  * or "Solo quedan N habitaciones".
  */
 
-import type { Room } from "../domain/types";
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import type { Room } from "../domain/types";
 
 interface RoomImagePanelProps {
   /** URL for the room's hero image. */
