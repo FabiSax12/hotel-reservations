@@ -32,9 +32,9 @@
  * ```
  */
 
-import type { SupabaseServerClient } from "@hotel/db";
+import type { AdminUser, SupabaseServerClient } from "@hotel/db";
 import { createSupabaseServerActionClient, createSupabaseServiceClient } from "@hotel/db";
-import type { AdminUser } from "@hotel/db/types";
+import type { AdminProfile, User } from "@hotel/db/types";
 import type { ActivationErrorCode } from "./config/constants";
 import { ACTIVATION_ERROR_CODES, AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
 
@@ -242,12 +242,18 @@ export async function completeAdminActivation(
   if (updateError) throw new Error(updateError.message);
 
   const serviceClient = createSupabaseServiceClient();
-  const { error: roleError } = await serviceClient
-    .from(AUTH_TABLE)
-    .update({ [AUTH_COLUMNS.ROLE]: AUTH_ROLES.ADMIN, [AUTH_COLUMNS.IS_ACTIVE]: true })
+  // const { error: roleError } = await serviceClient
+  //   .from("user_roles")
+  //   .update({ role: "admin" })
+  //   .eq("user_id", sessionData.user.id);
+
+  const { error: activationError } = await serviceClient
+    .from("profiles")
+    .update({ is_active: true })
     .eq(AUTH_COLUMNS.ID, sessionData.user.id);
 
-  if (roleError) throw new Error(roleError.message);
+  // if (roleError) throw new Error(roleError.message);
+  if (activationError) throw new Error(activationError.message);
 }
 
 /**
@@ -264,18 +270,23 @@ export async function completeAdminActivation(
 export async function verifyAdminRole(userId: string): Promise<AdminUser | null> {
   const supabase = createSupabaseServiceClient();
 
-  const { data, error } = await supabase
+  const { data: profileData, error: profileError } = await supabase
     .from(AUTH_TABLE)
-    .select(
-      `${AUTH_COLUMNS.ID}, ${AUTH_COLUMNS.EMAIL}, ${AUTH_COLUMNS.ROLE}, ${AUTH_COLUMNS.IS_ACTIVE}`,
-    )
+    .select(`${AUTH_COLUMNS.ID}, ${AUTH_COLUMNS.IS_ACTIVE}, full_name`)
     .eq(AUTH_COLUMNS.ID, userId)
     .single();
 
-  if (error) throw new Error(error.message);
+  const { data: roleData, error: roleError } = await supabase
+    .from("user_roles")
+    .select("user_id, role")
+    .eq("user_id", userId)
+    .single();
 
-  if (data.role === AUTH_ROLES.ADMIN && data.is_active) {
-    return data as AdminUser;
+  if (profileError) throw new Error(profileError.message);
+  if (roleError) throw new Error(roleError.message);
+
+  if (roleData.role === AUTH_ROLES.ADMIN && profileData.is_active) {
+    return { ...profileData, role: AUTH_ROLES.ADMIN } as AdminUser;
   }
 
   return null;

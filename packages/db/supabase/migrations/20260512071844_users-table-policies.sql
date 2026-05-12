@@ -74,3 +74,31 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row
   execute function public.handle_new_user();
+
+
+
+create or replace function public.get_admins()
+returns table (
+  id          uuid,
+  email       text,
+  full_name   text,
+  is_active   boolean,
+  role        text,
+  created_at  timestamptz
+)
+language sql
+security definer
+as $$
+  select
+    u.id,
+    u.email::text,
+    p.full_name,
+    p.is_active,
+    ur.role,
+    u.created_at
+  from auth.users u
+  join public.user_roles as ur on u.id = ur.user_id
+  left join public.profiles p on u.id = p.id
+  where ur.role = 'admin'
+  order by u.email;
+$$;

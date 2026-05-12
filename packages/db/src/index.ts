@@ -5,4 +5,14 @@ export {
   createSupabaseServerClient,
   createSupabaseServiceClient,
 } from "./client";
-export type { AdminUser, ClientUser, Database, SignUpPayload, UserProfile } from "./types";
+export type {
+  AdminProfile,
+  AdminsList,
+  AdminUser,
+  ClientProfile,
+  ClientUser,
+  Database,
+  SignUpPayload,
+  User,
+  UserProfile,
+} from "./types";
