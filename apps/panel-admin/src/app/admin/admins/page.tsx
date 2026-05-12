@@ -4,5 +4,9 @@ import { getAdmins } from "@/features/admins-table/services/getAdmins";
 export default async function AdminsPage() {
   const admins = await getAdmins();
 
-  return <AdminsTableView admins={admins} />;
+  return (
+    <AdminsTableView
+      admins={admins}
+    />
+  );
 }

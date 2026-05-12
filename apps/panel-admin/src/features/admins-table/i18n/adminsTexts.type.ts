@@ -22,4 +22,27 @@ export type AdminsTexts = {
     TITLE: string;
     DESCRIPTION: string;
   };
+  INVITATIONS: {
+    SECTION_TITLE: string;
+    COL_EMAIL: string;
+    COL_SENT: string;
+    COL_EXPIRES: string;
+    COL_STATUS: string;
+    COL_ACTIONS: string;
+    STATUS_PENDING: string;
+    ACTION_RESEND: string;
+    ACTION_RESENDING: string;
+    ACTION_REVOKE: string;
+    ACTION_REVOKING: string;
+    EMPTY_TITLE: string;
+    EMAIL_LABEL: string;
+    EMAIL_PLACEHOLDER: string;
+    SEND_BUTTON: string;
+    ERRORS: {
+      INVALID_EMAIL: string;
+      EMAIL_ALREADY_INVITED: string;
+      USER_ALREADY_EXISTS: string;
+      UNKNOWN_ERROR: string;
+    };
+  };
 };

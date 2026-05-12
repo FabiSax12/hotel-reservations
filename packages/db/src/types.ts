@@ -35,3 +35,15 @@ export type SignUpPayload = {
 };
 
 export type AdminsList = Database["public"]["Functions"]["get_admins"]["Returns"];
+
+export interface PendingInvitation {
+  id: string;
+  email: string;
+  invited_by: string | null;
+  status: "pending" | "accepted" | "revoked" | "expired";
+  expires_at: string;
+  created_at: string;
+  accepted_at: string | null;
+  revoked_at: string | null;
+  revoked_by: string | null;
+}

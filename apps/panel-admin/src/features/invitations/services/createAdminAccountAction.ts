@@ -1,7 +1,7 @@
 "use server";
 
-import type { CreateAdminActionState } from "@/features/auth/domain/adminInvite";
-import { createAdminAccount } from "./createAdminAccount";
+import type { CreateAdminActionState } from "@/features/invitations/domain/adminInvite";
+import { createAdminAccount } from "../../auth/services/createAdminAccount";
 
 export async function createAdminAccountAction(
   _prevState: CreateAdminActionState,

@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      pending_invitations: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string | null
+          revoked_at: string | null
+          revoked_by: string | null
+          status: Database["public"]["Enums"]["invitation_status"]
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          status?: Database["public"]["Enums"]["invitation_status"]
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           full_name: string | null
@@ -29,6 +65,51 @@ export type Database = {
           full_name?: string | null
           id?: string
           is_active?: boolean
+        }
+        Relationships: []
+      }
+      rooms: {
+        Row: {
+          capacity_adults: number
+          capacity_kids: number
+          category: string
+          created_at: string
+          description: string | null
+          high_season_fee: number
+          id: string
+          is_active: boolean
+          is_pet_friendly: boolean
+          name: string
+          regular_fee: number
+          updated_at: string
+        }
+        Insert: {
+          capacity_adults: number
+          capacity_kids: number
+          category: string
+          created_at?: string
+          description?: string | null
+          high_season_fee: number
+          id?: string
+          is_active?: boolean
+          is_pet_friendly?: boolean
+          name: string
+          regular_fee: number
+          updated_at?: string
+        }
+        Update: {
+          capacity_adults?: number
+          capacity_kids?: number
+          category?: string
+          created_at?: string
+          description?: string | null
+          high_season_fee?: number
+          id?: string
+          is_active?: boolean
+          is_pet_friendly?: boolean
+          name?: string
+          regular_fee?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -65,6 +146,7 @@ export type Database = {
       }
     }
     Enums: {
+      invitation_status: "pending" | "accepted" | "revoked" | "expired"
       user_role: "owner" | "admin" | "client"
     }
     CompositeTypes: {
@@ -193,6 +275,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      invitation_status: ["pending", "accepted", "revoked", "expired"],
       user_role: ["owner", "admin", "client"],
     },
   },

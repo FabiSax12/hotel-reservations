@@ -12,6 +12,7 @@ export type {
   ClientProfile,
   ClientUser,
   Database,
+  PendingInvitation,
   SignUpPayload,
   User,
   UserProfile,

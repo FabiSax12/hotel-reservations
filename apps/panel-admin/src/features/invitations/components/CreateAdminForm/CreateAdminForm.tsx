@@ -2,7 +2,7 @@
 
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import { useActionState } from "react";
-import type { CreateAdminActionState } from "@/features/auth/domain/adminInvite";
+import type { CreateAdminActionState } from "@/features/invitations/domain/adminInvite";
 import { useI18n } from "@/locales";
 import type { CreateAdminFormProps } from "./CreateAdminForm.interface";
 import { CREATE_ADMIN_FORM_STYLES as S } from "./CreateAdminForm.styles";
