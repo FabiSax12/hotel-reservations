@@ -49,6 +49,38 @@ export type ReservationsTexts = {
     LABEL_CURRENCY: string;
     ARRIVES_TODAY: string;
     BTN_CANCEL: string;
+    BTN_SAVE: string;
+    BTN_APPROVE: string;
+    BTN_CANCELATION: string;
+    BTN_COMPLETE: string;
+  };
+  STATUS_MANAGEMENT: {
+    LABEL_CURRENT_STATUS: string;
+    LABEL_CANCELLATION_REASON: string;
+    BTN_APPROVE: string;
+    BTN_CANCEL_RESERVATION: string;
+    BTN_COMPLETE_RESERVATION: string;
+    BTN_REVERT: string;
+    BTN_SAVE_CHANGES: string;
+    LOG_PAYMENT_PROCESSED: string;
+  };
+  CANCELLATION_MODAL: {
+    TITLE: string;
+    TEXTAREA_LABEL: string;
+    TEXTAREA_PLACEHOLDER: string;
+    CHAR_COUNTER_LABEL: string;
+    BTN_CONFIRM: string;
+  };
+  SAVE_DIALOG: {
+    TITLE: string;
+    DESCRIPTION: string;
+    BTN_CONFIRM: string;
+    BTN_CANCEL: string;
+  };
+  UNSAVED_CHANGES_MODAL: {
+    TITLE: string;
+    DESCRIPTION: string;
+    BTN_STAY: string;
   };
   EMPTY: {
     TITLE: string;
@@ -65,9 +97,18 @@ export type ReservationsTexts = {
   FILTERS: {
     ALL: string;
     PLACEHOLDER_ROOM: string;
+    ARIA_LABEL_ROOM_FILTER: string;
+    PLACEHOLDER_GUEST_SEARCH: string;
+    ARIA_LABEL_GUEST_SEARCH: string;
     DATE_RANGE_PICKER_LABEL: string;
+    ARIA_LABEL_DATE_RANGE: string;
     CLEAR: string;
     RESULTS_SUFFIX: string;
     RESULTS_OF: string;
+  };
+  ERRORS: {
+    FETCH_RESERVATIONS: string;
+    FETCH_ROOMS: string;
+    UPDATE_STATUS: string;
   };
 };

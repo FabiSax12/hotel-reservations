@@ -14,6 +14,87 @@ export type Database = {
   }
   public: {
     Tables: {
+      reservations: {
+        Row: {
+          id: string
+          code: string
+          user_id: string | null
+          guest_name: string
+          guest_email: string
+          guest_phone: string
+          room_id: string
+          check_in: string
+          check_out: string
+          adults: number
+          children: number
+          pets: number
+          price_per_night: number
+          total_amount: number
+          currency: string
+          status: string
+          cancellation_reason: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          code?: string
+          user_id?: string | null
+          guest_name: string
+          guest_email: string
+          guest_phone: string
+          room_id: string
+          check_in: string
+          check_out: string
+          adults?: number
+          children?: number
+          pets?: number
+          price_per_night: number
+          total_amount: number
+          currency?: string
+          status?: string
+          cancellation_reason?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          code?: string
+          user_id?: string | null
+          guest_name?: string
+          guest_email?: string
+          guest_phone?: string
+          room_id?: string
+          check_in?: string
+          check_out?: string
+          adults?: number
+          children?: number
+          pets?: number
+          price_per_night?: number
+          total_amount?: number
+          currency?: string
+          status?: string
+          cancellation_reason?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       users: {
         Row: {
           created_at: string

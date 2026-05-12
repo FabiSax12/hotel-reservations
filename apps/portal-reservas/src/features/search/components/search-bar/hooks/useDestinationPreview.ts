@@ -3,7 +3,7 @@
  */
 
 import { useState, useCallback } from "react";
-import { REGIONS_CONFIG } from "../constants/regionsMock";
+import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { TIMEOUTS } from "../constants/search.constants";
 
 export function useDestinationPreview() {

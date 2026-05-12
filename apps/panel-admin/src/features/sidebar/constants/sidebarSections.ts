@@ -1,10 +1,10 @@
 import {
   BedDouble,
   ClipboardList,
+  KeyRound,
   LayoutDashboard,
   LayoutPanelTop,
   Receipt,
-  KeyRound,
   UserRound,
 } from "lucide-react";
 import { ROUTES } from "@/config/routes";

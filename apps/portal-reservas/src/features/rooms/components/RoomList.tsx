@@ -1,54 +1,51 @@
 /**
  * @file RoomList.tsx — Scrollable list of room results.
  *
- * Displayed in State B after the user searches. Shows a summary header
- * (destination name + room count) and renders a vertically stacked
- * list of {@link RoomCard} components.
- *
- * The `searchKey` prop is used as a React `key` on the grid container,
- * so that switching searches re-mounts the list and replays entrance
- * animations.
+ * Updated in US-DM-02:
+ *  - No longer gated behind `hasSearched`. Renders whenever `selectedLocation`
+ *    has a value (rooms section activates as soon as a destination is chosen).
+ *  - `searchKey` is still used as a React key to re-trigger entrance animations
+ *    when a new search is submitted.
  */
 
-import type { Room } from "../domain/types";
+import type { RoomListProps } from "../domain/types";
 import { RoomCard } from "./RoomCard";
+import { RoomCardSkeleton } from "./RoomCardSkeleton";
 import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 
-interface RoomListProps {
-  /** Filtered array of rooms to display. */
-  rooms: Room[];
-  /** The currently selected destination, or null for "all". */
-  selectedDest: string | null;
-  /** Monotonic counter used as a React key to force re-mount animations. */
-  searchKey: number;
-}
-
-export function RoomList({ rooms, selectedDest, searchKey }: RoomListProps) {
+export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
 
   return (
-    <section className={S.section}>
-      {/* Summary header: destination name + live count badge */}
+    <section id="rooms-section" className={S.section} aria-label={t.ROOMS.BROWSE_ROOMS}>
+      {/* Summary header */}
       <div className={S.header}>
         <div>
-          <div className={S.badge}>{t.ROOMS.REALTIME_AVAIL}</div>
-          <h2 className={S.heading}>
-            {t.ROOMS.OPTIONS_IN} {selectedDest || t.ROOMS.ALL_DESTINATIONS}
-          </h2>
+          <div className={S.badge}>{t.ROOMS.BROWSE_ROOMS}</div>
+          <h2 className={S.heading}>{selectedDest}</h2>
         </div>
 
-        <div className={S.countBadge}>
-          <span className={S.countDot} />
-          {rooms.length} {t.ROOMS.ROOMS_FOUND}
+        <div className={S.countBadge} role="status" aria-live="polite">
+          {isLoading ? (
+            <span className={S.searchingText}>{t.ROOMS.SEARCHING_ROOMS}</span>
+          ) : (
+            <>
+              <span className={S.countValue}>{rooms.length}</span> {t.ROOMS.ROOMS_FOUND}
+            </>
+          )}
         </div>
       </div>
 
-      {/* Stacked card grid — key forces re-mount for staggered animations */}
+      {/* Card grid — key forces re-mount for staggered animations on new search */}
       <div key={searchKey} className={S.grid}>
-        {rooms.map((room, index) => (
-          <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />
-        ))}
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, index) => (
+              <RoomCardSkeleton key={`skel-${index}`} />
+            ))
+          : rooms.map((room, index) => (
+              <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />
+            ))}
       </div>
     </section>
   );

@@ -37,6 +37,6 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
 };
  
 export const LOCALE_COOKIE_NAME = "locale";
-export const defaultLocale = LOCALES.EN;
+export const defaultLocale = LOCALES.ES;
  
 export const useI18n = () => _useI18n<AppTranslations>();
