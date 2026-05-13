@@ -4,15 +4,7 @@ import { Button, ButtonGroup, Chip, EmptyState, Table } from "@heroui/react";
 import { Check, Inbox, X } from "lucide-react";
 import type { AdminsTableProps } from "./AdminsTable.interface";
 
-export const AdminsTable = ({ admins }: AdminsTableProps) => {
-  const handleDesactivate = () => {
-
-  }
-
-  const handleActivate = () => {
-
-  }
-
+export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) => {
   return (
     <Table>
       <Table.ScrollContainer>
@@ -52,8 +44,22 @@ export const AdminsTable = ({ admins }: AdminsTableProps) => {
                 {/* <Table.Cell>{user.created_at}</Table.Cell> */}
                 <Table.Cell>
                   <ButtonGroup>
-                    <Button variant="danger" isIconOnly onPress={handleDesactivate}><X /></Button>
-                    <Button variant="primary" isIconOnly onPress={handleActivate}><Check /></Button>
+                    <Button
+                      variant="danger"
+                      isIconOnly
+                      isLoading={togglingId === user.id}
+                      onPress={() => onToggle(user.id, user.is_active)}
+                    >
+                      <X />
+                    </Button>
+                    <Button
+                      variant="primary"
+                      isIconOnly
+                      isLoading={togglingId === user.id}
+                      onPress={() => onToggle(user.id, user.is_active)}
+                    >
+                      <Check />
+                    </Button>
                   </ButtonGroup>
                 </Table.Cell>
               </Table.Row>

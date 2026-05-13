@@ -25,7 +25,7 @@ export type Database = {
           revoked_at: string | null
           revoked_by: string | null
           status: Database["public"]["Enums"]["invitation_status"]
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           accepted_at?: string | null
@@ -37,7 +37,7 @@ export type Database = {
           revoked_at?: string | null
           revoked_by?: string | null
           status?: Database["public"]["Enums"]["invitation_status"]
-          user_id?: string | null
+          user_id?: string
         }
         Update: {
           accepted_at?: string | null
@@ -49,7 +49,7 @@ export type Database = {
           revoked_at?: string | null
           revoked_by?: string | null
           status?: Database["public"]["Enums"]["invitation_status"]
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: []
       }

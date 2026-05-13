@@ -5,7 +5,7 @@
 
 -- Step 1: Add user_id column
 alter table public.pending_invitations
-  add column user_id uuid references auth.users(id) on delete set null;
+  add column user_id uuid not null;
 
 -- Step 2: Backfill existing rows matching by email
 update public.pending_invitations

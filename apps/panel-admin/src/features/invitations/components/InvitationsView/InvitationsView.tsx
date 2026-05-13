@@ -65,22 +65,20 @@ export const InvitationsView = ({ invitations }: InvitationsViewProps) => {
       <div className="mb-4 flex gap-2">
         <button
           type="button"
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === "pending"
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === "pending"
               ? "bg-primary-100 text-primary-700"
               : "text-gray-600 hover:bg-gray-100"
-          }`}
+            }`}
           onClick={() => handleTabChange("pending")}
         >
           {t.ADMINS.INVITATIONS.TAB_PENDING}
         </button>
         <button
           type="button"
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === "history"
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === "history"
               ? "bg-primary-100 text-primary-700"
               : "text-gray-600 hover:bg-gray-100"
-          }`}
+            }`}
           onClick={() => handleTabChange("history")}
         >
           {t.ADMINS.INVITATIONS.TAB_HISTORY}

@@ -7,13 +7,14 @@ export const revokeInvitation = async (invitationId: string): Promise<RevokeInvi
 
   const { data: invitation, error: fetchError } = await supabase
     .from("pending_invitations")
-    .select("id, status")
+    .select("id, status, user_id")
     .eq("id", invitationId)
     .maybeSingle();
 
   if (fetchError || !invitation) return { error: "NOT_FOUND" };
   if (invitation.status === "revoked") return { error: "ALREADY_REVOKED" };
 
+  const { error: deleteError } = await supabase.auth.admin.deleteUser(invitation.user_id);
   const { error: updateError } = await supabase
     .from("pending_invitations")
     .update({
@@ -22,6 +23,6 @@ export const revokeInvitation = async (invitationId: string): Promise<RevokeInvi
     })
     .eq("id", invitationId);
 
-  if (updateError) return { error: "UNKNOWN_ERROR" };
+  if (updateError || deleteError) return { error: "UNKNOWN_ERROR" };
   return { success: true };
 };
