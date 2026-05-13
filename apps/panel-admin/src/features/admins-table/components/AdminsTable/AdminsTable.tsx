@@ -48,6 +48,7 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                     <Button
                       variant="danger"
                       isIconOnly
+                      isDisabled={!user.is_active}
                       onPress={() => onToggle(user.id, user.is_active)}
                     >
                       <X />
@@ -55,6 +56,7 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                     <Button
                       variant="primary"
                       isIconOnly
+                      isDisabled={user.is_active}
                       onPress={() => onToggle(user.id, user.is_active)}
                     >
                       <Check />
