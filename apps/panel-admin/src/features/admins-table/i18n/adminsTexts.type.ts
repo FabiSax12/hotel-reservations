@@ -49,6 +49,7 @@ export type AdminsTexts = {
     EMAIL_LABEL: string;
     EMAIL_PLACEHOLDER: string;
     SEND_BUTTON: string;
+    INVITE: string;
     ERRORS: {
       INVALID_EMAIL: string;
       EMAIL_ALREADY_INVITED: string;

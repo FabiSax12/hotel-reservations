@@ -37,25 +37,25 @@ export function PendingInvitationRow({
           <Button
             isIconOnly
             size="sm"
-            variant="ghost"
             isDisabled={isResending === invitation.id}
             onPress={() => onResend(invitation.id)}
             aria-label={t.ADMINS.INVITATIONS.ACTION_RESEND}
+            variant="primary"
           >
             <RotateCcw className="size-4" />
           </Button>
           <Button
             isIconOnly
             size="sm"
-            variant="ghost"
             isDisabled={isRevoking === invitation.id}
             onPress={() => onRevoke(invitation.id)}
             aria-label={t.ADMINS.INVITATIONS.ACTION_REVOKE}
+            variant="danger"
           >
             <X className="size-4" />
           </Button>
         </ButtonGroup>
-      </Table.Cell>
-    </Table.Row>
+      </Table.Cell >
+    </Table.Row >
   );
 }

@@ -53,6 +53,7 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       EMAIL_LABEL: "Email del administrador",
       EMAIL_PLACEHOLDER: "admin@ejemplo.com",
       SEND_BUTTON: "Enviar invitación",
+      INVITE: "Invitar",
       ERRORS: {
         INVALID_EMAIL: "Email inválido",
         EMAIL_ALREADY_INVITED: "Este email ya tiene una invitación pendiente",
@@ -112,6 +113,7 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       EMAIL_LABEL: "Admin email",
       EMAIL_PLACEHOLDER: "admin@example.com",
       SEND_BUTTON: "Send invitation",
+      INVITE: "Invite",
       ERRORS: {
         INVALID_EMAIL: "Invalid email",
         EMAIL_ALREADY_INVITED: "This email already has a pending invitation",

@@ -1,51 +1,25 @@
 "use client";
 
-import type { PendingInvitation } from "@hotel/db";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { PendingInvitationsTable } from "@/features/admins-table/components/PendingInvitationsTable/PendingInvitationsTable";
-import type { InvitationListItem } from "@/features/admins-table/domain/invitation.types";
 import { useInvitationActions } from "@/features/admins-table/hooks/useInvitationActions";
 import { InvitationHistoryTable } from "@/features/invitations/components/InvitationHistoryTable/InvitationHistoryTable";
 import { useI18n } from "@/locales";
+import { useInvitationsState } from "../../hooks/useInvitationsState";
+import { mapInvitationsToListItems } from "../../utils/mapInvitationsToListItems";
 import type { InvitationsViewProps } from "./InvitationsView.interface";
-
-function mapInvitationsToListItems(invitations: PendingInvitation[]): InvitationListItem[] {
-  return invitations.map((inv) => ({
-    id: inv.id,
-    email: inv.email,
-    status: inv.status,
-    createdAt: inv.created_at,
-    expiresAt: inv.expires_at,
-  }));
-}
+import { styles, TAB_KEYS } from "./InvitationsView.styles";
 
 export const InvitationsView = ({ invitations }: InvitationsViewProps) => {
   const { t } = useI18n();
-  const [activeTab, setActiveTab] = useState<"pending" | "history">("pending");
-  const [invitationList, setInvitationList] = useState(invitations);
-  const [allInvitations, setAllInvitations] = useState<PendingInvitation[]>([]);
-
-  const refreshInvitations = useCallback(async () => {
-    const { getPendingInvitations } = await import("../../services/getPendingInvitations");
-    const data = await getPendingInvitations();
-    setInvitationList(data);
-  }, []);
-
-  const refreshAllInvitations = useCallback(async () => {
-    const { getAllInvitations } = await import("../../services/getAllInvitations");
-    const data = await getAllInvitations();
-    setAllInvitations(data);
-  }, []);
-
-  const handleTabChange = useCallback(
-    async (tab: "pending" | "history") => {
-      setActiveTab(tab);
-      if (tab === "history" && allInvitations.length === 0) {
-        await refreshAllInvitations();
-      }
-    },
-    [allInvitations.length, refreshAllInvitations],
-  );
+  const {
+    activeTab,
+    invitationList,
+    allInvitations,
+    refreshInvitations,
+    refreshAllInvitations,
+    handleTabChange,
+  } = useInvitationsState(invitations);
 
   const { handleRevoke, handleResend, isRevoking, isResending } =
     useInvitationActions(refreshInvitations);
@@ -62,30 +36,24 @@ export const InvitationsView = ({ invitations }: InvitationsViewProps) => {
 
   return (
     <main>
-      <div className="mb-4 flex gap-2">
+      <div className={styles.container}>
         <button
           type="button"
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === "pending"
-              ? "bg-primary-100 text-primary-700"
-              : "text-gray-600 hover:bg-gray-100"
-            }`}
-          onClick={() => handleTabChange("pending")}
+          className={`${styles.tabButton.base} ${activeTab === TAB_KEYS.PENDING ? styles.tabButton.active : styles.tabButton.inactive}`}
+          onClick={() => handleTabChange(TAB_KEYS.PENDING)}
         >
           {t.ADMINS.INVITATIONS.TAB_PENDING}
         </button>
         <button
           type="button"
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${activeTab === "history"
-              ? "bg-primary-100 text-primary-700"
-              : "text-gray-600 hover:bg-gray-100"
-            }`}
-          onClick={() => handleTabChange("history")}
+          className={`${styles.tabButton.base} ${activeTab === TAB_KEYS.HISTORY ? styles.tabButton.active : styles.tabButton.inactive}`}
+          onClick={() => handleTabChange(TAB_KEYS.HISTORY)}
         >
           {t.ADMINS.INVITATIONS.TAB_HISTORY}
         </button>
       </div>
 
-      {activeTab === "pending" ? (
+      {activeTab === TAB_KEYS.PENDING ? (
         <PendingInvitationsTable
           invitations={mappedInvitations}
           onRevoke={handleRevoke}

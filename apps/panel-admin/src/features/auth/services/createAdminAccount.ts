@@ -11,8 +11,6 @@ export const createAdminAccount = async (email: string): Promise<void> => {
     `${ENV.NEXT_PUBLIC_BASE_URL}${ROUTES.AUTH.ACTIVATE}`,
   );
 
-  console.log("Invitation response", response);
-
   const supabase = createSupabaseServiceClient();
   const { error } = await supabase
     .from("pending_invitations")

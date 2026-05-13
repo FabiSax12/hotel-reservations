@@ -2,6 +2,7 @@
 
 import { Chip, EmptyState, Table } from "@heroui/react";
 import { Inbox, RotateCcw } from "lucide-react";
+import { formatDate } from "@/features/admins-table/utils/formatDate";
 import { useI18n } from "@/locales";
 import type { InvitationHistoryTableProps } from "./InvitationHistoryTable.interface";
 
@@ -86,11 +87,3 @@ export const InvitationHistoryTable = ({
     </Table>
   );
 };
-
-function formatDate(isoString: string): string {
-  return new Date(isoString).toLocaleDateString("es-ES", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-}
