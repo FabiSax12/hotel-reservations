@@ -6,6 +6,7 @@ export const SEARCH_TEXTS: Record<SupportedLocale, SearchTexts> = {
     HERO: {
       TITLE: "¿Cuándo nos visitas?",
       SUBTITLE: "Seleccione su destino, fechas y cantidad de personas",
+      BROWSE_ROOMS: "Explorar habitaciones",
     },
     SEARCH_BAR: {
       DESTINATION: {
@@ -54,6 +55,7 @@ export const SEARCH_TEXTS: Record<SupportedLocale, SearchTexts> = {
     HERO: {
       TITLE: "When are you visiting?",
       SUBTITLE: "Select your destination, dates and number of guests",
+      BROWSE_ROOMS: "Browse rooms",
     },
     SEARCH_BAR: {
       DESTINATION: {

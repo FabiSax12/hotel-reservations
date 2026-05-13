@@ -6,14 +6,7 @@
 
 import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { useI18n } from "@/locales";
-
-interface SearchButtonProps {
-  isSearching: boolean;
-  iconClass: string;
-  paddingClass: string;
-  onTrigger: () => void;
-  isShaking?: boolean;
-}
+import type { SearchButtonProps } from "../../domain/types";
 
 export function SearchButton({
   isSearching,

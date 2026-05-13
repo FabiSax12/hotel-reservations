@@ -7,4 +7,5 @@ export interface ReservationsFiltersProps {
   totalCount: number;
   filteredCount: number;
   statusCounts: Record<ReservationStatus, number>;
+  rooms: readonly string[];
 }

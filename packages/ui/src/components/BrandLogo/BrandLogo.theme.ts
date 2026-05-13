@@ -3,6 +3,6 @@
  */
 
 export const BRAND_LOGO_STYLES = {
-  root: "text-2xl font-black text-emerald-950 tracking-tighter cursor-pointer select-none",
-  highlight: "text-emerald-600",
+  root: "font-serif text-xl tracking-[0.35em] uppercase text-stone-50 hover:text-gold-400 transition-colors duration-300 cursor-pointer select-none",
+  highlight: "",
 } as const;

@@ -4,10 +4,7 @@
 
 import React from "react";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-
-interface ErrorTooltipProps {
-  message: string;
-}
+import type { ErrorTooltipProps } from "../domain/types";
 
 export function ErrorTooltip({ message }: ErrorTooltipProps) {
   const { icons } = S;

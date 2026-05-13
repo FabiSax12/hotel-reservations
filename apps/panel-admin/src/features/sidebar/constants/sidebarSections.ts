@@ -1,6 +1,7 @@
 import {
   BedDouble,
   ClipboardList,
+  KeyRound,
   LayoutDashboard,
   LayoutPanelTop,
   Receipt,
@@ -26,7 +27,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         labelKey: LABEL_KEYS.ADMINS,
         route: ROUTES.ADMIN.ADMINS,
-        icon: UserKey,
+        icon: KeyRound,
         isPrimary: true,
       },
       {

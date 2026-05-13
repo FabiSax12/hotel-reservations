@@ -22,3 +22,17 @@ export interface SearchParams {
   /** Number of pets. */
   pets: number;
 }
+
+// ─── Component Props ────────────────────────────────────────────────────────
+
+export interface HeroSearchProps {
+  onDestinationChange?: (dest: string) => void;
+  onSearch: (params: SearchParams) => void;
+  heroCalendarActive: boolean;
+  setHeroCalendarActive: (active: boolean) => void;
+  hasLocation: boolean;
+}
+
+export interface ScrollIndicatorProps {
+  heroCalendarActive: boolean;
+}
