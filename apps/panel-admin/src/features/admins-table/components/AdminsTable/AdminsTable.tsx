@@ -43,11 +43,10 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                 <Table.Cell>{user.role}</Table.Cell>
                 {/* <Table.Cell>{user.created_at}</Table.Cell> */}
                 <Table.Cell>
-                  <ButtonGroup>
+                  <ButtonGroup isDisabled={togglingId === user.id}>
                     <Button
                       variant="danger"
                       isIconOnly
-                      isLoading={togglingId === user.id}
                       onPress={() => onToggle(user.id, user.is_active)}
                     >
                       <X />
@@ -55,7 +54,6 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                     <Button
                       variant="primary"
                       isIconOnly
-                      isLoading={togglingId === user.id}
                       onPress={() => onToggle(user.id, user.is_active)}
                     >
                       <Check />
