@@ -1,81 +1,79 @@
 /**
- * @file PackageCardHeader.tsx — Image collage for room packages (US-DM-04).
+ * @file PackageCardHeader.tsx — Portrait image collage for room packages (US-DM-04).
  *
- * Displays room images in a grid layout:
- * - 2 rooms: 50/50 split
- * - 3 rooms: 50/50 top row + 100% bottom
- * - 4+ rooms: 50/50 grid
- * - Homogeneous: Single image with room count overlay
+ * Same dimensions as RoomCard's image panel (w-[380px] h-auto on desktop).
+ * Displays room images in a portrait-oriented grid:
+ * - Homogeneous: Single image with ×N badge
+ * - 2 rooms: Stacked vertically (50% each)
+ * - 3 rooms: 2×2 grid with 3 cells filled
+ * - 4 rooms: 2×2 grid
  */
 
 "use client";
 
 import type { PackageCardHeaderProps } from "../../domain/types";
 import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
-import { useI18n } from "@/locales";
 
 export function PackageCardHeader({ rooms, isHomogeneous }: PackageCardHeaderProps) {
-  const { t } = useI18n();
   const roomCount = rooms.length;
 
-  if (isHomogeneous || roomCount === 1) {
-    return (
-      <div className={S.imageCollage}>
+  return (
+    <div className={S.imageWrapper}>
+      {isHomogeneous || roomCount === 1 ? (
         <div className={S.imageSingle}>
-          <img
-            src={rooms[0].image}
-            alt={rooms[0].title}
+          <div
             className={S.image}
+            style={{ backgroundImage: `url(${rooms[0].image})` }}
           />
         </div>
-        <div className={S.roomCountBadge}>
-          <span>×{roomCount}</span>
-        </div>
-      </div>
-    );
-  }
-
-  // Mixed package: show grid of room images
-  const displayRooms = rooms.slice(0, 4);
-
-  return (
-    <div className={S.imageCollage}>
-      {roomCount === 2 && (
+      ) : roomCount === 2 ? (
         <div className={S.imageGrid2}>
-          {displayRooms.map((room, i) => (
+          {rooms.map((room) => (
             <div key={room.id} className={S.imageCell}>
-              <img src={room.image} alt={room.title} className={S.image} />
+              <div
+                className={S.image}
+                style={{ backgroundImage: `url(${room.image})` }}
+              />
             </div>
           ))}
         </div>
-      )}
-
-      {roomCount === 3 && (
+      ) : roomCount === 3 ? (
         <div className={S.imageGrid3}>
           <div className={S.imageCell}>
-            <img src={displayRooms[0].image} alt={displayRooms[0].title} className={S.image} />
+            <div
+              className={S.image}
+              style={{ backgroundImage: `url(${rooms[0].image})` }}
+            />
           </div>
           <div className={S.imageCell}>
-            <img src={displayRooms[1].image} alt={displayRooms[1].title} className={S.image} />
+            <div
+              className={S.image}
+              style={{ backgroundImage: `url(${rooms[1].image})` }}
+            />
           </div>
           <div className="col-span-2 relative overflow-hidden">
-            <img src={displayRooms[2].image} alt={displayRooms[2].title} className={S.image} />
+            <div
+              className={S.image}
+              style={{ backgroundImage: `url(${rooms[2].image})` }}
+            />
           </div>
         </div>
-      )}
-
-      {roomCount >= 4 && (
+      ) : (
         <div className={S.imageGrid4}>
-          {displayRooms.slice(0, 4).map((room, i) => (
+          {rooms.slice(0, 4).map((room) => (
             <div key={room.id} className={S.imageCell}>
-              <img src={room.image} alt={room.title} className={S.image} />
+              <div
+                className={S.image}
+                style={{ backgroundImage: `url(${room.image})` }}
+              />
             </div>
           ))}
         </div>
       )}
 
+      {/* Room count badge */}
       <div className={S.roomCountBadge}>
-        <span>{roomCount} {t.ROOMS.ROOMS_PLURAL}</span>
+        <span>×{roomCount}</span>
       </div>
     </div>
   );

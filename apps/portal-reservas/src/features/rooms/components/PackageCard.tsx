@@ -1,15 +1,12 @@
 /**
  * @file PackageCard.tsx — Room package card orchestrator (US-DM-04).
  *
- * A package card is its OWN entity, not a RoomCard wrapper. It displays:
- * - Image collage of all rooms
- * - Package label + total capacity
- * - Room summary list with per-room prices
- * - Total price with "Total por noche" label
- * - Single CTA with same conditional logic as RoomCard
- * - Expand/collapse for component room cards
+ * Mirrors RoomCard's horizontal layout:
+ * - Image collage panel on left (same dimensions as RoomCard image panel)
+ * - Body on right with package label, room summary, price, and CTA
+ * - Expand toggle below the card for component room cards
  *
- * The CTA behavior mirrors RoomCard:
+ * CTA behavior matches RoomCard:
  * - No dates → "Ver disponibilidad" ghost button
  * - Dates + available → "Reservar paquete" filled button
  * - Dates + unavailable → "No disponible" + "Ver fechas libres"
@@ -20,11 +17,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import type { PackageCardProps } from "../domain/types";
-import { PACKAGE_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { PACKAGE_CARD_STYLES as PS } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
-import { ROOM_MOCK } from "../constants/rooms.constants";
+import { ROOM_ANIMATION, ROOM_MOCK } from "../constants/rooms.constants";
 import { RoomCard } from "./RoomCard";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 import { CTASpinner } from "./sub-components/CTASpinner";
@@ -72,7 +70,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   return (
     <div ref={wrapperRef}>
       <article
-        className={S.card(isUnavailable)}
+        className={PS.card(isUnavailable)}
         style={{
           animationDelay: `${index * ROOM_ANIMATION.CASCADE_DELAY_MS}ms`,
           animationDuration: `${ROOM_ANIMATION.ENTRANCE_DURATION_MS}ms`,
@@ -80,21 +78,19 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
         aria-label={t.ROOMS.PACKAGE_LABEL.replace("{count}", String(pkg.rooms.length))}
       >
         {/* Hover glow overlay */}
-        <div className={S.cardHoverGlow} aria-hidden="true" />
+        <div className={PS.cardHoverGlow} aria-hidden="true" />
 
-        {/* Image collage */}
+        {/* Left: image collage panel (same dimensions as RoomCard image) */}
         <PackageCardHeader rooms={pkg.rooms} isHomogeneous={pkg.isHomogeneous} />
 
-        {/* Body: label + capacity + room list + price */}
+        {/* Right: body with package label, room list, price, and CTA */}
         <PackageCardSummary
           rooms={pkg.rooms}
           totalCapacity={pkg.totalCapacity}
           totalPricePerNight={pkg.totalPricePerNight}
-        />
-
-        {/* CTA section — same conditional logic as RoomCard */}
-        <div className={S.ctaSection}>
-          <div className={S.ctaWrapper}>
+        >
+          {/* CTA slot — inline with price, same as RoomCard */}
+          <div className={PS.ctaWrapperRelative}>
             {/* Inline calendar popover */}
             {isCalendarOpen && (
               <RoomRangeCalendar
@@ -108,12 +104,12 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
             {!hasDates && (
               <button
                 type="button"
-                className={S.checkDatesBtn}
+                className={PS.checkDatesBtn}
                 onClick={toggleCalendar}
                 aria-expanded={isCalendarOpen}
                 aria-label={t.ROOMS.CHECK_DATES_ACTION}
               >
-                <svg className={S.ctaBtnCalendarIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className={PS.ctaBtnCalendarIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 {t.ROOMS.CHECK_DATES_ACTION}
@@ -122,7 +118,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
 
             {/* STATE 2 — Dates selected, loading */}
             {hasDates && isLoading && (
-              <button type="button" className={S.reserveBtn} disabled aria-busy="true">
+              <button type="button" className={PS.reserveBtn} disabled aria-busy="true">
                 <CTASpinner /> {t.ROOMS.VERIFYING}
               </button>
             )}
@@ -131,7 +127,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
             {hasDates && !isLoading && isAvailable && (
               <button
                 type="button"
-                className={S.reserveBtn}
+                className={PS.reserveBtn}
                 onClick={handleReserve}
                 disabled={isReserving}
                 aria-busy={isReserving}
@@ -140,7 +136,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
                   <><CTASpinner /> {t.ROOMS.LOADING_RESERVE}</>
                 ) : (
                   <>
-                    <svg className={S.ctaBtnArrowIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <svg className={PS.ctaBtnArrowIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                     {t.ROOMS.PACKAGE_RESERVE}
@@ -152,10 +148,10 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
             {/* STATE 3b — Dates selected, unavailable */}
             {hasDates && !isLoading && !isAvailable && (
               <>
-                <p className={S.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>
+                <p className={PS.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>
                 <button
                   type="button"
-                  className={S.seeFreeDatesBtn}
+                  className={PS.seeFreeDatesBtn}
                   onClick={toggleCalendar}
                   aria-expanded={isCalendarOpen}
                 >
@@ -164,33 +160,33 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
               </>
             )}
           </div>
-        </div>
-
-        {/* Expand/collapse toggle */}
-        <button
-          type="button"
-          className={S.expandBtn}
-          onClick={() => setIsExpanded(!isExpanded)}
-          aria-expanded={isExpanded}
-        >
-          <span>
-            {isExpanded
-              ? t.ROOMS.PACKAGE_COLLAPSE
-              : t.ROOMS.PACKAGE_EXPAND.replace("{count}", String(pkg.rooms.length))}
-          </span>
-          <span className={S.expandIcon(isExpanded)}>▼</span>
-        </button>
+        </PackageCardSummary>
       </article>
+
+      {/* Expand toggle — below the card */}
+      <button
+        type="button"
+        className={PS.expandBtn}
+        onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+      >
+        <span>
+          {isExpanded
+            ? t.ROOMS.PACKAGE_COLLAPSE
+            : t.ROOMS.PACKAGE_EXPAND.replace("{count}", String(pkg.rooms.length))}
+        </span>
+        <span className={PS.expandIcon(isExpanded)}>▼</span>
+      </button>
 
       {/* Expanded component rooms */}
       <div
-        className={S.expansionGrid(isExpanded)}
+        className={PS.expansionGrid(isExpanded)}
         aria-hidden={!isExpanded}
       >
-        <div className={S.expansionInner}>
-          <div className={S.expansionContent}>
-            <p className={S.expansionTitle}>{t.ROOMS.PACKAGE_ROOMS_TITLE}</p>
-            <div className={S.expansionGridInner}>
+        <div className={PS.expansionInner}>
+          <div className={PS.expansionContent}>
+            <p className={PS.expansionTitle}>{t.ROOMS.PACKAGE_ROOMS_TITLE}</p>
+            <div className={PS.expansionGridInner}>
               {pkg.rooms.map((room, i) => (
                 <RoomCard
                   key={`${pkg.id}-${room.id}-${i}`}
@@ -206,6 +202,3 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
     </div>
   );
 }
-
-// Import the animation constant
-import { ROOM_ANIMATION } from "../constants/rooms.constants";
