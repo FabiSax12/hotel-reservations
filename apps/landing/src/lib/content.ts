@@ -1,26 +1,43 @@
 import "server-only";
 import type { SupportedLocale } from "@hotel/i18n";
 import type { AppTranslations } from "@/locales";
-import { translations } from "@/locales";
+import { translations, defaultLocale } from "@/locales";
+import { createSupabaseServiceClient } from "@hotel/db";
 
-/**
- * Fetches page content for a given locale from the CMS.
- *
- * Swap the body below for a real API call once the CMS is ready:
- *
- *   const res = await fetch(
- *     `${process.env.CMS_API_URL}/content?locale=${locale}&hotel=${hotelId}`,
- *     {
- *       headers: { Authorization: `Bearer ${process.env.CMS_API_KEY}` },
- *       next: { revalidate: 60 },
- *     },
- *   );
- *   if (!res.ok) throw new Error(`CMS fetch failed: ${res.status}`);
- *   return res.json() as AppTranslations;
- */
-export async function fetchContent(
-  locale: SupportedLocale,
-  // hotelId?: string,  // future: per-tenant content
-): Promise<AppTranslations> {
-  return translations[locale] ?? translations["es"];
+const SECTION_HERO = "hero" as const;
+const SECTION_ABOUT = "about" as const;
+
+export async function fetchContent(locale: SupportedLocale): Promise<AppTranslations> {
+  const base = translations[locale] ?? translations[defaultLocale];
+
+  try {
+    const supabase = createSupabaseServiceClient();
+    const { data, error } = await supabase
+      .from("cms_content")
+      .select("section, content")
+      .eq("locale", locale);
+
+    if (error || !data?.length) return base;
+
+    const heroRow = data.find((r) => r.section === SECTION_HERO);
+    const aboutRow = data.find((r) => r.section === SECTION_ABOUT);
+
+    const nonEmpty = (obj: Record<string, string>) =>
+      Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== ""));
+
+    return {
+      ...base,
+      LANDING: {
+        ...base.LANDING,
+        HERO: heroRow
+          ? { ...base.LANDING.HERO, ...nonEmpty(heroRow.content as Record<string, string>) }
+          : base.LANDING.HERO,
+        ABOUT: aboutRow
+          ? { ...base.LANDING.ABOUT, ...nonEmpty(aboutRow.content as Record<string, string>) }
+          : base.LANDING.ABOUT,
+      },
+    };
+  } catch {
+    return base;
+  }
 }

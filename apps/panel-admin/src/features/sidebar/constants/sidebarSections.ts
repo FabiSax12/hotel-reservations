@@ -75,8 +75,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     items: [
       {
         labelKey: LABEL_KEYS.CMS_LANDING,
-        // TODO: Change when this route is created
-        route: "/admin/cms/landing",
+        route: ROUTES.ADMIN.CMS,
         icon: LayoutPanelTop,
       },
     ],

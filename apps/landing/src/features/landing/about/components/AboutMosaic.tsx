@@ -5,7 +5,7 @@ import { motion, useInView, useScroll, useTransform, useMotionTemplate } from "f
 import { useI18n } from "@/locales";
 import { ABOUT } from "@/features/landing/about/constants/styles";
 import { STAGGER } from "@/features/landing/about/constants/animations";
-import { MOSAIC_SIZES, MOSAIC_IMAGE_1, MOSAIC_IMAGE_2, MOSAIC_IMAGE_3, MOSAIC_OVERLAYS_1, MOSAIC_OVERLAYS_2, MOSAIC_OVERLAYS_3 } from "@/features/landing/about/constants/mosaic";
+import { MOSAIC_SIZES, MOSAIC_OVERLAYS_1, MOSAIC_OVERLAYS_2, MOSAIC_OVERLAYS_3 } from "@/features/landing/about/constants/mosaic";
 import { MosaicPanel } from "./MosaicPanel";
 
 export function AboutMosaic() {
@@ -33,7 +33,7 @@ export function AboutMosaic() {
       className={ABOUT.MOSAIC}
     >
       <MosaicPanel
-        src={MOSAIC_IMAGE_1}
+        src={about.MOSAIC_URL_1}
         alt={about.MOSAIC_ALT_1}
         sizes={MOSAIC_SIZES}
         overlays={MOSAIC_OVERLAYS_1}
@@ -42,7 +42,7 @@ export function AboutMosaic() {
         tall
       />
       <MosaicPanel
-        src={MOSAIC_IMAGE_2}
+        src={about.MOSAIC_URL_2}
         alt={about.MOSAIC_ALT_2}
         sizes={MOSAIC_SIZES}
         overlays={MOSAIC_OVERLAYS_2}
@@ -50,7 +50,7 @@ export function AboutMosaic() {
         minHeight={228}
       />
       <MosaicPanel
-        src={MOSAIC_IMAGE_3}
+        src={about.MOSAIC_URL_3}
         alt={about.MOSAIC_ALT_3}
         sizes={MOSAIC_SIZES}
         overlays={MOSAIC_OVERLAYS_3}
