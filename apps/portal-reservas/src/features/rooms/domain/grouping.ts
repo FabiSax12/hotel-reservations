@@ -21,15 +21,6 @@ export type GroupedRoom = Room | RoomPackage;
 /**
  * Groups rooms into packages when no single room can accommodate all guests.
  * Generates ALL valid combinations, not just greedy fills.
- *
- * Algorithm:
- * 1. If guestCount <= 0 or rooms empty -> return rooms as-is.
- * 2. Separate rooms that can accommodate all guests (individuals).
- * 3. For remaining rooms, generate all valid combinations via backtracking.
- * 4. Filter combinations: waste <= MAX_WASTE, rooms <= MAX_ROOMS.
- * 5. Convert valid combinations to RoomPackage objects.
- * 6. Deduplicate identical packages.
- * 7. Sort: individual rooms first (by price ASC), then packages (by price ASC).
  */
 export function groupRoomsIntoPackages(
   rooms: readonly Room[],
@@ -75,9 +66,6 @@ function generateAllPackages(
   const { MAX_WASTE, MAX_ROOMS } = ROOM_GROUPING;
   const packages: RoomPackage[] = [];
 
-  // Use backtracking to find all valid combinations
-  // We allow using the same room multiple times (up to inventory)
-  // To avoid duplicate permutations, we enforce non-decreasing index order
   function backtrack(
     current: Room[],
     startIndex: number,
@@ -85,31 +73,25 @@ function generateAllPackages(
   ) {
     const totalCapacity = current.reduce((s, r) => s + r.capacity, 0);
 
-    // If we have enough capacity, check if it's a valid package
     if (totalCapacity >= guestCount) {
       const waste = totalCapacity - guestCount;
       if (waste <= MAX_WASTE && current.length >= 2) {
         const pkg = buildPackageFromRooms(current);
         if (pkg) packages.push(pkg);
       }
-      // Don't return here — adding more rooms might also be valid
-      // But if we've hit MAX_ROOMS, stop
       if (current.length >= MAX_ROOMS) return;
     }
 
-    // If we haven't reached max rooms, try adding more
     if (current.length >= MAX_ROOMS) return;
 
     for (let i = startIndex; i < rooms.length; i++) {
       const room = rooms[i];
       const used = usedCounts.get(room.id) ?? 0;
-
-      // Respect inventory limits
       if (used >= room.inventory) continue;
 
       usedCounts.set(room.id, used + 1);
       current.push(room);
-      backtrack(current, i, usedCounts); // allow same index (repetition)
+      backtrack(current, i, usedCounts);
       current.pop();
       usedCounts.set(room.id, used);
     }
@@ -121,23 +103,19 @@ function generateAllPackages(
 
 /**
  * Builds a RoomPackage from a flat list of rooms.
+ * Rooms are sorted by price DESC — first room is the most expensive.
  */
 function buildPackageFromRooms(rooms: Room[]): RoomPackage | null {
   if (rooms.length < 2) return null;
 
-  // Sort by price DESC to find primary
-  const byPrice = [...rooms].sort((a, b) => b.price - a.price);
-  const primary = byPrice[0];
-  const secondaries = byPrice.slice(1);
-
+  const sorted = [...rooms].sort((a, b) => b.price - a.price);
   const totalCapacity = rooms.reduce((s, r) => s + r.capacity, 0);
   const totalPricePerNight = rooms.reduce((s, r) => s + r.price, 0);
   const isHomogeneous = new Set(rooms.map((r) => r.type)).size === 1;
 
   return {
-    id: `pkg-${rooms.map((r) => r.id).join("-")}`,
-    primaryRoom: primary,
-    secondaryRooms: secondaries,
+    id: `pkg-${rooms.map((r) => r.id).sort().join("-")}`,
+    rooms: sorted,
     totalCapacity,
     totalPricePerNight,
     isHomogeneous,
@@ -145,9 +123,9 @@ function buildPackageFromRooms(rooms: Room[]): RoomPackage | null {
 }
 
 /**
- * Groups secondary rooms by type for display purposes.
+ * Groups rooms by type for display purposes.
  */
-export function groupSecondaryRooms(
+export function groupRoomsByType(
   rooms: Room[],
 ): Array<{ type: string; room: Room; count: number }> {
   const grouped = new Map<string, { room: Room; count: number }>();
@@ -175,8 +153,7 @@ function deduplicatePackages(packages: RoomPackage[]): RoomPackage[] {
   const seen = new Map<string, RoomPackage>();
 
   for (const pkg of packages) {
-    const allRooms = [pkg.primaryRoom, ...pkg.secondaryRooms];
-    const roomIds = allRooms
+    const roomIds = pkg.rooms
       .map((r) => r.id)
       .sort()
       .join(",");

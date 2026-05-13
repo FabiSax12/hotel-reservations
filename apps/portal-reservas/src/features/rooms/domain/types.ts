@@ -125,21 +125,12 @@ export interface RoomRangeCalendarProps {
 
 // ─── Package Types (US-DM-04) ──────────────────────────────────────────────
 
-/** A single room entry within a package. */
-export interface PackageRoomEntry {
-  room: Room;
-  /** How many of this exact room type are in the package (>= 1). */
-  count: number;
-}
-
 /** A group of rooms that together accommodate the guest count. */
 export interface RoomPackage {
   /** Unique identifier for the package (e.g. "pkg-mv-1-mv-2"). */
   id: string;
-  /** The most expensive room — rendered as the primary card. */
-  primaryRoom: Room;
-  /** Secondary rooms as flat list (may include duplicates of same type). */
-  secondaryRooms: Room[];
+  /** All rooms in the package, sorted by price DESC. First = most expensive. */
+  rooms: Room[];
   /** Total capacity across all rooms in the package. */
   totalCapacity: number;
   /** Sum of all room prices per night. */
@@ -152,4 +143,15 @@ export interface PackageCardProps {
   pkg: RoomPackage;
   index: number;
   selectedDest?: string | null;
+}
+
+export interface PackageCardHeaderProps {
+  rooms: Room[];
+  isHomogeneous: boolean;
+}
+
+export interface PackageCardSummaryProps {
+  rooms: Room[];
+  totalCapacity: number;
+  totalPricePerNight: number;
 }

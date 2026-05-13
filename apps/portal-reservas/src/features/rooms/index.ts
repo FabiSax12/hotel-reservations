@@ -14,7 +14,7 @@ export type { RoomsContextValue, SearchDates } from "./context/RoomsContext";
 // Domain
 export type { Room, RoomPackage } from "./domain/types";
 export { filterRoomsByDestination } from "./domain/filters";
-export { groupRoomsIntoPackages, groupSecondaryRooms } from "./domain/grouping";
+export { groupRoomsIntoPackages, groupRoomsByType } from "./domain/grouping";
 export type { GroupedRoom } from "./domain/grouping";
 
 // Hooks

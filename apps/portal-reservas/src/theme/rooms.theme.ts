@@ -187,30 +187,81 @@ export const ROOM_CARD_STYLES = {
 // ─── Package Card Styles (US-DM-04) ─────────────────────────────────────────
 
 export const PACKAGE_CARD_STYLES = {
-  /** Outer wrapper for the entire package card including banner and expansion. */
-  wrapper: "relative mb-4",
+  // ─── Card Shell ─────────────────────────────────────────────────────────────
+  card: (isUnavailable: boolean) =>
+    `group relative flex flex-col bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both overflow-hidden ${
+      isUnavailable ? "opacity-50" : "opacity-100"
+    }`,
+  cardHoverGlow:
+    "pointer-events-none absolute inset-0 rounded-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
 
-  /** Package banner at the top indicating this is a package. */
-  packageBanner:
-    "flex items-center gap-3 px-5 py-2.5 bg-gold-600/20 border border-gold-500/30 rounded-t-[2rem] text-gold-400",
-  packageBannerIcon: "text-lg",
-  packageBannerText: "text-xs font-bold uppercase tracking-widest",
-  packageBannerCapacity: "ml-auto text-xs font-medium text-gold-500/80",
+  // ─── Image Collage ──────────────────────────────────────────────────────────
+  imageCollage: "relative w-full h-[200px] lg:h-[240px] overflow-hidden flex-shrink-0",
+  imageGrid2: "grid grid-cols-2 gap-[2px] h-full",
+  imageGrid3: "grid grid-cols-2 grid-rows-2 gap-[2px] h-full",
+  imageGrid4: "grid grid-cols-2 grid-rows-2 gap-[2px] h-full",
+  imageSingle: "relative w-full h-full",
+  imageCell: "relative overflow-hidden",
+  image: "absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]",
 
-  /** Expand/collapse button below the primary card. */
+  /** Room count overlay badge at bottom-right of image. */
+  roomCountBadge:
+    "absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-forest-950/80 backdrop-blur-sm text-stone-50 rounded-xl text-xs font-bold border border-forest-800/60",
+  roomCountIcon: "w-3.5 h-3.5 text-gold-400",
+
+  // ─── Body ───────────────────────────────────────────────────────────────────
+  body: "flex flex-col flex-1 p-7",
+
+  /** Package label row: "PAQUETE DE 3 HABITACIONES" + capacity. */
+  labelRow: "flex items-center justify-between gap-3 mb-4",
+  labelText: "text-xs font-bold text-gold-400 uppercase tracking-widest",
+  labelCapacity: "text-xs font-medium text-stone-400",
+
+  /** Divider between sections. */
+  divider: "w-full h-px bg-forest-800 my-3",
+
+  /** Room summary list. */
+  summaryTitle: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-2",
+  summaryList: "flex flex-col gap-1.5",
+  summaryItem: "flex items-center justify-between text-sm",
+  summaryRoomName: "text-stone-200 font-medium",
+  summaryRoomPrice: "text-stone-400 text-xs",
+
+  /** Price section. */
+  priceSection: "mt-auto pt-4",
+  priceTotalLabel: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-1",
+  priceTotalRow: "flex items-baseline gap-1.5",
+  priceTotalAmount: "text-4xl font-black text-stone-50 tracking-tighter",
+  priceTotalCurrency: "text-sm font-bold text-stone-400",
+
+  // ─── CTA Section ────────────────────────────────────────────────────────────
+  ctaSection: "px-7 pb-5",
+  ctaWrapper: "flex flex-col items-end gap-2 w-full",
+  ctaBtnCalendarIcon: "w-4 h-4 flex-shrink-0",
+  ctaBtnArrowIcon: "w-4 h-4 flex-shrink-0",
+  ctaSpinnerCircle: "opacity-25",
+  ctaSpinnerPath: "opacity-75",
+  reserveBtn:
+    "flex items-center justify-center gap-2 h-14 w-full bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold text-base px-8 rounded-xl shadow-[0_8px_20px_rgba(202,138,4,0.3)] transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed",
+  reserveBtnLoader: "animate-spin w-4 h-4 text-forest-950",
+  checkDatesBtn:
+    "flex items-center justify-center gap-2 h-14 w-full bg-transparent hover:bg-forest-800 text-stone-50 font-bold text-base px-8 rounded-xl border-2 border-forest-700 hover:border-gold-500 transition-all duration-200 active:scale-[0.98]",
+  seeFreeDatesBtn: "text-sm font-medium text-gold-500 hover:text-gold-400 underline-offset-2 hover:underline transition-colors py-2",
+  unavailableLabel: "text-xs font-bold text-red-500 uppercase tracking-wider",
+
+  // ─── Expand/Collapse ────────────────────────────────────────────────────────
   expandBtn:
-    "w-full flex items-center justify-center gap-2 py-3 bg-forest-800/40 hover:bg-forest-800/60 border-x border-b border-forest-700/30 rounded-b-[2rem] text-sm font-medium text-stone-300 hover:text-stone-100 transition-colors cursor-pointer",
+    "w-full flex items-center justify-center gap-2 py-3 bg-forest-800/40 hover:bg-forest-800/60 border-t border-forest-700/30 text-sm font-medium text-stone-300 hover:text-stone-100 transition-colors cursor-pointer",
   expandIcon: (isExpanded: boolean) =>
     `text-xs transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`,
 
-  /** Expansion grid for component rooms. */
   expansionGrid: (isExpanded: boolean) =>
     `grid transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-      isExpanded ? "grid-rows-[1fr] mt-4" : "grid-rows-[0fr] mt-0"
+      isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
     }`,
   expansionInner: "overflow-hidden",
-  expansionContent: "pb-4",
+  expansionContent: "px-7 pb-7 pt-2",
   expansionTitle:
-    "text-sm font-bold text-stone-400 uppercase tracking-wider mb-4 px-2",
+    "text-xs font-bold text-stone-400 uppercase tracking-wider mb-4",
   expansionGridInner: "flex flex-col gap-6",
 } as const;

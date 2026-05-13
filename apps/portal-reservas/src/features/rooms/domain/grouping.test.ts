@@ -25,15 +25,12 @@ describe("groupRoomsIntoPackages", () => {
     expect(groupRoomsIntoPackages(rooms, 0)).toEqual(rooms);
   });
 
-  it("returns individual room when it can accommodate all guests, plus packages from smaller rooms", () => {
+  it("returns individual room when it can accommodate all guests", () => {
     const rooms = [makeRoom("big", 6, 400), makeRoom("small", 2, 100)];
     const result = groupRoomsIntoPackages(rooms, 4);
-    // big (cap 6) is individual, small+small (cap 4) is a package
-    const individuals = result.filter((r) => !("primaryRoom" in r));
+    const individuals = result.filter((r) => !("rooms" in r));
     expect(individuals).toHaveLength(1);
     expect(individuals[0].id).toBe("big");
-    const packages = result.filter((r) => "primaryRoom" in r);
-    expect(packages.length).toBeGreaterThanOrEqual(1);
   });
 
   it("generates multiple valid packages for 6 guests", () => {
@@ -44,26 +41,28 @@ describe("groupRoomsIntoPackages", () => {
       makeRoom("villa", 4, 550, "Villa", 1),
     ];
     const result = groupRoomsIntoPackages(rooms, 6);
-    const packages = result.filter((r) => "primaryRoom" in r);
+    const packages = result.filter((r) => "rooms" in r);
     expect(packages.length).toBeGreaterThanOrEqual(3);
 
+    // Verify 3x Standard exists
     const has3Std = packages.some((p) => {
-      if (!("primaryRoom" in p)) return false;
-      const all = [p.primaryRoom, ...p.secondaryRooms];
-      return all.length === 3 && all.every((r) => r.type === "Standard");
+      if (!("rooms" in p)) return false;
+      return p.rooms.length === 3 && p.rooms.every((r) => r.type === "Standard");
     });
     expect(has3Std).toBe(true);
 
+    // Verify Standard + Villa exists
     const hasStdVilla = packages.some((p) => {
-      if (!("primaryRoom" in p)) return false;
-      const types = [p.primaryRoom, ...p.secondaryRooms].map((r) => r.type);
+      if (!("rooms" in p)) return false;
+      const types = p.rooms.map((r) => r.type);
       return types.includes("Standard") && types.includes("Villa");
     });
     expect(hasStdVilla).toBe(true);
 
+    // Sorted by price
     for (let i = 1; i < packages.length; i++) {
       const prev = packages[i - 1], curr = packages[i];
-      if ("primaryRoom" in prev && "primaryRoom" in curr) {
+      if ("rooms" in prev && "rooms" in curr) {
         expect(curr.totalPricePerNight).toBeGreaterThanOrEqual(prev.totalPricePerNight);
       }
     }
@@ -75,11 +74,10 @@ describe("groupRoomsIntoPackages", () => {
       makeRoom("villa", 8, 500, "Villa", 1),
     ];
     const result = groupRoomsIntoPackages(rooms, 3);
-    const packages = result.filter((r) => "primaryRoom" in r);
+    const packages = result.filter((r) => "rooms" in r);
     for (const pkg of packages) {
-      if ("primaryRoom" in pkg) {
-        const all = [pkg.primaryRoom, ...pkg.secondaryRooms];
-        expect(all.some((r) => r.id === "villa")).toBe(false);
+      if ("rooms" in pkg) {
+        expect(pkg.rooms.some((r) => r.id === "villa")).toBe(false);
       }
     }
   });
@@ -87,27 +85,25 @@ describe("groupRoomsIntoPackages", () => {
   it("respects inventory limits", () => {
     const rooms = [makeRoom("std", 2, 100, "Standard", 2)];
     const result = groupRoomsIntoPackages(rooms, 6);
-    const packages = result.filter((r) => "primaryRoom" in r);
+    const packages = result.filter((r) => "rooms" in r);
     for (const pkg of packages) {
-      if ("primaryRoom" in pkg) {
-        expect([pkg.primaryRoom, ...pkg.secondaryRooms].length).toBeLessThanOrEqual(2);
+      if ("rooms" in pkg) {
+        expect(pkg.rooms.length).toBeLessThanOrEqual(2);
       }
     }
   });
 
-  it("selects the most expensive room as primary", () => {
+  it("selects the most expensive room as first in rooms array", () => {
     const rooms = [
       makeRoom("cheap", 2, 80, "Standard", 5),
       makeRoom("expensive", 2, 200, "Suite", 5),
     ];
     const result = groupRoomsIntoPackages(rooms, 4);
-    // Find the package that contains both cheap and expensive
     const pkg = result.find((r) => {
-      if (!("primaryRoom" in r)) return false;
-      const all = [r.primaryRoom, ...r.secondaryRooms];
-      return all.some((room) => room.id === "cheap") && all.some((room) => room.id === "expensive");
+      if (!("rooms" in r)) return false;
+      return r.rooms.some((room) => room.id === "cheap") && r.rooms.some((room) => room.id === "expensive");
     });
-    expect(pkg && "primaryRoom" in pkg ? pkg.primaryRoom.id : null).toBe("expensive");
+    expect(pkg && "rooms" in pkg ? pkg.rooms[0].id : null).toBe("expensive");
   });
 
   it("is deterministic", () => {

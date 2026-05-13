@@ -44,7 +44,11 @@ export type RoomsTexts = {
   DECREASE_CHILDREN: string;
   INCREASE_CHILDREN: string;
   GALLERY_IMAGES_LABEL: string;
-  PACKAGE_MIXED_LABEL: string;
+  PACKAGE_LABEL: string;
+  PACKAGE_CAPACITY: string;
+  PACKAGE_INCLUDES: string;
+  PACKAGE_TOTAL_LABEL: string;
+  PACKAGE_RESERVE: string;
   PACKAGE_EXPAND: string;
   PACKAGE_COLLAPSE: string;
   PACKAGE_ROOMS_TITLE: string;

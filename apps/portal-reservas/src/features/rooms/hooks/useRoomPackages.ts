@@ -15,9 +15,6 @@ import { groupRoomsIntoPackages } from "../domain/grouping";
 
 /**
  * Returns grouped rooms (individual + packages) based on guest count.
- *
- * @param rooms - Filtered room list for the current location.
- * @param guestCount - Total guests (adults + children). 0 = no grouping.
  */
 export function useRoomPackages(
   rooms: readonly Room[],
@@ -31,5 +28,5 @@ export function useRoomPackages(
 
 /** Type guard to check if a grouped item is a package. */
 export function isRoomPackage(item: GroupedRoom): item is RoomPackage {
-  return "primaryRoom" in item;
+  return "rooms" in item;
 }
