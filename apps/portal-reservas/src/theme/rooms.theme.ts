@@ -17,8 +17,9 @@ export const ROOM_LIST_STYLES = {
 
 export const ROOM_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
+  // Fixed height on desktop for consistent card dimensions across rooms and packages
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[280px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -39,7 +40,8 @@ export const ROOM_CARD_STYLES = {
   skeletonCTABtn: "w-44 h-14 bg-forest-800/80 animate-pulse rounded-xl",
 
   // ─── Image Panel ────────────────────────────────────────────────────────────
-  imageWrapper: "relative w-full lg:w-[380px] h-[260px] lg:h-auto overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
+  // Fixed width on desktop, fills parent height
+  imageWrapper: "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
   image: "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
   urgencyBadge:
     "absolute top-4 left-4 bg-red-900/90 backdrop-blur-sm text-stone-50 px-3 py-1.5 rounded-xl font-bold text-xs shadow-lg flex items-center gap-1.5 animate-in slide-in-from-top-2",
@@ -51,7 +53,8 @@ export const ROOM_CARD_STYLES = {
     `w-4 h-4 transition-transform duration-300 ${isExpanded ? "rotate-180 scale-95" : "rotate-0"}`,
 
   // ─── Body ───────────────────────────────────────────────────────────────────
-  body: "flex flex-col flex-1 p-7 lg:pr-9",
+  // Fills parent height with overflow hidden for consistent card dimensions
+  body: "flex flex-col flex-1 h-full overflow-hidden p-7 lg:pr-9",
   bodyHeader: "flex flex-wrap justify-between items-start gap-3 mb-3",
 
   // ─── Header Row ─────────────────────────────────────────────────────────────
@@ -189,18 +192,18 @@ export const ROOM_CARD_STYLES = {
 
 export const PACKAGE_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
-  // Same horizontal layout as RoomCard: flex-col mobile, flex-row desktop
+  // Same horizontal layout and fixed height as RoomCard
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[280px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
     "pointer-events-none absolute inset-0 rounded-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
 
   // ─── Image Panel ────────────────────────────────────────────────────────────
-  // Same dimensions as RoomCard image panel
+  // Same dimensions as RoomCard image panel, fills parent height
   imageWrapper:
-    "relative w-full lg:w-[380px] h-[260px] lg:h-auto overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
+    "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
 
   // Collage grid layouts for multiple rooms
   imageGrid2: "grid grid-cols-2 gap-[2px] h-full",
@@ -215,8 +218,8 @@ export const PACKAGE_CARD_STYLES = {
     "absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 bg-forest-950/80 backdrop-blur-sm text-stone-50 rounded-xl text-xs font-bold border border-forest-800/60",
 
   // ─── Body ───────────────────────────────────────────────────────────────────
-  // Same body structure as RoomCard
-  body: "flex flex-col flex-1 p-7 lg:pr-9",
+  // Same body structure as RoomCard, fills parent height with overflow hidden
+  body: "flex flex-col flex-1 h-full overflow-hidden p-7 lg:pr-9",
   bodyHeader: "flex flex-wrap justify-between items-start gap-3 mb-3",
 
   // ─── Header Row ─────────────────────────────────────────────────────────────
@@ -229,11 +232,11 @@ export const PACKAGE_CARD_STYLES = {
   chipIcon: "w-3.5 h-3.5 text-gold-500",
 
   // ─── Meta Row ───────────────────────────────────────────────────────────────
-  // Room summary list replaces admin tip
-  summaryList: "my-4 flex flex-col gap-1.5",
+  // Room summary list replaces admin tip, max height to prevent overflow
+  summaryList: "my-4 flex flex-col gap-1.5 max-h-[80px] overflow-hidden",
   summaryItem: "flex items-center justify-between text-sm",
-  summaryRoomName: "text-stone-300 font-medium",
-  summaryRoomPrice: "text-stone-400 text-xs",
+  summaryRoomName: "text-stone-300 font-medium truncate",
+  summaryRoomPrice: "text-stone-400 text-xs flex-shrink-0 ml-2",
 
   // ─── Price Tier ─────────────────────────────────────────────────────────────
   // Same price tier structure as RoomCard
