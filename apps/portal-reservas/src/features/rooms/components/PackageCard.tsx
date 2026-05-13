@@ -4,7 +4,6 @@
  * Mirrors RoomCard's horizontal layout:
  * - Image collage panel on left (same dimensions as RoomCard image panel)
  * - Body on right with package label, room summary, price, and CTA
- * - Expand toggle below the card for component room cards
  *
  * CTA behavior matches RoomCard:
  * - No dates → "Ver disponibilidad" ghost button
@@ -17,28 +16,24 @@
 
 import { useState, useRef, useEffect } from "react";
 import type { PackageCardProps } from "../domain/types";
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { PACKAGE_CARD_STYLES as PS } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { ROOM_ANIMATION, ROOM_MOCK } from "../constants/rooms.constants";
-import { RoomCard } from "./RoomCard";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 import { CTASpinner } from "./sub-components/CTASpinner";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
 import { PackageCardSummary } from "./sub-components/PackageCardSummary";
 
-export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
+export function PackageCard({ pkg, index }: PackageCardProps) {
   const { t } = useI18n();
   const { hasDates, searchDates } = useRoomsContext();
-  const [isExpanded, setIsExpanded] = useState(false);
   const [isReserving, setIsReserving] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Check availability using primary room (most expensive).
-  // Architecture supports future multi-room availability checking.
   const primaryRoom = pkg.rooms[0];
   const { isAvailable, isLoading } = useRoomAvailability(
     primaryRoom.id,
@@ -80,7 +75,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
         {/* Hover glow overlay */}
         <div className={PS.cardHoverGlow} aria-hidden="true" />
 
-        {/* Left: image collage panel (same dimensions as RoomCard image) */}
+        {/* Left: image collage panel */}
         <PackageCardHeader rooms={pkg.rooms} isHomogeneous={pkg.isHomogeneous} />
 
         {/* Right: body with package label, room list, price, and CTA */}
@@ -89,7 +84,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
           totalCapacity={pkg.totalCapacity}
           totalPricePerNight={pkg.totalPricePerNight}
         >
-          {/* CTA slot — inline with price, same as RoomCard */}
+          {/* CTA slot — inline with price */}
           <div className={PS.ctaWrapperRelative}>
             {/* Inline calendar popover */}
             {isCalendarOpen && (
@@ -162,43 +157,6 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
           </div>
         </PackageCardSummary>
       </article>
-
-      {/* Expand toggle — below the card */}
-      <button
-        type="button"
-        className={PS.expandBtn}
-        onClick={() => setIsExpanded(!isExpanded)}
-        aria-expanded={isExpanded}
-      >
-        <span>
-          {isExpanded
-            ? t.ROOMS.PACKAGE_COLLAPSE
-            : t.ROOMS.PACKAGE_EXPAND.replace("{count}", String(pkg.rooms.length))}
-        </span>
-        <span className={PS.expandIcon(isExpanded)}>▼</span>
-      </button>
-
-      {/* Expanded component rooms */}
-      <div
-        className={PS.expansionGrid(isExpanded)}
-        aria-hidden={!isExpanded}
-      >
-        <div className={PS.expansionInner}>
-          <div className={PS.expansionContent}>
-            <p className={PS.expansionTitle}>{t.ROOMS.PACKAGE_ROOMS_TITLE}</p>
-            <div className={PS.expansionGridInner}>
-              {pkg.rooms.map((room, i) => (
-                <RoomCard
-                  key={`${pkg.id}-${room.id}-${i}`}
-                  room={room}
-                  index={i}
-                  selectedDest={selectedDest}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

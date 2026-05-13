@@ -15,6 +15,7 @@ export type RoomsTexts = {
   CAPACITY_LABEL: string;
   AMENITIES_TITLE: string;
   MORE_AMENITIES: string;
+  MORE_ROOMS: string;
   ADMIN_TIP_LABEL: string;
   EXPAND_DETAILS: string;
   COLLAPSE_DETAILS: string;

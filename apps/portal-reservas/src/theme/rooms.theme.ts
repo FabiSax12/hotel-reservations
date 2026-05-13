@@ -257,6 +257,7 @@ export const PACKAGE_CARD_STYLES = {
   roomTreeAmenityTag: "flex items-center gap-1",
   roomTreeAmenityIcon: "w-3.5 h-3.5 text-gold-500/70",
   roomTreeAmenityText: "text-xs text-stone-400",
+  roomTreeOverflow: "text-xs text-stone-500 italic py-1",
   roomTreeCountPrefix: "text-gold-500 font-bold",
 
   // ─── Price Tier ─────────────────────────────────────────────────────────────

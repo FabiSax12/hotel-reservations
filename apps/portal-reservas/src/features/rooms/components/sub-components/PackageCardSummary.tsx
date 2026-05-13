@@ -3,7 +3,7 @@
  *
  * Mirrors RoomCard's body layout:
  * - Header: package label + capacity chips
- * - Room tree: vertical list of rooms with bed config + amenity icons
+ * - Room tree: vertical list of rooms with bed config (max 4, then "+N more")
  * - Price tier: total price + CTA inline
  */
 
@@ -14,6 +14,8 @@ import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { groupRoomsByType } from "../../domain/grouping";
 import { RoomTreeItem } from "./RoomTreeItem";
+
+const MAX_VISIBLE_ROOMS = 4;
 
 interface ExtendedSummaryProps extends PackageCardSummaryProps {
   children?: React.ReactNode;
@@ -27,6 +29,12 @@ export function PackageCardSummary({
 }: ExtendedSummaryProps) {
   const { t } = useI18n();
   const grouped = groupRoomsByType(rooms);
+
+  // Limit visible rooms and calculate overflow
+  const visibleRooms = grouped.slice(0, MAX_VISIBLE_ROOMS);
+  const overflowCount = grouped.length > MAX_VISIBLE_ROOMS
+    ? grouped.slice(MAX_VISIBLE_ROOMS).reduce((sum, g) => sum + g.count, 0)
+    : 0;
 
   return (
     <div className={S.body}>
@@ -48,9 +56,8 @@ export function PackageCardSummary({
       </div>
 
       {/* Room tree: vertical list with bed counts */}
-      {/* Hide amenities when 3+ rooms to save space */}
       <div className={S.roomTree}>
-        {grouped.map(({ type, room, count }) => (
+        {visibleRooms.map(({ type, room, count }) => (
           <RoomTreeItem
             key={type}
             room={room}
@@ -59,9 +66,14 @@ export function PackageCardSummary({
             showAmenities={rooms.length < 3}
           />
         ))}
+        {overflowCount > 0 && (
+          <div className={S.roomTreeOverflow}>
+            +{overflowCount} {t.ROOMS.MORE_ROOMS}
+          </div>
+        )}
       </div>
 
-      {/* Price tier + CTA (same structure as RoomCard) */}
+      {/* Price tier + CTA */}
       <div className={S.priceTier}>
         <div className={S.priceBlock}>
           <div className={S.priceLabel}>{t.ROOMS.PACKAGE_TOTAL_LABEL}</div>

@@ -1,29 +1,20 @@
 /**
  * @file RoomCardHeader.tsx — Room name and amenity chips.
  *
- * Capacity and inventory badges are now on the image panel (top-right and
- * top-left respectively). This component shows:
+ * Shows:
  * - Location label (when showing all destinations)
  * - Room title
- * - Amenity chips (top 3 + "view more" button)
+ * - Top 3 amenity chips
  */
 
 import type { RoomCardHeaderProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
-import { useI18n } from "@/locales";
 import { SEARCH_VALS } from "../../../search/components/search-bar/constants/search.constants";
 import { getAmenityIcon } from "../../constants/amenity-icons.const";
 
-interface RoomCardHeaderWithExpandProps extends RoomCardHeaderProps {
-  onExpand?: () => void;
-}
-
-export function RoomCardHeader({ room, selectedDest, onExpand }: RoomCardHeaderWithExpandProps) {
-  const { t } = useI18n();
-
-  // Show top 3 amenities with icons, then "view more" button
+export function RoomCardHeader({ room, selectedDest }: RoomCardHeaderProps) {
+  // Show top 3 amenities
   const topAmenities = room.amenities.slice(0, 3);
-  const hasMore = room.amenities.length > 3;
 
   return (
     <div>
@@ -55,18 +46,6 @@ export function RoomCardHeader({ room, selectedDest, onExpand }: RoomCardHeaderW
             </span>
           );
         })}
-        {hasMore && onExpand && (
-          <button
-            type="button"
-            className={S.amenityChipMore}
-            onClick={(e) => {
-              e.stopPropagation();
-              onExpand();
-            }}
-          >
-            +{room.amenities.length - 3} {t.ROOMS.MORE_AMENITIES}
-          </button>
-        )}
       </div>
     </div>
   );
