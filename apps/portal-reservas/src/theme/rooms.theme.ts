@@ -19,7 +19,7 @@ export const ROOM_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   // Fixed height on desktop for consistent card dimensions across rooms and packages
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[280px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -194,7 +194,7 @@ export const PACKAGE_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   // Same horizontal layout and fixed height as RoomCard
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[280px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -233,7 +233,7 @@ export const PACKAGE_CARD_STYLES = {
 
   // ─── Meta Row ───────────────────────────────────────────────────────────────
   // Room summary list replaces admin tip, max height to prevent overflow
-  summaryList: "my-4 flex flex-col gap-1.5 max-h-[80px] overflow-hidden",
+  summaryList: "my-4 flex flex-col gap-1.5 max-h-[120px] overflow-hidden",
   summaryItem: "flex items-center justify-between text-sm",
   summaryRoomName: "text-stone-300 font-medium truncate",
   summaryRoomPrice: "text-stone-400 text-xs flex-shrink-0 ml-2",
