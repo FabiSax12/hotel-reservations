@@ -3,12 +3,13 @@
 import { Button, ButtonGroup, Chip, EmptyState, Table } from "@heroui/react";
 import { Check, Inbox, X } from "lucide-react";
 import type { AdminsTableProps } from "./AdminsTable.interface";
+import { TABLE_STYLES } from "./AdminsTable.styles";
 
 export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) => {
   return (
     <Table>
       <Table.ScrollContainer>
-        <Table.Content aria-label="Team members" className="min-w-150">
+        <Table.Content aria-label="Team members" className={TABLE_STYLES.content}>
           <Table.Header>
             <Table.Column isRowHeader>Name</Table.Column>
             <Table.Column isRowHeader>Email</Table.Column>
@@ -19,7 +20,7 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
           </Table.Header>
           <Table.Body
             renderEmptyState={() => (
-              <EmptyState className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
+              <EmptyState className={TABLE_STYLES.emptyState}>
                 <Inbox className="size-6 text-muted" />
                 <span className="text-sm text-muted">No results found</span>
               </EmptyState>
