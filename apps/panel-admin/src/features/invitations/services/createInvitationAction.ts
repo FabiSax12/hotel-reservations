@@ -29,9 +29,15 @@ export async function createInvitationAction(
   if (existing) return { error: "EMAIL_ALREADY_INVITED" };
 
   try {
-    await inviteAdminByEmail(email, `${ENV.NEXT_PUBLIC_BASE_URL}${ROUTES.AUTH.ACTIVATE}`);
+    const invitedUser = await inviteAdminByEmail(
+      email,
+      `${ENV.NEXT_PUBLIC_BASE_URL}${ROUTES.AUTH.ACTIVATE}`,
+    );
 
-    const { error: insertError } = await supabase.from("pending_invitations").insert({ email });
+    const { error: insertError } = await supabase.from("pending_invitations").insert({
+      email,
+      user_id: invitedUser.id,
+    });
 
     if (insertError) throw new Error(insertError.message);
 

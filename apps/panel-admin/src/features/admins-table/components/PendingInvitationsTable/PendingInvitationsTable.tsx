@@ -7,6 +7,11 @@ import { useI18n } from "@/locales";
 import type { PendingInvitationsTableProps } from "./PendingInvitationsTable.interface";
 import { PENDING_INVITATIONS_SECTION_STYLES as STYLES } from "./PendingInvitationsTable.styles";
 
+const STATUS_COLORS: Record<string, "warning" | "danger"> = {
+  pending: "warning",
+  expired: "danger",
+};
+
 export const PendingInvitationsTable = ({
   invitations,
   onRevoke,
@@ -15,6 +20,17 @@ export const PendingInvitationsTable = ({
   isResending,
 }: PendingInvitationsTableProps) => {
   const { t } = useI18n();
+
+  const getStatusInfo = (inv: (typeof invitations)[number]) => {
+    const isExpired = new Date(inv.expiresAt) < new Date();
+    const status = isExpired ? "expired" : inv.status;
+    const color = STATUS_COLORS[status] ?? "warning";
+    const label =
+      status === "expired"
+        ? (t.ADMINS.INVITATIONS.STATUS_EXPIRED ?? "Expirada")
+        : t.ADMINS.INVITATIONS.STATUS_PENDING;
+    return { color, label };
+  };
 
   return (
     <section className={STYLES.section}>
@@ -41,49 +57,51 @@ export const PendingInvitationsTable = ({
                 </EmptyState>
               )}
             >
-              {invitations.map((inv) => (
-                <Table.Row key={inv.id}>
-                  <Table.Cell>{inv.email}</Table.Cell>
-                  <Table.Cell>{formatDate(inv.createdAt)}</Table.Cell>
-                  <Table.Cell>{formatDate(inv.expiresAt)}</Table.Cell>
-                  <Table.Cell>
-                    <Chip variant="soft" color="warning">
-                      {t.ADMINS.INVITATIONS.STATUS_PENDING}
-                    </Chip>
-                  </Table.Cell>
-                  <Table.Cell>
-                    <div className="flex gap-2">
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="ghost"
-                        isDisabled={isResending === inv.id}
-                        onPress={() => onResend(inv.id)}
-                        aria-label={t.ADMINS.INVITATIONS.ACTION_RESEND}
-                        className="text-blue-600 hover:text-blue-700"
-                      >
-                        <RotateCcw className="size-4" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="ghost"
-                        isDisabled={isRevoking === inv.id}
-                        onPress={() => onRevoke(inv.id)}
-                        aria-label={t.ADMINS.INVITATIONS.ACTION_REVOKE}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <X className="size-4" />
-                      </Button>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+              {invitations.map((inv) => {
+                const { color, label } = getStatusInfo(inv);
+                return (
+                  <Table.Row key={inv.id}>
+                    <Table.Cell>{inv.email}</Table.Cell>
+                    <Table.Cell>{formatDate(inv.createdAt)}</Table.Cell>
+                    <Table.Cell>{formatDate(inv.expiresAt)}</Table.Cell>
+                    <Table.Cell>
+                      <Chip variant="soft" color={color}>
+                        {label}
+                      </Chip>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <div className="flex gap-2">
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="ghost"
+                          isDisabled={isResending === inv.id}
+                          onPress={() => onResend(inv.id)}
+                          aria-label={t.ADMINS.INVITATIONS.ACTION_RESEND}
+                          className="text-blue-600 hover:text-blue-700"
+                        >
+                          <RotateCcw className="size-4" />
+                        </Button>
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="ghost"
+                          isDisabled={isRevoking === inv.id}
+                          onPress={() => onRevoke(inv.id)}
+                          aria-label={t.ADMINS.INVITATIONS.ACTION_REVOKE}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <X className="size-4" />
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
             </Table.Body>
           </Table.Content>
         </Table.ScrollContainer>
       </Table>
-
     </section>
   );
 };

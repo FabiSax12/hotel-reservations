@@ -40,6 +40,7 @@ export interface PendingInvitation {
   id: string;
   email: string;
   invited_by: string | null;
+  user_id: string | null;
   status: "pending" | "accepted" | "revoked" | "expired";
   expires_at: string;
   created_at: string;

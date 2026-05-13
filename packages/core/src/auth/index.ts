@@ -186,14 +186,18 @@ export async function signUp(
 /**
  * Invite a new admin by email.
  */
-export async function inviteAdminByEmail(email: string, redirectTo: string): Promise<void> {
+export async function inviteAdminByEmail(
+  email: string,
+  redirectTo: string,
+): Promise<{ id: string; email: string }> {
   const supabase = createSupabaseServiceClient();
-  const { error } = await supabase.auth.admin.inviteUserByEmail(email, {
+  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
     redirectTo,
     data: { role: "admin" },
   });
-  console.log(error);
   if (error) throw new Error(error.message);
+  if (!data?.user) throw new Error("Invitation returned no user");
+  return { id: data.user.id, email: data.user.email ?? email };
 }
 
 export type ActivationTokenResult =
@@ -255,6 +259,13 @@ export async function completeAdminActivation(
 
   // if (roleError) throw new Error(roleError.message);
   if (activationError) throw new Error(activationError.message);
+
+  // Mark pending_invitation as accepted by user_id
+  await serviceClient
+    .from("pending_invitations")
+    .update({ status: "accepted", accepted_at: new Date().toISOString() })
+    .eq("user_id", sessionData.user.id)
+    .eq("status", "pending");
 }
 
 /**

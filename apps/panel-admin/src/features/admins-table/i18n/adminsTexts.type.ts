@@ -24,17 +24,24 @@ export type AdminsTexts = {
   };
   INVITATIONS: {
     SECTION_TITLE: string;
+    TAB_PENDING: string;
+    TAB_HISTORY: string;
     COL_EMAIL: string;
     COL_SENT: string;
     COL_EXPIRES: string;
     COL_STATUS: string;
     COL_ACTIONS: string;
+    COL_INVITED_BY: string;
     STATUS_PENDING: string;
+    STATUS_ACCEPTED: string;
+    STATUS_REVOKED: string;
+    STATUS_EXPIRED: string;
     ACTION_RESEND: string;
     ACTION_RESENDING: string;
     ACTION_REVOKE: string;
     ACTION_REVOKING: string;
     EMPTY_TITLE: string;
+    EMPTY_HISTORY: string;
     EMAIL_LABEL: string;
     EMAIL_PLACEHOLDER: string;
     SEND_BUTTON: string;
