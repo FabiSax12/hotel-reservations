@@ -5,6 +5,7 @@ export {
   createSupabaseServerClient,
   createSupabaseServiceClient,
 } from "./client";
+export { RPC_FUNCTIONS } from "./rpcFunctions";
 export type {
   AdminProfile,
   AdminsList,

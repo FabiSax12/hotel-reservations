@@ -13,6 +13,10 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       COL_EMAIL: "Email",
       COL_STATUS: "Estado",
       COL_ROLE: "Rol",
+      COL_ACTIONS: "Acciones",
+      NO_RESULTS: "No se encontraron resultados",
+      STATUS_ACTIVE: "Activo",
+      STATUS_INACTIVE: "Inactivo",
     },
     STATS: {
       ACTIVE_LABEL: "ACTIVOS",
@@ -68,6 +72,10 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       COL_EMAIL: "Email",
       COL_STATUS: "Status",
       COL_ROLE: "Role",
+      COL_ACTIONS: "Actions",
+      NO_RESULTS: "No results found",
+      STATUS_ACTIVE: "Active",
+      STATUS_INACTIVE: "Inactive",
     },
     STATS: {
       ACTIVE_LABEL: "ACTIVE",

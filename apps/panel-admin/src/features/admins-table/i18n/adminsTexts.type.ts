@@ -9,6 +9,10 @@ export type AdminsTexts = {
     COL_EMAIL: string;
     COL_STATUS: string;
     COL_ROLE: string;
+    COL_ACTIONS: string;
+    NO_RESULTS: string;
+    STATUS_ACTIVE: string;
+    STATUS_INACTIVE: string;
   };
   STATS: {
     ACTIVE_LABEL: string;

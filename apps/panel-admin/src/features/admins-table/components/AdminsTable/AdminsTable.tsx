@@ -2,27 +2,32 @@
 
 import { Button, ButtonGroup, Chip, EmptyState, Table } from "@heroui/react";
 import { Check, Inbox, X } from "lucide-react";
+import { useI18n } from "@/locales";
 import type { AdminsTableProps } from "./AdminsTable.interface";
 import { TABLE_STYLES } from "./AdminsTable.styles";
 
 export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) => {
+  const { t } = useI18n();
+
+  const TABLE_TEXTS = t.ADMINS.TABLE
+
   return (
     <Table>
       <Table.ScrollContainer>
-        <Table.Content aria-label="Team members" className={TABLE_STYLES.content}>
+        <Table.Content aria-label={TABLE_TEXTS.COL_NAME} className={TABLE_STYLES.content}>
           <Table.Header>
-            <Table.Column isRowHeader>Name</Table.Column>
-            <Table.Column isRowHeader>Email</Table.Column>
-            <Table.Column>Status</Table.Column>
-            <Table.Column>Role</Table.Column>
+            <Table.Column isRowHeader>{TABLE_TEXTS.COL_NAME}</Table.Column>
+            <Table.Column isRowHeader>{TABLE_TEXTS.COL_EMAIL}</Table.Column>
+            <Table.Column>{TABLE_TEXTS.COL_STATUS}</Table.Column>
+            <Table.Column>{TABLE_TEXTS.COL_ROLE}</Table.Column>
             {/* <Table.Column>Created At</Table.Column> */}
-            <Table.Column>Actions</Table.Column>
+            <Table.Column>{TABLE_TEXTS.COL_ACTIONS}</Table.Column>
           </Table.Header>
           <Table.Body
             renderEmptyState={() => (
               <EmptyState className={TABLE_STYLES.emptyState}>
                 <Inbox className="size-6 text-muted" />
-                <span className="text-sm text-muted">No results found</span>
+                <span className="text-sm text-muted">{TABLE_TEXTS.NO_RESULTS}</span>
               </EmptyState>
             )}
           >
@@ -33,11 +38,11 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                 <Table.Cell>
                   {user.is_active ? (
                     <Chip variant="primary" color="success">
-                      Activo
+                      {TABLE_TEXTS.STATUS_ACTIVE}
                     </Chip>
                   ) : (
                     <Chip variant="primary" color="danger">
-                      Inactivo
+                      {TABLE_TEXTS.STATUS_INACTIVE}
                     </Chip>
                   )}
                 </Table.Cell>
