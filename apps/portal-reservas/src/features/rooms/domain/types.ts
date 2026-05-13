@@ -165,3 +165,22 @@ export interface PackageCardSummaryProps {
   totalCapacity: number;
   totalPricePerNight: number;
 }
+
+export interface PackageCardCTAProps {
+  /** The primary room (most expensive) used for availability checks. */
+  primaryRoom: Room;
+  /** Whether dates are selected in the search bar. */
+  hasDates: boolean;
+  /** Whether the room is available for the selected dates. */
+  isAvailable: boolean;
+  /** Whether the availability check is still loading. */
+  isLoading: boolean;
+  /** Whether the user clicked "Reserve" and the action is pending. */
+  isReserving: boolean;
+  /** Whether the inline calendar popover is open. */
+  isCalendarOpen: boolean;
+  /** Toggles the inline calendar popover. */
+  onToggleCalendar: () => void;
+  /** Handles the reservation action. */
+  onReserve: () => void;
+}

@@ -22,9 +22,9 @@ import { useRoomsContext } from "../context/RoomsContext";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { ROOM_ANIMATION, ROOM_MOCK } from "../constants/rooms.constants";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
-import { CTASpinner } from "./sub-components/CTASpinner";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
 import { PackageCardSummary } from "./sub-components/PackageCardSummary";
+import { PackageCardCTA } from "./sub-components/PackageCardCTA";
 
 export function PackageCard({ pkg, index }: PackageCardProps) {
   const { t } = useI18n();
@@ -95,65 +95,16 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
               />
             )}
 
-            {/* STATE 1 — No dates selected */}
-            {!hasDates && (
-              <button
-                type="button"
-                className={PS.checkDatesBtn}
-                onClick={toggleCalendar}
-                aria-expanded={isCalendarOpen}
-                aria-label={t.ROOMS.CHECK_DATES_ACTION}
-              >
-                <svg className={PS.ctaBtnCalendarIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                {t.ROOMS.CHECK_DATES_ACTION}
-              </button>
-            )}
-
-            {/* STATE 2 — Dates selected, loading */}
-            {hasDates && isLoading && (
-              <button type="button" className={PS.reserveBtn} disabled aria-busy="true">
-                <CTASpinner /> {t.ROOMS.VERIFYING}
-              </button>
-            )}
-
-            {/* STATE 3a — Dates selected, available */}
-            {hasDates && !isLoading && isAvailable && (
-              <button
-                type="button"
-                className={PS.reserveBtn}
-                onClick={handleReserve}
-                disabled={isReserving}
-                aria-busy={isReserving}
-              >
-                {isReserving ? (
-                  <><CTASpinner /> {t.ROOMS.LOADING_RESERVE}</>
-                ) : (
-                  <>
-                    <svg className={PS.ctaBtnArrowIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                    {t.ROOMS.PACKAGE_RESERVE}
-                  </>
-                )}
-              </button>
-            )}
-
-            {/* STATE 3b — Dates selected, unavailable */}
-            {hasDates && !isLoading && !isAvailable && (
-              <>
-                <p className={PS.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>
-                <button
-                  type="button"
-                  className={PS.seeFreeDatesBtn}
-                  onClick={toggleCalendar}
-                  aria-expanded={isCalendarOpen}
-                >
-                  {t.ROOMS.SEE_FREE_DATES}
-                </button>
-              </>
-            )}
+            <PackageCardCTA
+              primaryRoom={primaryRoom}
+              hasDates={hasDates}
+              isAvailable={isAvailable}
+              isLoading={isLoading}
+              isReserving={isReserving}
+              isCalendarOpen={isCalendarOpen}
+              onToggleCalendar={toggleCalendar}
+              onReserve={handleReserve}
+            />
           </div>
         </PackageCardSummary>
       </article>

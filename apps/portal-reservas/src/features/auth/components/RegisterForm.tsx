@@ -7,6 +7,7 @@ import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
 import { AUTH_FORM_STYLES as S } from "@/features/auth/theme/auth.theme";
 import { useI18n } from "@/locales";
 import { REGISTER_FORM_FIELDS } from "../constants/registerFormFields";
+import { INPUT_TYPES as IT, AUTOCOMPLETE as AC, BUTTON_UI as BU, ARIA_ROLES as AR } from "../constants/ui";
 
 export const RegisterForm = () => {
   const { t } = useI18n();
@@ -35,7 +36,7 @@ export const RegisterForm = () => {
         <h1 className={S.heading}>{t.AUTH.REGISTER.TITLE}</h1>
 
         <Form action={formAction} className={S.form}>
-          <TextField name={REGISTER_FORM_FIELDS.FULL_NAME} autoComplete="name" isInvalid={!!fullNameError} fullWidth>
+          <TextField name={REGISTER_FORM_FIELDS.FULL_NAME} autoComplete={AC.NAME} isInvalid={!!fullNameError} fullWidth>
             <Label>{t.AUTH.REGISTER.FULL_NAME_LABEL}</Label>
             <Input placeholder={t.AUTH.REGISTER.FULL_NAME_PLACEHOLDER} />
             {fullNameError && <FieldError>{t.AUTH.VALIDATION[fullNameError]}</FieldError>}
@@ -43,8 +44,8 @@ export const RegisterForm = () => {
 
           <TextField
             name={REGISTER_FORM_FIELDS.EMAIL}
-            type="email"
-            autoComplete="email"
+            type={IT.EMAIL}
+            autoComplete={AC.EMAIL}
             isInvalid={!!emailError}
             onChange={markDirty}
             fullWidth
@@ -57,8 +58,8 @@ export const RegisterForm = () => {
           <div>
             <TextField
               name={REGISTER_FORM_FIELDS.PASSWORD}
-              type={showPassword ? "text" : "password"}
-              autoComplete="new-password"
+              type={showPassword ? IT.TEXT : IT.PASSWORD}
+              autoComplete={AC.NEW_PASSWORD}
               isInvalid={!!passwordError}
               value={password}
               onChange={handlePasswordChange}
@@ -69,8 +70,8 @@ export const RegisterForm = () => {
                 <Input placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER} className={S.passwordInput} />
                 <Button
                   isIconOnly
-                  variant="ghost"
-                  size="sm"
+                  variant={BU.VARIANT_GHOST}
+                  size={BU.SIZE_SM}
                   aria-label={
                     showPassword ? t.AUTH.REGISTER.HIDE_PASSWORD : t.AUTH.REGISTER.SHOW_PASSWORD
                   }
@@ -87,8 +88,8 @@ export const RegisterForm = () => {
 
           <TextField
             name={REGISTER_FORM_FIELDS.CONFIRM_PASSWORD}
-            type={showConfirmPassword ? "text" : "password"}
-            autoComplete="new-password"
+            type={showConfirmPassword ? IT.TEXT : IT.PASSWORD}
+            autoComplete={AC.NEW_PASSWORD}
             isInvalid={!!confirmPasswordError}
             onChange={markDirty}
             fullWidth
@@ -98,8 +99,8 @@ export const RegisterForm = () => {
               <Input placeholder={t.AUTH.REGISTER.CONFIRM_PASSWORD_PLACEHOLDER} className={S.passwordInput} />
               <Button
                 isIconOnly
-                variant="ghost"
-                size="sm"
+                variant={BU.VARIANT_GHOST}
+                size={BU.SIZE_SM}
                 aria-label={
                   showConfirmPassword
                     ? t.AUTH.REGISTER.HIDE_CONFIRM_PASSWORD
@@ -117,12 +118,12 @@ export const RegisterForm = () => {
           </TextField>
 
           {globalError && (
-            <p role="alert" className={S.globalError}>
+            <p role={AR.ALERT} className={S.globalError}>
               {t.AUTH.ERRORS[globalError]}
             </p>
           )}
 
-          <Button type="submit" variant="primary" fullWidth isPending={isPending} isDisabled={isSubmitDisabled} className={S.submitBtn}>
+          <Button type={IT.SUBMIT} variant={BU.VARIANT_PRIMARY} fullWidth isPending={isPending} isDisabled={isSubmitDisabled} className={S.submitBtn}>
             {isPending ? t.AUTH.REGISTER.SUBMITTING_BUTTON : t.AUTH.REGISTER.SUBMIT_BUTTON}
           </Button>
         </Form>
