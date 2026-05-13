@@ -7,8 +7,10 @@ export interface Administrator {
 
 export interface AdministratorsData {
   administrators: Administrator[];
-  sessionUserId: string;
-  totalCount:    number;
-  page:          number;
-  totalPages:    number;
+  sessionUserId:  string;
+  totalCount:     number;
+  activeCount:    number;
+  inactiveCount:  number;
+  page:           number;
+  totalPages:     number;
 }

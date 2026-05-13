@@ -1,3 +1,8 @@
+export type AdminsStatCardVariant = "default" | "success" | "danger";
+
 export interface AdminsStatCardProps {
-  totalCount: number;
+  label:    string;
+  value:    number;
+  caption:  string;
+  variant?: AdminsStatCardVariant;
 }

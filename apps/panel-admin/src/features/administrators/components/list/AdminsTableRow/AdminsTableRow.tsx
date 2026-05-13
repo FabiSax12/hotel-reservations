@@ -3,20 +3,17 @@
 import { Avatar, Chip, Table } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { formatMemberSince } from "../../../utils/format-admin-date";
-import { ADMIN_INITIALS_LENGTH } from "../../../constants/administrators.constants";
-import { ADMINS_TABLE_ROW_STYLES as S } from "./AdminsTableRow.styles";
+import { deriveAdminInitials } from "../../../utils/derive-admin-initials";
+import { CopyEmailButton } from "../../shared/CopyEmailButton/CopyEmailButton";
+import { ADMINS_TABLE_ROW_STYLES as STYLE } from "./AdminsTableRow.styles";
 import type { AdminsTableRowProps } from "./AdminsTableRow.interfaces";
-
-function deriveInitials(email: string): string {
-  return email.split("@")[0].slice(0, ADMIN_INITIALS_LENGTH).toUpperCase();
-}
 
 export const AdminsTableRow = ({ admin, isSessionUser }: AdminsTableRowProps) => {
   const { t } = useI18n();
 
-  const rowClass  = isSessionUser ? S.rowSession : S.row;
-  const cellClass = isSessionUser ? S.cellSession : S.cell;
-  const initials  = deriveInitials(admin.email);
+  const rowClass    = isSessionUser ? STYLE.rowSession : STYLE.row;
+  const cellClass   = isSessionUser ? STYLE.cellSession : STYLE.cell;
+  const initials    = deriveAdminInitials(admin.email);
   const memberSince = formatMemberSince(admin.created_at);
   const statusColor = admin.is_active ? "success" : "danger";
   const statusLabel = admin.is_active
@@ -26,18 +23,19 @@ export const AdminsTableRow = ({ admin, isSessionUser }: AdminsTableRowProps) =>
   return (
     <Table.Row className={rowClass}>
       <Table.Cell className={cellClass}>
-        <div className={S.emailCell}>
+        <div className={STYLE.emailCell}>
           <Avatar size="sm">
             <Avatar.Fallback>{initials}</Avatar.Fallback>
           </Avatar>
-          <div className={S.emailBlock}>
-            <div className={S.emailRow}>
-              <span className={S.emailText}>{admin.email}</span>
+          <div className={STYLE.emailBlock}>
+            <div className={STYLE.emailRow}>
+              <span className={STYLE.emailText}>{admin.email}</span>
               {isSessionUser && (
                 <Chip color="success" variant="soft" size="sm">
                   {t.ADMINISTRATORS.TABLE.BADGE_YOU}
                 </Chip>
               )}
+              <CopyEmailButton email={admin.email} />
             </div>
           </div>
         </div>
@@ -50,7 +48,7 @@ export const AdminsTableRow = ({ admin, isSessionUser }: AdminsTableRowProps) =>
       </Table.Cell>
 
       <Table.Cell className={cellClass}>
-        <span className={S.dateText}>{memberSince}</span>
+        <span className={STYLE.dateText}>{memberSince}</span>
       </Table.Cell>
     </Table.Row>
   );

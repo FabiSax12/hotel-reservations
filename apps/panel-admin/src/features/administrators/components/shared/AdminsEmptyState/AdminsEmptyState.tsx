@@ -1,16 +1,16 @@
 "use client";
 
 import { useI18n } from "@/locales";
-import { ADMINS_EMPTY_STATE_STYLES as S } from "./AdminsEmptyState.styles";
+import { ADMINS_EMPTY_STATE_STYLES as STYLE } from "./AdminsEmptyState.styles";
 
 export const AdminsEmptyState = () => {
   const { t } = useI18n();
 
   return (
-    <div className={S.wrapper}>
-      <div className={S.iconWrapper}>
+    <div className={STYLE.wrapper}>
+      <div className={STYLE.iconWrapper}>
         <svg
-          className={S.icon}
+          className={STYLE.icon}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -24,8 +24,8 @@ export const AdminsEmptyState = () => {
           />
         </svg>
       </div>
-      <p className={S.title}>{t.ADMINISTRATORS.EMPTY.TITLE}</p>
-      <p className={S.description}>{t.ADMINISTRATORS.EMPTY.DESCRIPTION}</p>
+      <p className={STYLE.title}>{t.ADMINISTRATORS.EMPTY.TITLE}</p>
+      <p className={STYLE.description}>{t.ADMINISTRATORS.EMPTY.DESCRIPTION}</p>
     </div>
   );
 };

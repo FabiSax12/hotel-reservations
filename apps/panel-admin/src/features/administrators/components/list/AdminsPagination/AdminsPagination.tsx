@@ -2,34 +2,10 @@
 
 import { Pagination } from "@heroui/react";
 import { useI18n } from "@/locales";
-import {
-  PAGINATION_MAX_VISIBLE_PAGES,
-  PAGINATION_ELLIPSIS_THRESHOLD,
-  PAGINATION_NEIGHBOR_WINDOW,
-} from "../../../constants/administrators.constants";
-import { ADMINS_PAGINATION_STYLES } from "./AdminsPagination.styles";
+import { PAGINATION_FIRST_PAGE } from "../../../constants/administrators.constants";
+import { getPageNumbers } from "./AdminsPagination.utils";
+import { ADMINS_PAGINATION_STYLES as STYLE } from "./AdminsPagination.styles";
 import type { AdminsPaginationProps } from "./AdminsPagination.interfaces";
-
-function getPageNumbers(page: number, totalPages: number): (number | "ellipsis")[] {
-  const pages: (number | "ellipsis")[] = [];
-
-  if (totalPages <= PAGINATION_MAX_VISIBLE_PAGES) {
-    for (let i = 1; i <= totalPages; i++) pages.push(i);
-    return pages;
-  }
-
-  pages.push(1);
-  if (page > PAGINATION_ELLIPSIS_THRESHOLD) pages.push("ellipsis");
-
-  const start = Math.max(2, page - PAGINATION_NEIGHBOR_WINDOW);
-  const end   = Math.min(totalPages - 1, page + PAGINATION_NEIGHBOR_WINDOW);
-  for (let i = start; i <= end; i++) pages.push(i);
-
-  if (page < totalPages - (PAGINATION_NEIGHBOR_WINDOW + 1)) pages.push("ellipsis");
-  pages.push(totalPages);
-
-  return pages;
-}
 
 export const AdminsPagination = ({
   page,
@@ -43,14 +19,14 @@ export const AdminsPagination = ({
   const startItem = (page - 1) * pageSize + 1;
   const endItem   = Math.min(page * pageSize, totalItems);
 
-  const handlePrevious  = () => onPageChange(page - 1);
-  const handleNext      = () => onPageChange(page + 1);
+  const handlePrevious   = () => onPageChange(page - 1);
+  const handleNext       = () => onPageChange(page + 1);
   const buildPageHandler = (p: number) => () => onPageChange(p);
 
   const pageNumbers = getPageNumbers(page, totalPages);
 
   return (
-    <Pagination className={ADMINS_PAGINATION_STYLES.wrapper}>
+    <Pagination className={STYLE.wrapper}>
       <Pagination.Summary>
         {t.ADMINISTRATORS.PAGINATION.SHOWING} {startItem}–{endItem}{" "}
         {t.ADMINISTRATORS.PAGINATION.OF} {totalItems}{" "}
@@ -59,7 +35,7 @@ export const AdminsPagination = ({
 
       <Pagination.Content>
         <Pagination.Item>
-          <Pagination.Previous isDisabled={page === 1} onPress={handlePrevious}>
+          <Pagination.Previous isDisabled={page === PAGINATION_FIRST_PAGE} onPress={handlePrevious}>
             <Pagination.PreviousIcon />
             <span>{t.ADMINISTRATORS.PAGINATION.PREVIOUS}</span>
           </Pagination.Previous>

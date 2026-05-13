@@ -18,30 +18,39 @@ export async function getAdministratorsAction(
   const sessionUserId = user?.id ?? "";
 
   // Fetch session admin separately — always pinned on page 1
-  const { data: sessionData } = await supabase
-    .from("users")
-    .select(ADMIN_SELECT_FIELDS)
-    .eq("id", sessionUserId)
-    .single();
-
-  // Paginate "other" admins:
-  //   Page 1 → others[0..pageSize-2]   (9 slots, session fills slot 0)
-  //   Page N → others[(N-1)*pageSize-1..N*pageSize-2]
   const othersFrom = page === ADMIN_DEFAULT_PAGE ? 0 : (page - 1) * ADMIN_PAGE_SIZE - 1;
   const othersTo   = page === ADMIN_DEFAULT_PAGE ? ADMIN_PAGE_SIZE - 2 : page * ADMIN_PAGE_SIZE - 2;
 
-  const { data, error, count } = await supabase
-    .from("users")
-    .select(ADMIN_SELECT_FIELDS, { count: "exact" })
-    .eq("role", ADMIN_ROLE)
-    .neq("id", sessionUserId)
-    .order("created_at", { ascending: true })
-    .range(othersFrom, othersTo);
+  const [
+    { data: sessionData },
+    { data, error, count },
+    { count: activeCount },
+    { count: inactiveCount },
+  ] = await Promise.all([
+    supabase.from("users").select(ADMIN_SELECT_FIELDS).eq("id", sessionUserId).single(),
+    supabase
+      .from("users")
+      .select(ADMIN_SELECT_FIELDS, { count: "exact" })
+      .eq("role", ADMIN_ROLE)
+      .neq("id", sessionUserId)
+      .order("created_at", { ascending: true })
+      .range(othersFrom, othersTo),
+    supabase
+      .from("users")
+      .select("*", { count: "exact", head: true })
+      .eq("role", ADMIN_ROLE)
+      .eq("is_active", true),
+    supabase
+      .from("users")
+      .select("*", { count: "exact", head: true })
+      .eq("role", ADMIN_ROLE)
+      .eq("is_active", false),
+  ]);
 
   if (error) throw new Error(error.message);
 
-  const otherAdmins = (data ?? []) as Administrator[];
-  const otherCount  = count ?? 0;
+  const otherAdmins  = (data ?? []) as Administrator[];
+  const otherCount   = count ?? 0;
   const sessionAdmin = sessionData ? [sessionData as Administrator] : [];
   const totalCount   = otherCount + sessionAdmin.length;
   const totalPages   = Math.ceil(totalCount / ADMIN_PAGE_SIZE);
@@ -51,5 +60,13 @@ export async function getAdministratorsAction(
       ? [...sessionAdmin, ...otherAdmins]
       : otherAdmins;
 
-  return { administrators, sessionUserId, totalCount, page, totalPages };
+  return {
+    administrators,
+    sessionUserId,
+    totalCount,
+    activeCount:  activeCount  ?? 0,
+    inactiveCount: inactiveCount ?? 0,
+    page,
+    totalPages,
+  };
 }

@@ -1,3 +1,5 @@
 export interface AdminsPageHeaderProps {
-  totalCount: number;
+  totalCount:    number;
+  activeCount:   number;
+  inactiveCount: number;
 }

@@ -1,5 +1,5 @@
 export const RESERVATION_ROW_STYLES = {
-  row: "border-b border-gray-100 transition-colors hover:bg-gray-50/50",
+  row: "groupborder-b border-gray-100 transition-colors hover:bg-emerald-100/70",
   rowExpanded: "border-b-0",
   cell: "px-4 py-4 whitespace-nowrap",
   guestRow: "flex items-center gap-3",
@@ -21,5 +21,5 @@ export const RESERVATION_ROW_STYLES = {
   toggleButtonOn:
     "bg-emerald-900 text-white border-emerald-900 hover:shadow-md",
   toggleButtonOff: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100",
-  toggleIcon:      "size-3.5 shrink-0",
+  toggleIcon: "size-3.5 shrink-0",
 } as const;

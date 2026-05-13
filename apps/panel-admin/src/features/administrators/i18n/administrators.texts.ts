@@ -9,8 +9,12 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
       SUBTITLE:     "Lista de todos los administradores del sistema",
     },
     STAT: {
-      TOTAL_LABEL:   "Total",
-      TOTAL_CAPTION: "Administradores",
+      TOTAL_LABEL:      "Total",
+      TOTAL_CAPTION:    "Administradores",
+      ACTIVE_LABEL:     "Activos",
+      ACTIVE_CAPTION:   "En sistema",
+      INACTIVE_LABEL:   "Inactivos",
+      INACTIVE_CAPTION: "Desactivados",
     },
     TABLE: {
       ARIA_LABEL:      "Tabla de administradores",
@@ -20,6 +24,7 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
       BADGE_YOU:       "Tú",
       STATUS_ACTIVE:   "Activo",
       STATUS_INACTIVE: "Inactivo",
+      COPY_EMAIL:      "Copiar correo",
     },
     PAGINATION: {
       ARIA_LABEL: "Paginación de administradores",
@@ -41,8 +46,12 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
       SUBTITLE:     "List of all system administrators",
     },
     STAT: {
-      TOTAL_LABEL:   "Total",
-      TOTAL_CAPTION: "Administrators",
+      TOTAL_LABEL:      "Total",
+      TOTAL_CAPTION:    "Administrators",
+      ACTIVE_LABEL:     "Active",
+      ACTIVE_CAPTION:   "In system",
+      INACTIVE_LABEL:   "Inactive",
+      INACTIVE_CAPTION: "Disabled",
     },
     TABLE: {
       ARIA_LABEL:      "Administrators table",
@@ -52,6 +61,7 @@ export const ADMINISTRATORS_TEXTS: Record<SupportedLocale, AdministratorsTexts> 
       BADGE_YOU:       "You",
       STATUS_ACTIVE:   "Active",
       STATUS_INACTIVE: "Inactive",
+      COPY_EMAIL:      "Copy email",
     },
     PAGINATION: {
       ARIA_LABEL: "Administrators pagination",

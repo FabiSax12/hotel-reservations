@@ -1,17 +1,26 @@
 "use client";
 
-import { useI18n } from "@/locales";
-import { ADMINS_STAT_CARD_STYLES as S } from "./AdminsStatCard.styles";
+import { ADMINS_STAT_CARD_STYLES as STYLE } from "./AdminsStatCard.styles";
 import type { AdminsStatCardProps } from "./AdminsStatCard.interfaces";
 
-export const AdminsStatCard = ({ totalCount }: AdminsStatCardProps) => {
-  const { t } = useI18n();
+const CARD_CLASS: Record<string, string> = {
+  default: STYLE.cardDefault,
+  success: STYLE.cardSuccess,
+  danger:  STYLE.cardDanger,
+};
 
+const VALUE_CLASS: Record<string, string> = {
+  default: STYLE.valueDefault,
+  success: STYLE.valueSuccess,
+  danger:  STYLE.valueDanger,
+};
+
+export const AdminsStatCard = ({ label, value, caption, variant = "default" }: AdminsStatCardProps) => {
   return (
-    <div className={S.card}>
-      <p className={S.label}>{t.ADMINISTRATORS.STAT.TOTAL_LABEL}</p>
-      <p className={S.value}>{totalCount}</p>
-      <p className={S.caption}>{t.ADMINISTRATORS.STAT.TOTAL_CAPTION}</p>
+    <div className={`${STYLE.card} ${CARD_CLASS[variant]}`}>
+      <p className={STYLE.label}>{label}</p>
+      <p className={`${STYLE.value} ${VALUE_CLASS[variant]}`}>{value}</p>
+      <p className={STYLE.caption}>{caption}</p>
     </div>
   );
 };
