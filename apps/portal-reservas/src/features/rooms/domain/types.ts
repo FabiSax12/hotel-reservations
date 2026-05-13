@@ -6,6 +6,14 @@
  * images, and dynamically-computed available dates for mock availability logic.
  */
 
+/** Bed configuration entry. */
+export interface BedConfig {
+  /** Bed type (e.g. "king", "queen", "individual", "litera", "sofá cama"). */
+  type: string;
+  /** Number of beds of this type in the room. */
+  count: number;
+}
+
 /** A single room listing as returned by the (future) reservation API. */
 export interface Room {
   /** Unique identifier (e.g. "mv-1", "lf-2"). */
@@ -24,6 +32,8 @@ export interface Room {
   inventory: number;
   /** Room area in square meters. */
   sqft: number;
+  /** Bed configuration for this room. */
+  beds: BedConfig[];
   /** Full marketing description of the room. */
   description: string;
   /** Short administrator recommendation shown as a badge on the card. */

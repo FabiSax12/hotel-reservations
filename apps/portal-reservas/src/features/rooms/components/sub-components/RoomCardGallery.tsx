@@ -14,13 +14,23 @@
 import type { RoomCardGalleryProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { formatBedConfig } from "../../constants/amenity-icons.const";
 import Image from "next/image";
 
 export function RoomCardGallery({ room }: RoomCardGalleryProps) {
   const { t } = useI18n();
+  const bedText = formatBedConfig(room.beds);
 
   return (
     <div className={S.expansionContent}>
+      {/* Bed configuration */}
+      <div className="flex items-center gap-2 mb-4">
+        <svg className="w-4 h-4 text-gold-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 11h14M5 11V7a2 2 0 012-2h6a2 2 0 012 2v4M3 11v4M17 11v4M3 15h14" />
+        </svg>
+        <span className="text-sm font-medium text-stone-300">{bedText}</span>
+      </div>
+
       {/* Additional image strip */}
       {room.images.length > 0 && (
         <div className={S.galleryStrip} role="list" aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}>

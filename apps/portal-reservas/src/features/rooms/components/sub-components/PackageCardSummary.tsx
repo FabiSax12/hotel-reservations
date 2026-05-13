@@ -1,18 +1,19 @@
 /**
- * @file PackageCardSummary.tsx — Package body matching RoomCard structure (US-DM-04).
+ * @file PackageCardSummary.tsx — Package body with Booking.com-style room tree.
  *
  * Mirrors RoomCard's body layout:
  * - Header: package label + capacity chips
- * - Meta: room summary list (like admin tip area)
+ * - Room tree: vertical list of rooms with bed config + amenity icons
  * - Price tier: total price + CTA inline
  */
 
 "use client";
 
-import type { PackageCardSummaryProps, Room } from "../../domain/types";
+import type { PackageCardSummaryProps } from "../../domain/types";
 import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { groupRoomsByType } from "../../domain/grouping";
+import { RoomTreeItem } from "./RoomTreeItem";
 
 interface ExtendedSummaryProps extends PackageCardSummaryProps {
   children?: React.ReactNode;
@@ -46,17 +47,17 @@ export function PackageCardSummary({
         </div>
       </div>
 
-      {/* Room summary list (replaces admin tip area) */}
-      <div className={S.summaryList}>
+      {/* Room tree: vertical list with bed counts */}
+      {/* Hide amenities when 3+ rooms to save space */}
+      <div className={S.roomTree}>
         {grouped.map(({ type, room, count }) => (
-          <div key={type} className={S.summaryItem}>
-            <span className={S.summaryRoomName}>
-              {count > 1 ? `${count}× ` : ""}{room.title}
-            </span>
-            <span className={S.summaryRoomPrice}>
-              ${room.price * count} {t.ROOMS.CURRENCY}
-            </span>
-          </div>
+          <RoomTreeItem
+            key={type}
+            room={room}
+            count={count}
+            currency={t.ROOMS.CURRENCY}
+            showAmenities={rooms.length < 3}
+          />
         ))}
       </div>
 

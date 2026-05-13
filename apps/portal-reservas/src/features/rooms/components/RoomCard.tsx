@@ -55,13 +55,13 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
       {/* Left: image panel with urgency badge, admin tip, and expand toggle */}
       <RoomImagePanel room={room} isExpanded={isExpanded} onToggleExpand={handleToggle} />
 
-      {/* Right: card body */}
-      <div className={S.body}>
-        <div className={S.bodyHeader}>
-          <RoomCardHeader room={room} selectedDest={selectedDest} />
-        </div>
+        {/* Right: card body */}
+        <div className={S.body}>
+          <div className={S.bodyHeader}>
+            <RoomCardHeader room={room} selectedDest={selectedDest} onExpand={handleToggle} />
+          </div>
 
-        <RoomCardMeta room={room} />
+          <RoomCardMeta room={room} />
 
         {/* Price tier + conditional CTA */}
         <RoomPriceTier room={room} />

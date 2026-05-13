@@ -15,7 +15,8 @@ function makeRoom(
 ): Room {
   return {
     id, location: "Test", title: `Room ${id}`, type, price, capacity, inventory,
-    sqft: 50, description: "", adminTip: "", image: "", images: [], amenities: [], availableDates: [],
+    sqft: 50, beds: [{ type: "queen", count: 1 }],
+    description: "", adminTip: "", image: "", images: [], amenities: [], availableDates: [],
   };
 }
 

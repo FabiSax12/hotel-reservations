@@ -37,8 +37,7 @@ export function groupRoomsIntoPackages(
 
   // Separate individual rooms (can accommodate all guests alone)
   const individuals: Room[] = eligible
-    .filter((r) => r.capacity >= guestCount)
-    .sort((a, b) => a.price - b.price);
+    .filter((r) => r.capacity >= guestCount);
 
   // Rooms that need to be combined
   const combinable = eligible.filter((r) => r.capacity < guestCount);
@@ -46,13 +45,20 @@ export function groupRoomsIntoPackages(
   // Generate all valid packages from combinable rooms
   const packages = generateAllPackages(combinable, guestCount);
 
-  // Deduplicate and sort
+  // Deduplicate packages
   const deduped = deduplicatePackages(packages);
-  const sortedPackages = [...deduped].sort(
-    (a, b) => a.totalPricePerNight - b.totalPricePerNight,
-  );
 
-  return [...individuals, ...sortedPackages];
+  // Merge individuals and packages, sort by total price
+  // For individuals, total price = room.price
+  // For packages, total price = totalPricePerNight
+  const allResults: GroupedRoom[] = [...individuals, ...deduped];
+  allResults.sort((a, b) => {
+    const priceA = "rooms" in a ? a.totalPricePerNight : a.price;
+    const priceB = "rooms" in b ? b.totalPricePerNight : b.price;
+    return priceA - priceB;
+  });
+
+  return allResults;
 }
 
 /**

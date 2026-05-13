@@ -28,8 +28,8 @@ export function PackageCardHeader({ rooms, isHomogeneous }: PackageCardHeaderPro
         </div>
       ) : roomCount === 2 ? (
         <div className={S.imageGrid2}>
-          {rooms.map((room) => (
-            <div key={room.id} className={S.imageCell}>
+          {rooms.map((room, i) => (
+            <div key={`${room.id}-${i}`} className={S.imageCell}>
               <div
                 className={S.image}
                 style={{ backgroundImage: `url(${room.image})` }}
@@ -60,8 +60,8 @@ export function PackageCardHeader({ rooms, isHomogeneous }: PackageCardHeaderPro
         </div>
       ) : (
         <div className={S.imageGrid4}>
-          {rooms.slice(0, 4).map((room) => (
-            <div key={room.id} className={S.imageCell}>
+          {rooms.slice(0, 4).map((room, i) => (
+            <div key={`${room.id}-${i}`} className={S.imageCell}>
               <div
                 className={S.image}
                 style={{ backgroundImage: `url(${room.image})` }}

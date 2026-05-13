@@ -46,7 +46,11 @@ export const ROOM_CARD_STYLES = {
   urgencyBadge:
     "absolute top-4 left-4 bg-red-900/90 backdrop-blur-sm text-stone-50 px-3 py-1.5 rounded-xl font-bold text-xs shadow-lg flex items-center gap-1.5 animate-in slide-in-from-top-2",
   urgencyIcon: "w-3.5 h-3.5 flex-shrink-0 text-red-400",
-  adminTipBadgeRemoved: "",
+  inventoryBadge:
+    "absolute top-4 left-4 bg-forest-950/80 backdrop-blur-sm text-stone-200 px-2.5 py-1.5 rounded-xl font-bold text-xs shadow-sm flex items-center gap-1.5",
+  capacityBadge:
+    "absolute top-4 right-4 bg-forest-950/80 backdrop-blur-sm text-stone-200 px-2.5 py-1.5 rounded-xl font-bold text-xs shadow-sm flex items-center gap-1.5",
+  capacityBadgeIcon: "w-3.5 h-3.5 text-gold-500",
   expandBtn:
     "absolute bottom-4 right-4 w-10 h-10 rounded-full bg-forest-950/80 backdrop-blur-sm text-stone-50 flex items-center justify-center shadow-sm hover:bg-forest-950 hover:shadow-md hover:text-gold-500 transition-all duration-200 active:scale-95 border border-forest-800",
   expandBtnIcon: (isExpanded: boolean) =>
@@ -70,6 +74,14 @@ export const ROOM_CARD_STYLES = {
         : "bg-forest-800/30 text-stone-400 border-forest-800"
     }`,
   chipIcon: "w-3.5 h-3.5 text-gold-500",
+
+  // ─── Amenity Chips ─────────────────────────────────────────────────────────
+  amenityChipRow: "flex flex-wrap items-center gap-2 mt-3",
+  amenityChip:
+    "flex items-center gap-1.5 px-2.5 py-1 bg-forest-800/50 text-stone-300 rounded-lg text-xs font-medium border border-forest-700/50",
+  amenityChipIcon: "w-3.5 h-3.5 text-gold-500/70",
+  amenityChipMore:
+    "flex items-center gap-1.5 px-2.5 py-1 bg-forest-800/30 text-gold-500 rounded-lg text-xs font-bold border border-gold-500/30 hover:bg-forest-800/50 hover:border-gold-500/50 transition-colors cursor-pointer",
 
   // ─── Meta Row ───────────────────────────────────────────────────────────────
   adminTipQuote: "relative my-4 pl-5 pr-2",
@@ -193,12 +205,13 @@ export const ROOM_CARD_STYLES = {
 export const PACKAGE_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   // Same horizontal layout and fixed height as RoomCard
+  // Top corners only — bottom corners are handled by the expand button
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-t-[2rem] border border-b-0 border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
-    "pointer-events-none absolute inset-0 rounded-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
+    "pointer-events-none absolute inset-0 rounded-t-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
 
   // ─── Image Panel ────────────────────────────────────────────────────────────
   // Same dimensions as RoomCard image panel, fills parent height
@@ -232,11 +245,19 @@ export const PACKAGE_CARD_STYLES = {
   chipIcon: "w-3.5 h-3.5 text-gold-500",
 
   // ─── Meta Row ───────────────────────────────────────────────────────────────
-  // Room summary list replaces admin tip, max height to prevent overflow
-  summaryList: "my-4 flex flex-col gap-1.5 max-h-[120px] overflow-hidden",
-  summaryItem: "flex items-center justify-between text-sm",
-  summaryRoomName: "text-stone-300 font-medium truncate",
-  summaryRoomPrice: "text-stone-400 text-xs flex-shrink-0 ml-2",
+  // Room tree replaces admin tip — vertical list with bed counts and amenities
+  roomTree: "my-4 flex flex-col gap-2 overflow-hidden",
+  roomTreeItem: "flex flex-col gap-1 py-1.5 border-b border-forest-800/40 last:border-0 last:pb-0",
+  roomTreeHeader: "flex items-center justify-between gap-2",
+  roomTreeTitle: "text-sm font-medium text-stone-200 truncate",
+  roomTreePrice: "text-xs font-bold text-stone-400 flex-shrink-0",
+  roomTreeBedRow: "flex items-center gap-1.5 text-xs text-stone-400",
+  roomTreeBedIcon: "w-3.5 h-3.5 text-gold-600/70 flex-shrink-0",
+  roomTreeAmenityRow: "flex flex-wrap items-center gap-2 mt-0.5",
+  roomTreeAmenityTag: "flex items-center gap-1",
+  roomTreeAmenityIcon: "w-3.5 h-3.5 text-gold-500/70",
+  roomTreeAmenityText: "text-xs text-stone-400",
+  roomTreeCountPrefix: "text-gold-500 font-bold",
 
   // ─── Price Tier ─────────────────────────────────────────────────────────────
   // Same price tier structure as RoomCard
@@ -264,9 +285,9 @@ export const PACKAGE_CARD_STYLES = {
   unavailableLabel: "text-xs font-bold text-red-500 uppercase tracking-wider",
 
   // ─── Expand/Collapse ────────────────────────────────────────────────────────
-  // Expand toggle below the card
+  // Expand toggle below the card — seamless continuation with rounded bottom
   expandBtn:
-    "w-full flex items-center justify-center gap-2 py-3 bg-forest-800/40 hover:bg-forest-800/60 rounded-b-[2rem] border-t border-forest-700/30 text-sm font-medium text-stone-300 hover:text-stone-100 transition-colors cursor-pointer",
+    "w-full flex items-center justify-center gap-2 py-3 bg-forest-900 hover:bg-forest-800/80 rounded-b-[2rem] border border-t-0 border-forest-800 text-sm font-medium text-stone-300 hover:text-stone-100 transition-colors cursor-pointer",
   expandIcon: (isExpanded: boolean) =>
     `text-xs transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`,
 
