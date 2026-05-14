@@ -4,6 +4,8 @@ export const PENDING_INVITATIONS_SECTION_STYLES = {
   headerRow: "flex items-center justify-between",
   content: "min-w-150",
   emptyState: "flex h-full w-full flex-col items-center justify-center gap-4 text-center",
+  emptyStateIcon: "size-6 text-muted",
+  emptyStateText: "text-sm text-muted",
   actionsCell: "flex gap-2",
   resendButton: "text-blue-600 hover:text-blue-700",
   revokeButton: "text-red-600 hover:text-red-700",

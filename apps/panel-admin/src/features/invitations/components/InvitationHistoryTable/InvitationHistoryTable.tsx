@@ -5,6 +5,7 @@ import { Inbox, RotateCcw } from "lucide-react";
 import { formatDate } from "@/features/admins-table/utils/formatDate";
 import { useI18n } from "@/locales";
 import type { InvitationHistoryTableProps } from "./InvitationHistoryTable.interface";
+import { INVITATION_HISTORY_TABLE_STYLES as STYLES } from "./InvitationHistoryTable.styles";
 
 const STATUS_COLORS: Record<string, "warning" | "success" | "danger" | "default"> = {
   pending: "warning",
@@ -37,7 +38,7 @@ export const InvitationHistoryTable = ({
   return (
     <Table>
       <Table.ScrollContainer>
-        <Table.Content aria-label="Invitation history" className="min-w-150">
+        <Table.Content aria-label="Invitation history" className={STYLES.content}>
           <Table.Header>
             <Table.Column isRowHeader>{t.ADMINS.INVITATIONS.COL_EMAIL}</Table.Column>
             <Table.Column>{t.ADMINS.INVITATIONS.COL_SENT}</Table.Column>
@@ -47,9 +48,9 @@ export const InvitationHistoryTable = ({
           </Table.Header>
           <Table.Body
             renderEmptyState={() => (
-              <EmptyState className="flex h-full w-full flex-col items-center justify-center gap-4 text-center">
-                <Inbox className="size-6 text-muted" />
-                <span className="text-sm text-muted">{t.ADMINS.INVITATIONS.EMPTY_HISTORY}</span>
+              <EmptyState className={STYLES.emptyState}>
+                <Inbox className={STYLES.emptyStateIcon} />
+                <span className={STYLES.emptyStateText}>{t.ADMINS.INVITATIONS.EMPTY_HISTORY}</span>
               </EmptyState>
             )}
           >
@@ -64,16 +65,16 @@ export const InvitationHistoryTable = ({
                   </Chip>
                 </Table.Cell>
                 <Table.Cell>
-                  <div className="flex gap-2">
+                  <div className={STYLES.actionsCell}>
                     {inv.status === "expired" && (
                       <button
                         type="button"
-                        className="flex items-center gap-1 rounded-md px-2 py-1 text-sm text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+                        className={STYLES.resendButton}
                         disabled={isResending === inv.id}
                         onClick={() => onResend(inv.id)}
                         aria-label={t.ADMINS.INVITATIONS.ACTION_RESEND}
                       >
-                        <RotateCcw className="size-4" />
+                        <RotateCcw className={STYLES.resendIcon} />
                         <span>{t.ADMINS.INVITATIONS.ACTION_RESEND}</span>
                       </button>
                     )}

@@ -9,7 +9,7 @@ import { TABLE_STYLES } from "./AdminsTable.styles";
 export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) => {
   const { t } = useI18n();
 
-  const TABLE_TEXTS = t.ADMINS.TABLE
+  const TABLE_TEXTS = t.ADMINS.TABLE;
 
   return (
     <Table>
@@ -26,8 +26,8 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
           <Table.Body
             renderEmptyState={() => (
               <EmptyState className={TABLE_STYLES.emptyState}>
-                <Inbox className="size-6 text-muted" />
-                <span className="text-sm text-muted">{TABLE_TEXTS.NO_RESULTS}</span>
+                <Inbox className={TABLE_STYLES.emptyStateIcon} />
+                <span className={TABLE_STYLES.emptyStateText}>{TABLE_TEXTS.NO_RESULTS}</span>
               </EmptyState>
             )}
           >

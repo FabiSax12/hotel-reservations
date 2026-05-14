@@ -38,8 +38,8 @@ export const PendingInvitationsTable = ({
             <Table.Body
               renderEmptyState={() => (
                 <EmptyState className={STYLES.emptyState}>
-                  <Inbox className="size-6 text-muted" />
-                  <span className="text-sm text-muted">{t.ADMINS.INVITATIONS.EMPTY_TITLE}</span>
+                  <Inbox className={STYLES.emptyStateIcon} />
+                  <span className={STYLES.emptyStateText}>{t.ADMINS.INVITATIONS.EMPTY_TITLE}</span>
                 </EmptyState>
               )}
             >

@@ -14,9 +14,7 @@ export const InviteAdminForm = ({ formAction }: InviteAdminFormProps) => {
 
   return (
     <section className={STYLES.section}>
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
-        {t.ADMINS.INVITATIONS.SEND_BUTTON}
-      </h2>
+      <h2 className={STYLES.title}>{t.ADMINS.INVITATIONS.SEND_BUTTON}</h2>
       <Form action={dispatch} className={STYLES.form}>
         <div className={STYLES.inputWrapper}>
           <TextField name="email" type="email" isInvalid={hasError}>
