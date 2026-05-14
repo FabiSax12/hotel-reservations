@@ -4,15 +4,10 @@ import { Chip, EmptyState, Table } from "@heroui/react";
 import { Inbox, RotateCcw } from "lucide-react";
 import { formatDate } from "@/features/admins-table/utils/formatDate";
 import { useI18n } from "@/locales";
+import { INVITATION_STATUS_COLORS } from "../../constants/status-colors";
+import { INVITATION_STATUS_I18N_KEYS } from "../../constants/status-i18n";
 import type { InvitationHistoryTableProps } from "./InvitationHistoryTable.interface";
 import { INVITATION_HISTORY_TABLE_STYLES as STYLES } from "./InvitationHistoryTable.styles";
-
-const STATUS_COLORS: Record<string, "warning" | "success" | "danger" | "default"> = {
-  pending: "warning",
-  accepted: "success",
-  revoked: "danger",
-  expired: "default",
-};
 
 export const InvitationHistoryTable = ({
   invitations,
@@ -21,16 +16,10 @@ export const InvitationHistoryTable = ({
 }: InvitationHistoryTableProps) => {
   const { t } = useI18n();
 
-  const STATUS_TEXT_KEYS = {
-    pending: "STATUS_PENDING",
-    accepted: "STATUS_ACCEPTED",
-    revoked: "STATUS_REVOKED",
-    expired: "STATUS_EXPIRED",
-  } as const;
-
   const getStatusText = (status: string): string => {
     const key =
-      STATUS_TEXT_KEYS[status as keyof typeof STATUS_TEXT_KEYS] ?? `STATUS_${status.toUpperCase()}`;
+      INVITATION_STATUS_I18N_KEYS[status as keyof typeof INVITATION_STATUS_I18N_KEYS] ??
+      `STATUS_${status.toUpperCase()}`;
     const text = t.ADMINS.INVITATIONS[key];
     return typeof text === "string" ? text : status;
   };
@@ -60,7 +49,7 @@ export const InvitationHistoryTable = ({
                 <Table.Cell>{formatDate(inv.created_at)}</Table.Cell>
                 <Table.Cell>{formatDate(inv.expires_at)}</Table.Cell>
                 <Table.Cell>
-                  <Chip variant="soft" color={STATUS_COLORS[inv.status] ?? "default"}>
+                  <Chip variant="soft" color={INVITATION_STATUS_COLORS[inv.status] ?? "default"}>
                     {getStatusText(inv.status)}
                   </Chip>
                 </Table.Cell>
