@@ -5,4 +5,5 @@ export interface CreateAdminFormProps {
     prevState: CreateAdminActionState,
     formData: FormData,
   ) => Promise<CreateAdminActionState>;
+  onSuccess?: () => void;
 }
