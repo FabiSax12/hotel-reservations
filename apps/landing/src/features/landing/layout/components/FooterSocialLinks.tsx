@@ -1,10 +1,10 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { useI18n } from "@/locales";
-import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { SOCIAL } from "@/config/social";
-import { InstagramIcon, FacebookIcon } from "./SocialIcons";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { useI18n } from "@/locales";
+import { FacebookIcon, InstagramIcon } from "./SocialIcons";
 
 export function FooterSocialLinks() {
   const { t } = useI18n();

@@ -1,9 +1,9 @@
 "use client";
 
 import { Mail, MapPin, MessageCircle } from "lucide-react";
-import { useI18n } from "@/locales";
-import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { CONTACT } from "@/config/contact";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { useI18n } from "@/locales";
 
 export function FooterContactLinks() {
   const { t } = useI18n();

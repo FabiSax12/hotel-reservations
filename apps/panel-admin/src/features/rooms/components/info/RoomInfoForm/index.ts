@@ -1,2 +1,2 @@
 export { RoomInfoForm } from "./RoomInfoForm";
-export type { RoomInfoFormProps, RoomInfoFormData } from "./RoomInfoForm.interface";
+export type { RoomInfoFormData, RoomInfoFormProps } from "./RoomInfoForm.interface";

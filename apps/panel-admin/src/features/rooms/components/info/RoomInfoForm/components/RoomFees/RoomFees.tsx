@@ -1,16 +1,19 @@
 "use client";
 
-import React from "react";
+import { FieldError, Input, Label, TextField } from "@heroui/react";
+import type React from "react";
 import { useFormContext } from "react-hook-form";
-import { TextField, Label, Input, FieldError } from "@heroui/react";
-import { ROOM_FEES_STYLES as s } from "./RoomFees.styles";
-import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
-import { MIN_PRICE } from "@/features/rooms/constants/info.constants";
 import type { RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
+import { MIN_PRICE } from "@/features/rooms/constants/info.constants";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
 import type { RoomFeesProps } from "./RoomFees.interface";
+import { ROOM_FEES_STYLES as s } from "./RoomFees.styles";
 
 export const RoomFees: React.FC<RoomFeesProps> = ({ texts, getErrorMessage }) => {
-  const { register, formState: { errors } } = useFormContext<RoomInfoFormData>();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<RoomInfoFormData>();
 
   return (
     <div className={s.section}>

@@ -1,8 +1,8 @@
-import React from "react";
 import { Card, Switch } from "@heroui/react";
-import { SWITCH_CARD_STYLES as s } from "./SwitchCard.styles";
+import type React from "react";
 import { ICON_SIZES } from "@/features/rooms/constants/info.constants";
 import type { SwitchCardProps } from "./SwitchCard.interface";
+import { SWITCH_CARD_STYLES as s } from "./SwitchCard.styles";
 
 export const SwitchCard: React.FC<SwitchCardProps> = ({
   isActive,
@@ -14,10 +14,7 @@ export const SwitchCard: React.FC<SwitchCardProps> = ({
   ariaLabel,
 }) => {
   return (
-    <Card
-      className={s.card(isActive)}
-      onClick={() => onChange(!isActive)}
-    >
+    <Card className={s.card(isActive)} onClick={() => onChange(!isActive)}>
       <Card.Content className={s.content}>
         <div className={s.header}>
           <div className={s.iconContainer(isActive)}>
@@ -25,9 +22,7 @@ export const SwitchCard: React.FC<SwitchCardProps> = ({
           </div>
           <div className={s.info}>
             <span className={s.label}>{label}</span>
-            <span className={s.statusText(isActive)}>
-              {isActive ? activeText : inactiveText}
-            </span>
+            <span className={s.statusText(isActive)}>{isActive ? activeText : inactiveText}</span>
           </div>
         </div>
         <div className={s.switchWrapper}>

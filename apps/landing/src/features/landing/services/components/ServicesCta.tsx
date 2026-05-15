@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
-import { SERVICES } from "@/features/landing/services/constants/styles";
+import { useRef } from "react";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { SERVICES } from "@/features/landing/services/constants/styles";
+import { useI18n } from "@/locales";
 
 export function ServicesCta() {
   const { t } = useI18n();
@@ -27,7 +27,14 @@ export function ServicesCta() {
         whileTap={{ scale: 0.97 }}
       >
         {services.CTA}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
       </motion.a>

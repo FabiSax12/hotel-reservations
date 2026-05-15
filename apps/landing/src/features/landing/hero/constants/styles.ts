@@ -3,23 +3,30 @@ export const HERO = Object.freeze({
   BG_LAYER: "absolute inset-0 pointer-events-none",
   BG_INNER: "absolute inset-0",
   BG_SVG: "absolute inset-0 w-full h-full opacity-[0.025]",
-  RING_OUTER: "absolute top-1/4 right-[20%] w-[480px] h-[480px] rounded-full border border-gold-500/8",
-  RING_INNER: "absolute top-1/4 right-[20%] w-[320px] h-[320px] rounded-full border border-gold-500/12",
+  RING_OUTER:
+    "absolute top-1/4 right-[20%] w-[480px] h-[480px] rounded-full border border-gold-500/8",
+  RING_INNER:
+    "absolute top-1/4 right-[20%] w-[320px] h-[320px] rounded-full border border-gold-500/12",
   CONTAINER: "relative z-10 flex flex-col flex-1 max-w-[1440px] mx-auto w-full px-6 lg:px-16",
-  CONTENT_WRAPPER: "flex flex-col lg:flex-row items-center flex-1 gap-16 pt-36 pb-24 lg:pt-44 lg:pb-32",
+  CONTENT_WRAPPER:
+    "flex flex-col lg:flex-row items-center flex-1 gap-16 pt-36 pb-24 lg:pt-44 lg:pb-32",
   LEFT: "flex flex-col gap-8 lg:w-[55%]",
   RIGHT: "lg:w-[45%] flex items-center justify-center lg:justify-end w-full",
   EYEBROW: "text-xs tracking-[0.35em] uppercase text-gold-400 font-sans",
-  WORDMARK: "font-serif text-[3.5rem] lg:text-[4.5rem] font-normal tracking-[0.25em] text-stone-50 leading-none",
-  HEADLINE: "font-serif text-[4rem] lg:text-[6rem] xl:text-[7rem] leading-[0.95] text-stone-50 font-normal",
+  WORDMARK:
+    "font-serif text-[3.5rem] lg:text-[4.5rem] font-normal tracking-[0.25em] text-stone-50 leading-none",
+  HEADLINE:
+    "font-serif text-[4rem] lg:text-[6rem] xl:text-[7rem] leading-[0.95] text-stone-50 font-normal",
   HEADLINE_LINE_WRAPPER: "block overflow-hidden",
   HEADLINE_LINE_ITALIC: "block italic",
   HEADLINE_LINE: "block",
   CONTENT_STAGGER: "flex flex-col gap-8",
   SUBHEADLINE: "text-stone-300 text-base lg:text-lg leading-relaxed max-w-md font-light",
   CTA_ROW: "flex flex-wrap gap-4 pt-2",
-  CTA_PRIMARY: "inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-forest-950 text-sm font-medium tracking-widest uppercase transition-all duration-500 hover:bg-gold-400 hover:scale-[1.02]",
-  CTA_SECONDARY: "inline-flex items-center gap-2 px-8 py-4 border border-stone-600 text-stone-300 text-sm font-medium tracking-widest uppercase transition-all duration-500 hover:border-gold-500 hover:text-gold-400",
+  CTA_PRIMARY:
+    "inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-forest-950 text-sm font-medium tracking-widest uppercase transition-all duration-500 hover:bg-gold-400 hover:scale-[1.02]",
+  CTA_SECONDARY:
+    "inline-flex items-center gap-2 px-8 py-4 border border-stone-600 text-stone-300 text-sm font-medium tracking-widest uppercase transition-all duration-500 hover:border-gold-500 hover:text-gold-400",
   LOCATION_BAR: "flex items-center gap-4 pt-4",
   LOCATION_LINE: "flex-1 h-px bg-stone-800",
   LOCATION_TEXT: "text-xs tracking-[0.25em] uppercase text-stone-500 whitespace-nowrap",
@@ -33,7 +40,8 @@ export const HERO = Object.freeze({
   VISUAL_ORB_2: "absolute top-20 right-20 w-1 h-1 rounded-full bg-gold-400",
   VISUAL_ORB_3: "absolute top-32 right-14 w-1.5 h-1.5 rounded-full bg-gold-300",
   VISUAL_ORB_4: "absolute bottom-32 left-10 w-1 h-1 rounded-full bg-gold-400",
-  VISUAL_BADGE: "absolute bottom-6 left-6 right-6 p-4 backdrop-blur-sm bg-forest-950/70 border border-stone-700/40",
+  VISUAL_BADGE:
+    "absolute bottom-6 left-6 right-6 p-4 backdrop-blur-sm bg-forest-950/70 border border-stone-700/40",
   VISUAL_BADGE_TEXT: "text-xs tracking-[0.25em] uppercase text-stone-400",
   VISUAL_BADGE_TITLE: "text-sm font-serif text-stone-100 mt-1",
 } as const);

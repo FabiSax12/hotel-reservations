@@ -18,7 +18,11 @@ export const SidebarHeader = ({ isCollapsed, toggleCollapsed }: SidebarHeaderPro
         aria-label={isCollapsed ? t.SIDEBAR.HEADER.EXPAND : t.SIDEBAR.HEADER.COLLAPSE}
         onPress={toggleCollapsed}
       >
-        {isCollapsed ? <ChevronRight className={STYLES.icon} /> : <ChevronLeft className={STYLES.icon} />}
+        {isCollapsed ? (
+          <ChevronRight className={STYLES.icon} />
+        ) : (
+          <ChevronLeft className={STYLES.icon} />
+        )}
       </Button>
     </div>
   );

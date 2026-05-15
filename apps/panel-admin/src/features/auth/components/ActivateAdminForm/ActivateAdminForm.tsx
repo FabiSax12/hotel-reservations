@@ -1,7 +1,16 @@
 "use client";
 
-import { ActivationLoading, ActivationPasswordForm, ActivationSuccess, ActivationTokenError } from "@/features/auth/components";
-import { ACTIVATION_ERRORS, isActivateSuccess, isVerifySuccess } from "@/features/auth/domain/adminActivation";
+import {
+  ActivationLoading,
+  ActivationPasswordForm,
+  ActivationSuccess,
+  ActivationTokenError,
+} from "@/features/auth/components";
+import {
+  ACTIVATION_ERRORS,
+  isActivateSuccess,
+  isVerifySuccess,
+} from "@/features/auth/domain/adminActivation";
 import { useActivationToken } from "@/features/auth/hooks/useActivationToken";
 import { useAdminActivation } from "@/features/auth/hooks/useAdminActivation";
 
