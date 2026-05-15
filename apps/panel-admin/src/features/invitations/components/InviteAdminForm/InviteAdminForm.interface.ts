@@ -1,4 +1,4 @@
-import type { CreateInvitationActionState } from "@/features/admins-table/domain/invitation.types";
+import type { CreateInvitationActionState } from "../../domain/invitation.types";
 
 export interface InviteAdminFormProps {
   formAction: (

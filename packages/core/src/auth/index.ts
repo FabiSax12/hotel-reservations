@@ -188,16 +188,37 @@ export async function signUp(
  */
 export async function inviteAdminByEmail(
   email: string,
+  full_name: string,
   redirectTo: string,
 ): Promise<{ id: string; email: string }> {
   const supabase = createSupabaseServiceClient();
   const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
     redirectTo,
-    data: { role: "admin" },
+    data: { role: "admin", full_name: full_name },
   });
   if (error) throw new Error(error.message);
   if (!data?.user) throw new Error("Invitation returned no user");
   return { id: data.user.id, email: data.user.email ?? email };
+}
+
+/**
+ * Create an admin account by sending an invitation and recording it in pending_invitations.
+ */
+export async function createAdminAccount(
+  email: string,
+  full_name: string,
+  redirectTo: string,
+): Promise<void> {
+  const response = await inviteAdminByEmail(email, full_name, redirectTo);
+
+  const supabase = createSupabaseServiceClient();
+  const { error } = await supabase
+    .from("pending_invitations")
+    .insert({ email: response.email, user_id: response.id });
+
+  if (error) {
+    console.error("Failed to record invitation:", error.message);
+  }
 }
 
 export type ActivationTokenResult =

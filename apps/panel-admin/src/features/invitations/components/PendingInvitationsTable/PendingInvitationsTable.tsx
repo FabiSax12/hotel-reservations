@@ -2,8 +2,8 @@
 
 import { EmptyState, Table } from "@heroui/react";
 import { Inbox } from "lucide-react";
-import { CreateInvitationModal } from "@/features/invitations/components/CreateInvitationModal/CreateInvitationModal";
 import { useI18n } from "@/locales";
+import { CreateInvitationModal } from "../CreateInvitationModal/CreateInvitationModal";
 import { PendingInvitationRow } from "../PendingInvitationRow/PendingInvitationRow";
 import { getStatusInfo } from "./getStatusInfo";
 import type { PendingInvitationsTableProps } from "./PendingInvitationsTable.interface";

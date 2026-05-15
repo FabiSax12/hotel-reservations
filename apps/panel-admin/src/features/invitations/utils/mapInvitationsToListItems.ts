@@ -1,5 +1,5 @@
 import type { PendingInvitation } from "@hotel/db";
-import type { InvitationListItem } from "@/features/admins-table/domain/invitation.types";
+import type { InvitationListItem } from "../domain/invitation.types";
 
 export function mapInvitationsToListItems(invitations: PendingInvitation[]): InvitationListItem[] {
   return invitations.map((inv) => ({

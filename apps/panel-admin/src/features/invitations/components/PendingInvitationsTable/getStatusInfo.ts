@@ -1,4 +1,4 @@
-import type { InvitationListItem } from "@/features/admins-table/domain/invitation.types";
+import type { InvitationListItem } from "../../domain/invitation.types";
 
 const STATUS_COLORS: Record<string, "warning" | "danger"> = {
   pending: "warning",

@@ -3,7 +3,7 @@ import { inviteAdminByEmail } from "@hotel/core/auth";
 import { createSupabaseServiceClient } from "@hotel/db";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
-import type { ResendInvitationResult } from "../../admins-table/domain/invitation.types";
+import type { ResendInvitationResult } from "../domain/invitation.types";
 
 export const resendInvitation = async (invitationId: string): Promise<ResendInvitationResult> => {
   const supabase = createSupabaseServiceClient();

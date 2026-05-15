@@ -4,7 +4,7 @@ import { inviteAdminByEmail } from "@hotel/core/auth";
 import { createSupabaseServiceClient } from "@hotel/db";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
-import type { CreateInvitationActionState } from "../../admins-table/domain/invitation.types";
+import type { CreateInvitationActionState } from "../domain/invitation.types";
 
 export async function createInvitationAction(
   _prevState: CreateInvitationActionState,

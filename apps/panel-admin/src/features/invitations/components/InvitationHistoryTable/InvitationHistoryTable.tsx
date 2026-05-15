@@ -2,10 +2,10 @@
 
 import { Chip, EmptyState, Table } from "@heroui/react";
 import { Inbox, RotateCcw } from "lucide-react";
-import { formatDate } from "@/features/admins-table/utils/formatDate";
 import { useI18n } from "@/locales";
 import { INVITATION_STATUS_COLORS } from "../../constants/status-colors";
 import { INVITATION_STATUS_I18N_KEYS } from "../../constants/status-i18n";
+import { formatDate } from "../../utils/formatDate";
 import type { InvitationHistoryTableProps } from "./InvitationHistoryTable.interface";
 import { INVITATION_HISTORY_TABLE_STYLES as STYLES } from "./InvitationHistoryTable.styles";
 

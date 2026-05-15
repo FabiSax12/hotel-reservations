@@ -55,7 +55,7 @@ export function PendingInvitationRow({
             <X className="size-4" />
           </Button>
         </ButtonGroup>
-      </Table.Cell >
-    </Table.Row >
+      </Table.Cell>
+    </Table.Row>
   );
 }

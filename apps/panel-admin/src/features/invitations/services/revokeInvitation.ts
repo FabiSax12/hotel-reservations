@@ -1,6 +1,6 @@
 "use server";
 import { createSupabaseServiceClient } from "@hotel/db";
-import type { RevokeInvitationResult } from "../../admins-table/domain/invitation.types";
+import type { RevokeInvitationResult } from "../domain/invitation.types";
 
 export const revokeInvitation = async (invitationId: string): Promise<RevokeInvitationResult> => {
   const supabase = createSupabaseServiceClient();

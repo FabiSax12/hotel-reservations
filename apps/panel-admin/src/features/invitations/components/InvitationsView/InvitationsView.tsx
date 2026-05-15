@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback } from "react";
-import { PendingInvitationsTable } from "@/features/admins-table/components/PendingInvitationsTable/PendingInvitationsTable";
-import { useInvitationActions } from "@/features/admins-table/hooks/useInvitationActions";
-import { InvitationHistoryTable } from "@/features/invitations/components/InvitationHistoryTable/InvitationHistoryTable";
 import { useI18n } from "@/locales";
+import { useInvitationActions } from "../../hooks/useInvitationActions";
 import { useInvitationsState } from "../../hooks/useInvitationsState";
 import { mapInvitationsToListItems } from "../../utils/mapInvitationsToListItems";
+import { InvitationHistoryTable } from "../InvitationHistoryTable/InvitationHistoryTable";
+import { PendingInvitationsTable } from "../PendingInvitationsTable/PendingInvitationsTable";
 import type { InvitationsViewProps } from "./InvitationsView.interface";
 import { styles, TAB_KEYS } from "./InvitationsView.styles";
 

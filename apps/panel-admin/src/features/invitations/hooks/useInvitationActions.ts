@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { resendInvitation } from "../../invitations/services/resendInvitation";
-import { revokeInvitation } from "../../invitations/services/revokeInvitation";
+import { resendInvitation } from "../services/resendInvitation";
+import { revokeInvitation } from "../services/revokeInvitation";
 
 export const useInvitationActions = (onSuccess: () => void) => {
   const [isRevoking, setIsRevoking] = useState<string | null>(null);
