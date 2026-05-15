@@ -2,7 +2,7 @@
 
 import { STATUS_COLORS } from "../../../constants/metrics.constants";
 import type { ReservationStatus } from "../../../domain/metrics.types";
-import { WEEKLY_CHART_STYLES as S, CHART_LAYOUT as L } from "./WeeklyStackedBarChart.styles";
+import { WEEKLY_CHART_STYLES as STYLES, CHART_LAYOUT as L } from "./WeeklyStackedBarChart.styles";
 import type { WeeklyStackedBarChartProps } from "./WeeklyStackedBarChart.interface";
 
 const STATUS_ORDER: ReservationStatus[] = ["pending", "approved", "cancelled", "completed"];
@@ -21,7 +21,7 @@ function buildRoundedRectPath(x: number, y: number, w: number, h: number, r: num
 
 export function WeeklyStackedBarChart({ data }: WeeklyStackedBarChartProps) {
   if (data.length === 0) {
-    return <div className={S.empty}>Sin datos para el período seleccionado</div>;
+    return <div className={STYLES.empty}>Sin datos para el período seleccionado</div>;
   }
 
   const plotW = 600 - L.marginLeft - L.marginRight;
@@ -42,23 +42,22 @@ export function WeeklyStackedBarChart({ data }: WeeklyStackedBarChartProps) {
   );
 
   return (
-    <div className={S.wrapper}>
-      <div className={S.legend}>
+    <div className={STYLES.wrapper}>
+      <div className={STYLES.legend}>
         {STATUS_ORDER.map((status) => (
-          <span key={status} className={S.legendItem}>
-            <span className={`${S.legendDot} ${STATUS_COLORS[status].tailwind}`} aria-hidden="true" />
-            <span className={S.legendLabel}>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+          <span key={status} className={STYLES.legendItem}>
+            <span className={`${STYLES.legendDot} ${STATUS_COLORS[status].tailwind}`} aria-hidden="true" />
+            <span className={STYLES.legendLabel}>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
           </span>
         ))}
       </div>
 
       <svg
         viewBox={`0 0 600 ${L.height}`}
-        className={S.svgContainer}
+        className={STYLES.svgContainer}
         role="img"
         aria-label="Distribución semanal de reservaciones"
       >
-        {/* Grid lines */}
         {gridValues.map((val) => {
           const y = L.marginTop + yScale(val);
           return (
@@ -84,7 +83,6 @@ export function WeeklyStackedBarChart({ data }: WeeklyStackedBarChartProps) {
           );
         })}
 
-        {/* Bars */}
         {data.map((point, i) => {
           const x0 = L.marginLeft + i * slotW + barOffset;
           let stackY = plotH;

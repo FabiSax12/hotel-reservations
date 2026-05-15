@@ -4,7 +4,7 @@ import { PERCENTAGE_SCALE } from "../../../constants/metrics.constants";
 import { StatusChip } from "../../shared/StatusChip/StatusChip";
 import { ProportionalBar } from "../../shared/ProportionalBar/ProportionalBar";
 import { WeeklyStackedBarChart } from "../../charts/WeeklyStackedBarChart/WeeklyStackedBarChart";
-import { RESERVATIONS_BY_STATUS_TAB_STYLES as S } from "./ReservationsByStatusTab.styles";
+import { RESERVATIONS_BY_STATUS_TAB_STYLES as STYLES } from "./ReservationsByStatusTab.styles";
 import type { ReservationsByStatusTabProps } from "./ReservationsByStatusTab.interface";
 import type { ProportionalBarSegment } from "../../shared/ProportionalBar/ProportionalBar.interface";
 
@@ -34,19 +34,19 @@ export function ReservationsByStatusTab({
   ];
 
   return (
-    <div className={S.wrapper}>
-      <div className={S.headerRow}>
+    <div className={STYLES.wrapper}>
+      <div className={STYLES.headerRow}>
         <div>
-          <p className={S.subtitle}>
+          <p className={STYLES.subtitle}>
             {total.toLocaleString()} {totalLabel}
           </p>
         </div>
-        <span className={S.periodBadge}>
+        <span className={STYLES.periodBadge}>
           {periodPrefix} · {periodLabel}
         </span>
       </div>
 
-      <div className={S.chipsGrid}>
+      <div className={STYLES.chipsGrid}>
         <StatusChip
           status="pending"
           label={statusLabels.PENDING}
@@ -76,8 +76,8 @@ export function ReservationsByStatusTab({
       <ProportionalBar segments={barSegments} />
 
       <div>
-        <p className={S.sectionTitle}>{weeklyTitle}</p>
-        <p className={S.sectionSub}>{weeklySubtitle}</p>
+        <p className={STYLES.sectionTitle}>{weeklyTitle}</p>
+        <p className={STYLES.sectionSub}>{weeklySubtitle}</p>
       </div>
 
       <WeeklyStackedBarChart data={weeklyData} />

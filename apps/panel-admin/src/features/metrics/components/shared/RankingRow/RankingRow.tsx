@@ -1,7 +1,7 @@
 "use client";
 
 import { CURRENCY_CODE, CURRENCY_LOCALE } from "../../../constants/metrics.constants";
-import { RANKING_ROW_STYLES as S } from "./RankingRow.styles";
+import { RANKING_ROW_STYLES as STYLES } from "./RankingRow.styles";
 import type { RankingRowProps } from "./RankingRow.interface";
 
 function formatRevenue(amount: number): string {
@@ -14,18 +14,18 @@ function formatRevenue(amount: number): string {
 
 export function RankingRow({ rank, roomName, reservationCount, proportionPct, revenue, reservationsSuffix }: RankingRowProps) {
   return (
-    <div className={S.row}>
-      <span className={S.rankBadge}>#{rank}</span>
-      <div className={S.info}>
-        <div className={S.nameRow}>
-          <span className={S.name} title={roomName}>{roomName}</span>
+    <div className={STYLES.row}>
+      <span className={STYLES.rankBadge}>#{rank}</span>
+      <div className={STYLES.info}>
+        <div className={STYLES.nameRow}>
+          <span className={STYLES.name} title={roomName}>{roomName}</span>
         </div>
-        <div className={S.bar}>
-          <div className={S.barFill} style={{ width: `${proportionPct}%` }} />
+        <div className={STYLES.bar}>
+          <div className={STYLES.barFill} style={{ width: `${proportionPct}%` }} />
         </div>
-        <div className={S.countRevRow}>
-          <span className={S.count}>{reservationCount} {reservationsSuffix}</span>
-          <span className={S.revenue}>{formatRevenue(revenue)}</span>
+        <div className={STYLES.countRevRow}>
+          <span className={STYLES.count}>{reservationCount} {reservationsSuffix}</span>
+          <span className={STYLES.revenue}>{formatRevenue(revenue)}</span>
         </div>
       </div>
     </div>

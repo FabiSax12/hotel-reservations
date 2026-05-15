@@ -2,8 +2,7 @@
 
 import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
-import { Download } from "lucide-react";
-import { DASHBOARD_HEADER_STYLES as S } from "./DashboardHeader.styles";
+import { DASHBOARD_HEADER_STYLES as STYLES } from "./DashboardHeader.styles";
 import type { DashboardHeaderProps } from "./DashboardHeader.interface";
 import type { MetricsDateRange } from "../../domain/metrics.types";
 
@@ -15,7 +14,6 @@ export function DashboardHeader({
   titlePrefix,
   titleAccent,
   subtitle,
-  exportLabel,
   ariaDateRange,
 }: DashboardHeaderProps) {
   const pickerValue: HeroDateRange =
@@ -33,57 +31,57 @@ export function DashboardHeader({
   };
 
   return (
-    <div className={S.wrapper}>
-      <div className={S.left}>
-        <div className={S.titleRow}>
-          <h1 className={S.titlePrefix}>{titlePrefix}</h1>
-          <span className={S.titleAccent}>{titleAccent}</span>
+    <div className={STYLES.wrapper}>
+      <div className={STYLES.left}>
+        <div className={STYLES.titleRow}>
+          <h1 className={STYLES.titlePrefix}>{titlePrefix}</h1>
+          <span className={STYLES.titleAccent}>{titleAccent}</span>
         </div>
-        <p className={S.subtitle}>{subtitle}</p>
+        <p className={STYLES.subtitle}>{subtitle}</p>
       </div>
 
-      <div className={S.controls}>
+      <div className={STYLES.controls}>
         <HeroDateRangePicker
           value={pickerValue}
           onChange={handleDateChange}
           aria-label={ariaDateRange}
         >
-          <DateField.Group className={S.dateGroup}>
+          <DateField.Group fullWidth className={STYLES.group}>
             <DateField.Input slot="start">
-              {(segment) => <DateField.Segment segment={segment} className={S.segment} />}
+              {(segment) => <DateField.Segment segment={segment} className={STYLES.segment} />}
             </DateField.Input>
-            <HeroDateRangePicker.RangeSeparator className={S.separator} />
+            <HeroDateRangePicker.RangeSeparator />
             <DateField.Input slot="end">
-              {(segment) => <DateField.Segment segment={segment} className={S.segment} />}
+              {(segment) => <DateField.Segment segment={segment} className={STYLES.segment} />}
             </DateField.Input>
             <DateField.Suffix>
               <HeroDateRangePicker.Trigger>
-                <HeroDateRangePicker.TriggerIndicator className={S.triggerIndicator} />
+                <HeroDateRangePicker.TriggerIndicator className={STYLES.triggerIndicator} />
               </HeroDateRangePicker.Trigger>
             </DateField.Suffix>
           </DateField.Group>
           <HeroDateRangePicker.Popover>
             <RangeCalendar aria-label={ariaDateRange}>
               <RangeCalendar.Header>
-                <RangeCalendar.YearPickerTrigger className={S.yearPickerTrigger}>
-                  <RangeCalendar.YearPickerTriggerHeading className={S.yearPickerTriggerHeading} />
-                  <RangeCalendar.YearPickerTriggerIndicator className={S.yearPickerTriggerIndicator} />
+                <RangeCalendar.YearPickerTrigger className={STYLES.yearPickerTrigger}>
+                  <RangeCalendar.YearPickerTriggerHeading className={STYLES.yearPickerTriggerHeading} />
+                  <RangeCalendar.YearPickerTriggerIndicator className={STYLES.yearPickerTriggerIndicator} />
                 </RangeCalendar.YearPickerTrigger>
-                <RangeCalendar.NavButton slot="previous" className={S.navButton} />
-                <RangeCalendar.NavButton slot="next" className={S.navButton} />
+                <RangeCalendar.NavButton slot="previous" className={STYLES.navButton} />
+                <RangeCalendar.NavButton slot="next" className={STYLES.navButton} />
               </RangeCalendar.Header>
               <RangeCalendar.Grid>
                 <RangeCalendar.GridHeader>
                   {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
                 </RangeCalendar.GridHeader>
                 <RangeCalendar.GridBody>
-                  {(date) => <RangeCalendar.Cell date={date} className={S.calendarCell} />}
+                  {(date) => <RangeCalendar.Cell date={date} className={STYLES.calendarCell} />}
                 </RangeCalendar.GridBody>
               </RangeCalendar.Grid>
               <RangeCalendar.YearPickerGrid>
                 <RangeCalendar.YearPickerGridBody>
                   {({ year, formattedYear }) => (
-                    <RangeCalendar.YearPickerCell year={year} className={S.yearPickerCell}>
+                    <RangeCalendar.YearPickerCell year={year} className={STYLES.yearPickerCell}>
                       {formattedYear}
                     </RangeCalendar.YearPickerCell>
                   )}
@@ -92,11 +90,6 @@ export function DashboardHeader({
             </RangeCalendar>
           </HeroDateRangePicker.Popover>
         </HeroDateRangePicker>
-
-        <button type="button" className={S.exportButton} aria-label={exportLabel}>
-          <Download className={S.exportIcon} aria-hidden="true" />
-          {exportLabel}
-        </button>
       </div>
     </div>
   );

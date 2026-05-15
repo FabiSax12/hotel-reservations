@@ -6,6 +6,5 @@ export interface DashboardHeaderProps {
   titlePrefix: string;
   titleAccent: string;
   subtitle: string;
-  exportLabel: string;
   ariaDateRange: string;
 }

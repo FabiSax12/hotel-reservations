@@ -4,31 +4,31 @@ import { Tabs } from "@heroui/react";
 import { ReservationsByStatusTab } from "../tabs/ReservationsByStatusTab/ReservationsByStatusTab";
 import { RoomOccupancyTab } from "../tabs/RoomOccupancyTab/RoomOccupancyTab";
 import { RankingTab } from "../tabs/RankingTab/RankingTab";
-import { METRICS_TABS_STYLES as S, METRICS_TAB_KEYS as KEYS } from "./MetricsTabs.styles";
+import { METRICS_TABS_STYLES as STYLES, METRICS_TAB_KEYS as KEYS } from "./MetricsTabs.styles";
 import type { MetricsTabsProps } from "./MetricsTabs.interface";
 
 export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
   return (
-    <Tabs className={S.wrapper} variant="secondary" defaultSelectedKey={KEYS.RESERVATIONS_BY_STATUS}>
+    <Tabs className={STYLES.wrapper} variant="secondary" defaultSelectedKey={KEYS.RESERVATIONS_BY_STATUS}>
       <Tabs.ListContainer>
-        <Tabs.List aria-label="Secciones del dashboard" className={S.list}>
-          <Tabs.Tab id={KEYS.RESERVATIONS_BY_STATUS} className={S.tab}>
+        <Tabs.List aria-label="Secciones del dashboard" className={STYLES.list}>
+          <Tabs.Tab id={KEYS.RESERVATIONS_BY_STATUS} className={STYLES.tab}>
             {texts.TABS.RESERVATIONS_BY_STATUS}
             <Tabs.Indicator />
           </Tabs.Tab>
-          <Tabs.Tab id={KEYS.ROOM_OCCUPANCY} className={S.tab}>
+          <Tabs.Tab id={KEYS.ROOM_OCCUPANCY} className={STYLES.tab}>
             {texts.TABS.ROOM_OCCUPANCY}
             <Tabs.Indicator />
           </Tabs.Tab>
-          <Tabs.Tab id={KEYS.RANKING} className={S.tab}>
+          <Tabs.Tab id={KEYS.RANKING} className={STYLES.tab}>
             {texts.TABS.RANKING}
             <Tabs.Indicator />
           </Tabs.Tab>
         </Tabs.List>
       </Tabs.ListContainer>
 
-      <Tabs.Panel id={KEYS.RESERVATIONS_BY_STATUS} className={S.panel}>
-        <p className={S.panelTitle}>{texts.STATUS_TAB.TITLE}</p>
+      <Tabs.Panel id={KEYS.RESERVATIONS_BY_STATUS} className={STYLES.panel}>
+        <p className={STYLES.panelTitle}>{texts.STATUS_TAB.TITLE}</p>
         <ReservationsByStatusTab
           statusCounts={metrics.statusCounts}
           totalReservations={metrics.totalReservations}
@@ -42,8 +42,8 @@ export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
         />
       </Tabs.Panel>
 
-      <Tabs.Panel id={KEYS.ROOM_OCCUPANCY} className={S.panel}>
-        <p className={S.panelTitle}>{texts.OCCUPANCY_TAB.TITLE}</p>
+      <Tabs.Panel id={KEYS.ROOM_OCCUPANCY} className={STYLES.panel}>
+        <p className={STYLES.panelTitle}>{texts.OCCUPANCY_TAB.TITLE}</p>
         <RoomOccupancyTab
           roomOccupancies={metrics.roomOccupancies}
           title={texts.OCCUPANCY_TAB.TITLE}
@@ -52,8 +52,8 @@ export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
         />
       </Tabs.Panel>
 
-      <Tabs.Panel id={KEYS.RANKING} className={S.panel}>
-        <p className={S.panelTitle}>{texts.RANKING_TAB.TITLE}</p>
+      <Tabs.Panel id={KEYS.RANKING} className={STYLES.panel}>
+        <p className={STYLES.panelTitle}>{texts.RANKING_TAB.TITLE}</p>
         <RankingTab
           ranking={metrics.ranking}
           subtitle={texts.RANKING_TAB.SUBTITLE}

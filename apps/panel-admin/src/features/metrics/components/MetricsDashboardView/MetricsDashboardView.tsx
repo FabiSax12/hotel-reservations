@@ -5,7 +5,7 @@ import { useMetricsDashboard } from "../../hooks/useMetricsDashboard";
 import { DashboardHeader } from "../DashboardHeader/DashboardHeader";
 import { StatCards } from "../StatCards/StatCards";
 import { MetricsTabs } from "../MetricsTabs/MetricsTabs";
-import { METRICS_DASHBOARD_VIEW_STYLES as S } from "./MetricsDashboardView.styles";
+import { METRICS_DASHBOARD_VIEW_STYLES as STYLES } from "./MetricsDashboardView.styles";
 import type { MetricsDashboardViewProps } from "./MetricsDashboardView.interface";
 import type { MetricsDateRange } from "../../domain/metrics.types";
 
@@ -38,25 +38,25 @@ export function MetricsDashboardView({ reservations, rooms }: MetricsDashboardVi
   const periodLabel = buildPeriodLabel(dateRange);
 
   return (
-    <main className={S.page}>
-      <DashboardHeader
-        dateRange={dateRange}
-        onDateRangeChange={setDateRange}
-        titlePrefix={t.METRICS.PAGE.TITLE_PREFIX}
-        titleAccent={t.METRICS.PAGE.TITLE_ACCENT}
-        subtitle={t.METRICS.PAGE.SUBTITLE}
-        exportLabel={t.METRICS.PAGE.EXPORT_BUTTON}
-        ariaDateRange={t.METRICS.PAGE.ARIA_DATE_RANGE}
-      />
-
-      <StatCards
-        totalReservations={metrics.totalReservations}
-        totalRevenue={metrics.totalRevenue}
-        averageOccupancy={metrics.averageOccupancy}
-        activeRooms={metrics.activeRooms}
-        totalRooms={metrics.totalRooms}
-        labels={t.METRICS.STATS}
-      />
+    <main className={STYLES.page}>
+      <div className={STYLES.headerCard}>
+        <DashboardHeader
+          dateRange={dateRange}
+          onDateRangeChange={setDateRange}
+          titlePrefix={t.METRICS.PAGE.TITLE_PREFIX}
+          titleAccent={t.METRICS.PAGE.TITLE_ACCENT}
+          subtitle={t.METRICS.PAGE.SUBTITLE}
+          ariaDateRange={t.METRICS.PAGE.ARIA_DATE_RANGE}
+        />
+        <StatCards
+          totalReservations={metrics.totalReservations}
+          totalRevenue={metrics.totalRevenue}
+          averageOccupancy={metrics.averageOccupancy}
+          activeRooms={metrics.activeRooms}
+          totalRooms={metrics.totalRooms}
+          labels={t.METRICS.STATS}
+        />
+      </div>
 
       <MetricsTabs
         metrics={metrics}

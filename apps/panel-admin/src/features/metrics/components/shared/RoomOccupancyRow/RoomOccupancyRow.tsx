@@ -7,7 +7,7 @@ import {
   CURRENCY_CODE,
   CURRENCY_LOCALE,
 } from "../../../constants/metrics.constants";
-import { ROOM_OCCUPANCY_ROW_STYLES as S } from "./RoomOccupancyRow.styles";
+import { ROOM_OCCUPANCY_ROW_STYLES as STYLES } from "./RoomOccupancyRow.styles";
 import type { RoomOccupancyRowProps } from "./RoomOccupancyRow.interface";
 
 type ProgressBarColor = "success" | "warning" | "accent" | "default" | "danger";
@@ -31,18 +31,18 @@ export function RoomOccupancyRow({ roomName, occupancyPct, revenue }: RoomOccupa
   const color = resolveOccupancyColor(occupancyPct);
 
   return (
-    <div className={S.row}>
-      <span className={S.name} title={roomName}>{roomName}</span>
-      <div className={S.barWrapper}>
+    <div className={STYLES.row}>
+      <span className={STYLES.name} title={roomName}>{roomName}</span>
+      <div className={STYLES.barWrapper}>
         <ProgressBar value={occupancyPct} color={color} size="sm" aria-label={roomName}>
           <Label className="sr-only">{roomName}</Label>
           <ProgressBar.Track>
             <ProgressBar.Fill />
           </ProgressBar.Track>
         </ProgressBar>
-        <div className={S.footer}>
-          <span className={S.pct}>{occupancyPct.toFixed(1)}%</span>
-          <span className={S.revenue}>{formatRevenue(revenue)}</span>
+        <div className={STYLES.footer}>
+          <span className={STYLES.pct}>{occupancyPct.toFixed(1)}%</span>
+          <span className={STYLES.revenue}>{formatRevenue(revenue)}</span>
         </div>
       </div>
     </div>
