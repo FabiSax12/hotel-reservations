@@ -22,6 +22,7 @@ export const SIDEBAR_TEXTS: Record<SupportedLocale, SidebarTexts> = {
       ITEMS: {
         DASHBOARD: "Dashboard",
         ADMINS: "Administradores",
+        METRICS_DASHBOARD: "Métricas",
         RESERVATIONS: "Reservas",
         CLIENTS: "Clientes",
         ROOMS: "Cuartos",
@@ -54,6 +55,7 @@ export const SIDEBAR_TEXTS: Record<SupportedLocale, SidebarTexts> = {
       ITEMS: {
         DASHBOARD: "Dashboard",
         ADMINS: "Admins",
+        METRICS_DASHBOARD: "Metrics",
         RESERVATIONS: "Reservations",
         CLIENTS: "Clients",
         ROOMS: "Rooms",

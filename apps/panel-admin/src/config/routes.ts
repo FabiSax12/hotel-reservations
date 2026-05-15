@@ -4,6 +4,7 @@ export const ROUTES = Object.freeze({
     RESERVATIONS: "/admin/reservations",
     NEW: "/admin/reservations/new",
     ADMINS: "/admin/admins",
+    METRICS_DASHBOARD: "/admin/metrics-dashboard",
   } as const),
   AUTH: Object.freeze({
     LOGIN: "/auth/login",

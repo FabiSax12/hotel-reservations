@@ -1,4 +1,5 @@
 import {
+  BarChart2,
   BedDouble,
   ClipboardList,
   KeyRound,
@@ -26,6 +27,12 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         labelKey: LABEL_KEYS.ADMINS,
         route: ROUTES.ADMIN.ADMINS,
         icon: KeyRound,
+        isPrimary: true,
+      },
+      {
+        labelKey: LABEL_KEYS.METRICS_DASHBOARD,
+        route: ROUTES.ADMIN.METRICS_DASHBOARD,
+        icon: BarChart2,
         isPrimary: true,
       },
     ],
