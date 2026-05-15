@@ -33,7 +33,7 @@ export const SidebarFooter = ({ isCollapsed }: SidebarFooterProps) => {
         </Avatar>
         {!isCollapsed && (
           <div className={STYLES.identityText}>
-            <p className={STYLES.identityName}>{user?.user_metadata?.full_name ?? user?.email}</p>
+            <p className={STYLES.identityName}>{profile?.full_name ?? user?.email}</p>
             <p className={STYLES.identityRole}>{profile?.role ?? user?.role}</p>
           </div>
         )}

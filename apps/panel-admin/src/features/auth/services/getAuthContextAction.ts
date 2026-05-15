@@ -1,15 +1,14 @@
 "use server";
 
 import { verifyAdminRole } from "@hotel/core/auth";
-import type { UserProfile } from "@hotel/db";
-import { createSupabaseServerClient } from "@hotel/db";
+import { type AdminUser, createSupabaseServerClient } from "@hotel/db";
 import type { Session, User } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export type AuthContextData = {
   session: Session | null;
   user: User | null;
-  profile: UserProfile | null;
+  profile: AdminUser | null;
 };
 
 export async function getAuthContextAction(): Promise<AuthContextData> {
@@ -21,7 +20,7 @@ export async function getAuthContextAction(): Promise<AuthContextData> {
 
   const session = data.session ?? null;
   const user = session?.user ?? null;
-  const profile = user ? await verifyAdminRole(user.id) : null;
+  const profile: AdminUser | null = user ? await verifyAdminRole(user.id) : null;
 
   return { session, user, profile };
 }

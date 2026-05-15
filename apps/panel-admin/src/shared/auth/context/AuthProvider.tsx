@@ -1,6 +1,6 @@
 "use client";
 
-import type { UserProfile } from "@hotel/db";
+import type { AdminUser } from "@hotel/db/types";
 import type { Session } from "@supabase/supabase-js";
 import { useCallback, useMemo, useState } from "react";
 import { getAuthContextAction } from "@/features/auth/services/getAuthContextAction";
@@ -9,7 +9,7 @@ import { AuthContext } from "./authContext";
 export type AuthProviderProps = {
   initialSession: Session | null;
   initialUser: Session["user"] | null;
-  initialProfile: UserProfile | null;
+  initialProfile: AdminUser | null;
   children: React.ReactNode;
 };
 
@@ -21,7 +21,7 @@ export function AuthProvider({
 }: AuthProviderProps) {
   const [session, setSession] = useState<Session | null>(initialSession);
   const [user, setUser] = useState<Session["user"] | null>(initialUser);
-  const [profile, setProfile] = useState<UserProfile | null>(initialProfile);
+  const [profile, setProfile] = useState<AdminUser | null>(initialProfile);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

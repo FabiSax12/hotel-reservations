@@ -26,5 +26,5 @@ export async function activateAdminAction(
     return { error: ACTIVATION_ERRORS.UNKNOWN_ERROR };
   }
 
-  redirect(ROUTES.ADMIN.LOGIN);
+  redirect(ROUTES.AUTH.LOGIN);
 }
