@@ -9,7 +9,6 @@ dist/
 next-env.d.ts
 
 # Supabase CLI (local development)
-supabase/
 supabase/.branches/
 supabase/.apps/
 supabase/.temp/
