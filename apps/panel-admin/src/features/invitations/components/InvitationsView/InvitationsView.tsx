@@ -60,6 +60,7 @@ export const InvitationsView = ({ invitations }: InvitationsViewProps) => {
           onResend={handleResend}
           isRevoking={isRevoking}
           isResending={isResending}
+          onCreateSuccess={refreshInvitations}
         />
       ) : (
         <InvitationHistoryTable

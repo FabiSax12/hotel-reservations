@@ -15,6 +15,7 @@ export const PendingInvitationsTable = ({
   onResend,
   isRevoking,
   isResending,
+  onCreateSuccess,
 }: PendingInvitationsTableProps) => {
   const { t } = useI18n();
 
@@ -22,7 +23,7 @@ export const PendingInvitationsTable = ({
     <section className={STYLES.section}>
       <header className={STYLES.headerRow}>
         <h2 className={STYLES.title}>{t.ADMINS.INVITATIONS.SECTION_TITLE}</h2>
-        <CreateInvitationModal />
+        <CreateInvitationModal onSuccess={onCreateSuccess} />
       </header>
 
       <Table>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import type { CreateAdminActionState } from "@/features/invitations/domain/adminInvite";
 import { useI18n } from "@/locales";
 import type { CreateAdminFormProps } from "./CreateAdminForm.interface";
@@ -9,13 +9,21 @@ import { CREATE_ADMIN_FORM_STYLES as S } from "./CreateAdminForm.styles";
 
 const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-export const CreateAdminForm = ({ action }: CreateAdminFormProps) => {
+export const CreateAdminForm = ({ action, onSuccess }: CreateAdminFormProps) => {
   const [state, formAction, isPending] = useActionState<CreateAdminActionState, FormData>(
     action,
     null,
   );
   const { t } = useI18n();
   const { CREATE_ADMIN, VALIDATION, ERRORS } = t.AUTH.ADMIN;
+  const hasCalledOnSuccess = useRef(false);
+
+  useEffect(() => {
+    if (state !== null && "success" in state && !hasCalledOnSuccess.current) {
+      hasCalledOnSuccess.current = true;
+      onSuccess?.();
+    }
+  }, [state, onSuccess]);
 
   if (state !== null && "success" in state) {
     return (

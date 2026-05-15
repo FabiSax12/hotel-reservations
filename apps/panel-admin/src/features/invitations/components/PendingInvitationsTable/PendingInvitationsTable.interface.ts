@@ -6,4 +6,5 @@ export interface PendingInvitationsTableProps {
   onResend: (id: string) => void;
   isRevoking: string | null;
   isResending: string | null;
+  onCreateSuccess?: () => void;
 }
