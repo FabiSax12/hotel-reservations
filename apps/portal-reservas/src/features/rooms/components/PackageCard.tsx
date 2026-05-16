@@ -14,24 +14,28 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import type { PackageCardProps } from "../domain/types";
-import { PACKAGE_CARD_STYLES as PS } from "../../../theme/rooms.theme";
+import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/locales";
-import { useRoomsContext } from "../context/RoomsContext";
-import { useRoomAvailability } from "../hooks/useRoomAvailability";
+import { PACKAGE_CARD_STYLES as PS } from "../../../theme/rooms.theme";
 import { ROOM_ANIMATION, ROOM_MOCK } from "../constants/rooms.constants";
-import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
+import { useRoomsContext } from "../context/RoomsContext";
+import type { PackageCardProps } from "../domain/types";
+import { useDelayedUnmount } from "../hooks/useDelayedUnmount";
+import { useRoomAvailability } from "../hooks/useRoomAvailability";
+import { RoomCard } from "./RoomCard";
+import { PackageCardCTA } from "./sub-components/PackageCardCTA";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
 import { PackageCardSummary } from "./sub-components/PackageCardSummary";
-import { PackageCardCTA } from "./sub-components/PackageCardCTA";
+import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 
-export function PackageCard({ pkg, index }: PackageCardProps) {
+export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
   const { hasDates, searchDates } = useRoomsContext();
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isReserving, setIsReserving] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const shouldRenderExpansion = useDelayedUnmount(isExpanded, 500);
 
   // Check availability using primary room (most expensive).
   const primaryRoom = pkg.rooms[0];
@@ -57,7 +61,9 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
 
   const handleReserve = () => {
     setIsReserving(true);
-    setTimeout(() => { setIsReserving(false); }, ROOM_MOCK.RESERVE_DELAY_MS);
+    setTimeout(() => {
+      setIsReserving(false);
+    }, ROOM_MOCK.RESERVE_DELAY_MS);
   };
 
   const toggleCalendar = () => setIsCalendarOpen((v) => !v);
@@ -91,6 +97,7 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
               <RoomRangeCalendar
                 availableDates={primaryRoom.availableDates}
                 location={primaryRoom.location}
+                roomId={primaryRoom.id}
                 onClose={() => setIsCalendarOpen(false)}
               />
             )}
@@ -108,6 +115,42 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
           </div>
         </PackageCardSummary>
       </article>
+
+      {/* Expand toggle — below the card */}
+      <button
+        type="button"
+        className={PS.expandBtn}
+        onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+      >
+        <span>
+          {isExpanded
+            ? t.ROOMS.PACKAGE_COLLAPSE
+            : t.ROOMS.PACKAGE_EXPAND.replace("{count}", String(pkg.rooms.length))}
+        </span>
+        <span className={PS.expandIcon(isExpanded)}>▼</span>
+      </button>
+
+      {/* Expanded component rooms — only mount when expanded (or during exit animation) */}
+      {shouldRenderExpansion && (
+        <div className={PS.expansionGrid(isExpanded)} aria-hidden={!isExpanded}>
+          <div className={PS.expansionInner}>
+            <div className={PS.expansionContent}>
+              <p className={PS.expansionTitle}>{t.ROOMS.PACKAGE_ROOMS_TITLE}</p>
+              <div className={PS.expansionGridInner}>
+                {pkg.rooms.map((room, i) => (
+                  <RoomCard
+                    key={`${pkg.id}-${room.id}-${i}`}
+                    room={room}
+                    index={i}
+                    selectedDest={selectedDest}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

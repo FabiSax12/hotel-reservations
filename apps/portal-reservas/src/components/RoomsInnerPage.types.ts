@@ -5,8 +5,8 @@
  * This separation keeps the root page as a pure composition layer.
  */
 
-import type { SearchParams } from "../features/search/domain/types";
 import type { Room } from "../features/rooms/domain/types";
+import type { SearchParams } from "../features/search/domain/types";
 
 export interface RoomsInnerPageProps {
   /** Whether the user has triggered at least one search (switches from hero to sticky bar). */
@@ -27,6 +27,8 @@ export interface RoomsInnerPageProps {
   isSearchingData: boolean;
   /** Rooms filtered by the selected destination. */
   filteredRooms: Room[];
+  /** Room ID to show first in the list (set when user checks availability from a specific room card). */
+  prioritizedRoomId: string | null;
   /** Callback to trigger a search with the given parameters. */
   onSearchTrigger: (params: SearchParams) => void;
   /** Callback when the destination changes in the search bar. */

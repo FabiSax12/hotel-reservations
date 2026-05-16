@@ -19,7 +19,7 @@ export const ROOM_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   // Fixed height on desktop for consistent card dimensions across rooms and packages
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[420px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -207,7 +207,7 @@ export const PACKAGE_CARD_STYLES = {
   // Same horizontal layout and fixed height as RoomCard
   // Top corners only — bottom corners are handled by the expand button
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-t-[2rem] border border-b-0 border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[420px] bg-forest-900 rounded-t-[2rem] border border-b-0 border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -216,7 +216,7 @@ export const PACKAGE_CARD_STYLES = {
   // ─── Image Panel ────────────────────────────────────────────────────────────
   // Same dimensions as RoomCard image panel, fills parent height
   imageWrapper:
-    "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
+    "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-tl-[2rem]",
 
   // Collage grid layouts for multiple rooms
   imageGrid2: "grid grid-cols-2 gap-[2px] h-full",

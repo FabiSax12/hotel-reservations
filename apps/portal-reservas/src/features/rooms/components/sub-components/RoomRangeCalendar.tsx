@@ -10,29 +10,27 @@
 "use client";
 
 import { CalendarPopover } from "@hotel/ui";
-import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import type { RoomRangeCalendarProps } from "../../domain/types";
 import { useRoomCalendarState } from "../../hooks/useRoomCalendarState";
 
 export function RoomRangeCalendar({
   availableDates,
   location,
+  roomId,
   onClose,
 }: RoomRangeCalendarProps) {
   const { t } = useI18n();
   const { checkIn, checkOut, invalidState, handlePickDate } = useRoomCalendarState(
     availableDates,
     location,
+    roomId,
     onClose,
   );
 
   return (
-    <div
-      className={S.availCalWrapper}
-      role="dialog"
-      aria-label={t.ROOMS.AVAIL_CALENDAR_TITLE}
-    >
+    <div className={S.availCalWrapper} role="dialog" aria-label={t.ROOMS.AVAIL_CALENDAR_TITLE}>
       <CalendarPopover
         variant="compact"
         isInline

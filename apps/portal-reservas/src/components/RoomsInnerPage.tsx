@@ -7,14 +7,14 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
-import type { RoomsInnerPageProps } from "./RoomsInnerPage.types";
+import { useEffect, useState } from "react";
 import { Background } from "../features/layout/components/Background";
 import { Header } from "../features/layout/components/Header";
-import { HeroSearch } from "../features/search/components/HeroSearch";
 import { RoomList } from "../features/rooms/components/RoomList";
 import { RoomsProvider } from "../features/rooms/context/RoomsContext";
+import { HeroSearch } from "../features/search/components/HeroSearch";
 import { PAGE_STYLES as S } from "../theme/layout.theme";
+import type { RoomsInnerPageProps } from "./RoomsInnerPage.types";
 
 export function RoomsInnerPage({
   hasSearched,
@@ -26,6 +26,7 @@ export function RoomsInnerPage({
   hasDates,
   isSearchingData,
   filteredRooms,
+  prioritizedRoomId,
   onSearchTrigger,
   onDestinationChange,
   onReset,
@@ -57,6 +58,7 @@ export function RoomsInnerPage({
     setExpandedRoomId,
     onSearch: onSearchTrigger,
     guestCount: (searchParams.adults ?? 0) + (searchParams.children ?? 0),
+    prioritizedRoomId,
   };
 
   return (

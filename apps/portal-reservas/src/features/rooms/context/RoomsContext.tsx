@@ -45,6 +45,12 @@ export interface RoomsContextValue {
    * When 0 or undefined, rooms are shown individually (no grouping).
    */
   guestCount: number;
+  /**
+   * Room ID to show first in the list.
+   * Set when the user checks availability from a specific room card's calendar.
+   * Cleared when a new search is triggered from the search bar.
+   */
+  prioritizedRoomId: string | null;
 }
 
 const RoomsContext = createContext<RoomsContextValue | null>(null);

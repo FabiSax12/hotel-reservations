@@ -13,20 +13,20 @@
  *  - Consumes `useRoomPackages` hook for smart grouping.
  */
 
-import type { RoomListProps } from "../domain/types";
-import { RoomCard } from "./RoomCard";
-import { PackageCard } from "./PackageCard";
-import { RoomCardSkeleton } from "./RoomCardSkeleton";
-import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import { useRoomsContext } from "../context/RoomsContext";
-import { useRoomPackages, isRoomPackage } from "../hooks/useRoomPackages";
+import type { RoomListProps } from "../domain/types";
+import { isRoomPackage, useRoomPackages } from "../hooks/useRoomPackages";
+import { PackageCard } from "./PackageCard";
+import { RoomCard } from "./RoomCard";
+import { RoomCardSkeleton } from "./RoomCardSkeleton";
 
 export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
-  const { guestCount } = useRoomsContext();
+  const { guestCount, prioritizedRoomId } = useRoomsContext();
 
-  const groupedRooms = useRoomPackages(rooms, guestCount);
+  const groupedRooms = useRoomPackages(rooms, guestCount, prioritizedRoomId);
   const optionCount = groupedRooms.length;
 
   return (
@@ -52,24 +52,12 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
       {/* Card grid — key forces re-mount for staggered animations on new search */}
       <div key={searchKey} className={S.grid}>
         {isLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <RoomCardSkeleton key={`skel-${index}`} />
-            ))
+          ? Array.from({ length: 3 }).map((_, index) => <RoomCardSkeleton key={`skel-${index}`} />)
           : groupedRooms.map((item, index) =>
               isRoomPackage(item) ? (
-                <PackageCard
-                  key={item.id}
-                  pkg={item}
-                  index={index}
-                  selectedDest={selectedDest}
-                />
+                <PackageCard key={item.id} pkg={item} index={index} selectedDest={selectedDest} />
               ) : (
-                <RoomCard
-                  key={item.id}
-                  room={item}
-                  index={index}
-                  selectedDest={selectedDest}
-                />
+                <RoomCard key={item.id} room={item} index={index} selectedDest={selectedDest} />
               ),
             )}
       </div>
