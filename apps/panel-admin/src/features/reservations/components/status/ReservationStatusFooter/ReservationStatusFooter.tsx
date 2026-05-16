@@ -42,7 +42,7 @@ export const ReservationStatusFooter = (props: ReservationStatusFooterProps) => 
     <div className={S.wrapper}>
       <div className={S.statusLine}>
         <span className={S.statusLabel}>{texts.LABEL_CURRENT_STATUS}</span>
-        <StatusBadge status={currentStatus} />
+        <StatusBadge status={currentStatus} size="md" />
       </div>
 
       <Divider />

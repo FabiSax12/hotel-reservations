@@ -1,25 +1,22 @@
 "use client";
 
+import Link from "next/link";
 import { Avatar, Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { formatTableDate } from "../../../utils/format-reservation-date";
 import { formatAmount } from "../../../utils/format-currency";
 import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
-import { Copy, Check, Eye, EyeOff } from "lucide-react";
+import { Copy, Check, Eye } from "lucide-react";
 import { useCopyCode } from "./useCopyCode";
 import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
 import type { ReservationRowProps } from "./ReservationRow.interface";
 
-export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: ReservationRowProps) => {
+export const ReservationRow = ({ reservation: r }: ReservationRowProps) => {
   const { t } = useI18n();
   const { copied, handleCopyCode } = useCopyCode(r.code);
 
-  const rowClassName    = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
-  const toggleClassName = isExpanded ? S.toggleButtonOn : S.toggleButtonOff;
-  const buttonLabel     = isExpanded ? t.RESERVATIONS.ACTIONS.VIEW_LESS : t.RESERVATIONS.ACTIONS.VIEW_MORE;
-
   return (
-    <tr className={rowClassName}>
+    <tr className={S.row}>
       <td className={S.cell}>
         <div className={S.codeChip}>
           <code className={S.codeText}>{r.code}</code>
@@ -78,19 +75,10 @@ export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: Reserva
       </td>
 
       <td className={S.cell}>
-        <Button
-          size="sm"
-          variant="outline"
-          className={toggleClassName}
-          onPress={onToggle}
-        >
-          {isExpanded ? (
-            <EyeOff className={S.toggleIcon} />
-          ) : (
-            <Eye className={S.toggleIcon} />
-          )}
-          {buttonLabel}
-        </Button>
+        <Link href={`/admin/reservations/${r.id}`} className={S.detailLink}>
+          <Eye className={S.detailIcon} />
+          {t.RESERVATIONS.ACTIONS.VIEW_DETAIL}
+        </Link>
       </td>
     </tr>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useI18n } from "@/locales";
 import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
 import { useReservationsFiltering } from "../../../hooks/useReservationsFiltering";
 import { FILTERED_RESULTS } from "../../../constants/filtered-results";
@@ -11,9 +10,7 @@ import { ReservationsFilters } from "../../filters/ReservationsFilters/Reservati
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
 import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
-import { updateReservationStatusAction } from "../../../actions/updateStatus";
 import type { ReservationsViewProps } from "./ReservationsView.interface";
-import type { ReservationStatus } from "../../../domain/reservation";
 
 function updateUrlPage(p: number) {
   const url = new URL(window.location.href);
@@ -23,7 +20,6 @@ function updateUrlPage(p: number) {
 }
 
 export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: ReservationsViewProps) => {
-  const { t } = useI18n();
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);
   const [page, setPage] = useState(initialPage);
   const isFirstRender = useRef(true);
@@ -47,16 +43,6 @@ export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: Reser
     updateUrlPage(newPage);
   };
 
-  const handleSaveReservationStatus = (
-    id: string,
-    status: ReservationStatus,
-    cancellationReason?: string,
-  ) => {
-    updateReservationStatusAction(id, status, cancellationReason).catch(
-      (err) => console.error(t.RESERVATIONS.ERRORS.UPDATE_STATUS, err),
-    );
-  };
-
   return (
     <main className={RESERVATIONS_PAGE_STYLES.wrapper}>
       <ReservationsPageHeader totalCount={reservations.length} statusCounts={statusCounts} />
@@ -74,10 +60,7 @@ export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: Reser
 
       <div className={CARD_STYLES.bodyWithOverflow}>
         {hasResults ? (
-          <ReservationsTable
-            reservations={paginated}
-            onSaveReservationStatus={handleSaveReservationStatus}
-          />
+          <ReservationsTable reservations={paginated} />
         ) : (
           <EmptyState />
         )}
