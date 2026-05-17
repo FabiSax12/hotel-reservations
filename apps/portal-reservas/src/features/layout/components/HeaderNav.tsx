@@ -6,12 +6,12 @@
  * be wired to navigation routes in a future iteration.
  */
 
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
-import { useI18n } from "@/locales";
-import { useAuthSession } from "../../auth/hooks/useAuthSession";
-import { useAuthActions } from "../../auth/hooks/useAuthActions";
 import Link from "next/link";
 import { ROUTES } from "@/config/routes";
+import { useI18n } from "@/locales";
+import { HEADER_STYLES as S } from "../../../theme/layout.theme";
+import { useAuthActions } from "../../auth/hooks/useAuthActions";
+import { useAuthSession } from "../../auth/hooks/useAuthSession";
 
 export function HeaderNav() {
   const { t } = useI18n();
@@ -21,7 +21,7 @@ export function HeaderNav() {
   return (
     <div className={S.nav}>
       <button className={S.helpBtn}>{t.LAYOUT.HEADER.HELP}</button>
-      
+
       {user ? (
         <button onClick={handleLogout} className={S.helpBtn}>
           {t.LAYOUT.HEADER.LOGOUT}

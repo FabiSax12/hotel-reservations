@@ -1,5 +1,6 @@
 "use client";
 
+import { Alert, Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 
 interface AdminErrorProps {
@@ -16,22 +17,22 @@ export default function AdminError({ error, reset }: AdminErrorProps) {
   };
 
   return (
-    <div className="flex min-h-[60vh] flex-col items-center justify-center p-8 text-gray-800">
-      <div className="flex flex-col items-center rounded-xl bg-gray-50 p-12 text-center shadow-sm border border-gray-100" role="alert">
-        <h2 className="mb-4 text-3xl font-semibold text-gray-900">
-          {t.COMMON.STATUS.ERROR_TITLE}
-        </h2>
-        <p className="mb-8 text-gray-600">
-          {t.COMMON.STATUS.ERROR_MESSAGE}
-        </p>
-        <button
-          type="button"
-          onClick={handleRetry}
-          className="rounded-md bg-gray-800 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-gray-700"
-        >
+    <main className="flex h-screen flex-col items-center justify-center bg-background">
+      <Alert status="danger" className="max-w-lg">
+        <Alert.Indicator />
+        <Alert.Content>
+          <Alert.Title>{t.COMMON.STATUS.ERROR_TITLE}</Alert.Title>
+          <Alert.Description>
+            {t.COMMON.STATUS.ERROR_MESSAGE}
+          </Alert.Description>
+          <Button onPress={handleRetry} className="mt-2 sm:hidden" size="sm" variant="danger">
+            {t.COMMON.STATUS.TRY_AGAIN}
+          </Button>
+        </Alert.Content>
+        <Button onPress={handleRetry} className="hidden sm:block" size="sm" variant="danger">
           {t.COMMON.STATUS.TRY_AGAIN}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Alert>
+    </main>
   );
 }

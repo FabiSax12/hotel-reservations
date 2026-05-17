@@ -1,13 +1,13 @@
 "use client";
- 
+
 import { useEffect } from "react";
-import { getSession, subscribeToAuthChanges } from "../services/authSessionService";
-import { AUTH_LOG_MESSAGES as LOG } from "../constants/log-messages";
 import { useUserStore } from "@/store/userStore";
- 
+import { AUTH_LOG_MESSAGES as LOG } from "../constants/log-messages";
+import { getSession, subscribeToAuthChanges } from "../services/authSessionService";
+
 export function useAuthSession() {
   const { user, isLoading, setUser, setIsLoading } = useUserStore();
- 
+
   useEffect(() => {
     const fetchSession = async () => {
       try {
@@ -20,17 +20,17 @@ export function useAuthSession() {
         setIsLoading(false);
       }
     };
- 
+
     fetchSession();
- 
+
     const subscription = subscribeToAuthChanges((currentUser) => {
       setUser(currentUser);
     });
- 
+
     return () => {
       subscription.unsubscribe();
     };
   }, [setUser, setIsLoading]);
- 
+
   return { user, isLoading };
 }

@@ -18,14 +18,14 @@
 "use client";
 
 import { useState } from "react";
-import type { SearchParams } from "../features/search/domain/types";
-import { mockRooms } from "../features/rooms/mock-data/rooms";
 import { Background } from "../features/layout/components/Background";
 import { Header } from "../features/layout/components/Header";
-import { HeroSearch } from "../features/search/components/HeroSearch";
 import { RoomList } from "../features/rooms/components/RoomList";
 import { filterRoomsByDestination } from "../features/rooms/domain/filters";
+import { mockRooms } from "../features/rooms/mock-data/rooms";
+import { HeroSearch } from "../features/search/components/HeroSearch";
 import { SEARCH_VALS } from "../features/search/components/search-bar/constants/search.constants";
+import type { SearchParams } from "../features/search/domain/types";
 import { PAGE_STYLES as S } from "../theme/layout.theme";
 
 export default function HomePage() {
