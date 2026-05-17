@@ -1,3 +1,5 @@
+import type { LoginErrorKey } from "../domain/credentials";
+
 export type AuthTexts = {
   LOGIN: {
     TITLE: string;
@@ -7,6 +9,9 @@ export type AuthTexts = {
     PASSWORD_PLACEHOLDER: string;
     PASSWORD_HINT: string;
     SUBMIT_BUTTON: string;
+    ERRORS: {
+      [key in LoginErrorKey]: string;
+    };
   };
   ADMIN: {
     CREATE_ADMIN: {
@@ -63,9 +68,5 @@ export type AuthTexts = {
   VALIDATION: {
     INVALID_EMAIL: string;
     PASSWORD_TOO_SHORT: string;
-  };
-  ERRORS: {
-    INVALID_CREDENTIALS: string;
-    ACCESS_DENIED: string;
   };
 };

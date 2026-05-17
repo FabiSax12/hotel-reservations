@@ -1,29 +1,29 @@
 "use client";
 
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
-import { useActionState, useId } from "react";
-import type { LoginActionState } from "@/features/auth/domain/credentials";
+import { useId } from "react";
 import { createEmailValidator } from "@/features/auth/domain/credentials";
 import { useI18n } from "@/locales";
 import { LOGIN_FORM_FIELDS } from "../../constants/loginFormFields";
+import { useAdminLogin } from "../../hooks/useAdminLogin";
 import type { LoginFormProps } from "./LoginForm.interface";
-import { LOGIN_FORM_STYLES as S } from "./LoginForm.styles";
+import { LOGIN_FORM_STYLES as STYLES } from "./LoginForm.styles";
 
 export const LoginForm = ({ action }: LoginFormProps) => {
-  const [state, formAction, isPending] = useActionState<LoginActionState, FormData>(action, null);
+  const { activeError, formAction, isPending } = useAdminLogin(action)
   const { t } = useI18n();
-
-  const validateEmail = createEmailValidator(t.AUTH.VALIDATION.INVALID_EMAIL);
 
   const emailInputId = useId();
   const passwordInputId = useId();
 
-  return (
-    <main className={S.wrapper}>
-      <div className={S.card}>
-        <h1 className={S.title}>{t.AUTH.LOGIN.TITLE}</h1>
+  const validateEmail = createEmailValidator(t.AUTH.VALIDATION.INVALID_EMAIL);
 
-        <Form className={S.form} action={formAction}>
+  return (
+    <main className={STYLES.wrapper}>
+      <div className={STYLES.card}>
+        <h1 className={STYLES.title}>{t.AUTH.LOGIN.TITLE}</h1>
+
+        <Form className={STYLES.form} action={formAction}>
           <TextField
             isRequired
             name={LOGIN_FORM_FIELDS.EMAIL}
@@ -50,9 +50,9 @@ export const LoginForm = ({ action }: LoginFormProps) => {
             <FieldError />
           </TextField>
 
-          {state?.error && (
-            <p role="alert" className={S.errorAlert}>
-              {t.AUTH.ERRORS[state.error]}
+          {activeError && (
+            <p role="alert" className={STYLES.errorAlert}>
+              {t.AUTH.LOGIN.ERRORS[activeError]}
             </p>
           )}
 

@@ -11,6 +11,11 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       PASSWORD_PLACEHOLDER: "Ingresá tu contraseña",
       PASSWORD_HINT: "Mínimo 8 caracteres",
       SUBMIT_BUTTON: "Iniciar sesión",
+      ERRORS: {
+        INVALID_CREDENTIALS: "Credenciales inválidas",
+        ACCESS_DENIED: "Acceso denegado",
+        ACCOUNT_DEACTIVATED: "Tu cuenta fue desactivada. Contactá al administrador principal.",
+      },
     },
     ADMIN: {
       CREATE_ADMIN: {
@@ -68,10 +73,6 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       INVALID_EMAIL: "Ingresá un email válido",
       PASSWORD_TOO_SHORT: "La contraseña debe tener al menos 8 caracteres",
     },
-    ERRORS: {
-      INVALID_CREDENTIALS: "Credenciales inválidas",
-      ACCESS_DENIED: "Acceso denegado",
-    },
   },
   en: {
     LOGIN: {
@@ -82,6 +83,11 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       PASSWORD_PLACEHOLDER: "Enter your password",
       PASSWORD_HINT: "At least 8 characters",
       SUBMIT_BUTTON: "Sign in",
+      ERRORS: {
+        INVALID_CREDENTIALS: "Invalid credentials",
+        ACCESS_DENIED: "Access denied",
+        ACCOUNT_DEACTIVATED: "Your account has been deactivated. Contact the main administrator.",
+      },
     },
     ADMIN: {
       CREATE_ADMIN: {
@@ -138,10 +144,6 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
     VALIDATION: {
       INVALID_EMAIL: "Please enter a valid email address",
       PASSWORD_TOO_SHORT: "Password must be at least 8 characters",
-    },
-    ERRORS: {
-      INVALID_CREDENTIALS: "Invalid credentials",
-      ACCESS_DENIED: "Access denied",
     },
   },
 } as const;
