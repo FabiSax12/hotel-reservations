@@ -25,6 +25,8 @@ export interface RoomsTexts {
     SUBMIT_CREATE: string;
     SUBMIT_EDIT: string;
     CANCEL: string;
+    EDIT: string;
+    DELETE: string;
     SECTION_CAPACITY: string;
     SECTION_FEES: string;
     SECTION_BASIC_INFO: string;
@@ -45,5 +47,24 @@ export interface RoomsTexts {
     SUCCESS_EDIT: string;
     ERROR_GENERIC: string;
     ERROR_NOT_FOUND: string;
+  };
+  AMENITIES: {
+    TITLE: string;
+    SUBTITLE: string;
+    SELECT_AT_LEAST_ONE: string;
+    SUBMIT: string;
+    SEARCH_PLACEHOLDER: string;
+    EMPTY_STATE: string;
+    HINT: string;
+    ITEMS: Record<string, { name: string; description: string }>;
+    LOADING: string;
+    ADD_CUSTOM: string;
+    ADD_CUSTOM_PLACEHOLDER: string;
+    ADD_DESC_PLACEHOLDER: string;
+    DETAILS: string;
+    DELETE_WARNING_TITLE: string;
+    DELETE_WARNING_DESCRIPTION: string;
+    DELETE_WARNING_CONFIRM: string;
+    DELETE_WARNING_CANCEL: string;
   };
 }

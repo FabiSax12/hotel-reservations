@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import type { MotionValue } from "framer-motion";
-import { HERO } from "@/features/landing/hero/constants/styles";
-import { HERO_ORBS } from "@/features/landing/hero/constants/orbs";
+import { motion, useReducedMotion } from "framer-motion";
 import { BG_GRADIENT } from "@/features/landing/hero/constants/gradients";
+import { HERO_ORBS } from "@/features/landing/hero/constants/orbs";
+import { HERO } from "@/features/landing/hero/constants/styles";
 
 interface HeroBgLayerProps {
   bgTransform: MotionValue<string>;

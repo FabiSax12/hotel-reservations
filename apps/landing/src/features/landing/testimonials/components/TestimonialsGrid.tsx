@@ -1,12 +1,15 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
+import { useRef } from "react";
+import {
+  CARD_VARIANTS,
+  CARD_VARIANTS_REDUCED,
+} from "@/features/landing/testimonials/constants/animations";
 import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
 import { TESTIMONIALS_CONFIG } from "@/features/landing/testimonials/constants/testimonials-config";
+import { useI18n } from "@/locales";
 import { TestimonialCard } from "./TestimonialCard";
-import { CARD_VARIANTS, CARD_VARIANTS_REDUCED } from "@/features/landing/testimonials/constants/animations";
 import type { TestimonialsGridProps } from "./TestimonialsGrid.types";
 
 export function TestimonialsGrid({ prefersReducedMotion }: TestimonialsGridProps) {

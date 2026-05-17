@@ -31,11 +31,7 @@ export const PasswordInput = ({
       >
         <Label>{label}</Label>
         <div className={S.inputWrapper}>
-          <Input
-            placeholder={placeholder}
-            autoComplete={autoComplete}
-            className={S.input}
-          />
+          <Input placeholder={placeholder} autoComplete={autoComplete} className={S.input} />
           <Button
             isIconOnly
             variant="ghost"
