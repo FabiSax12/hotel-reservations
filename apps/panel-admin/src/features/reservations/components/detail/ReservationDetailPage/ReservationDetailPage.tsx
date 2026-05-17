@@ -9,14 +9,10 @@ import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard"
 import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
 import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
 import { updateReservationStatusAction } from "../../../actions/updateStatus";
-import { RESERVATION_DETAIL_PAGE_STYLES as S } from "./ReservationDetailPage.styles";
-import type { Reservation, ReservationStatus } from "../../../domain/reservation";
-
-interface ReservationDetailPageProps {
-  reservation: Reservation;
-}
-
-const LIST_PATH = "/admin/reservations";
+import { RESERVATION_DETAIL_PAGE_STYLES as STYLES } from "./ReservationDetailPage.styles";
+import type { ReservationStatus } from "../../../domain/reservation";
+import { RESERVATIONS_LIST_PATH } from "../../../constants/routes";
+import type { ReservationDetailPageProps } from "./ReservationDetailPage.interface";
 
 export const ReservationDetailPage = ({ reservation: r }: ReservationDetailPageProps) => {
   const router = useRouter();
@@ -24,7 +20,7 @@ export const ReservationDetailPage = ({ reservation: r }: ReservationDetailPageP
   const texts = t.RESERVATIONS.DETAIL_PAGE;
 
   const { onRegisterClose, onRequestClose, handleBack, onPendingChangesChange } =
-    useNavigationGuard({ listPath: LIST_PATH });
+    useNavigationGuard({ listPath: RESERVATIONS_LIST_PATH });
 
   const handleSave = (status: ReservationStatus, cancellationReason?: string) => {
     updateReservationStatusAction(r.id, status, cancellationReason).then(() => {
@@ -33,21 +29,21 @@ export const ReservationDetailPage = ({ reservation: r }: ReservationDetailPageP
   };
 
   return (
-    <div className={S.page}>
-      <div className={S.headerCard}>
-        <div className={S.headerLayout}>
-          <div className={S.headerLeft}>
-            <button className={S.backLink} onClick={handleBack} type="button">
-              <ChevronLeft className={S.backIcon} />
+    <div className={STYLES.page}>
+      <div className={STYLES.headerCard}>
+        <div className={STYLES.headerLayout}>
+          <div className={STYLES.headerLeft}>
+            <button className={STYLES.backLink} onClick={handleBack} type="button">
+              <ChevronLeft className={STYLES.backIcon} />
               <span>{texts.BACK_TO_LIST}</span>
             </button>
-            <h1 className={S.title}>{texts.PAGE_TITLE}</h1>
-            <span className={S.codeChip}>{r.code}</span>
+            <h1 className={STYLES.title}>{texts.PAGE_TITLE}</h1>
+            <span className={STYLES.codeChip}>{r.code}</span>
           </div>
         </div>
       </div>
 
-      <div className={S.cardsGrid}>
+      <div className={STYLES.cardsGrid}>
         <ReservationGuestCard guest={r.guest} />
         <ReservationRoomCard
           room={r.room}
@@ -64,7 +60,7 @@ export const ReservationDetailPage = ({ reservation: r }: ReservationDetailPageP
         />
       </div>
 
-      <div className={S.footerWrapper}>
+      <div className={STYLES.footerWrapper}>
         <ReservationStatusFooter
           key={`${r.id}-${r.status}-${r.cancellationReason ?? ""}`}
           reservationId={r.id}

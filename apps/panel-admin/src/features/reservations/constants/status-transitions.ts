@@ -1,10 +1,10 @@
 import type { ReservationStatus } from "../domain/reservation";
-import { RESERVATION_STATUS as S } from "./reservation-statuses";
+import { RESERVATION_STATUS as CONSTANTS } from "./reservation-statuses";
 
 export const VALID_TRANSITIONS: Record<ReservationStatus, readonly ReservationStatus[]> =
   Object.freeze({
-    [S.PENDING]: [S.APPROVED, S.CANCELLED],
-    [S.APPROVED]: [S.COMPLETED, S.CANCELLED],
-    [S.CANCELLED]: [],
-    [S.COMPLETED]: [],
+    [CONSTANTS.PENDING]: [CONSTANTS.APPROVED, CONSTANTS.CANCELLED],
+    [CONSTANTS.APPROVED]: [CONSTANTS.COMPLETED, CONSTANTS.CANCELLED],
+    [CONSTANTS.CANCELLED]: [],
+    [CONSTANTS.COMPLETED]: [],
   } as const);
