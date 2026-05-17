@@ -1,10 +1,11 @@
+import { DB_COLUMNS, DB_TABLES } from "@hotel/db";
 import { createSupabaseServiceClient } from "@hotel/db/client";
-import type { Reservation, ReservationStatus } from "../domain/reservation";
 import { RESERVATION_STATUS } from "../constants/reservation-statuses";
+import type { Reservation, ReservationStatus } from "../domain/reservation";
 import { RESERVATIONS_TEXTS } from "../i18n/reservations.texts";
 import {
-  mapToReservation,
   type DbReservation,
+  mapToReservation,
   type ReservationStatusUpdate,
 } from "./reservation.mapper";
 
@@ -13,10 +14,11 @@ const ERRORS = RESERVATIONS_TEXTS.es.ERRORS;
 export async function getAllReservations(): Promise<Reservation[]> {
   const supabase = createSupabaseServiceClient();
 
-  const { data, error } = await (supabase as any)
-    .from("reservations")
-    .select("*, rooms(name, category)")
-    .order("code", { ascending: false });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await supabase
+    .from(DB_TABLES.RESERVATIONS)
+    .select(`*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`) //"*, rooms(name, category)")
+    .order(DB_COLUMNS.reservations.created_at, { ascending: false });
 
   if (error) throw new Error(`${ERRORS.FETCH_RESERVATIONS}: ${error.message}`);
 
@@ -38,10 +40,11 @@ export async function updateReservationStatus(
       : {}),
   };
 
-  const { error } = await (supabase as any)
-    .from("reservations")
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { error } = await supabase
+    .from(DB_TABLES.RESERVATIONS)
     .update(updateData)
-    .eq("id", id);
+    .eq(DB_COLUMNS.reservations.id, id);
 
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
 }
@@ -65,10 +68,11 @@ export async function getReservationById(
 export async function getRoomNames(): Promise<string[]> {
   const supabase = createSupabaseServiceClient();
 
-  const { data, error } = await (supabase as any)
-    .from("rooms")
-    .select("name")
-    .order("name", { ascending: true });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await supabase
+    .from(DB_TABLES.ROOMS)
+    .select(DB_COLUMNS.rooms.name)
+    .order(DB_COLUMNS.rooms.name, { ascending: true });
 
   if (error) throw new Error(`${ERRORS.FETCH_ROOMS}: ${error.message}`);
 

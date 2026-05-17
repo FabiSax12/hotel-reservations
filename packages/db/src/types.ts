@@ -3,8 +3,6 @@
 
 import type { Database } from "./database.types";
 
-export type { Database } from "./database.types";
-
 export interface AdminProfile {
   id: string;
   is_active: boolean;

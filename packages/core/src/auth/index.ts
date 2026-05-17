@@ -33,8 +33,13 @@
  */
 
 import type { AdminUser, SupabaseServerClient } from "@hotel/db";
-import { createSupabaseServerActionClient, createSupabaseServiceClient } from "@hotel/db";
-import type { AdminProfile, User } from "@hotel/db/types";
+import {
+  createSupabaseServerActionClient,
+  createSupabaseServiceClient,
+  DB_COLUMNS,
+  DB_ENUMS,
+  DB_TABLES,
+} from "@hotel/db";
 import type { ActivationErrorCode } from "./config/constants";
 import { ACTIVATION_ERROR_CODES, AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
 
@@ -213,7 +218,7 @@ export async function createAdminAccount(
 
   const supabase = createSupabaseServiceClient();
   const { error } = await supabase
-    .from("pending_invitations")
+    .from(DB_TABLES.PENDING_INVITATIONS)
     .insert({ email: response.email, user_id: response.id });
 
   if (error) {
@@ -269,12 +274,12 @@ export async function completeAdminActivation(
 
   const serviceClient = createSupabaseServiceClient();
   // const { error: roleError } = await serviceClient
-  //   .from("user_roles")
+  //   .from(DB_TABLES.USER_ROLES)
   //   .update({ role: "admin" })
   //   .eq("user_id", sessionData.user.id);
 
   const { error: activationError } = await serviceClient
-    .from("profiles")
+    .from(DB_TABLES.PROFILES)
     .update({ is_active: true })
     .eq(AUTH_COLUMNS.ID, sessionData.user.id);
 
@@ -283,10 +288,10 @@ export async function completeAdminActivation(
 
   // Mark pending_invitation as accepted by user_id
   await serviceClient
-    .from("pending_invitations")
-    .update({ status: "accepted", accepted_at: new Date().toISOString() })
-    .eq("user_id", sessionData.user.id)
-    .eq("status", "pending");
+    .from(DB_TABLES.PENDING_INVITATIONS)
+    .update({ status: DB_ENUMS.invitation_status.accepted, accepted_at: new Date().toISOString() })
+    .eq(DB_COLUMNS.pending_invitations.user_id, sessionData.user.id)
+    .eq(DB_COLUMNS.pending_invitations.status, DB_ENUMS.invitation_status.pending);
 }
 
 /**
@@ -310,9 +315,9 @@ export async function verifyAdminRole(userId: string): Promise<AdminUser | null>
     .single();
 
   const { data: roleData, error: roleError } = await supabase
-    .from("user_roles")
-    .select("user_id, role")
-    .eq("user_id", userId)
+    .from(DB_TABLES.USER_ROLES)
+    .select(`${DB_COLUMNS.user_roles.role}, ${DB_COLUMNS.user_roles.user_id}`)
+    .eq(DB_COLUMNS.user_roles.user_id, userId)
     .single();
 
   if (profileError) throw new Error(profileError.message);
