@@ -1,8 +1,7 @@
 export const RESERVATION_STATUS_FOOTER_STYLES = {
-  wrapper: "px-6 pb-6 flex flex-col",
-  statusLine: "flex items-center gap-2 mb-1",
-  statusLabel:
-    "text-[11px] font-extrabold uppercase tracking-widest text-gray-400",
+  wrapper: "px-6 pt-5 pb-6 flex flex-col",
+  statusLine: "flex items-center gap-3 mb-1",
+  statusLabel: "text-sm font-semibold text-gray-600",
   actionsLine: "px-4 pb-2 flex justify-between items-start gap-4",
   leftActions: "flex items-center gap-2 flex-wrap flex-1 min-w-0",
   leftActionsWithField: "flex items-start gap-2 flex-1 min-w-0",

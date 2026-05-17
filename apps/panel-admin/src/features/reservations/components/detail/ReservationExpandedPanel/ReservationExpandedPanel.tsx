@@ -4,7 +4,7 @@ import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCa
 import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
 import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
 import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
-import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
+import { RESERVATION_EXPANDED_PANEL_STYLES as STYLES } from "./ReservationExpandedPanel.styles";
 import type { ReservationExpandedPanelProps } from "./ReservationExpandedPanel.interface";
 
 const noop = () => {};
@@ -17,11 +17,11 @@ export const ReservationExpandedPanel = ({
   onRequestClose = noop,
   onRegisterClose = noopRegister,
 }: ReservationExpandedPanelProps) => {
-  const wrapperClassName = `${S.wrapperBase} ${isClosing ? S.wrapperExit : S.wrapperEnter}`;
+  const wrapperClassName = `${STYLES.wrapperBase} ${isClosing ? STYLES.wrapperExit : STYLES.wrapperEnter}`;
 
   return (
     <div className={wrapperClassName}>
-      <div className={S.body}>
+      <div className={STYLES.body}>
         <ReservationGuestCard guest={r.guest} />
         <ReservationRoomCard
           room={r.room}

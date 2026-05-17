@@ -1,5 +1,5 @@
 import type { Reservation } from "../../../domain/reservation";
 
-export interface ReservationRowProps {
+export interface ReservationDetailPageProps {
   reservation: Reservation;
 }

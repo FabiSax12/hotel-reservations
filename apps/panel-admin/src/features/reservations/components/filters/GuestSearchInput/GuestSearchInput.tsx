@@ -2,7 +2,7 @@
 
 import { Label, SearchField } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { GUEST_SEARCH_INPUT_STYLES as S } from "./GuestSearchInput.styles";
+import { GUEST_SEARCH_INPUT_STYLES as STYLES } from "./GuestSearchInput.styles";
 import type { GuestSearchInputProps } from "./GuestSearchInput.interface";
 
 export const GuestSearchInput = ({ value, onChange }: GuestSearchInputProps) => {
@@ -16,10 +16,10 @@ export const GuestSearchInput = ({ value, onChange }: GuestSearchInputProps) => 
       aria-label={texts.ARIA_LABEL_GUEST_SEARCH}
     >
       <Label className="sr-only">{texts.ARIA_LABEL_GUEST_SEARCH}</Label>
-      <SearchField.Group className={S.group}>
+      <SearchField.Group className={STYLES.group}>
         <SearchField.SearchIcon />
         <SearchField.Input
-          className={S.input}
+          className={STYLES.input}
           placeholder={texts.PLACEHOLDER_GUEST_SEARCH}
         />
         <SearchField.ClearButton />

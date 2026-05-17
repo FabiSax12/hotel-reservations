@@ -49,6 +49,22 @@ export async function updateReservationStatus(
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
 }
 
+export async function getReservationById(
+  id: string,
+): Promise<Reservation | null> {
+  const supabase = createSupabaseServiceClient();
+
+  const { data, error } = await (supabase as any)
+    .from("reservations")
+    .select("*, rooms(name, category)")
+    .eq("id", id)
+    .single();
+
+  if (error) return null;
+
+  return mapToReservation(data as DbReservation);
+}
+
 export async function getRoomNames(): Promise<string[]> {
   const supabase = createSupabaseServiceClient();
 
