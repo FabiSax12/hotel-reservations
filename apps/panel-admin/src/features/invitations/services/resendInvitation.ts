@@ -1,6 +1,6 @@
 "use server";
 import { inviteAdminByEmail } from "@hotel/core/auth";
-import { createSupabaseServiceClient } from "@hotel/db";
+import { createSupabaseServiceClient, DB_COLUMNS, DB_TABLES } from "@hotel/db";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
 import type { ResendInvitationResult } from "../domain/invitation.types";
@@ -9,9 +9,13 @@ export const resendInvitation = async (invitationId: string): Promise<ResendInvi
   const supabase = createSupabaseServiceClient();
 
   const { data: invitation, error: fetchError } = await supabase
-    .from("pending_invitations")
-    .select("email, status, expires_at")
-    .eq("id", invitationId)
+    .from(DB_TABLES.PENDING_INVITATIONS)
+    .select(
+      `${DB_COLUMNS.pending_invitations.email}, \
+      ${DB_COLUMNS.pending_invitations.status}, \
+      ${DB_COLUMNS.pending_invitations.expires_at}`,
+    )
+    .eq(DB_COLUMNS.pending_invitations.id, invitationId)
     .maybeSingle();
 
   if (fetchError || !invitation) return { error: "NOT_FOUND" };
@@ -21,9 +25,9 @@ export const resendInvitation = async (invitationId: string): Promise<ResendInvi
   newExpiry.setDate(newExpiry.getDate() + 7);
 
   const { error: updateError } = await supabase
-    .from("pending_invitations")
+    .from(DB_TABLES.PENDING_INVITATIONS)
     .update({ expires_at: newExpiry.toISOString() })
-    .eq("id", invitationId);
+    .eq(DB_COLUMNS.pending_invitations.id, invitationId);
 
   if (updateError) return { error: "UNKNOWN_ERROR" };
 

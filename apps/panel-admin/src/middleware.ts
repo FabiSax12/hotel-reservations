@@ -1,4 +1,9 @@
-import { createSupabaseServerClient, createSupabaseServiceClient } from "@hotel/db";
+import {
+  createSupabaseServerClient,
+  createSupabaseServiceClient,
+  DB_COLUMNS,
+  DB_TABLES,
+} from "@hotel/db";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { ROUTES } from "@/config/routes";
@@ -29,8 +34,8 @@ export async function middleware(request: NextRequest) {
   // Check if the admin account has been deactivated
   const serviceClient = createSupabaseServiceClient();
   const { data: profile } = await serviceClient
-    .from("profiles")
-    .select("is_active")
+    .from(DB_TABLES.PROFILES)
+    .select(DB_COLUMNS.profiles.is_active)
     .eq("id", user.id)
     .single();
 

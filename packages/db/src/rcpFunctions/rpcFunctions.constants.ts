@@ -1,4 +1,4 @@
-import type { Database } from "./database.types";
+import type { Database } from "../database.types";
 
 export const RPC_FUNCTIONS: Record<string, keyof Database["public"]["Functions"]> = {
   GET_ADMINS: "get_admins",
