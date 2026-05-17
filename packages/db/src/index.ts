@@ -5,4 +5,16 @@ export {
   createSupabaseServerClient,
   createSupabaseServiceClient,
 } from "./client";
-export type { AdminUser, ClientUser, Database, SignUpPayload, UserProfile } from "./types";
+export { RPC_FUNCTIONS } from "./rpcFunctions";
+export type {
+  AdminProfile,
+  AdminsList,
+  AdminUser,
+  ClientProfile,
+  ClientUser,
+  Database,
+  PendingInvitation,
+  SignUpPayload,
+  User,
+  UserProfile,
+} from "./types";

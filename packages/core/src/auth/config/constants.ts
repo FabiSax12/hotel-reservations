@@ -14,7 +14,7 @@ export type ActivationErrorCode =
 
 export type AuthRole = (typeof AUTH_ROLES)[keyof typeof AUTH_ROLES];
 
-export const AUTH_TABLE = "users" as const;
+export const AUTH_TABLE = "profiles" as const;
 
 export const AUTH_COLUMNS = Object.freeze({
   ID: "id",

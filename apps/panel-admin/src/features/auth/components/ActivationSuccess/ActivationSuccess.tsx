@@ -16,7 +16,7 @@ export const ActivationSuccess = () => {
           <p className="font-semibold">{SUCCESS_TITLE}</p>
           <p>{SUCCESS_MESSAGE}</p>
         </div>
-        <Link href={ROUTES.ADMIN.LOGIN} className={S.loginLink}>
+        <Link href={ROUTES.AUTH.LOGIN} className={S.loginLink}>
           {SUCCESS_LOGIN_LINK}
         </Link>
       </div>

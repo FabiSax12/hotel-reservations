@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useCallback, useRef } from "react";
 import { useI18n } from "@/locales";
 import { COLLAPSE_DURATION_MS } from "../../../constants/timing";
 import { useDelayedUnmount } from "../../../hooks/useDelayedUnmount";
@@ -9,8 +9,16 @@ import { ReservationExpandedPanel } from "../../detail/ReservationExpandedPanel/
 import { ReservationRow } from "../ReservationRow/ReservationRow";
 import type { ExpandedPanelRowProps, ReservationsTableProps } from "./ReservationsTable.interface";
 import { RESERVATIONS_TABLE_STYLES as T, TABLE_COLUMN_COUNT } from "./ReservationsTable.styles";
+import type { ReservationsTableProps, ExpandedPanelRowProps } from "./ReservationsTable.interface";
+import type { ReservationStatus } from "../../../domain/reservation";
 
-const ExpandedPanelRow = ({ reservation, isExpanded }: ExpandedPanelRowProps) => {
+const ExpandedPanelRow = ({
+  reservation,
+  isExpanded,
+  onClose,
+  onRegisterClose,
+  onSave,
+}: ExpandedPanelRowProps) => {
   const shouldRender = useDelayedUnmount(isExpanded, COLLAPSE_DURATION_MS);
 
   if (!shouldRender) return null;
@@ -18,17 +26,60 @@ const ExpandedPanelRow = ({ reservation, isExpanded }: ExpandedPanelRowProps) =>
   return (
     <tr>
       <td colSpan={TABLE_COLUMN_COUNT} className={T.expandedCell}>
-        <ReservationExpandedPanel reservation={reservation} isClosing={!isExpanded} />
+        <ReservationExpandedPanel
+          reservation={reservation}
+          isClosing={!isExpanded}
+          onRequestClose={onClose}
+          onRegisterClose={onRegisterClose}
+          onSave={onSave}
+        />
       </td>
     </tr>
   );
 };
 
-export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
+export const ReservationsTable = ({
+  reservations,
+  onSaveReservationStatus,
+}: ReservationsTableProps) => {
   const { t } = useI18n();
   const { isExpanded, toggleExpanded } = useExpandedReservations();
 
-  const buildToggleHandler = (id: string) => () => toggleExpanded(id);
+  // Registry of guarded close handlers keyed by reservation id.
+  // When a panel has pending changes, its handler intercepts the toggle
+  // and opens the UnsavedChangesModal instead of collapsing.
+  const closeHandlers = useRef<Map<string, () => void>>(new Map());
+
+  const registerCloseHandler = useCallback(
+    (id: string, handler: () => void) => {
+      closeHandlers.current.set(id, handler);
+      return () => {
+        closeHandlers.current.delete(id);
+      };
+    },
+    [],
+  );
+
+  const buildToggleHandler = (id: string) => () => {
+    if (isExpanded(id)) {
+      const guardedClose = closeHandlers.current.get(id);
+      if (guardedClose) {
+        guardedClose();
+      } else {
+        toggleExpanded(id);
+      }
+    } else {
+      toggleExpanded(id);
+    }
+  };
+
+  const buildCloseHandler = (id: string) => () => toggleExpanded(id);
+
+  const buildSaveHandler = (id: string) =>
+    (status: ReservationStatus, cancellationReason?: string) => {
+      onSaveReservationStatus?.(id, status, cancellationReason);
+      toggleExpanded(id);
+    };
 
   return (
     <div className={T.scrollContainer}>
@@ -54,7 +105,13 @@ export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
                 isExpanded={isExpanded(r.id)}
                 onToggle={buildToggleHandler(r.id)}
               />
-              <ExpandedPanelRow reservation={r} isExpanded={isExpanded(r.id)} />
+              <ExpandedPanelRow
+                reservation={r}
+                isExpanded={isExpanded(r.id)}
+                onClose={buildCloseHandler(r.id)}
+                onRegisterClose={registerCloseHandler}
+                onSave={buildSaveHandler(r.id)}
+              />
             </Fragment>
           ))}
         </tbody>

@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "@hotel/i18n";
+import { PREDEFINED_AMENITY_IDS } from "../constants/amenities.constants";
 import type { RoomsTexts } from "./roomsTexts.type";
 
 export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
@@ -29,6 +30,8 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUBMIT_CREATE: "Registrar Habitación",
       SUBMIT_EDIT: "Guardar Cambios",
       CANCEL: "Cancelar",
+      EDIT: "Editar",
+      DELETE: "Eliminar",
       SECTION_CAPACITY: "Capacidad",
       SECTION_FEES: "Tarifas",
       SECTION_BASIC_INFO: "Información Básica",
@@ -52,6 +55,64 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUCCESS_EDIT: "Cambios guardados correctamente",
       ERROR_GENERIC: "Ocurrió un error. Intentá de nuevo.",
       ERROR_NOT_FOUND: "Habitación no encontrada",
+    },
+    AMENITIES: {
+      TITLE: "Servicios y Comodidades",
+      SUBTITLE: "Seleccioná los servicios que ofrece esta habitación",
+      SELECT_AT_LEAST_ONE: "Seleccioná al menos un servicio",
+      SUBMIT: "Guardar Servicios",
+      SEARCH_PLACEHOLDER: "Buscar servicio...",
+      EMPTY_STATE: "No se encontraron servicios",
+      HINT: "Los servicios ayudan a que tu habitación destaque. Asegurate de incluir todo lo que haga la estancia más cómoda.",
+      ITEMS: {
+        [PREDEFINED_AMENITY_IDS.WIFI]: {
+          name: "WiFi",
+          description: "Acceso a internet de alta velocidad",
+        },
+        [PREDEFINED_AMENITY_IDS.AIR_CONDITIONING]: {
+          name: "Aire Acondicionado",
+          description: "Control de clima para su comodidad",
+        },
+        [PREDEFINED_AMENITY_IDS.TV]: {
+          name: "TV",
+          description: "Televisión de pantalla plana con canales por cable",
+        },
+        [PREDEFINED_AMENITY_IDS.MINI_BAR]: {
+          name: "Mini Bar",
+          description: "Refrescos y bocadillos disponibles",
+        },
+        [PREDEFINED_AMENITY_IDS.SAFE_BOX]: {
+          name: "Caja Fuerte",
+          description: "Almacenamiento seguro para sus objetos de valor",
+        },
+        [PREDEFINED_AMENITY_IDS.DESK]: {
+          name: "Escritorio",
+          description: "Espacio de trabajo dedicado",
+        },
+        [PREDEFINED_AMENITY_IDS.HAIR_DRYER]: {
+          name: "Secador de Pelo",
+          description: "Disponible en el baño",
+        },
+        [PREDEFINED_AMENITY_IDS.BALCONY]: {
+          name: "Balcón",
+          description: "Espacio privado al aire libre",
+        },
+        [PREDEFINED_AMENITY_IDS.POOL]: {
+          name: "Piscina",
+          description: "Acceso a la piscina del hotel",
+        },
+        [PREDEFINED_AMENITY_IDS.GYM]: { name: "Gimnasio", description: "Acceso al gimnasio" },
+      },
+      LOADING: "Cargando servicios...",
+      ADD_CUSTOM: "Crear...",
+      ADD_CUSTOM_PLACEHOLDER: "Nombre (máx 25 car.)",
+      ADD_DESC_PLACEHOLDER: "Descripción (máx 50 car.)",
+      DETAILS: "Ver detalles",
+      DELETE_WARNING_TITLE: "¿Eliminar servicio?",
+      DELETE_WARNING_DESCRIPTION:
+        'Esta acción eliminará de forma permanente el servicio "{name}". ¿Estás seguro de que deseas continuar?',
+      DELETE_WARNING_CONFIRM: "Aceptar",
+      DELETE_WARNING_CANCEL: "Cancelar",
     },
   },
   en: {
@@ -81,6 +142,8 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUBMIT_CREATE: "Register Room",
       SUBMIT_EDIT: "Save Changes",
       CANCEL: "Cancel",
+      EDIT: "Edit",
+      DELETE: "Delete",
       SECTION_CAPACITY: "Capacity",
       SECTION_FEES: "Fees",
       SECTION_BASIC_INFO: "Basic Information",
@@ -104,6 +167,55 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUCCESS_EDIT: "Changes successfully saved",
       ERROR_GENERIC: "An error occurred. Please try again.",
       ERROR_NOT_FOUND: "Room not found",
+    },
+    AMENITIES: {
+      TITLE: "Room Amenities",
+      SUBTITLE: "Select the services and features offered in this room",
+      SELECT_AT_LEAST_ONE: "Select at least one amenity",
+      SUBMIT: "Save Amenities",
+      SEARCH_PLACEHOLDER: "Search amenity...",
+      EMPTY_STATE: "No amenities found",
+      HINT: "Amenities help your room stand out. Make sure to include everything that makes the stay more comfortable.",
+      ITEMS: {
+        [PREDEFINED_AMENITY_IDS.WIFI]: { name: "WiFi", description: "High-speed internet access" },
+        [PREDEFINED_AMENITY_IDS.AIR_CONDITIONING]: {
+          name: "Air Conditioning",
+          description: "Climate control for your comfort",
+        },
+        [PREDEFINED_AMENITY_IDS.TV]: {
+          name: "TV",
+          description: "Flat-screen TV with cable channels",
+        },
+        [PREDEFINED_AMENITY_IDS.MINI_BAR]: {
+          name: "Mini Bar",
+          description: "Refreshments and snacks available",
+        },
+        [PREDEFINED_AMENITY_IDS.SAFE_BOX]: {
+          name: "Safe Box",
+          description: "Secure storage for your valuables",
+        },
+        [PREDEFINED_AMENITY_IDS.DESK]: { name: "Desk", description: "Dedicated workspace" },
+        [PREDEFINED_AMENITY_IDS.HAIR_DRYER]: {
+          name: "Hair Dryer",
+          description: "Available in the bathroom",
+        },
+        [PREDEFINED_AMENITY_IDS.BALCONY]: { name: "Balcony", description: "Private outdoor space" },
+        [PREDEFINED_AMENITY_IDS.POOL]: {
+          name: "Swimming Pool",
+          description: "Access to the hotel pool",
+        },
+        [PREDEFINED_AMENITY_IDS.GYM]: { name: "Gym", description: "Access to the fitness center" },
+      },
+      LOADING: "Loading amenities...",
+      ADD_CUSTOM: "Custom...",
+      ADD_CUSTOM_PLACEHOLDER: "Name (max 25 char.)",
+      ADD_DESC_PLACEHOLDER: "Description (max 50 char.)",
+      DETAILS: "View details",
+      DELETE_WARNING_TITLE: "Delete amenity?",
+      DELETE_WARNING_DESCRIPTION:
+        'This action will permanently delete the amenity "{name}". Are you sure you want to proceed?',
+      DELETE_WARNING_CONFIRM: "Accept",
+      DELETE_WARNING_CANCEL: "Cancel",
     },
   },
 } as const;
