@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useDateSelection.ts — Hook for managing date selection state.
  *
@@ -5,11 +7,11 @@
  * and handles React state transitions + auto-advance detection.
  */
 
-import { useState } from "react";
 import type { RefObject } from "react";
-import type { ActiveSection } from "../domain/types";
+import { useState } from "react";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { resolveDatePick } from "../domain/resolveDatePick";
+import type { ActiveSection } from "../domain/types";
 
 export function useDateSelection(
   initialCheckIn: string,
@@ -31,8 +33,7 @@ export function useDateSelection(
 
     // Determine if the user explicitly clicked a section
     const explicitFocus =
-      (workingActive === SEARCH_SECTIONS.CHECK_IN ||
-        workingActive === SEARCH_SECTIONS.CHECK_OUT) &&
+      (workingActive === SEARCH_SECTIONS.CHECK_IN || workingActive === SEARCH_SECTIONS.CHECK_OUT) &&
       lastUserActivatedSection.current === workingActive;
 
     // Clear the transient marker
@@ -40,9 +41,7 @@ export function useDateSelection(
     let autoAdvanced = false;
 
     if (!explicitFocus) {
-      workingActive = !checkIn
-        ? SEARCH_SECTIONS.CHECK_IN
-        : SEARCH_SECTIONS.CHECK_OUT;
+      workingActive = !checkIn ? SEARCH_SECTIONS.CHECK_IN : SEARCH_SECTIONS.CHECK_OUT;
       setActive(workingActive);
       autoAdvanced = true;
     }

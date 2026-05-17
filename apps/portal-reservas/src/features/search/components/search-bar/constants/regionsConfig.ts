@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @file regionsConfig.ts — Destination data for the DestinationPopover.
  *
  * Single source of truth for region data. Consumed by both the search bar
@@ -25,9 +25,9 @@ const ALL_REGIONS = Object.freeze([
       "Habitaciones con vista al volcán",
       "Aguas termales minerales privadas",
       "Aventuras de senderismo incrustadas",
-    ]),
+    ] as const),
     priceFrom: 180,
-  }),
+  } as const),
   Object.freeze({
     name: "Monteverde",
     desc: "Bosques nubosos, tirolesas, vida silvestre",
@@ -38,9 +38,9 @@ const ALL_REGIONS = Object.freeze([
       "Inmersión en el bosque nuboso",
       "Eco-lodges exclusivos y privados",
       "Avistamiento de fauna exótica",
-    ]),
+    ] as const),
     priceFrom: 145,
-  }),
-]);
+  } as const),
+] as const);
 
 export const REGIONS_CONFIG = ALL_REGIONS.slice(0, DEBUG_SEDE_COUNT);

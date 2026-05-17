@@ -10,9 +10,9 @@
 
 "use client";
 
-import type { Room } from "../../domain/types";
 import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { formatBedConfig, getAmenityIcon } from "../../constants/amenity-icons.const";
+import type { Room } from "../../domain/types";
 
 interface RoomTreeItemProps {
   room: Room;
@@ -32,9 +32,7 @@ export function RoomTreeItem({ room, count, currency, showAmenities = true }: Ro
       {/* Header: room title + price */}
       <div className={S.roomTreeHeader}>
         <span className={S.roomTreeTitle}>
-          {count > 1 && (
-            <span className={S.roomTreeCountPrefix}>{count}× </span>
-          )}
+          {count > 1 && <span className={S.roomTreeCountPrefix}>{count}× </span>}
           {room.title}
         </span>
         <span className={S.roomTreePrice}>
@@ -44,8 +42,18 @@ export function RoomTreeItem({ room, count, currency, showAmenities = true }: Ro
 
       {/* Bed configuration */}
       <div className={S.roomTreeBedRow}>
-        <svg className={S.roomTreeBedIcon} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 11h14M5 11V7a2 2 0 012-2h6a2 2 0 012 2v4M3 11v4M17 11v4M3 15h14" />
+        <svg
+          className={S.roomTreeBedIcon}
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3 11h14M5 11V7a2 2 0 012-2h6a2 2 0 012 2v4M3 11v4M17 11v4M3 15h14"
+          />
         </svg>
         <span>{bedText}</span>
       </div>

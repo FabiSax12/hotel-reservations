@@ -2,11 +2,11 @@
 
 import { Button, ButtonGroup } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { STATUS_PILL_GROUP_STYLES as S } from "./StatusPillGroup.styles";
-import { RESERVATION_STATUSES } from "../../../constants/reservation-statuses";
 import { FILTERED_RESULTS } from "../../../constants/filtered-results";
+import { RESERVATION_STATUSES } from "../../../constants/reservation-statuses";
 import { StatusPill } from "../StatusPill/StatusPill";
 import type { StatusPillGroupProps } from "./StatusPillGroup.interface";
+import { STATUS_PILL_GROUP_STYLES as S } from "./StatusPillGroup.styles";
 
 export const StatusPillGroup = ({
   statuses,

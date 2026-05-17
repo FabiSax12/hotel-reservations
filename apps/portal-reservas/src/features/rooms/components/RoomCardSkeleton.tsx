@@ -8,10 +8,7 @@ import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 
 export function RoomCardSkeleton() {
   return (
-    <article
-      className={S.skeletonCard}
-      aria-hidden="true"
-    >
+    <article className={S.skeletonCard} aria-hidden="true">
       <div className={`${S.imageWrapper} ${S.skeletonImagePanel}`} />
       <div className={S.body}>
         <div className={S.bodyHeader}>

@@ -6,8 +6,8 @@ import { formatDetailDate, getTodayISODate } from "../../../utils/format-reserva
 import { computeTotalGuests, pluralizeCount } from "../../../utils/reservation-utils";
 import { Divider } from "../../shared/Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
-import { RESERVATION_ROOM_CARD_STYLES as S } from "./ReservationRoomCard.styles";
 import type { ReservationRoomCardProps } from "./ReservationRoomCard.interface";
+import { RESERVATION_ROOM_CARD_STYLES as S } from "./ReservationRoomCard.styles";
 
 export const ReservationRoomCard = ({
   room,
@@ -20,8 +20,8 @@ export const ReservationRoomCard = ({
   const labels = t.RESERVATIONS.DETAIL;
 
   const arrivesToday = checkIn === getTodayISODate();
-  const totalGuests  = computeTotalGuests(guests);
-  const nightsBadge  = pluralizeCount(nights, labels.LABEL_NIGHT, labels.LABEL_NIGHTS);
+  const totalGuests = computeTotalGuests(guests);
+  const nightsBadge = pluralizeCount(nights, labels.LABEL_NIGHT, labels.LABEL_NIGHTS);
 
   return (
     <ReservationDetailCard title={labels.SECTION_ROOM}>
@@ -30,9 +30,7 @@ export const ReservationRoomCard = ({
 
       <Divider />
       <div className={S.datesBlock}>
-        {arrivesToday && (
-          <span className={S.arrivesToday}>{labels.ARRIVES_TODAY}</span>
-        )}
+        {arrivesToday && <span className={S.arrivesToday}>{labels.ARRIVES_TODAY}</span>}
         <div className={S.datesRow}>
           <div className={S.dateCard}>
             <span className={S.dateLabel}>{labels.LABEL_CHECKIN}</span>

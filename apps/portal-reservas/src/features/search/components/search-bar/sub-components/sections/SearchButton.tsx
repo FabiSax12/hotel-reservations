@@ -4,9 +4,9 @@
 
 "use client";
 
-import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import { useI18n } from "@/locales";
 import type { SearchButtonProps } from "../../domain/types";
+import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 
 export function SearchButton({
   isSearching,

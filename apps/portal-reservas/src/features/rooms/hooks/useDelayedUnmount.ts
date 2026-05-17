@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 
 /**
  * Delays unmounting by `delayMs` after `isVisible` becomes false.

@@ -11,8 +11,8 @@
  * This file should be replaced by an API fetch in a future iteration.
  */
 
-import type { Room } from "../domain/types";
 import { ROOM_MOCK } from "../constants/rooms.constants";
+import type { Room } from "../domain/types";
 
 // ─── Dynamic Date Generator ────────────────────────────────────────────────────
 /**
@@ -95,7 +95,14 @@ export const mockRooms: Room[] = [
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1512918728675-ed5a9ec8fa62?q=80&w=2070&auto=format&fit=crop",
     ],
-    amenities: ["WiFi", "Jacuzzi exterior", "Minibar", "Servicio de habitación", "Desayuno incluido", "Vista al dosel"],
+    amenities: [
+      "WiFi",
+      "Jacuzzi exterior",
+      "Minibar",
+      "Servicio de habitación",
+      "Desayuno incluido",
+      "Vista al dosel",
+    ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 5, 3),
   },
   {
@@ -113,7 +120,8 @@ export const mockRooms: Room[] = [
     ],
     description:
       "Diseñada para familias que quieren explorar el bosque nuboso juntas. Habitaciones conectadas, cocina completa equipada y un área de fogata exclusiva en la terraza. Los niños adoran el puente colgante privado.",
-    adminTip: "El puente colgante privado es el favorito de los niños — ¡no te lo pierdas al atardecer!",
+    adminTip:
+      "El puente colgante privado es el favorito de los niños — ¡no te lo pierdas al atardecer!",
     image:
       "https://images.unsplash.com/photo-1472224371017-08207f84aaae?q=80&w=2070&auto=format&fit=crop",
     images: [
@@ -121,7 +129,14 @@ export const mockRooms: Room[] = [
       "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop",
     ],
-    amenities: ["WiFi", "Cocina completa", "Fogata privada", "Puente colgante", "Área de juego", "Lavadora"],
+    amenities: [
+      "WiFi",
+      "Cocina completa",
+      "Fogata privada",
+      "Puente colgante",
+      "Área de juego",
+      "Lavadora",
+    ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 7, 4),
   },
   {
@@ -139,7 +154,8 @@ export const mockRooms: Room[] = [
     ],
     description:
       "El máximo lujo en la reserva. Incluye mayordomo privado, senderos exclusivos y piscina térmica incrustada en roca volcánica. Un santuario privado rodeado de 2 acres de bosque primario intacto.",
-    adminTip: "Nuestro huésped más memorable. El chef privado puede preparar cenas con ingredientes del bosque.",
+    adminTip:
+      "Nuestro huésped más memorable. El chef privado puede preparar cenas con ingredientes del bosque.",
     image:
       "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=2070&auto=format&fit=crop",
     images: [
@@ -147,7 +163,14 @@ export const mockRooms: Room[] = [
       "https://images.unsplash.com/photo-1538332576228-eb5b4c4de8f5?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1540541338-8c671be9be54?q=80&w=2070&auto=format&fit=crop",
     ],
-    amenities: ["WiFi", "Piscina privada", "Mayordomo 24h", "Chef privado", "Senderos exclusivos", "Spa privado"],
+    amenities: [
+      "WiFi",
+      "Piscina privada",
+      "Mayordomo 24h",
+      "Chef privado",
+      "Senderos exclusivos",
+      "Spa privado",
+    ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 10, 5),
   },
 
@@ -195,7 +218,13 @@ export const mockRooms: Room[] = [
       "https://images.unsplash.com/photo-1582610116397-edb318600f1d?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1563911302283-d2bc129e7570?q=80&w=2070&auto=format&fit=crop",
     ],
-    amenities: ["WiFi", "Aguas termales privadas", "Piscina mineral", "Masajes a domicilio", "Servicio de habitación"],
+    amenities: [
+      "WiFi",
+      "Aguas termales privadas",
+      "Piscina mineral",
+      "Masajes a domicilio",
+      "Servicio de habitación",
+    ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 6, 3),
   },
   {
@@ -222,7 +251,14 @@ export const mockRooms: Room[] = [
       "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1551632811-561f558c638f?q=80&w=2070&auto=format&fit=crop",
     ],
-    amenities: ["WiFi", "Muro de escalar", "Bodega de equipos", "Sala de secado", "Kayaks incluidos", "Desayuno energético"],
+    amenities: [
+      "WiFi",
+      "Muro de escalar",
+      "Bodega de equipos",
+      "Sala de secado",
+      "Kayaks incluidos",
+      "Desayuno energético",
+    ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 4, 2),
   },
   {
@@ -240,7 +276,8 @@ export const mockRooms: Room[] = [
     ],
     description:
       "Nuestra propiedad más extensa. Piscina infinity fundiéndose con la selva, servicio de chef privado y helipuerto propio. La experiencia definitiva del volcán Arenal vista desde la comodidad de tu propia villa de lujo.",
-    adminTip: "Disponemos de servicio de helicóptero al Volcán Poás para nuestros huéspedes Signature.",
+    adminTip:
+      "Disponemos de servicio de helicóptero al Volcán Poás para nuestros huéspedes Signature.",
     image:
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2070&auto=format&fit=crop",
     images: [
@@ -248,7 +285,15 @@ export const mockRooms: Room[] = [
       "https://images.unsplash.com/photo-1613490908653-cg72990471b0?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070&auto=format&fit=crop",
     ],
-    amenities: ["WiFi", "Piscina infinity", "Chef privado", "Helipuerto", "Spa completo", "Mayordomo 24h", "Sala de cine"],
+    amenities: [
+      "WiFi",
+      "Piscina infinity",
+      "Chef privado",
+      "Helipuerto",
+      "Spa completo",
+      "Mayordomo 24h",
+      "Sala de cine",
+    ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 14, 6),
   },
 ];

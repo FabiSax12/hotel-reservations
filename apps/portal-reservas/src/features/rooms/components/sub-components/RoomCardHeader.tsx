@@ -7,10 +7,10 @@
  * - Top 3 amenity chips
  */
 
-import type { RoomCardHeaderProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { SEARCH_VALS } from "../../../search/components/search-bar/constants/search.constants";
 import { getAmenityIcon } from "../../constants/amenity-icons.const";
+import type { RoomCardHeaderProps } from "../../domain/types";
 
 export function RoomCardHeader({ room, selectedDest }: RoomCardHeaderProps) {
   // Show top 3 amenities

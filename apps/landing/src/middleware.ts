@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 const SUPPORTED_LOCALES = ["es", "en"] as const;
 type Locale = (typeof SUPPORTED_LOCALES)[number];

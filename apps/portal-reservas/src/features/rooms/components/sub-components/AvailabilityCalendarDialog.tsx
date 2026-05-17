@@ -12,8 +12,8 @@
 
 "use client";
 
-import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import type { AvailabilityCalendarDialogProps } from "../../domain/types";
 
 /** Formats an ISO date string into a readable short date (e.g. "15 oct"). */
@@ -55,16 +55,20 @@ export function AvailabilityCalendarDialog({
               className={S.dialogCloseBtn}
               aria-label={t.ROOMS.AVAIL_DIALOG_CLOSE}
             >
-              <svg className={S.dialogCloseBtnIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg
+                className={S.dialogCloseBtnIcon}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
 
           {availableDates.length === 0 ? (
-            <p className={S.dialogEmptyMsg}>
-              {t.ROOMS.AVAIL_DIALOG_EMPTY}
-            </p>
+            <p className={S.dialogEmptyMsg}>{t.ROOMS.AVAIL_DIALOG_EMPTY}</p>
           ) : (
             <div className={S.dialogMonthList}>
               {Object.entries(groups).map(([month, dates]) => (

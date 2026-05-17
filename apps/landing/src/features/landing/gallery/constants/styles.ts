@@ -25,8 +25,10 @@ export const GALLERY = Object.freeze({
   PROGRESS_BG: "w-20 h-px bg-forest-700 overflow-hidden rounded-full",
   PROGRESS_FILL: "h-full bg-gold-500/40 origin-left",
   DOT_ACTIVE: "w-5 h-[3px] rounded-full bg-gold-500 transition-all duration-400",
-  DOT_INACTIVE: "w-[3px] h-[3px] rounded-full bg-forest-600 hover:bg-forest-500 transition-all duration-300",
-  MOBILE_WRAPPER: "lg:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none mt-2",
+  DOT_INACTIVE:
+    "w-[3px] h-[3px] rounded-full bg-forest-600 hover:bg-forest-500 transition-all duration-300",
+  MOBILE_WRAPPER:
+    "lg:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none mt-2",
   MOBILE_CARD: "snap-start shrink-0 w-[74vw] rounded-xl overflow-hidden",
   MOBILE_CARD_INNER: "w-full h-full relative",
   MOBILE_GRADIENT: "absolute inset-x-0 bottom-0 h-2/5",

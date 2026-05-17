@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useI18n } from "@/locales";
-import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { MARQUEE_SEPARATOR } from "@/features/landing/layout/constants/marquee";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { useI18n } from "@/locales";
 
 export function MarqueeBand() {
   const { t } = useI18n();

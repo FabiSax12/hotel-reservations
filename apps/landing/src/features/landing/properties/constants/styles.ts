@@ -3,7 +3,8 @@ export const PROPERTIES = Object.freeze({
   CONTAINER: "max-w-[1440px] mx-auto px-6 lg:px-16 pt-28 lg:pt-40 pb-20 lg:pb-32",
   HEADER: "text-center max-w-xl mx-auto mb-16 lg:mb-24",
   EYEBROW: "text-xs tracking-[0.35em] uppercase text-gold-400 font-sans mb-5",
-  HEADLINE: "font-serif text-[2.5rem] lg:text-[3.5rem] leading-[1.05] text-stone-50 font-normal mb-4",
+  HEADLINE:
+    "font-serif text-[2.5rem] lg:text-[3.5rem] leading-[1.05] text-stone-50 font-normal mb-4",
   SUBHEADLINE: "text-stone-400 text-base leading-relaxed font-light",
   CAROUSEL_OUTER: "relative overflow-hidden",
   CAROUSEL_TRACK: "flex cursor-grab active:cursor-grabbing",
@@ -28,16 +29,20 @@ export const PROPERTIES = Object.freeze({
   INFO_PRICE_ROW: "flex items-end gap-3 mb-8",
   INFO_PRICE_LABEL: "text-xs tracking-[0.25em] uppercase text-stone-500 mb-1",
   INFO_PRICE: "font-serif text-[1.75rem] text-stone-50",
-  INFO_CTA: "inline-flex items-center gap-3 px-8 py-4 bg-gold-500 text-forest-950 text-xs font-medium tracking-widest uppercase transition-all duration-400 hover:bg-gold-400 self-start",
+  INFO_CTA:
+    "inline-flex items-center gap-3 px-8 py-4 bg-gold-500 text-forest-950 text-xs font-medium tracking-widest uppercase transition-all duration-400 hover:bg-gold-400 self-start",
   CONTROLS: "flex items-center justify-between mt-8 lg:mt-10",
   CONTROLS_DOTS: "flex flex-col items-center gap-2.5",
   PROGRESS_BG: "w-16 h-px bg-forest-700 overflow-hidden rounded-full",
   PROGRESS_FILL: "h-full bg-gold-500/50 origin-left",
   DOTS: "flex gap-3",
   DOT_ACTIVE: "w-6 h-1.5 rounded-full bg-gold-500",
-  DOT_INACTIVE: "w-1.5 h-1.5 rounded-full bg-stone-600 hover:bg-stone-400 transition-colors duration-300",
-  NAV_BTN: "w-12 h-12 border border-stone-700 flex items-center justify-center text-stone-400 hover:border-gold-500 hover:text-gold-400 transition-all duration-300",
-  NAV_BTN_FULL: "w-12 h-12 border border-stone-700 flex items-center justify-center text-stone-400 hover:border-gold-500 hover:text-gold-400 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed",
+  DOT_INACTIVE:
+    "w-1.5 h-1.5 rounded-full bg-stone-600 hover:bg-stone-400 transition-colors duration-300",
+  NAV_BTN:
+    "w-12 h-12 border border-stone-700 flex items-center justify-center text-stone-400 hover:border-gold-500 hover:text-gold-400 transition-all duration-300",
+  NAV_BTN_FULL:
+    "w-12 h-12 border border-stone-700 flex items-center justify-center text-stone-400 hover:border-gold-500 hover:text-gold-400 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed",
   NAV_ROW: "flex gap-3",
   DRAG_HINT: "text-xs tracking-[0.25em] uppercase text-stone-600",
 } as const);

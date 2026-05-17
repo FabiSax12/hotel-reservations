@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { motion } from "framer-motion";
 import type { MotionValue } from "framer-motion";
-import { ABOUT } from "@/features/landing/about/constants/styles";
+import { motion } from "framer-motion";
+import Image from "next/image";
 import { MOSAIC_ITEM } from "@/features/landing/about/constants/animations";
+import { ABOUT } from "@/features/landing/about/constants/styles";
 
 interface MosaicPanelProps {
   src: string;

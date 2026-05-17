@@ -9,10 +9,10 @@
 
 "use client";
 
-import type { PackageCardSummaryProps } from "../../domain/types";
-import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
 import { groupRoomsByType } from "../../domain/grouping";
+import type { PackageCardSummaryProps } from "../../domain/types";
 import { RoomTreeItem } from "./RoomTreeItem";
 
 const MAX_VISIBLE_ROOMS = 4;
@@ -32,9 +32,10 @@ export function PackageCardSummary({
 
   // Limit visible rooms and calculate overflow
   const visibleRooms = grouped.slice(0, MAX_VISIBLE_ROOMS);
-  const overflowCount = grouped.length > MAX_VISIBLE_ROOMS
-    ? grouped.slice(MAX_VISIBLE_ROOMS).reduce((sum, g) => sum + g.count, 0)
-    : 0;
+  const overflowCount =
+    grouped.length > MAX_VISIBLE_ROOMS
+      ? grouped.slice(MAX_VISIBLE_ROOMS).reduce((sum, g) => sum + g.count, 0)
+      : 0;
 
   return (
     <div className={S.body}>
@@ -47,8 +48,18 @@ export function PackageCardSummary({
         </div>
         <div className={S.chipRow}>
           <span className={S.capacityChip}>
-            <svg className={S.chipIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg
+              className={S.chipIcon}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+              />
             </svg>
             {totalCapacity}
           </span>

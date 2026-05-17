@@ -5,18 +5,13 @@
 
 "use client";
 
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 
 export function HeroExpandTab() {
-  const {
-    hasHeroCalendarOpened,
-    active,
-    setActive,
-    setHasHeroCalendarOpened,
-    onHeroCalendarOpen,
-  } = useSearchBarContext();
+  const { hasHeroCalendarOpened, active, setActive, setHasHeroCalendarOpened, onHeroCalendarOpen } =
+    useSearchBarContext();
 
   const handleExpand = () => {
     setHasHeroCalendarOpened(true);

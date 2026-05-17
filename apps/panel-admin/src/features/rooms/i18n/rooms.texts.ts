@@ -33,9 +33,12 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SECTION_FEES: "Tarifas",
       SECTION_BASIC_INFO: "Información Básica",
       SECTION_EXTRA_INFO: "Detalles Adicionales",
-      HINT_BASIC_INFO: "El nombre y la categoría son los identificadores principales que los huéspedes ven al explorar su propiedad.",
-      HINT_CAPACITY: "Asegure la comodidad de los huéspedes estableciendo límites realistas. Esto ayuda a gestionar las expectativas.",
-      HINT_FEES: "Establezca tarifas competitivas. Las tarifas de temporada alta se aplican durante los periodos pico de turismo.",
+      HINT_BASIC_INFO:
+        "El nombre y la categoría son los identificadores principales que los huéspedes ven al explorar su propiedad.",
+      HINT_CAPACITY:
+        "Asegure la comodidad de los huéspedes estableciendo límites realistas. Esto ayuda a gestionar las expectativas.",
+      HINT_FEES:
+        "Establezca tarifas competitivas. Las tarifas de temporada alta se aplican durante los periodos pico de turismo.",
     },
     VALIDATION: {
       REQUIRED: "Este campo es requerido",
@@ -82,9 +85,12 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SECTION_FEES: "Fees",
       SECTION_BASIC_INFO: "Basic Information",
       SECTION_EXTRA_INFO: "Extra Details",
-      HINT_BASIC_INFO: "The name and category are the primary identifiers guests see when browsing your property.",
-      HINT_CAPACITY: "Ensure guest comfort by setting realistic limits. This helps in managing expectations and room occupancy.",
-      HINT_FEES: "Set competitive rates. High season fees apply during peak tourism periods in Costa Rica.",
+      HINT_BASIC_INFO:
+        "The name and category are the primary identifiers guests see when browsing your property.",
+      HINT_CAPACITY:
+        "Ensure guest comfort by setting realistic limits. This helps in managing expectations and room occupancy.",
+      HINT_FEES:
+        "Set competitive rates. High season fees apply during peak tourism periods in Costa Rica.",
     },
     VALIDATION: {
       REQUIRED: "This field is required",

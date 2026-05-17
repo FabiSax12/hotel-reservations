@@ -10,15 +10,15 @@
 
 "use client";
 
-import type { RoomCardProps } from "../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
+import type { RoomCardProps } from "../domain/types";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { RoomImagePanel } from "./RoomImagePanel";
+import { RoomPriceTier } from "./RoomPriceTier";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
-import { RoomPriceTier } from "./RoomPriceTier";
-import { ROOM_ANIMATION } from "../constants/rooms.constants";
 
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   const { hasDates, searchDates } = useRoomsContext();

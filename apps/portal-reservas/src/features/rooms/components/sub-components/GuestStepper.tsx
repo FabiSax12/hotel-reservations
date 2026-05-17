@@ -9,9 +9,14 @@ import { Stepper } from "@hotel/ui";
 import type { GuestStepperProps } from "../../domain/types";
 
 export function GuestStepper({
-  label, subtitle, value, min,
-  onDecrement, onIncrement,
-  decrementLabel, incrementLabel,
+  label,
+  subtitle,
+  value,
+  min,
+  onDecrement,
+  onIncrement,
+  decrementLabel,
+  incrementLabel,
 }: GuestStepperProps) {
   return (
     <Stepper

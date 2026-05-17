@@ -2,7 +2,7 @@
  * @file grouping.test.ts — Unit tests for the room grouping algorithm (US-DM-04).
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { groupRoomsIntoPackages } from "./grouping";
 import type { Room } from "./types";
 
@@ -14,9 +14,21 @@ function makeRoom(
   inventory = 10,
 ): Room {
   return {
-    id, location: "Test", title: `Room ${id}`, type, price, capacity, inventory,
-    sqft: 50, beds: [{ type: "queen", count: 1 }],
-    description: "", adminTip: "", image: "", images: [], amenities: [], availableDates: [],
+    id,
+    location: "Test",
+    title: `Room ${id}`,
+    type,
+    price,
+    capacity,
+    inventory,
+    sqft: 50,
+    beds: [{ type: "queen", count: 1 }],
+    description: "",
+    adminTip: "",
+    image: "",
+    images: [],
+    amenities: [],
+    availableDates: [],
   };
 }
 
@@ -62,7 +74,8 @@ describe("groupRoomsIntoPackages", () => {
 
     // Sorted by price
     for (let i = 1; i < packages.length; i++) {
-      const prev = packages[i - 1], curr = packages[i];
+      const prev = packages[i - 1],
+        curr = packages[i];
       if ("rooms" in prev && "rooms" in curr) {
         expect(curr.totalPricePerNight).toBeGreaterThanOrEqual(prev.totalPricePerNight);
       }
@@ -70,10 +83,7 @@ describe("groupRoomsIntoPackages", () => {
   });
 
   it("rejects absurd split exceeding MAX_WASTE", () => {
-    const rooms = [
-      makeRoom("std", 2, 100, "Standard", 5),
-      makeRoom("villa", 8, 500, "Villa", 1),
-    ];
+    const rooms = [makeRoom("std", 2, 100, "Standard", 5), makeRoom("villa", 8, 500, "Villa", 1)];
     const result = groupRoomsIntoPackages(rooms, 3);
     const packages = result.filter((r) => "rooms" in r);
     for (const pkg of packages) {
@@ -102,7 +112,10 @@ describe("groupRoomsIntoPackages", () => {
     const result = groupRoomsIntoPackages(rooms, 4);
     const pkg = result.find((r) => {
       if (!("rooms" in r)) return false;
-      return r.rooms.some((room) => room.id === "cheap") && r.rooms.some((room) => room.id === "expensive");
+      return (
+        r.rooms.some((room) => room.id === "cheap") &&
+        r.rooms.some((room) => room.id === "expensive")
+      );
     });
     expect(pkg && "rooms" in pkg ? pkg.rooms[0].id : null).toBe("expensive");
   });

@@ -3,12 +3,15 @@
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
-import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
 import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
-import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
+import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
 import type { ReservationExpandedPanelProps } from "./ReservationExpandedPanel.interface";
+import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
 
-export const ReservationExpandedPanel = ({ reservation: r, isClosing = false }: ReservationExpandedPanelProps) => {
+export const ReservationExpandedPanel = ({
+  reservation: r,
+  isClosing = false,
+}: ReservationExpandedPanelProps) => {
   const { t } = useI18n();
 
   const wrapperClassName = `${S.wrapperBase} ${isClosing ? S.wrapperExit : S.wrapperEnter}`;

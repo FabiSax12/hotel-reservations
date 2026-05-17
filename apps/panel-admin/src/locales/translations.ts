@@ -4,10 +4,10 @@ import { AUTH_TEXTS } from "@/features/auth/i18n/auth.texts";
 import type { AuthTexts } from "@/features/auth/i18n/authTexts.type";
 import { RESERVATIONS_TEXTS } from "@/features/reservations/i18n/reservations.texts";
 import type { ReservationsTexts } from "@/features/reservations/i18n/reservationsTexts.type";
-import { SIDEBAR_TEXTS } from "@/features/sidebar/i18n/sidebar.texts";
-import type { SidebarTexts } from "@/features/sidebar/i18n/sidebar.type";
 import { ROOMS_TEXTS } from "@/features/rooms/i18n/rooms.texts";
 import type { RoomsTexts } from "@/features/rooms/i18n/roomsTexts.type";
+import { SIDEBAR_TEXTS } from "@/features/sidebar/i18n/sidebar.texts";
+import type { SidebarTexts } from "@/features/sidebar/i18n/sidebar.type";
 import { COMMON_TEXTS } from "@/shared/i18n/commonTexts";
 import type { CommonTexts } from "@/shared/i18n/commonTexts.type";
 

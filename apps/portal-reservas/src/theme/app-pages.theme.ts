@@ -4,11 +4,13 @@
 export const ERROR_PAGE_STYLES = {
   main: "min-h-screen flex items-center justify-center bg-forest-950",
   contentWrapper: "flex flex-col items-center gap-6 text-center max-w-md px-6",
-  iconCircle: "w-14 h-14 rounded-full bg-red-900/30 border border-red-800/50 flex items-center justify-center",
+  iconCircle:
+    "w-14 h-14 rounded-full bg-red-900/30 border border-red-800/50 flex items-center justify-center",
   icon: "w-7 h-7 text-red-400",
   title: "text-2xl font-serif text-stone-50",
   message: "text-stone-400 text-sm",
-  retryBtn: "px-6 py-3 bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold rounded-xl transition-colors",
+  retryBtn:
+    "px-6 py-3 bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold rounded-xl transition-colors",
   icons: {
     error: {
       viewBox: "0 0 24 24",

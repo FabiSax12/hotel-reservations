@@ -1,4 +1,6 @@
-﻿/**
+"use client";
+
+/**
  * @file HeroSearch.tsx — Full-viewport hero section with cinematic search.
  *
  * Displayed only in State A (before the user searches). Contains:
@@ -7,13 +9,12 @@
  *  - The `ModernSearchBar` in "hero" size.
  */
 
-import { ModernSearchBar } from "./search-bar";
-import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
-import { HERO_SEARCH_ANIMATIONS } from "../../../theme/search.animations";
 import { useI18n } from "@/locales";
-import { ScrollIndicator } from "./ScrollIndicator";
-
+import { HERO_SEARCH_ANIMATIONS } from "../../../theme/search.animations";
+import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 import type { HeroSearchProps } from "../domain/types";
+import { ScrollIndicator } from "./ScrollIndicator";
+import { ModernSearchBar } from "./search-bar";
 
 export function HeroSearch({
   onSearch,
@@ -28,16 +29,10 @@ export function HeroSearch({
     <section className={S.section(hasLocation)}>
       <div className={S.contentWrapper}>
         <div className={S.titleBlock}>
-          <h1
-            className={S.heading}
-            style={HERO_SEARCH_ANIMATIONS.title(heroCalendarActive)}
-          >
+          <h1 className={S.heading} style={HERO_SEARCH_ANIMATIONS.title(heroCalendarActive)}>
             {t.SEARCH.HERO.TITLE}
           </h1>
-          <p
-            className={S.subtitle}
-            style={HERO_SEARCH_ANIMATIONS.subtitle(heroCalendarActive)}
-          >
+          <p className={S.subtitle} style={HERO_SEARCH_ANIMATIONS.subtitle(heroCalendarActive)}>
             {t.SEARCH.HERO.SUBTITLE}
           </p>
         </div>

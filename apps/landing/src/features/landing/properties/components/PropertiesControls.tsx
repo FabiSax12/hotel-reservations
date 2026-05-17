@@ -1,13 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useI18n } from "@/locales";
 import { PROPERTIES } from "@/features/landing/properties/constants/styles";
+import { useI18n } from "@/locales";
 import type { PropertiesControlsProps } from "./PropertiesControls.types";
 
 export function PropertiesControls({
-  current, total, isHovered, prefersReducedMotion,
-  autoInterval, dragHint, onGoTo, onNavigate,
+  current,
+  total,
+  isHovered,
+  prefersReducedMotion,
+  autoInterval,
+  dragHint,
+  onGoTo,
+  onNavigate,
 }: PropertiesControlsProps) {
   const { t } = useI18n();
   const texts = t.LANDING.PROPERTIES;
@@ -49,7 +55,14 @@ export function PropertiesControls({
           className={PROPERTIES.NAV_BTN_FULL}
           aria-label={texts.NAV_PREV}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </button>
@@ -59,7 +72,14 @@ export function PropertiesControls({
           className={PROPERTIES.NAV_BTN_FULL}
           aria-label={texts.NAV_NEXT}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </button>

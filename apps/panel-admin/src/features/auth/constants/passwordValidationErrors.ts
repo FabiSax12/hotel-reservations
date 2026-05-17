@@ -1,3 +1,3 @@
 export const PASSWORD_VALIDATION_ERRORS = {
-    TOO_SHORT: "TOO_SHORT",
-}
+  TOO_SHORT: "TOO_SHORT",
+};
