@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { updateReservationStatus } from "../services/reservationService";
 import type { ReservationStatus } from "../domain/reservation";
+import { updateReservationStatus } from "../services/reservationService";
 
 export async function updateReservationStatusAction(
   id: string,

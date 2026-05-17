@@ -8,22 +8,20 @@
 
 "use client";
 
-import type { SearchBarProps } from "../domain/types";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import { SEARCH_VARIANTS } from "../constants/search.constants";
-
-import { useSearchBarState } from "../hooks/useSearchBarState";
-import { useSearchValidation } from "../hooks/useSearchValidation";
-import { useDateSelection } from "../hooks/useDateSelection";
-import { useGuestsSelection } from "../hooks/useGuestsSelection";
-import { useDestinationState } from "../hooks/useDestinationState";
-import { useSearchBarContextValue } from "../hooks/useSearchBarContextValue";
-import { useSearchTrigger } from "../hooks/useSearchTrigger";
 import { useI18n } from "@/locales";
-
+import { SEARCH_VARIANTS } from "../constants/search.constants";
+import { SearchBarProvider } from "../context/SearchBarContext";
+import type { SearchBarProps } from "../domain/types";
+import { useDateSelection } from "../hooks/useDateSelection";
+import { useDestinationState } from "../hooks/useDestinationState";
+import { useGuestsSelection } from "../hooks/useGuestsSelection";
+import { useSearchBarContextValue } from "../hooks/useSearchBarContextValue";
+import { useSearchBarState } from "../hooks/useSearchBarState";
+import { useSearchTrigger } from "../hooks/useSearchTrigger";
+import { useSearchValidation } from "../hooks/useSearchValidation";
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { HeroCalendarFloat } from "./HeroCalendarFloat";
 import { SearchBarFrame } from "./SearchBarFrame";
-import { SearchBarProvider } from "../context/SearchBarContext";
 
 export function ModernSearchBar({
   onSearch,

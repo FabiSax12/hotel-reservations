@@ -3,8 +3,8 @@
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { RESERVATION_STATUS as RS } from "../../../constants/reservation-statuses";
-import { FOOTER_ACTION_BUTTONS_STYLES as S } from "./FooterActionButtons.styles";
 import type { FooterActionButtonsProps } from "./FooterActionButtons.interface";
+import { FOOTER_ACTION_BUTTONS_STYLES as S } from "./FooterActionButtons.styles";
 
 export const FooterActionButtons = ({
   currentStatus,
@@ -21,7 +21,12 @@ export const FooterActionButtons = ({
         <Button variant="outline" size="sm" className={S.approveButton} onPress={onApprove}>
           {texts.BTN_APPROVE}
         </Button>
-        <Button variant="outline" size="sm" className={S.cancelButton} onPress={onCancelReservation}>
+        <Button
+          variant="outline"
+          size="sm"
+          className={S.cancelButton}
+          onPress={onCancelReservation}
+        >
           {texts.BTN_CANCEL_RESERVATION}
         </Button>
       </>
@@ -34,7 +39,12 @@ export const FooterActionButtons = ({
         <Button variant="outline" size="sm" className={S.completeButton} onPress={onComplete}>
           {texts.BTN_COMPLETE_RESERVATION}
         </Button>
-        <Button variant="outline" size="sm" className={S.cancelButton} onPress={onCancelReservation}>
+        <Button
+          variant="outline"
+          size="sm"
+          className={S.cancelButton}
+          onPress={onCancelReservation}
+        >
           {texts.BTN_CANCEL_RESERVATION}
         </Button>
       </>

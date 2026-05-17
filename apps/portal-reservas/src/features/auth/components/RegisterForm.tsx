@@ -35,7 +35,12 @@ export const RegisterForm = () => {
         <h1 className={S.heading}>{t.AUTH.REGISTER.TITLE}</h1>
 
         <Form action={formAction} className={S.form}>
-          <TextField name={REGISTER_FORM_FIELDS.FULL_NAME} autoComplete="name" isInvalid={!!fullNameError} fullWidth>
+          <TextField
+            name={REGISTER_FORM_FIELDS.FULL_NAME}
+            autoComplete="name"
+            isInvalid={!!fullNameError}
+            fullWidth
+          >
             <Label>{t.AUTH.REGISTER.FULL_NAME_LABEL}</Label>
             <Input placeholder={t.AUTH.REGISTER.FULL_NAME_PLACEHOLDER} />
             {fullNameError && <FieldError>{t.AUTH.VALIDATION[fullNameError]}</FieldError>}
@@ -66,7 +71,10 @@ export const RegisterForm = () => {
             >
               <Label>{t.AUTH.REGISTER.PASSWORD_LABEL}</Label>
               <div className={S.passwordFieldWrapper}>
-                <Input placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER} className={S.passwordInput} />
+                <Input
+                  placeholder={t.AUTH.REGISTER.PASSWORD_PLACEHOLDER}
+                  className={S.passwordInput}
+                />
                 <Button
                   isIconOnly
                   variant="ghost"
@@ -95,7 +103,10 @@ export const RegisterForm = () => {
           >
             <Label>{t.AUTH.REGISTER.CONFIRM_PASSWORD_LABEL}</Label>
             <div className={S.passwordFieldWrapper}>
-              <Input placeholder={t.AUTH.REGISTER.CONFIRM_PASSWORD_PLACEHOLDER} className={S.passwordInput} />
+              <Input
+                placeholder={t.AUTH.REGISTER.CONFIRM_PASSWORD_PLACEHOLDER}
+                className={S.passwordInput}
+              />
               <Button
                 isIconOnly
                 variant="ghost"
@@ -122,7 +133,14 @@ export const RegisterForm = () => {
             </p>
           )}
 
-          <Button type="submit" variant="primary" fullWidth isPending={isPending} isDisabled={isSubmitDisabled} className={S.submitBtn}>
+          <Button
+            type="submit"
+            variant="primary"
+            fullWidth
+            isPending={isPending}
+            isDisabled={isSubmitDisabled}
+            className={S.submitBtn}
+          >
             {isPending ? t.AUTH.REGISTER.SUBMITTING_BUTTON : t.AUTH.REGISTER.SUBMIT_BUTTON}
           </Button>
         </Form>

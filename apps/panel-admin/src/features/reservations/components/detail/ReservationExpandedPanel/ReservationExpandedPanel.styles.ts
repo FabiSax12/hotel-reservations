@@ -10,6 +10,5 @@ export const RESERVATION_EXPANDED_PANEL_STYLES = {
   rightFooter: "flex gap-2",
   button:
     "inline-flex cursor-pointer select-none items-center gap-1.5 rounded-full bg-white border border-gray-200 shadow-sm px-3 py-1.5 text-sm font-medium tracking-wide transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 hover:shadow-md",
-  iconColor:
-    "text-emerald-900 w-4 h-4 group-hover:text-white transition-colors",
+  iconColor: "text-emerald-900 w-4 h-4 group-hover:text-white transition-colors",
 } as const;

@@ -3,15 +3,15 @@
 import { Button } from "@heroui/react";
 import { Save, X } from "lucide-react";
 import { useI18n } from "@/locales";
-import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
+import { useReservationStatusFooter } from "../../../hooks/useReservationStatusFooter";
 import { Divider } from "../../shared/Divider/Divider";
-import { FooterActionButtons } from "../FooterActionButtons/FooterActionButtons";
+import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
 import { CancellationReasonField } from "../CancellationReasonModal/CancellationReasonModal";
+import { FooterActionButtons } from "../FooterActionButtons/FooterActionButtons";
 import { SaveConfirmDialog } from "../SaveConfirmDialog/SaveConfirmDialog";
 import { UnsavedChangesModal } from "../UnsavedChangesModal/UnsavedChangesModal";
-import { useReservationStatusFooter } from "../../../hooks/useReservationStatusFooter";
-import { RESERVATION_STATUS_FOOTER_STYLES as S } from "./ReservationStatusFooter.styles";
 import type { ReservationStatusFooterProps } from "./ReservationStatusFooter.interface";
+import { RESERVATION_STATUS_FOOTER_STYLES as S } from "./ReservationStatusFooter.styles";
 
 export const ReservationStatusFooter = (props: ReservationStatusFooterProps) => {
   const { t } = useI18n();

@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/locales";
-import { useReservationStatusReducer } from "../reducer/reservations.reducer";
-import { RESERVATION_STATUS_ACTIONS as A } from "../reducer/reservations.reducer.constants";
+import type { ReservationStatusFooterProps } from "../components/status/ReservationStatusFooter/ReservationStatusFooter.interface";
 import { RESERVATION_STATUS as S } from "../constants/reservation-statuses";
 import type { ReservationStatus } from "../domain/reservation";
-import type { ReservationStatusFooterProps } from "../components/status/ReservationStatusFooter/ReservationStatusFooter.interface";
+import { useReservationStatusReducer } from "../reducer/reservations.reducer";
+import { RESERVATION_STATUS_ACTIONS as A } from "../reducer/reservations.reducer.constants";
 
 export function useReservationStatusFooter({
   reservationId,
@@ -17,23 +17,17 @@ export function useReservationStatusFooter({
   onSave,
 }: ReservationStatusFooterProps) {
   const { t } = useI18n();
-  const { state, dispatch } = useReservationStatusReducer(
-    originalCancellationReason,
-  );
+  const { state, dispatch } = useReservationStatusReducer(originalCancellationReason);
   const [isSaveConfirmDialogOpen, setIsSaveConfirmDialogOpen] = useState(false);
-  const [isUnsavedChangesModalOpen, setIsUnsavedChangesModalOpen] =
-    useState(false);
+  const [isUnsavedChangesModalOpen, setIsUnsavedChangesModalOpen] = useState(false);
 
-  const currentStatus: ReservationStatus =
-    state.pendingStatus ?? currentSavedStatus;
+  const currentStatus: ReservationStatus = state.pendingStatus ?? currentSavedStatus;
   const hasPendingChanges = state.pendingStatus !== null;
-  const isAlreadySaved =
-    currentSavedStatus === S.CANCELLED && state.pendingStatus === null;
+  const isAlreadySaved = currentSavedStatus === S.CANCELLED && state.pendingStatus === null;
   const showCancellationField = currentStatus === S.CANCELLED;
   const cancellationFieldIsReadOnly = isAlreadySaved;
   const isSaveDisabled =
-    !hasPendingChanges ||
-    (state.pendingStatus === S.CANCELLED && !state.cancellationReason.trim());
+    !hasPendingChanges || (state.pendingStatus === S.CANCELLED && !state.cancellationReason.trim());
 
   const guardedCloseRef = useRef<() => void>(() => {});
   guardedCloseRef.current = () => {
@@ -96,8 +90,7 @@ export function useReservationStatusFooter({
       if (currentSavedStatus === S.PENDING && statusToSave === S.APPROVED) {
         console.log(`${t.RESERVATIONS.STATUS_MANAGEMENT.LOG_PAYMENT_PROCESSED} ${reservationId}.`);
       }
-      const cancellationReason =
-        statusToSave === S.CANCELLED ? reasonToSave : undefined;
+      const cancellationReason = statusToSave === S.CANCELLED ? reasonToSave : undefined;
       onSave?.(statusToSave, cancellationReason);
     }
   };

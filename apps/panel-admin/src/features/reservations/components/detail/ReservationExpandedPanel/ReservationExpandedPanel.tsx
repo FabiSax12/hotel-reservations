@@ -1,11 +1,11 @@
 "use client";
 
-import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
-import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
-import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
 import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
-import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
+import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
+import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
+import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
 import type { ReservationExpandedPanelProps } from "./ReservationExpandedPanel.interface";
+import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
 
 const noop = () => {};
 const noopRegister = (_id: string, _handler: () => void) => noop;

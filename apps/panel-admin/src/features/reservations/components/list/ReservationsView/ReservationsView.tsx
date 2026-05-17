@@ -2,18 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/locales";
-import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
-import { useReservationsFiltering } from "../../../hooks/useReservationsFiltering";
+import { updateReservationStatusAction } from "../../../actions/updateStatus";
 import { FILTERED_RESULTS } from "../../../constants/filtered-results";
 import { PAGE_SIZE } from "../../../constants/pagination";
-import { EmptyState } from "../EmptyState/EmptyState";
-import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
-import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
-import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
-import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
-import { updateReservationStatusAction } from "../../../actions/updateStatus";
-import type { ReservationsViewProps } from "./ReservationsView.interface";
 import type { ReservationStatus } from "../../../domain/reservation";
+import { useReservationsFiltering } from "../../../hooks/useReservationsFiltering";
+import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
+import { EmptyState } from "../EmptyState/EmptyState";
+import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
+import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
+import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
+import type { ReservationsViewProps } from "./ReservationsView.interface";
+import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
 
 function updateUrlPage(p: number) {
   const url = new URL(window.location.href);
@@ -22,7 +22,11 @@ function updateUrlPage(p: number) {
   window.history.replaceState(null, "", url.toString());
 }
 
-export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: ReservationsViewProps) => {
+export const ReservationsView = ({
+  reservations,
+  rooms,
+  initialPage = 1,
+}: ReservationsViewProps) => {
   const { t } = useI18n();
   const { filters, setFilters, statusCounts, filtered } = useReservationsFiltering(reservations);
   const [page, setPage] = useState(initialPage);
@@ -52,8 +56,8 @@ export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: Reser
     status: ReservationStatus,
     cancellationReason?: string,
   ) => {
-    updateReservationStatusAction(id, status, cancellationReason).catch(
-      (err) => console.error(t.RESERVATIONS.ERRORS.UPDATE_STATUS, err),
+    updateReservationStatusAction(id, status, cancellationReason).catch((err) =>
+      console.error(t.RESERVATIONS.ERRORS.UPDATE_STATUS, err),
     );
   };
 

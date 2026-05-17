@@ -11,7 +11,7 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ROOM_MOCK } from "../constants/rooms.constants";
 
 export interface RoomAvailabilityResult {

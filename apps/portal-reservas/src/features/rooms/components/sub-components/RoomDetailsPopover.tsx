@@ -8,11 +8,11 @@
 "use client";
 
 import { useEffect } from "react";
-import type { RoomDetailsPopoverProps } from "../../domain/types";
-import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
-import { RoomCardGallery } from "./RoomCardGallery";
-import { useI18n } from "@/locales";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import type { RoomDetailsPopoverProps } from "../../domain/types";
+import { RoomCardGallery } from "./RoomCardGallery";
 
 export function RoomDetailsPopover({ room, isOpen, onClose }: RoomDetailsPopoverProps) {
   const { t } = useI18n();
@@ -51,7 +51,13 @@ export function RoomDetailsPopover({ room, isOpen, onClose }: RoomDetailsPopover
           onClick={onClose}
           aria-label={t.ROOMS.CLOSE_DETAILS}
         >
-          <svg className={S.detailCloseBtnIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}>
+          <svg
+            className={S.detailCloseBtnIcon}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.4}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>

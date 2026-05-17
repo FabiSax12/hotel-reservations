@@ -6,10 +6,10 @@
  * The expand/collapse toggle button remains in the bottom-right corner.
  */
 
-import type { RoomImagePanelProps } from "../domain/types";
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
 import { ROOM_THRESHOLDS } from "../constants/rooms.constants";
+import type { RoomImagePanelProps } from "../domain/types";
 
 export function RoomImagePanel({ room, isExpanded, onToggleExpand }: RoomImagePanelProps) {
   const { t } = useI18n();
@@ -22,8 +22,18 @@ export function RoomImagePanel({ room, isExpanded, onToggleExpand }: RoomImagePa
       {/* Urgency badge — top-left, only for scarce inventory */}
       {isScarce && (
         <div className={S.urgencyBadge} role="status">
-          <svg className={S.urgencyIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className={S.urgencyIcon}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           {room.inventory === 1
             ? t.ROOMS.LAST_ROOM
@@ -49,7 +59,11 @@ export function RoomImagePanel({ room, isExpanded, onToggleExpand }: RoomImagePa
           stroke="currentColor"
           strokeWidth={2.5}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 4H4v4m0-4l6 6m6-6h4v4m0-4l-6 6M8 20H4v-4m0 4l6-6m6 6h4v-4m0 4l-6-6" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8 4H4v4m0-4l6 6m6-6h4v4m0-4l-6 6M8 20H4v-4m0 4l6-6m6 6h4v-4m0 4l-6-6"
+          />
         </svg>
       </button>
     </div>

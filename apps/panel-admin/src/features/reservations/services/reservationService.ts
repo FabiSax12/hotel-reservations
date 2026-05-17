@@ -1,8 +1,12 @@
 import { createSupabaseServiceClient } from "@hotel/db/client";
-import type { Reservation, ReservationStatus } from "../domain/reservation";
 import { RESERVATION_STATUS } from "../constants/reservation-statuses";
+import type { Reservation, ReservationStatus } from "../domain/reservation";
 import { RESERVATIONS_TEXTS } from "../i18n/reservations.texts";
-import { mapToReservation, type DbReservation, type ReservationStatusUpdate } from "./reservation.mapper";
+import {
+  type DbReservation,
+  mapToReservation,
+  type ReservationStatusUpdate,
+} from "./reservation.mapper";
 
 const ERRORS = RESERVATIONS_TEXTS.es.ERRORS;
 
@@ -36,10 +40,7 @@ export async function updateReservationStatus(
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
-    .from("reservations")
-    .update(updateData)
-    .eq("id", id);
+  const { error } = await (supabase as any).from("reservations").update(updateData).eq("id", id);
 
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
 }

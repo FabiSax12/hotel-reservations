@@ -4,8 +4,8 @@
 
 "use client";
 
-import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 import type { DateSectionProps } from "../../domain/types";
+import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 
 export function DateSection({
   label,

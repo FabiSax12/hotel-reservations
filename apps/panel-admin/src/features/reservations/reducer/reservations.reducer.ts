@@ -1,9 +1,6 @@
 import { useReducer } from "react";
 import { RESERVATION_STATUS_ACTIONS as A } from "./reservations.reducer.constants";
-import type {
-  ReservationStatusState,
-  ReservationStatusAction,
-} from "./reservations.reducer.types";
+import type { ReservationStatusAction, ReservationStatusState } from "./reservations.reducer.types";
 
 function reservationStatusReducer(
   state: ReservationStatusState,

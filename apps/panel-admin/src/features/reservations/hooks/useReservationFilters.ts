@@ -1,7 +1,7 @@
+import { FILTERED_RESULTS } from "../constants/filtered-results";
+import { DEFAULT_FILTERS, ROOM_ALL_KEY } from "../constants/reservation-filters";
 import type { ReservationStatus } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
-import { DEFAULT_FILTERS, ROOM_ALL_KEY } from "../constants/reservation-filters";
-import { FILTERED_RESULTS } from "../constants/filtered-results";
 
 interface UseReservationFiltersReturn {
   toggleStatus: (status: ReservationStatus) => void;
@@ -47,5 +47,13 @@ export const useReservationFilters = (
 
   const handleGuestNameChange = (value: string) => update({ guestName: value });
 
-  return { toggleStatus, update, clearFilters, isFiltered, selectedRoomKey, handleRoomChange, handleGuestNameChange };
+  return {
+    toggleStatus,
+    update,
+    clearFilters,
+    isFiltered,
+    selectedRoomKey,
+    handleRoomChange,
+    handleGuestNameChange,
+  };
 };

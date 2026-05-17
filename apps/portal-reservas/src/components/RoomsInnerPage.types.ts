@@ -2,8 +2,8 @@
  * @file types.ts — Props types for RoomsInnerPage component.
  */
 
-import type { SearchParams } from "../features/search/domain/types";
 import type { Room } from "../features/rooms/domain/types";
+import type { SearchParams } from "../features/search/domain/types";
 
 export interface RoomsInnerPageProps {
   hasSearched: boolean;

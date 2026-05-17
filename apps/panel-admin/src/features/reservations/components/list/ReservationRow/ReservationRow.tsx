@@ -1,22 +1,24 @@
 "use client";
 
 import { Avatar, Button } from "@heroui/react";
+import { Check, Copy, Eye, EyeOff } from "lucide-react";
 import { useI18n } from "@/locales";
-import { formatTableDate } from "../../../utils/format-reservation-date";
 import { formatAmount } from "../../../utils/format-currency";
+import { formatTableDate } from "../../../utils/format-reservation-date";
 import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
-import { Copy, Check, Eye, EyeOff } from "lucide-react";
-import { useCopyCode } from "./useCopyCode";
-import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
 import type { ReservationRowProps } from "./ReservationRow.interface";
+import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
+import { useCopyCode } from "./useCopyCode";
 
 export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: ReservationRowProps) => {
   const { t } = useI18n();
   const { copied, handleCopyCode } = useCopyCode(r.code);
 
-  const rowClassName    = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
+  const rowClassName = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
   const toggleClassName = isExpanded ? S.toggleButtonOn : S.toggleButtonOff;
-  const buttonLabel     = isExpanded ? t.RESERVATIONS.ACTIONS.VIEW_LESS : t.RESERVATIONS.ACTIONS.VIEW_MORE;
+  const buttonLabel = isExpanded
+    ? t.RESERVATIONS.ACTIONS.VIEW_LESS
+    : t.RESERVATIONS.ACTIONS.VIEW_MORE;
 
   return (
     <tr className={rowClassName}>
@@ -31,11 +33,7 @@ export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: Reserva
             aria-label={t.RESERVATIONS.ACTIONS.COPY_CODE}
             onPress={handleCopyCode}
           >
-            {copied ? (
-              <Check className={S.copyIcon} />
-            ) : (
-              <Copy className={S.copyIcon} />
-            )}
+            {copied ? <Check className={S.copyIcon} /> : <Copy className={S.copyIcon} />}
           </Button>
         </div>
       </td>
@@ -78,17 +76,8 @@ export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: Reserva
       </td>
 
       <td className={S.cell}>
-        <Button
-          size="sm"
-          variant="outline"
-          className={toggleClassName}
-          onPress={onToggle}
-        >
-          {isExpanded ? (
-            <EyeOff className={S.toggleIcon} />
-          ) : (
-            <Eye className={S.toggleIcon} />
-          )}
+        <Button size="sm" variant="outline" className={toggleClassName} onPress={onToggle}>
+          {isExpanded ? <EyeOff className={S.toggleIcon} /> : <Eye className={S.toggleIcon} />}
           {buttonLabel}
         </Button>
       </td>

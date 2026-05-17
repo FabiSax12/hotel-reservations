@@ -1,5 +1,5 @@
-import { getInitials, computeNights } from "../utils/reservation-utils";
 import type { Reservation, ReservationStatus } from "../domain/reservation";
+import { computeNights, getInitials } from "../utils/reservation-utils";
 
 export type DbReservation = {
   id: string;

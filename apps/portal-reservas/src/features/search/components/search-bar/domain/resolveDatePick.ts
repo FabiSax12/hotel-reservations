@@ -9,15 +9,15 @@
 
 import { parseDateHelper } from "@hotel/ui";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
-import type { ActiveSection } from "./types";
 import {
   type DatePickState,
+  resolveAutoAdvance,
+  resolveBasicSelection,
   resolveBothDatesExplicit,
   resolveBothDatesProximity,
   resolveOneDateExplicit,
-  resolveAutoAdvance,
-  resolveBasicSelection,
 } from "./datePickHelpers";
+import type { ActiveSection } from "./types";
 
 export type { DatePickState };
 
@@ -66,7 +66,15 @@ export function resolveDatePick(
   // ── One date exists with explicit focus ──
   // e.g. user clicked "Check-out" and then picks a day while check-in is already set
   if (explicitFocus) {
-    const result = resolveOneDateExplicit(active, dayStr, checkIn, checkOut, clickedVal, inVal, outVal);
+    const result = resolveOneDateExplicit(
+      active,
+      dayStr,
+      checkIn,
+      checkOut,
+      clickedVal,
+      inVal,
+      outVal,
+    );
     if (result) return result;
   }
 

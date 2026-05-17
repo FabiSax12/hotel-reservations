@@ -2,10 +2,8 @@
  * @file DestinationPreview.tsx — Hover preview panel for a destination region.
  */
 
-import {
-  DESTINATION_POPOVER_STYLES as S,
-} from "../theme/destination.theme";
 import type { DestinationPreviewProps } from "../domain/types";
+import { DESTINATION_POPOVER_STYLES as S } from "../theme/destination.theme";
 
 export function DestinationPreview({
   data,
@@ -37,9 +35,13 @@ export function DestinationPreview({
           {data.highlights.map((h, i) => (
             <li key={i} className={S.previewHighlightItem}>
               <div className={S.previewHighlightDot}>
-                <svg className={S.previewHighlightIcon} fill="none"
-                  viewBox={S.icons.check.viewBox} stroke="currentColor"
-                  strokeWidth={S.icons.check.strokeWidth}>
+                <svg
+                  className={S.previewHighlightIcon}
+                  fill="none"
+                  viewBox={S.icons.check.viewBox}
+                  stroke="currentColor"
+                  strokeWidth={S.icons.check.strokeWidth}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.check.path} />
                 </svg>
               </div>

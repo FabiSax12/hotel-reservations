@@ -55,8 +55,15 @@ export function useSearchBarContextValue({
       handleSearchTrigger,
     }),
     [
-      size, barState, validation, destState, dateState,
-      guestState, activateSection, onHeroCalendarOpen, handleSearchTrigger,
+      size,
+      barState,
+      validation,
+      destState,
+      dateState,
+      guestState,
+      activateSection,
+      onHeroCalendarOpen,
+      handleSearchTrigger,
     ],
   );
 }
