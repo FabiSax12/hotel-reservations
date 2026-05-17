@@ -40,11 +40,10 @@ export async function updateReservationStatus(
       : {}),
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any)
-    .from("reservations")
+  const { error } = await supabase
+    .from(DB_TABLES.RESERVATIONS)
     .update(updateData)
-    .eq("id", id);
+    .eq(DB_COLUMNS.reservations.id, id);
 
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
 }
