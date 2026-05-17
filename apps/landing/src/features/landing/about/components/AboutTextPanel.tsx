@@ -1,20 +1,11 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
+import { useRef } from "react";
+import { REVEAL, STAGGER } from "@/features/landing/about/constants/animations";
 import { ABOUT } from "@/features/landing/about/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-
-const STAGGER = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const REVEAL = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EXPO_OUT } },
-};
+import { useI18n } from "@/locales";
 
 export function AboutTextPanel() {
   const { t } = useI18n();

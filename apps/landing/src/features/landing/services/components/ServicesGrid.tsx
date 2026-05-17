@@ -1,16 +1,13 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
-import { SERVICES } from "@/features/landing/services/constants/styles";
-import { SERVICES_CONFIG } from "@/features/landing/services/constants/services-config";
+import { useRef } from "react";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { SERVICES_CONFIG } from "@/features/landing/services/constants/services-config";
+import { SERVICES } from "@/features/landing/services/constants/styles";
+import { useI18n } from "@/locales";
 import { ServiceCard } from "./ServiceCard";
-
-type ServicesGridProps = {
-  prefersReducedMotion: boolean;
-};
+import type { ServicesGridProps } from "./ServicesGrid.types";
 
 export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
   const { t } = useI18n();
@@ -24,7 +21,9 @@ export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
         {SERVICES_CONFIG.map((service, index) => (
           <motion.div
             key={service.id}
-            initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+            initial={
+              prefersReducedMotion ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 0 100% 0)" }
+            }
             animate={
               inView
                 ? prefersReducedMotion
@@ -34,7 +33,11 @@ export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
                   ? { opacity: 0 }
                   : { opacity: 0, clipPath: "inset(0 0 100% 0)" }
             }
-            transition={{ duration: prefersReducedMotion ? 0.4 : 0.75, delay: index * 0.06, ease: EXPO_OUT }}
+            transition={{
+              duration: prefersReducedMotion ? 0.4 : 0.75,
+              delay: index * 0.06,
+              ease: EXPO_OUT,
+            }}
           >
             <ServiceCard service={service} texts={services[service.id]} index={index} />
           </motion.div>
@@ -49,10 +52,18 @@ export function ServicesGrid({ prefersReducedMotion }: ServicesGridProps) {
             initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: 30 }}
             animate={
               inView
-                ? prefersReducedMotion ? { opacity: 1 } : { opacity: 1, x: 0 }
-                : prefersReducedMotion ? { opacity: 0 } : { opacity: 0, x: 30 }
+                ? prefersReducedMotion
+                  ? { opacity: 1 }
+                  : { opacity: 1, x: 0 }
+                : prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, x: 30 }
             }
-            transition={{ duration: prefersReducedMotion ? 0.4 : 0.6, delay: index * 0.04, ease: EXPO_OUT }}
+            transition={{
+              duration: prefersReducedMotion ? 0.4 : 0.6,
+              delay: index * 0.04,
+              ease: EXPO_OUT,
+            }}
           >
             <ServiceCard service={service} texts={services[service.id]} index={index} />
           </motion.div>

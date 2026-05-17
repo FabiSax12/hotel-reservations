@@ -1,17 +1,26 @@
 "use client";
 
-import React from "react";
+import { FieldError, Input, Label, TextField } from "@heroui/react";
+import { Baby, Users } from "lucide-react";
+import type React from "react";
 import { useFormContext } from "react-hook-form";
-import { TextField, Label, Input, FieldError } from "@heroui/react";
-import { ROOM_CAPACITY_STYLES as s } from "./RoomCapacity.styles";
-import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
-import { ICON_SIZES, MIN_ADULTS, MIN_KIDS, MAX_ADULTS, MAX_KIDS } from "@/features/rooms/constants/info.constants";
 import type { RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
-import { Users, Baby } from "lucide-react";
+import {
+  ICON_SIZES,
+  MAX_ADULTS,
+  MAX_KIDS,
+  MIN_ADULTS,
+  MIN_KIDS,
+} from "@/features/rooms/constants/info.constants";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
 import type { RoomCapacityProps } from "./RoomCapacity.interface";
+import { ROOM_CAPACITY_STYLES as s } from "./RoomCapacity.styles";
 
 export const RoomCapacity: React.FC<RoomCapacityProps> = ({ texts, getErrorMessage }) => {
-  const { register, formState: { errors } } = useFormContext<RoomInfoFormData>();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<RoomInfoFormData>();
 
   return (
     <div className={s.section}>

@@ -1,6 +1,12 @@
 /**
  * @file SearchBarFrame.tsx — The interactive bar containing all search sections.
+ *
+ * US-DM-02: Removed HeroExpandTab. The calendar now only opens when the user
+ * explicitly clicks Check In or Check Out. The rooms section appears below the
+ * hero once a destination is selected.
  */
+
+"use client";
 
 import React from "react";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
@@ -9,7 +15,6 @@ import { useI18n } from "@/locales";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
 // Sub-components
-import { HeroExpandTab } from "./HeroExpandTab";
 import { SearchBarFields } from "./SearchBarFields";
 import { DestinationPopover } from "./DestinationPopover";
 import { CalendarPopover } from "@hotel/ui";
@@ -31,10 +36,6 @@ export function SearchBarFrame() {
 
   return (
     <div className={S.bar(isHero)}>
-      {isHero && (
-        <HeroExpandTab />
-      )}
-
       <SearchBarFields />
 
       {active === SEARCH_SECTIONS.WHERE && (

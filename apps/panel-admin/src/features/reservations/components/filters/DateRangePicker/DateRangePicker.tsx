@@ -3,7 +3,7 @@
 import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
 import { useI18n } from "@/locales";
-import { DATE_RANGE_PICKER_STYLES as S } from "./DateRangePicker.styles";
+import { DATE_RANGE_PICKER_STYLES as STYLES } from "./DateRangePicker.styles";
 import type { DateRange, DateRangePickerProps } from "./DateRangePicker.interface";
 
 export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePickerProps) {
@@ -17,43 +17,43 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
   };
 
   return (
-    <HeroDateRangePicker value={value} onChange={handleChange}>
-      <DateField.Group fullWidth className={S.group}>
+    <HeroDateRangePicker value={value} onChange={handleChange} aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_DATE_RANGE}>
+      <DateField.Group fullWidth className={STYLES.group}>
         <DateField.Input slot="start">
-          {(segment) => <DateField.Segment segment={segment} className={S.segment} />}
+          {(segment) => <DateField.Segment segment={segment} className={STYLES.segment} />}
         </DateField.Input>
         <HeroDateRangePicker.RangeSeparator />
         <DateField.Input slot="end">
-          {(segment) => <DateField.Segment segment={segment} className={S.segment} />}
+          {(segment) => <DateField.Segment segment={segment} className={STYLES.segment} />}
         </DateField.Input>
         <DateField.Suffix>
           <HeroDateRangePicker.Trigger>
-            <HeroDateRangePicker.TriggerIndicator className={S.triggerIndicator} />
+            <HeroDateRangePicker.TriggerIndicator className={STYLES.triggerIndicator} />
           </HeroDateRangePicker.Trigger>
         </DateField.Suffix>
       </DateField.Group>
       <HeroDateRangePicker.Popover>
         <RangeCalendar aria-label={t.RESERVATIONS.FILTERS.DATE_RANGE_PICKER_LABEL}>
           <RangeCalendar.Header>
-            <RangeCalendar.YearPickerTrigger className={S.yearPickerTrigger}>
-              <RangeCalendar.YearPickerTriggerHeading className={S.yearPickerTriggerHeading} />
-              <RangeCalendar.YearPickerTriggerIndicator className={S.yearPickerTriggerIndicator} />
+            <RangeCalendar.YearPickerTrigger className={STYLES.yearPickerTrigger}>
+              <RangeCalendar.YearPickerTriggerHeading className={STYLES.yearPickerTriggerHeading} />
+              <RangeCalendar.YearPickerTriggerIndicator className={STYLES.yearPickerTriggerIndicator} />
             </RangeCalendar.YearPickerTrigger>
-            <RangeCalendar.NavButton slot="previous" className={S.navButton} />
-            <RangeCalendar.NavButton slot="next" className={S.navButton} />
+            <RangeCalendar.NavButton slot="previous" className={STYLES.navButton} />
+            <RangeCalendar.NavButton slot="next" className={STYLES.navButton} />
           </RangeCalendar.Header>
           <RangeCalendar.Grid>
             <RangeCalendar.GridHeader>
               {(day) => <RangeCalendar.HeaderCell>{day}</RangeCalendar.HeaderCell>}
             </RangeCalendar.GridHeader>
             <RangeCalendar.GridBody>
-              {(date) => <RangeCalendar.Cell date={date} className={S.calendarCell} />}
+              {(date) => <RangeCalendar.Cell date={date} className={STYLES.calendarCell} />}
             </RangeCalendar.GridBody>
           </RangeCalendar.Grid>
           <RangeCalendar.YearPickerGrid>
             <RangeCalendar.YearPickerGridBody>
               {({ year, formattedYear }) => (
-                <RangeCalendar.YearPickerCell year={year} className={S.yearPickerCell}>
+                <RangeCalendar.YearPickerCell year={year} className={STYLES.yearPickerCell}>
                   {formattedYear}
                 </RangeCalendar.YearPickerCell>
               )}

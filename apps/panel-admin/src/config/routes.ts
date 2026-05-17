@@ -1,8 +1,13 @@
 export const ROUTES = Object.freeze({
   ADMIN: Object.freeze({
-    LOGIN: "/admin/login",
     DASHBOARD: "/admin/dashboard",
     RESERVATIONS: "/admin/reservations",
-    ACTIVATE: "/admin/activate",
+    NEW: "/admin/reservations/new",
+    ADMINS: "/admin/admins",
+    INVITATIONS: "/admin/invitations",
   } as const),
+  AUTH: Object.freeze({
+    LOGIN: "/auth/login",
+    ACTIVATE: "/auth/activate",
+  }),
 } as const);

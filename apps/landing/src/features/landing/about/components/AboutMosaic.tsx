@@ -1,17 +1,20 @@
 "use client";
 
+import { motion, useInView, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { motion, useInView, useScroll, useTransform, useMotionTemplate } from "framer-motion";
-import { useI18n } from "@/locales";
+import { STAGGER } from "@/features/landing/about/constants/animations";
+import {
+  MOSAIC_IMAGE_1,
+  MOSAIC_IMAGE_2,
+  MOSAIC_IMAGE_3,
+  MOSAIC_OVERLAYS_1,
+  MOSAIC_OVERLAYS_2,
+  MOSAIC_OVERLAYS_3,
+  MOSAIC_SIZES,
+} from "@/features/landing/about/constants/mosaic";
 import { ABOUT } from "@/features/landing/about/constants/styles";
+import { useI18n } from "@/locales";
 import { MosaicPanel } from "./MosaicPanel";
-
-const STAGGER = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
-};
-
-const SIZES = "(max-width: 1024px) 50vw, 25vw";
 
 export function AboutMosaic() {
   const { t } = useI18n();
@@ -38,34 +41,27 @@ export function AboutMosaic() {
       className={ABOUT.MOSAIC}
     >
       <MosaicPanel
-        src="https://picsum.photos/seed/about-forest/480/720"
+        src={MOSAIC_IMAGE_1}
         alt={about.MOSAIC_ALT_1}
-        sizes={SIZES}
-        overlays={[
-          "linear-gradient(170deg, oklch(28% 0.07 143 / 0.5) 0%, oklch(11% 0.04 143 / 0.65) 100%)",
-          "radial-gradient(ellipse 80% 60% at 40% 30%, oklch(35% 0.08 143 / 0.5), transparent)",
-        ]}
+        sizes={MOSAIC_SIZES}
+        overlays={MOSAIC_OVERLAYS_1}
         parallaxTransform={panel1Transform}
         minHeight={480}
         tall
       />
       <MosaicPanel
-        src="https://picsum.photos/seed/about-warm/480/340"
+        src={MOSAIC_IMAGE_2}
         alt={about.MOSAIC_ALT_2}
-        sizes={SIZES}
-        overlays={[
-          "linear-gradient(140deg, oklch(67% 0.15 68 / 0.35) 0%, oklch(16% 0.05 143 / 0.6) 100%)",
-        ]}
+        sizes={MOSAIC_SIZES}
+        overlays={MOSAIC_OVERLAYS_2}
         parallaxTransform={panel2Transform}
         minHeight={228}
       />
       <MosaicPanel
-        src="https://picsum.photos/seed/about-stone/480/340"
+        src={MOSAIC_IMAGE_3}
         alt={about.MOSAIC_ALT_3}
-        sizes={SIZES}
-        overlays={[
-          "linear-gradient(200deg, oklch(94% 0.015 75 / 0.3) 0%, oklch(70% 0.03 75 / 0.5) 100%)",
-        ]}
+        sizes={MOSAIC_SIZES}
+        overlays={MOSAIC_OVERLAYS_3}
         parallaxTransform={panel3Transform}
         minHeight={228}
       />

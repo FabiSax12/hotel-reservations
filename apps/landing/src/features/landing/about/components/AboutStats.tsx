@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useI18n } from "@/locales";
+import { useEffect, useRef, useState } from "react";
 import { ABOUT } from "@/features/landing/about/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { useI18n } from "@/locales";
 
-type StatDisplay = { prefix: string; num: number; suffix: string };
+interface StatDisplay {
+  prefix: string;
+  num: number;
+  suffix: string;
+}
 
 function parseStatValue(value: string): StatDisplay {
   const match = value.match(/^([^\d]*)(\d+(?:\.\d+)?)(.*)$/);
@@ -21,7 +25,10 @@ function AnimatedStatValue({ value, isInView }: { value: string; isInView: boole
   const prefersReducedMotion = useReducedMotion() ?? false;
 
   useEffect(() => {
-    if (prefersReducedMotion) { setDisplay(num); return; }
+    if (prefersReducedMotion) {
+      setDisplay(num);
+      return;
+    }
     if (!isInView) return;
     const duration = 1800;
     const start = performance.now();
@@ -29,7 +36,7 @@ function AnimatedStatValue({ value, isInView }: { value: string; isInView: boole
     const tick = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 4);
+      const eased = 1 - (1 - progress) ** 4;
       setDisplay(eased * num);
       if (progress < 1) rafId = requestAnimationFrame(tick);
     };
@@ -39,7 +46,13 @@ function AnimatedStatValue({ value, isInView }: { value: string; isInView: boole
 
   const formatted = isDecimal ? display.toFixed(1) : Math.round(display).toString();
 
-  return <span>{prefix}{formatted}{suffix}</span>;
+  return (
+    <span>
+      {prefix}
+      {formatted}
+      {suffix}
+    </span>
+  );
 }
 
 export function AboutStats() {

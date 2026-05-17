@@ -3,7 +3,7 @@
 import { useI18n } from "@/locales";
 import { Divider } from "../../shared/Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
-import { RESERVATION_GUEST_CARD_STYLES as S } from "./ReservationGuestCard.styles";
+import { RESERVATION_GUEST_CARD_STYLES as STYLES } from "./ReservationGuestCard.styles";
 import type { ReservationGuestCardProps } from "./ReservationGuestCard.interface";
 
 export const ReservationGuestCard = ({ guest }: ReservationGuestCardProps) => {
@@ -12,18 +12,18 @@ export const ReservationGuestCard = ({ guest }: ReservationGuestCardProps) => {
 
   return (
     <ReservationDetailCard title={labels.SECTION_CLIENT}>
-      <p className={S.guestName}>{guest.name}</p>
+      <p className={STYLES.guestName}>{guest.name}</p>
 
       <Divider />
-      <div className={S.fieldRow}>
-        <span className={S.fieldLabel}>{labels.LABEL_EMAIL}</span>
-        <span className={S.fieldValue}>{guest.email}</span>
+      <div className={STYLES.fieldRow}>
+        <span className={STYLES.fieldLabel}>{labels.LABEL_EMAIL}</span>
+        <span className={STYLES.fieldValue}>{guest.email}</span>
       </div>
 
       <Divider />
-      <div className={S.fieldRow}>
-        <span className={S.fieldLabel}>{labels.LABEL_PHONE}</span>
-        <span className={S.fieldValue}>{guest.phone}</span>
+      <div className={STYLES.fieldRow}>
+        <span className={STYLES.fieldLabel}>{labels.LABEL_PHONE}</span>
+        <span className={STYLES.fieldValue}>{guest.phone}</span>
       </div>
     </ReservationDetailCard>
   );

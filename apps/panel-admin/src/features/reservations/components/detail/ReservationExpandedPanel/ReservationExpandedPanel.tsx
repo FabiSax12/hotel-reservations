@@ -1,21 +1,27 @@
 "use client";
 
-import { Button } from "@heroui/react";
-import { useI18n } from "@/locales";
 import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
 import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
 import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
-import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
+import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
+import { RESERVATION_EXPANDED_PANEL_STYLES as STYLES } from "./ReservationExpandedPanel.styles";
 import type { ReservationExpandedPanelProps } from "./ReservationExpandedPanel.interface";
 
-export const ReservationExpandedPanel = ({ reservation: r, isClosing = false }: ReservationExpandedPanelProps) => {
-  const { t } = useI18n();
+const noop = () => {};
+const noopRegister = (_id: string, _handler: () => void) => noop;
 
-  const wrapperClassName = `${S.wrapperBase} ${isClosing ? S.wrapperExit : S.wrapperEnter}`;
+export const ReservationExpandedPanel = ({
+  reservation: r,
+  isClosing = false,
+  onSave,
+  onRequestClose = noop,
+  onRegisterClose = noopRegister,
+}: ReservationExpandedPanelProps) => {
+  const wrapperClassName = `${STYLES.wrapperBase} ${isClosing ? STYLES.wrapperExit : STYLES.wrapperEnter}`;
 
   return (
     <div className={wrapperClassName}>
-      <div className={S.body}>
+      <div className={STYLES.body}>
         <ReservationGuestCard guest={r.guest} />
         <ReservationRoomCard
           room={r.room}
@@ -32,11 +38,15 @@ export const ReservationExpandedPanel = ({ reservation: r, isClosing = false }: 
         />
       </div>
 
-      <div className={S.footer}>
-        <Button variant="outline" size="sm" className={S.cancelButton}>
-          {t.RESERVATIONS.DETAIL.BTN_CANCEL}
-        </Button>
-      </div>
+      <ReservationStatusFooter
+        key={`${r.id}-${r.status}-${r.cancellationReason ?? ""}`}
+        reservationId={r.id}
+        currentSavedStatus={r.status}
+        originalCancellationReason={r.cancellationReason ?? ""}
+        onRequestClose={onRequestClose}
+        onRegisterClose={onRegisterClose}
+        onSave={onSave}
+      />
     </div>
   );
 };

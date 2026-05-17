@@ -1,0 +1,23 @@
+export const TESTIMONIALS = Object.freeze({
+  SECTION: "relative bg-stone-950 overflow-hidden",
+  CONTAINER: "max-w-[1440px] mx-auto px-6 lg:px-16 py-32 lg:py-44",
+  HEADER: "text-center max-w-2xl mx-auto mb-20 lg:mb-28 flex flex-col items-center gap-4",
+  EYEBROW: "text-xs tracking-[0.35em] uppercase text-gold-400 font-sans",
+  HEADLINE_WRAPPER: "overflow-hidden",
+  HEADLINE: "font-serif text-[2.5rem] lg:text-[4rem] leading-[1.05] text-stone-50 font-normal",
+  SUBHEADLINE: "text-stone-400 text-base lg:text-lg leading-relaxed font-light",
+  GRID: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
+  CARD: "flex flex-col gap-5 p-8 bg-stone-900 border border-stone-800/60 hover:border-stone-700/80 transition-colors duration-500",
+  CARD_QUOTE: "font-serif text-5xl leading-none text-gold-500/25 select-none -mb-3",
+  CARD_BODY: "text-stone-400 text-sm leading-relaxed font-light flex-1",
+  CARD_FOOTER: "flex items-center gap-3 pt-5 border-t border-stone-800/60",
+  CARD_AVATAR:
+    "w-10 h-10 rounded-full bg-forest-900 border border-forest-700/60 flex items-center justify-center shrink-0",
+  CARD_AVATAR_INITIALS: "text-xs font-medium text-gold-400 tracking-wider",
+  CARD_AUTHOR: "flex flex-col gap-0.5 flex-1",
+  CARD_NAME: "text-stone-100 text-sm font-medium",
+  CARD_ORIGIN: "text-stone-500 text-xs tracking-wide",
+  STARS: "flex items-center gap-0.5",
+  STAR_FILLED: "w-3 h-3 fill-gold-400 text-gold-400",
+  STAR_EMPTY: "w-3 h-3 fill-stone-700 text-stone-700",
+} as const);

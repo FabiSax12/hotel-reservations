@@ -1,47 +1,39 @@
+/**
+ * @file error.tsx — Route-level error boundary for the home page.
+ */
+
 "use client";
 
-import { Card } from "@heroui/react";
-import { Button } from "@hotel/ui";
-import { useI18n } from "@/locales";
+import { ERROR_PAGE_STYLES as S } from "../theme/app-pages.theme";
+import { APP_PAGE_STRINGS } from "../constants/app-pages.constants";
 
-const PORTA_ERROR_PAGE_STYLES = {
-  main: "flex h-screen flex-col items-center justify-center",
-  cardWrapper: "bg-emerald-50/50 border border-emerald-100",
-  title: "text-lg text-emerald-900",
-  description: "text-emerald-800/80",
-} as const
-
-export default function PortalError({
+export default function ErrorPage({
   error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  const { t } = useI18n();
-
   return (
-    <main className={PORTA_ERROR_PAGE_STYLES.main}>
-      <Card className={PORTA_ERROR_PAGE_STYLES.cardWrapper} role="alert">
-        <Card.Header>
-          <Card.Title className={PORTA_ERROR_PAGE_STYLES.title}>
-            {t.COMMON.ERRORS.GENERIC}
-          </Card.Title>
-
-        </Card.Header>
-        <Card.Content>
-          <Card.Description className={PORTA_ERROR_PAGE_STYLES.description}>
-            {error.message || t.COMMON.ERRORS.GENERIC}
-          </Card.Description>
-          <Button
-            onClick={reset}
-            variant="primary"
-            className="mt-2"
-          >
-            {t.COMMON.ACTIONS.BACK}
-          </Button>
-        </Card.Content>
-      </Card>
+    <main className={S.main}>
+      <div className={S.contentWrapper}>
+        <div className={S.iconCircle}>
+          <svg className={S.icon} fill="none" viewBox={S.icons.error.viewBox} stroke="currentColor" strokeWidth={S.icons.error.strokeWidth}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.error.path} />
+          </svg>
+        </div>
+        <h2 className={S.title}>{APP_PAGE_STRINGS.ERROR_TITLE}</h2>
+        <p className={S.message}>
+          {APP_PAGE_STRINGS.ERROR_MESSAGE}
+        </p>
+        <button
+          type="button"
+          onClick={reset}
+          className={S.retryBtn}
+        >
+          {APP_PAGE_STRINGS.ERROR_RETRY}
+        </button>
+      </div>
     </main>
   );
 }

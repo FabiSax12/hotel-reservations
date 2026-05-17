@@ -4,8 +4,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "6",
     code: "RES-006",
-    guest: { name: "Diego Mora", email: "diego.mora@email.com", phone: "+506 8800-0601", initials: "DM" },
-    room: { name: "Habitación Estándar", location: "Piso 3 · Vista interior", category: "Estándar" },
+    guest: {
+      name: "Diego Mora",
+      email: "diego.mora@email.com",
+      phone: "+506 8800-0601",
+      initials: "DM",
+    },
+    room: {
+      name: "Habitación Estándar",
+      location: "Piso 3 · Vista interior",
+      category: "Estándar",
+    },
     guests: { adults: 2 },
     checkIn: "2026-05-01",
     checkOut: "2026-05-04",
@@ -18,7 +27,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "4",
     code: "RES-004",
-    guest: { name: "Luis Fernández", email: "lfernandez@email.com", phone: "+506 8800-0401", initials: "LF" },
+    guest: {
+      name: "Luis Fernández",
+      email: "lfernandez@email.com",
+      phone: "+506 8800-0401",
+      initials: "LF",
+    },
     room: { name: "Suite Ejecutiva", location: "Piso 15 · Vista a la ciudad", category: "Suite" },
     guests: { adults: 1 },
     checkIn: "2026-04-22",
@@ -32,7 +46,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "1",
     code: "RES-001",
-    guest: { name: "María García", email: "maria.garcia@email.com", phone: "+506 8800-0101", initials: "MG" },
+    guest: {
+      name: "María García",
+      email: "maria.garcia@email.com",
+      phone: "+506 8800-0101",
+      initials: "MG",
+    },
     room: { name: "Suite Panorámica", location: "Piso 12 · Vista al mar", category: "Suite" },
     guests: { adults: 2, children: 1 },
     checkIn: "2026-04-20",
@@ -46,7 +65,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "2",
     code: "RES-002",
-    guest: { name: "Carlos Rodríguez", email: "carlos.r@email.com", phone: "+506 8800-0201", initials: "CR" },
+    guest: {
+      name: "Carlos Rodríguez",
+      email: "carlos.r@email.com",
+      phone: "+506 8800-0201",
+      initials: "CR",
+    },
     room: { name: "Habitación Deluxe", location: "Piso 8 · Vista al jardín", category: "Deluxe" },
     guests: { adults: 2 },
     checkIn: "2026-04-18",
@@ -60,7 +84,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "5",
     code: "RES-005",
-    guest: { name: "Sofia Vargas", email: "sofia.v@email.com", phone: "+506 8800-0501", initials: "SV" },
+    guest: {
+      name: "Sofia Vargas",
+      email: "sofia.v@email.com",
+      phone: "+506 8800-0501",
+      initials: "SV",
+    },
     room: { name: "Habitación Deluxe", location: "Piso 6 · Vista al mar", category: "Deluxe" },
     guests: { adults: 1, pets: 1 },
     checkIn: "2026-04-15",
@@ -74,8 +103,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "3",
     code: "RES-003",
-    guest: { name: "Ana Martínez", email: "ana.m@email.com", phone: "+506 8800-0301", initials: "AM" },
-    room: { name: "Habitación Estándar", location: "Piso 4 · Vista interior", category: "Estándar" },
+    guest: {
+      name: "Ana Martínez",
+      email: "ana.m@email.com",
+      phone: "+506 8800-0301",
+      initials: "AM",
+    },
+    room: {
+      name: "Habitación Estándar",
+      location: "Piso 4 · Vista interior",
+      category: "Estándar",
+    },
     guests: { adults: 2 },
     checkIn: "2026-04-10",
     checkOut: "2026-04-12",
@@ -88,8 +126,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "7",
     code: "RES-007",
-    guest: { name: "Valeria Cruz", email: "valeria.cruz@email.com", phone: "+506 8800-0701", initials: "VC" },
-    room: { name: "Suite Junior", location: "Piso 10 · Vista al jardín", category: "Suite Ejecutiva" },
+    guest: {
+      name: "Valeria Cruz",
+      email: "valeria.cruz@email.com",
+      phone: "+506 8800-0701",
+      initials: "VC",
+    },
+    room: {
+      name: "Suite Junior",
+      location: "Piso 10 · Vista al jardín",
+      category: "Suite Ejecutiva",
+    },
     guests: { adults: 2, children: 2, pets: 1 },
     checkIn: "2026-05-03",
     checkOut: "2026-05-07",
@@ -102,8 +149,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "8",
     code: "RES-008",
-    guest: { name: "Andrés Salazar", email: "andres.salazar@email.com", phone: "+506 8800-0801", initials: "AS" },
-    room: { name: "Suite Presidencial", location: "Piso 18 · Vista panorámica", category: "Suite Panorámica" },
+    guest: {
+      name: "Andrés Salazar",
+      email: "andres.salazar@email.com",
+      phone: "+506 8800-0801",
+      initials: "AS",
+    },
+    room: {
+      name: "Suite Presidencial",
+      location: "Piso 18 · Vista panorámica",
+      category: "Suite Panorámica",
+    },
     guests: { adults: 2 },
     checkIn: "2026-04-30",
     checkOut: "2026-05-05",
@@ -116,8 +172,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "9",
     code: "RES-009",
-    guest: { name: "Camila Porras", email: "camila.porras@email.com", phone: "+506 8800-0901", initials: "CP" },
-    room: { name: "Habitación Familiar", location: "Piso 5 · Vista al jardín", category: "Habitación Deluxe" },
+    guest: {
+      name: "Camila Porras",
+      email: "camila.porras@email.com",
+      phone: "+506 8800-0901",
+      initials: "CP",
+    },
+    room: {
+      name: "Habitación Familiar",
+      location: "Piso 5 · Vista al jardín",
+      category: "Habitación Deluxe",
+    },
     guests: { adults: 2, children: 2 },
     checkIn: "2026-04-26",
     checkOut: "2026-04-29",
@@ -130,8 +195,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "10",
     code: "RES-010",
-    guest: { name: "Jorge Herrera", email: "jorge.herrera@email.com", phone: "+506 8800-1001", initials: "JH" },
-    room: { name: "Habitación Estándar", location: "Piso 2 · Vista interior", category: "Estándar" },
+    guest: {
+      name: "Jorge Herrera",
+      email: "jorge.herrera@email.com",
+      phone: "+506 8800-1001",
+      initials: "JH",
+    },
+    room: {
+      name: "Habitación Estándar",
+      location: "Piso 2 · Vista interior",
+      category: "Estándar",
+    },
     guests: { adults: 1 },
     checkIn: "2026-05-08",
     checkOut: "2026-05-10",
@@ -144,7 +218,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "11",
     code: "RES-011",
-    guest: { name: "Isabella Rojas", email: "isabella.rojas@email.com", phone: "+506 8800-1101", initials: "IR" },
+    guest: {
+      name: "Isabella Rojas",
+      email: "isabella.rojas@email.com",
+      phone: "+506 8800-1101",
+      initials: "IR",
+    },
     room: { name: "Suite Panorámica", location: "Piso 14 · Vista al mar", category: "Suite" },
     guests: { adults: 2, children: 1 },
     checkIn: "2026-05-12",
@@ -158,7 +237,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "12",
     code: "RES-012",
-    guest: { name: "Sebastián Quesada", email: "sebastian.q@email.com", phone: "+506 8800-1201", initials: "SQ" },
+    guest: {
+      name: "Sebastián Quesada",
+      email: "sebastian.q@email.com",
+      phone: "+506 8800-1201",
+      initials: "SQ",
+    },
     room: { name: "Habitación Deluxe", location: "Piso 7 · Vista al jardín", category: "Deluxe" },
     guests: { adults: 2 },
     checkIn: "2026-05-14",
@@ -172,7 +256,12 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "13",
     code: "RES-013",
-    guest: { name: "Gabriela Monge", email: "gabriela.monge@email.com", phone: "+506 8800-1301", initials: "GM" },
+    guest: {
+      name: "Gabriela Monge",
+      email: "gabriela.monge@email.com",
+      phone: "+506 8800-1301",
+      initials: "GM",
+    },
     room: { name: "Suite Ejecutiva", location: "Piso 16 · Vista a la ciudad", category: "Suite" },
     guests: { adults: 1, pets: 1 },
     checkIn: "2026-05-20",
@@ -186,8 +275,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "14",
     code: "RES-014",
-    guest: { name: "Martín Solano", email: "martin.solano@email.com", phone: "+506 8800-1401", initials: "MS" },
-    room: { name: "Habitación Familiar", location: "Piso 4 · Vista al jardín", category: "Habitación Deluxe" },
+    guest: {
+      name: "Martín Solano",
+      email: "martin.solano@email.com",
+      phone: "+506 8800-1401",
+      initials: "MS",
+    },
+    room: {
+      name: "Habitación Familiar",
+      location: "Piso 4 · Vista al jardín",
+      category: "Habitación Deluxe",
+    },
     guests: { adults: 2, children: 3 },
     checkIn: "2026-05-25",
     checkOut: "2026-05-30",
@@ -200,8 +298,17 @@ export const MOCK_RESERVATIONS: readonly Reservation[] = Object.freeze([
   {
     id: "15",
     code: "RES-015",
-    guest: { name: "Natalia Brenes", email: "natalia.brenes@email.com", phone: "+506 8800-1501", initials: "NB" },
-    room: { name: "Suite Presidencial", location: "Piso 18 · Vista panorámica", category: "Suite Panorámica" },
+    guest: {
+      name: "Natalia Brenes",
+      email: "natalia.brenes@email.com",
+      phone: "+506 8800-1501",
+      initials: "NB",
+    },
+    room: {
+      name: "Suite Presidencial",
+      location: "Piso 18 · Vista panorámica",
+      category: "Suite Panorámica",
+    },
     guests: { adults: 2 },
     checkIn: "2026-06-01",
     checkOut: "2026-06-05",

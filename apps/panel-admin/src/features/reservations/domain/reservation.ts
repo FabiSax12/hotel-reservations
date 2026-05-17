@@ -35,4 +35,5 @@ export interface Reservation {
   totalUSD: number;
   currency: string;
   status: ReservationStatus;
+  cancellationReason?: string;
 }

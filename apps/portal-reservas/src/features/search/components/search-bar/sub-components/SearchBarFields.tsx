@@ -2,12 +2,15 @@
  * @file SearchBarFields.tsx — The individual input fields of the search bar.
  */
 
+"use client";
+
 import React from "react";
 import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { formatUIText, formatGuests } from "../utils/search-bar.utils";
 import { useI18n } from "@/locales";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
+import type { ActiveSection } from "../domain/types";
 
 import { DestinationSection } from "./sections/DestinationSection";
 import { DateSection } from "./sections/DateSection";
@@ -38,7 +41,7 @@ export function SearchBarFields() {
   const { t, locale } = useI18n();
   const C = t.SEARCH.SEARCH_BAR;
 
-  const sectionClass = (key: any, extra: string) =>
+  const sectionClass = (key: ActiveSection, extra: string) =>
     [
       S.sectionBase,
       sizing.padding,

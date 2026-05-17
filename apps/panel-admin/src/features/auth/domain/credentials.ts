@@ -1,7 +1,7 @@
 import { EMAIL_REGEX } from "../constants/emailRules";
-import type { AuthTexts } from "../i18n/authTexts.type";
+import type { LOGIN_FORM_ERROR_KEYS } from "../constants/loginFormErrorKeys";
 
-export type LoginErrorKey = keyof AuthTexts["ERRORS"];
+export type LoginErrorKey = keyof typeof LOGIN_FORM_ERROR_KEYS;
 export type LoginActionState = { error: LoginErrorKey } | null;
 
 export const createEmailValidator =
