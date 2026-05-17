@@ -5,7 +5,6 @@ import { useI18n } from "@/locales";
 import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
 import { ROOM_ALL_KEY } from "../../../constants/reservation-filters";
 import type { RoomSelectorProps } from "./RoomSelector.interface";
-import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
 
 export const RoomSelector = ({ value, rooms, onChange }: RoomSelectorProps) => {
   const { t } = useI18n();

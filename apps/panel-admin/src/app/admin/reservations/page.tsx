@@ -1,6 +1,5 @@
 import { getAllReservations, getRoomNames } from "@/features/reservations/services/reservationService";
 import { ReservationsView } from "@/features/reservations/components/list/ReservationsView/ReservationsView";
-import { MOCK_RESERVATIONS } from "@/features/reservations/constants/mock-data";
 
 interface PageProps {
   searchParams: Promise<{ page?: string }>;

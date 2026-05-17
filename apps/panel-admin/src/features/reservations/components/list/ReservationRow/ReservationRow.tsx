@@ -9,18 +9,14 @@ import { Copy, Check, Eye, EyeOff } from "lucide-react";
 import { useCopyCode } from "./useCopyCode";
 import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
 import type { ReservationRowProps } from "./ReservationRow.interface";
-import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
-import { useCopyCode } from "./useCopyCode";
 
 export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: ReservationRowProps) => {
   const { t } = useI18n();
   const { copied, handleCopyCode } = useCopyCode(r.code);
 
-  const rowClassName = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
+  const rowClassName    = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
   const toggleClassName = isExpanded ? S.toggleButtonOn : S.toggleButtonOff;
-  const buttonLabel = isExpanded
-    ? t.RESERVATIONS.ACTIONS.VIEW_LESS
-    : t.RESERVATIONS.ACTIONS.VIEW_MORE;
+  const buttonLabel     = isExpanded ? t.RESERVATIONS.ACTIONS.VIEW_LESS : t.RESERVATIONS.ACTIONS.VIEW_MORE;
 
   return (
     <tr className={rowClassName}>
@@ -82,7 +78,12 @@ export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: Reserva
       </td>
 
       <td className={S.cell}>
-        <Button size="sm" variant="outline" className={toggleClassName} onPress={onToggle}>
+        <Button
+          size="sm"
+          variant="outline"
+          className={toggleClassName}
+          onPress={onToggle}
+        >
           {isExpanded ? (
             <EyeOff className={S.toggleIcon} />
           ) : (

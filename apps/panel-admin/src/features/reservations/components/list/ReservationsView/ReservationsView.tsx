@@ -8,7 +8,6 @@ import { FILTERED_RESULTS } from "../../../constants/filtered-results";
 import { PAGE_SIZE } from "../../../constants/pagination";
 import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
-import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
 import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";

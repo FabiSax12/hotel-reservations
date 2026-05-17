@@ -3,8 +3,8 @@
 import { useI18n } from "@/locales";
 import { Divider } from "../../shared/Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
-import type { ReservationGuestCardProps } from "./ReservationGuestCard.interface";
 import { RESERVATION_GUEST_CARD_STYLES as S } from "./ReservationGuestCard.styles";
+import type { ReservationGuestCardProps } from "./ReservationGuestCard.interface";
 
 export const ReservationGuestCard = ({ guest }: ReservationGuestCardProps) => {
   const { t } = useI18n();

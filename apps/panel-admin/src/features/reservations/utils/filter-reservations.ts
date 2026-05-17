@@ -1,7 +1,7 @@
-import { FILTERED_RESULTS } from "../constants/filtered-results";
-import { DEFAULT_FILTERS } from "../constants/reservation-filters";
 import type { Reservation } from "../domain/reservation";
 import type { ReservationFilters } from "../domain/reservation-filters";
+import { DEFAULT_FILTERS } from "../constants/reservation-filters";
+import { FILTERED_RESULTS } from "../constants/filtered-results";
 
 export function filterReservations(
   reservations: readonly Reservation[],

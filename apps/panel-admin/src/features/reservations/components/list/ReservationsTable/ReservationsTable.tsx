@@ -2,12 +2,11 @@
 
 import { Fragment, useCallback, useRef } from "react";
 import { useI18n } from "@/locales";
-import { COLLAPSE_DURATION_MS } from "../../../constants/timing";
-import { useDelayedUnmount } from "../../../hooks/useDelayedUnmount";
 import { useExpandedReservations } from "../../../hooks/useExpandedReservations";
-import { ReservationExpandedPanel } from "../../detail/ReservationExpandedPanel/ReservationExpandedPanel";
+import { useDelayedUnmount } from "../../../hooks/useDelayedUnmount";
+import { COLLAPSE_DURATION_MS } from "../../../constants/timing";
 import { ReservationRow } from "../ReservationRow/ReservationRow";
-import type { ExpandedPanelRowProps, ReservationsTableProps } from "./ReservationsTable.interface";
+import { ReservationExpandedPanel } from "../../detail/ReservationExpandedPanel/ReservationExpandedPanel";
 import { RESERVATIONS_TABLE_STYLES as T, TABLE_COLUMN_COUNT } from "./ReservationsTable.styles";
 import type { ReservationsTableProps, ExpandedPanelRowProps } from "./ReservationsTable.interface";
 import type { ReservationStatus } from "../../../domain/reservation";
