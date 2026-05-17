@@ -27,6 +27,17 @@ export async function loginAction(
 
   if (!admin) {
     await supabase.auth.signOut();
+
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .single();
+
+    if (roleData?.role === "admin") {
+      return { error: "ACCOUNT_DEACTIVATED" };
+    }
+
     return { error: "ACCESS_DENIED" };
   }
 

@@ -16,5 +16,11 @@ export const toggleAdminStatus = async (
     .eq("id", adminId);
 
   if (error) return { error: "UNKNOWN_ERROR" };
+
+  // Revoke all sessions when deactivating an admin
+  if (!isActive) {
+    await supabase.auth.admin.signOut(adminId);
+  }
+
   return { success: true };
 };
