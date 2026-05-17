@@ -3,7 +3,7 @@ import {
   CHECK_IN_TIME_SLOTS,
   CHECK_OUT_TIME_SLOTS,
 } from "@/features/rooms/constants/check-in-check-out.constants";
-import { mockScheduleService } from "@/features/rooms/services/mockScheduleService";
+import { scheduleService } from "@/features/rooms/services/scheduleService";
 import { useI18n } from "@/locales";
 
 export const useCheckInCheckOut = (roomId: string, onSuccess?: () => void) => {
@@ -20,7 +20,7 @@ export const useCheckInCheckOut = (roomId: string, onSuccess?: () => void) => {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const schedules = await mockScheduleService.getRoomSchedules(roomId);
+        const schedules = await scheduleService.getRoomSchedules(roomId);
 
         const checkIns = schedules
           .filter((s) => s.schedule_type === "check_in")
@@ -33,7 +33,7 @@ export const useCheckInCheckOut = (roomId: string, onSuccess?: () => void) => {
         setSelectedCheckOut(checkOuts);
       } catch (err) {
         console.error("Failed to load schedules", err);
-        setError(texts.MESSAGES.ERROR_GENERIC || "Error loading schedules");
+        setError(texts.SCHEDULES.ERROR_LOAD);
       } finally {
         setIsLoading(false);
       }
@@ -51,14 +51,14 @@ export const useCheckInCheckOut = (roomId: string, onSuccess?: () => void) => {
     setIsSubmitting(true);
     setError(null);
     try {
-      await mockScheduleService.saveRoomSchedules(roomId, {
+      await scheduleService.saveRoomSchedules(roomId, {
         checkIn: selectedCheckIn,
         checkOut: selectedCheckOut,
       });
       onSuccess?.();
     } catch (err) {
       console.error("Failed to save schedules", err);
-      setError(texts.MESSAGES.ERROR_GENERIC || "Error saving schedules");
+      setError(texts.SCHEDULES.ERROR_SAVE);
     } finally {
       setIsSubmitting(false);
     }

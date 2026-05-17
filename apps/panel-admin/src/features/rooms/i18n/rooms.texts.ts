@@ -129,6 +129,8 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUCCESS_SAVE: "Horarios guardados correctamente",
       EMPTY_SELECTION: "Seleccioná al menos un horario",
       CANCEL: "Cancelar",
+      ERROR_LOAD: "Error al cargar los horarios de la habitación",
+      ERROR_SAVE: "Error al guardar los horarios de la habitación",
     },
   },
   en: {
@@ -248,6 +250,8 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       SUCCESS_SAVE: "Schedules successfully saved",
       EMPTY_SELECTION: "Select at least one schedule",
       CANCEL: "Cancel",
+      ERROR_LOAD: "Error loading room schedules",
+      ERROR_SAVE: "Error saving room schedules",
     },
   },
 } as const;

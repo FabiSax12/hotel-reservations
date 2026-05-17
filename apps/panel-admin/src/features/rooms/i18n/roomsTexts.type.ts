@@ -82,5 +82,7 @@ export interface RoomsTexts {
     SUCCESS_SAVE: string;
     EMPTY_SELECTION: string;
     CANCEL: string;
+    ERROR_LOAD: string;
+    ERROR_SAVE: string;
   };
 }
