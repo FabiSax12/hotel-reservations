@@ -1,3 +1,4 @@
+import { DB_COLUMNS, DB_TABLES } from "@hotel/db";
 import { createSupabaseServiceClient } from "@hotel/db/client";
 import { RESERVATION_STATUS } from "../constants/reservation-statuses";
 import type { Reservation, ReservationStatus } from "../domain/reservation";
@@ -14,10 +15,10 @@ export async function getAllReservations(): Promise<Reservation[]> {
   const supabase = createSupabaseServiceClient();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
-    .from("reservations")
-    .select("*, rooms(name, category)")
-    .order("created_at", { ascending: false });
+  const { data, error } = await supabase
+    .from(DB_TABLES.RESERVATIONS)
+    .select(`*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`) //"*, rooms(name, category)")
+    .order(DB_COLUMNS.reservations.created_at, { ascending: false });
 
   if (error) throw new Error(`${ERRORS.FETCH_RESERVATIONS}: ${error.message}`);
 
@@ -40,7 +41,10 @@ export async function updateReservationStatus(
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { error } = await (supabase as any).from("reservations").update(updateData).eq("id", id);
+  const { error } = await (supabase as any)
+    .from("reservations")
+    .update(updateData)
+    .eq("id", id);
 
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
 }
@@ -49,10 +53,10 @@ export async function getRoomNames(): Promise<string[]> {
   const supabase = createSupabaseServiceClient();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, error } = await (supabase as any)
-    .from("rooms")
-    .select("name")
-    .order("name", { ascending: true });
+  const { data, error } = await supabase
+    .from(DB_TABLES.ROOMS)
+    .select(DB_COLUMNS.rooms.name)
+    .order(DB_COLUMNS.rooms.name, { ascending: true });
 
   if (error) throw new Error(`${ERRORS.FETCH_ROOMS}: ${error.message}`);
 

@@ -5,14 +5,18 @@ export {
   createSupabaseServerClient,
   createSupabaseServiceClient,
 } from "./client";
-export { RPC_FUNCTIONS } from "./rpcFunctions";
+export { DB_COLUMNS } from "./columns/columns.constants";
+export type { Database } from "./database.types";
+export { DB_ENUMS } from "./enums/enums.constants";
+export { RPC_FUNCTIONS } from "./rcpFunctions/rpcFunctions.constants";
+export { DB_TABLES } from "./tables/tables.constants";
+export type { DBTableName } from "./tables/tables.types";
 export type {
   AdminProfile,
   AdminsList,
   AdminUser,
   ClientProfile,
   ClientUser,
-  Database,
   PendingInvitation,
   SignUpPayload,
   User,
