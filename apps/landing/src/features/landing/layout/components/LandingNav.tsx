@@ -5,6 +5,7 @@ import { ROUTES } from "@/config/routes";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { useI18n } from "@/locales";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 const NAV_LINKS: { key: "HOME" | "ABOUT" | "ROOMS" | "CONTACT"; href: string }[] = [
   { key: "HOME", href: ROUTES.HOME },
@@ -50,6 +51,8 @@ export function LandingNav() {
             </li>
           ))}
         </motion.ul>
+
+        <LocaleSwitcher />
 
         <motion.a
           href={ROUTES.PORTAL}

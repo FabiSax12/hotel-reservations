@@ -15,6 +15,10 @@ export function I18nProvider<T>({
   const t = (translations[locale] ?? translations[defaultLocale]) as T;
 
   useEffect(() => {
+    setLocale(defaultLocale);
+  }, [defaultLocale]);
+
+  useEffect(() => {
     const saved = storage?.get();
     if (saved && saved !== locale) setLocale(saved);
   }, [locale, storage]);

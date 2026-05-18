@@ -41,7 +41,7 @@ export function AboutMosaic() {
       className={ABOUT.MOSAIC}
     >
       <MosaicPanel
-        src={MOSAIC_IMAGE_1}
+        src={about.MOSAIC_URL_1}
         alt={about.MOSAIC_ALT_1}
         sizes={MOSAIC_SIZES}
         overlays={MOSAIC_OVERLAYS_1}
@@ -50,7 +50,7 @@ export function AboutMosaic() {
         tall
       />
       <MosaicPanel
-        src={MOSAIC_IMAGE_2}
+        src={about.MOSAIC_URL_2}
         alt={about.MOSAIC_ALT_2}
         sizes={MOSAIC_SIZES}
         overlays={MOSAIC_OVERLAYS_2}
@@ -58,7 +58,7 @@ export function AboutMosaic() {
         minHeight={228}
       />
       <MosaicPanel
-        src={MOSAIC_IMAGE_3}
+        src={about.MOSAIC_URL_3}
         alt={about.MOSAIC_ALT_3}
         sizes={MOSAIC_SIZES}
         overlays={MOSAIC_OVERLAYS_3}
