@@ -8,13 +8,17 @@ export const SERVICES = Object.freeze({
   SUBHEADLINE: "text-stone-400 text-base lg:text-lg leading-relaxed font-light",
   GRID: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-forest-800",
   GRID_DESKTOP: "hidden lg:grid lg:grid-cols-4 gap-px bg-forest-800",
-  GRID_MOBILE: "lg:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none",
+  GRID_MOBILE:
+    "lg:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 scrollbar-none",
   GRID_MOBILE_CARD: "snap-start shrink-0 w-[76vw] bg-forest-900 border border-forest-800",
   CARD: "group relative p-8 lg:p-10 bg-forest-900 flex flex-col gap-6 transition-colors duration-500 hover:bg-forest-800 cursor-default h-full",
   CARD_ACCENT: "w-8 h-px bg-gold-500 transition-all duration-500 group-hover:w-16",
   CARD_ICON: "text-gold-500 w-8 h-8 transition-transform duration-500 group-hover:scale-110",
-  CARD_TITLE: "font-serif text-xl text-stone-100 group-hover:text-gold-300 transition-colors duration-300",
-  CARD_DESC: "text-stone-500 text-sm leading-relaxed font-light group-hover:text-stone-400 transition-colors duration-300",
+  CARD_TITLE:
+    "font-serif text-xl text-stone-100 group-hover:text-gold-300 transition-colors duration-300",
+  CARD_DESC:
+    "text-stone-500 text-sm leading-relaxed font-light group-hover:text-stone-400 transition-colors duration-300",
   CTA_WRAPPER: "text-center mt-20 lg:mt-28",
-  CTA_BUTTON: "inline-flex items-center gap-3 px-12 py-5 border border-gold-500/50 text-gold-400 text-sm font-medium tracking-widest uppercase transition-all duration-500 hover:bg-gold-500 hover:text-forest-950 hover:border-gold-500",
+  CTA_BUTTON:
+    "inline-flex items-center gap-3 px-12 py-5 border border-gold-500/50 text-gold-400 text-sm font-medium tracking-widest uppercase transition-all duration-500 hover:bg-gold-500 hover:text-forest-950 hover:border-gold-500",
 } as const);

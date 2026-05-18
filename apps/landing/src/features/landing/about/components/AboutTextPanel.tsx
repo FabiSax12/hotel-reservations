@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
+import { useRef } from "react";
+import { REVEAL, STAGGER } from "@/features/landing/about/constants/animations";
 import { ABOUT } from "@/features/landing/about/constants/styles";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-import { STAGGER, REVEAL } from "@/features/landing/about/constants/animations";
+import { useI18n } from "@/locales";
 
 export function AboutTextPanel() {
   const { t } = useI18n();

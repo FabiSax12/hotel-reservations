@@ -1,18 +1,27 @@
 "use client";
 
+import {
+  motion,
+  useMotionTemplate,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useMotionTemplate, useReducedMotion } from "framer-motion";
 import { HERO } from "@/features/landing/hero/constants/styles";
 import { HeroBgLayer } from "./HeroBgLayer";
 import { HeroLeftContent } from "./HeroLeftContent";
-import { HeroVisualPanel } from "./HeroVisualPanel";
 import { HeroScrollCue } from "./HeroScrollCue";
+import { HeroVisualPanel } from "./HeroVisualPanel";
 
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion() ?? false;
 
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
 
   const bgYValue = useTransform(scrollYProgress, [0, 1], ["0%", "28%"]);
   const contentYValue = useTransform(scrollYProgress, [0, 0.55], ["0%", "-14%"]);

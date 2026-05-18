@@ -2,8 +2,8 @@
 
 import { useReducedMotion } from "framer-motion";
 import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
-import { TestimonialsHeader } from "./TestimonialsHeader";
 import { TestimonialsGrid } from "./TestimonialsGrid";
+import { TestimonialsHeader } from "./TestimonialsHeader";
 
 export function TestimonialsSection() {
   const prefersReducedMotion = useReducedMotion() ?? false;

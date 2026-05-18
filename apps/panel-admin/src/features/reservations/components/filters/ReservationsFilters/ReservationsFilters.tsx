@@ -1,6 +1,6 @@
 "use client";
 
-import { FILTER_BAR_STYLES as S } from "./ReservationsFilters.styles";
+import { FILTER_BAR_STYLES as STYLES } from "./ReservationsFilters.styles";
 import { useReservationFilters } from "../../../hooks/useReservationFilters";
 import { StatusPillGroup } from "../StatusPillGroup/StatusPillGroup";
 import { RoomSelector } from "../RoomSelector/RoomSelector";
@@ -26,8 +26,8 @@ export const ReservationsFilters = ({
     update({ dateFrom: checkIn, dateTo: checkOut });
 
   return (
-    <div className={S.wrapper}>
-      <div className={S.bar}>
+    <div className={STYLES.wrapper}>
+      <div className={STYLES.bar}>
         <StatusPillGroup
           statuses={filters.statuses}
           statusCounts={statusCounts}
@@ -36,9 +36,9 @@ export const ReservationsFilters = ({
           onStatusToggle={toggleStatus}
         />
 
-        <div className={S.spacer} />
+        <div className={STYLES.spacer} />
 
-        <div className={S.rightSection}>
+        <div className={STYLES.rightSection}>
           <GuestSearchInput value={filters.guestName} onChange={handleGuestNameChange} />
 
           <RoomSelector value={selectedRoomKey} rooms={rooms} onChange={handleRoomChange} />

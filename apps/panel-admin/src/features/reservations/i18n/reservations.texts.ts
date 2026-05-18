@@ -112,6 +112,11 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       RESULTS_SUFFIX: "reservaciones",
       RESULTS_OF: "de",
     },
+    DETAIL_PAGE: {
+      BACK_TO_LIST: "Reservaciones",
+      PAGE_TITLE: "Información sobre la reservación",
+      STAT_STATUS_LABEL: "Estado",
+    },
     ERRORS: {
       FETCH_RESERVATIONS: "Error al obtener reservaciones",
       FETCH_ROOMS: "Error al obtener habitaciones",
@@ -226,6 +231,11 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       CLEAR: "Clear filters",
       RESULTS_SUFFIX: "reservations",
       RESULTS_OF: "of",
+    },
+    DETAIL_PAGE: {
+      BACK_TO_LIST: "Reservations",
+      PAGE_TITLE: "Reservation details",
+      STAT_STATUS_LABEL: "Status",
     },
     ERRORS: {
       FETCH_RESERVATIONS: "Error fetching reservations",

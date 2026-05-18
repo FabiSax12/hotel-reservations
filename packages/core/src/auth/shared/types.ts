@@ -68,6 +68,7 @@ export type AuthError =
   | { code: "USER_NOT_FOUND"; message: string }
   | { code: "USER_NOT_ACTIVE"; message: string }
   | { code: "NETWORK_ERROR"; message: string }
+  | { code: "EMAIL_ALREADY_REGISTERED"; message: string }
   | { code: "UNKNOWN_ERROR"; message: string };
 
 /**

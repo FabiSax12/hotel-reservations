@@ -5,6 +5,8 @@ import {
   LayoutDashboard,
   LayoutPanelTop,
   Receipt,
+  UserKey,
+  UserPlus,
   UserRound,
 } from "lucide-react";
 import { ROUTES } from "@/config/routes";
@@ -26,6 +28,12 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         labelKey: LABEL_KEYS.ADMINS,
         route: ROUTES.ADMIN.ADMINS,
         icon: KeyRound,
+        isPrimary: true,
+      },
+      {
+        labelKey: LABEL_KEYS.INVITATIONS,
+        route: ROUTES.ADMIN.INVITATIONS,
+        icon: UserPlus,
         isPrimary: true,
       },
     ],

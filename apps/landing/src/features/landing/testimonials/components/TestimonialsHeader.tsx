@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
-import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
+import { useRef } from "react";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import { HEADER_ITEM } from "@/features/landing/testimonials/constants/animations";
+import { TESTIMONIALS } from "@/features/landing/testimonials/constants/styles";
+import { useI18n } from "@/locales";
 
 export function TestimonialsHeader() {
   const { t } = useI18n();

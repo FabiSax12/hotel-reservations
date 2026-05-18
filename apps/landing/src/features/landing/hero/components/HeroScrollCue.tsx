@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useI18n } from "@/locales";
 import { HERO } from "@/features/landing/hero/constants/styles";
+import { useI18n } from "@/locales";
 
 export function HeroScrollCue() {
   const { t } = useI18n();

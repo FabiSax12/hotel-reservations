@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { useI18n } from "@/locales";
-import { PROPERTIES } from "@/features/landing/properties/constants/styles";
+import Image from "next/image";
 import type { PropertyConfig } from "@/features/landing/properties/constants/properties-config";
+import { PROPERTIES } from "@/features/landing/properties/constants/styles";
+import { useI18n } from "@/locales";
 
 interface PropertyVisualPanelProps {
   config: PropertyConfig;
@@ -32,7 +32,9 @@ export function PropertyVisualPanel({ config }: PropertyVisualPanelProps) {
         <div className={PROPERTIES.VISUAL_OVERLAY} style={{ background: config.visual.gradient }} />
         <div
           className={PROPERTIES.VISUAL_OVERLAY}
-          style={{ background: `radial-gradient(ellipse 70% 60% at 50% 30%, ${config.visual.ringsCenter}, transparent)` }}
+          style={{
+            background: `radial-gradient(ellipse 70% 60% at 50% 30%, ${config.visual.ringsCenter}, transparent)`,
+          }}
         />
         <div className={PROPERTIES.VISUAL_RINGS_WRAPPER}>
           {rings.map((ring, i) => (
@@ -41,13 +43,20 @@ export function PropertyVisualPanel({ config }: PropertyVisualPanelProps) {
               className={PROPERTIES.VISUAL_RING}
               style={{ width: ring.size, height: ring.size, borderColor: config.visual.rings }}
               animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-              transition={{ duration: ring.duration, ease: "linear", repeat: Infinity, delay: ring.delay }}
+              transition={{
+                duration: ring.duration,
+                ease: "linear",
+                repeat: Infinity,
+                delay: ring.delay,
+              }}
             />
           ))}
         </div>
         <div
           className={PROPERTIES.VISUAL_ACCENT}
-          style={{ background: `radial-gradient(circle at 50% 50%, ${config.visual.accentColor}, transparent 70%)` }}
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${config.visual.accentColor}, transparent 70%)`,
+          }}
         />
       </div>
     </div>

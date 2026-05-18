@@ -1,5 +1,4 @@
 import { z } from "zod";
-import type { Room } from "@/features/rooms/domain/room.interface";
 import {
   MIN_ADULTS,
   MIN_KIDS,
@@ -7,6 +6,7 @@ import {
   MIN_PRICE,
   MIN_STRING_LENGTH,
 } from "@/features/rooms/constants/info.constants";
+import type { Room } from "@/features/rooms/domain/room.interface";
 
 export const roomInfoSchema = z.object({
   name: z.string().min(MIN_NAME_LENGTH, "VALIDATION.MIN_LENGTH"),
@@ -27,4 +27,3 @@ export interface RoomInfoFormProps {
   onSubmit: (data: RoomInfoFormData) => Promise<void>;
   isLoading?: boolean;
 }
-
