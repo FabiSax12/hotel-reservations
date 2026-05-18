@@ -1,5 +1,11 @@
 import type { CmsSectionConfig } from "@/features/cms/domain/cms.interface";
-import { CMS_SECTIONS } from "./cms-fields";
+import type { CmsTexts } from "@/features/cms/i18n/cmsTexts.type";
+import { CMS_SECTIONS, CMS_LOCALES } from "./cms-fields";
+
+export const CMS_LOCALE_LABELS: Record<string, (texts: CmsTexts) => string> = Object.freeze({
+  [CMS_LOCALES.ES]: (t: CmsTexts) => t.LOCALE_ES,
+  [CMS_LOCALES.EN]: (t: CmsTexts) => t.LOCALE_EN,
+});
 
 export const CMS_SECTION_CONFIGS: ReadonlyArray<CmsSectionConfig> = Object.freeze([
   {

@@ -1,17 +1,11 @@
 "use client";
 
 import { CMS_LOCALES, CMS_LOCALE_LIST } from "@/features/cms/constants/cms-fields";
+import { CMS_LOCALE_LABELS } from "@/features/cms/constants/sectionConfigs";
 import { ImageUploadSlot } from "@/features/cms/components/ImageUploadSlot/ImageUploadSlot";
 import { CmsSaveFooter } from "@/features/cms/components/CmsSaveFooter/CmsSaveFooter";
 import { CMS_SECTION_EDITOR_STYLES as s } from "./CmsSectionEditor.styles";
 import type { CmsSectionEditorProps } from "./CmsSectionEditor.interface";
-import type { CmsLocale } from "@/features/cms/domain/cms.interface";
-import type { CmsTexts } from "@/features/cms/i18n/cmsTexts.type";
-
-const LOCALE_LABELS: Record<string, (texts: CmsTexts) => string> = {
-  [CMS_LOCALES.ES]: (t) => t.LOCALE_ES,
-  [CMS_LOCALES.EN]: (t) => t.LOCALE_EN,
-};
 
 export function CmsSectionEditor({
   config,
@@ -90,21 +84,21 @@ export function CmsSectionEditor({
               key={locale}
               type="button"
               className={`${s.localeTab}${activeLocale === locale ? ` ${s.localeTabActive}` : ""}`}
-              onClick={() => onLocaleChange(locale as CmsLocale)}
+              onClick={() => onLocaleChange(locale)}
             >
-              {LOCALE_LABELS[locale]?.(texts) ?? locale.toUpperCase()}
+              {CMS_LOCALE_LABELS[locale]?.(texts) ?? locale.toUpperCase()}
             </button>
           ))}
         </div>
       )}
 
       {hasTextFields ? (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className={s.formBody}>
           {body}
           <CmsSaveFooter type="submit" isSaving={isSaving} isSuccess={isSuccess} isError={isError} texts={texts} />
         </form>
       ) : (
-        <div className="flex flex-col gap-5">
+        <div className={s.formBody}>
           {body}
           <CmsSaveFooter isSaving={isSaving} isSuccess={isSuccess} isError={isError} texts={texts} onSave={onSave} />
         </div>

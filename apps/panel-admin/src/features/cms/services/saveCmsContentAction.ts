@@ -1,7 +1,7 @@
 "use server";
 
 import { createSupabaseServiceClient } from "@hotel/db";
-import type { CmsSection, CmsLocale } from "@/features/cms/domain/cms.interface";
+import type { CmsSection, CmsLocale, SaveCmsResult, UploadCmsImageResult } from "@/features/cms/domain/cms.interface";
 import {
   CMS_IMAGE_BUCKET,
   CMS_IMAGE_MAX_SIZE_BYTES,
@@ -9,9 +9,6 @@ import {
   CMS_STORAGE_SLOT_PREFIX,
   CMS_ERROR_MISSING_DATA,
 } from "@/features/cms/constants/cms-fields";
-
-export type SaveCmsResult = { success: true } | { success: false; error: string };
-export type UploadCmsImageResult = { success: true; url: string } | { success: false; error: string };
 
 export async function saveCmsTextAction(
   locale: CmsLocale,

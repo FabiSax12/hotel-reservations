@@ -13,4 +13,5 @@ export const CMS_SECTION_EDITOR_STYLES = {
     "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 placeholder:text-slate-400",
   textarea:
     "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 placeholder:text-slate-400 resize-none min-h-[100px]",
+  formBody: "flex flex-col gap-5",
 } as const;
