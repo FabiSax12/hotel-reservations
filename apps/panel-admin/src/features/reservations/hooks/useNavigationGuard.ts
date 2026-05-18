@@ -32,25 +32,24 @@ export function useNavigationGuard({ listPath }: UseNavigationGuardProps) {
   }, []);
 
   useEffect(() => {
-    const originalPushState = window.history.pushState.bind(window.history);
-
-    window.history.pushState = (...args) => {
-      if (hasPendingRef.current) {
-        setTimeout(() => guardedBackRef.current(), 0);
-        return;
-      }
-      originalPushState(...args);
+    const handleLinkClick = (e: MouseEvent) => {
+      if (!hasPendingRef.current) return;
+      const anchor = (e.target as Element).closest("a[href]");
+      if (!anchor) return;
+      e.preventDefault();
+      e.stopPropagation();
+      guardedBackRef.current();
     };
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (hasPendingRef.current) {
-        e.preventDefault();
-      }
+      if (hasPendingRef.current) e.preventDefault();
     };
+
+    document.addEventListener("click", handleLinkClick, true);
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.history.pushState = originalPushState;
+      document.removeEventListener("click", handleLinkClick, true);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);

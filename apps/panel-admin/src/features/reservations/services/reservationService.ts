@@ -17,8 +17,10 @@ export async function getAllReservations(): Promise<Reservation[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await supabase
     .from(DB_TABLES.RESERVATIONS)
-    .select(`*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`) //"*, rooms(name, category)")
-    .order(DB_COLUMNS.reservations.created_at, { ascending: false });
+    .select(
+      `*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`,
+    ) //"*, rooms(name, category)")
+    .order(DB_COLUMNS.reservations.code, { ascending: false });
 
   if (error) throw new Error(`${ERRORS.FETCH_RESERVATIONS}: ${error.message}`);
 
