@@ -2,13 +2,6 @@ import type { Database } from "../database.types";
 import type { DBTablesWithColumns } from "./columns.types";
 
 export const DB_COLUMNS: DBTablesWithColumns = {
-  cms_content: {
-    id: "id",
-    locale: "locale",
-    section: "section",
-    content: "content",
-    updated_at: "updated_at",
-  },
   pending_invitations: {
     accepted_at: "accepted_at",
     created_at: "created_at",
@@ -74,7 +67,6 @@ type _AssertAllColumnsCovered = {
 };
 
 const _assertAllColumnsCovered: _AssertAllColumnsCovered = {
-  cms_content: true,
   pending_invitations: true,
   profiles: true,
   reservations: true,

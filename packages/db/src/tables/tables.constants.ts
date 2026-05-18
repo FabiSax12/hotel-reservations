@@ -2,7 +2,6 @@ import type { Database } from "../database.types";
 import type { DBTableName } from "../tables/tables.types";
 
 const _DB_TABLES = {
-  CMS_CONTENT: "cms_content",
   PENDING_INVITATIONS: "pending_invitations",
   PROFILES: "profiles",
   RESERVATIONS: "reservations",
@@ -19,7 +18,6 @@ type _AssertAllTablesCovered = {
 };
 
 const _assertAllTablesCovered: _AssertAllTablesCovered = {
-  cms_content: true,
   pending_invitations: true,
   profiles: true,
   reservations: true,
