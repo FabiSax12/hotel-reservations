@@ -25,7 +25,7 @@ using (
 
 
 alter table public.users RENAME TO profiles;
-alter table public.profiles DROP COLUMN email, DROP COLUMN role, DROP COLUMN created_at, DROP COLUMN activation_token, DROP COLUMN activation_token_expires_at;
+alter table public.profiles DROP COLUMN email, DROP COLUMN role, DROP COLUMN created_at;
 
 
 alter table public.profiles ADD COLUMN full_name text;
