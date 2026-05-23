@@ -6,8 +6,8 @@ import { formatDetailDate, getTodayISODate } from "../../../utils/format-reserva
 import { computeTotalGuests, pluralizeCount } from "../../../utils/reservation-utils";
 import { Divider } from "../../shared/Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
+import { RESERVATION_ROOM_CARD_STYLES as STYLES } from "./ReservationRoomCard.styles";
 import type { ReservationRoomCardProps } from "./ReservationRoomCard.interface";
-import { RESERVATION_ROOM_CARD_STYLES as S } from "./ReservationRoomCard.styles";
 
 export const ReservationRoomCard = ({
   room,
@@ -20,53 +20,55 @@ export const ReservationRoomCard = ({
   const labels = t.RESERVATIONS.DETAIL;
 
   const arrivesToday = checkIn === getTodayISODate();
-  const totalGuests = computeTotalGuests(guests);
-  const nightsBadge = pluralizeCount(nights, labels.LABEL_NIGHT, labels.LABEL_NIGHTS);
+  const totalGuests  = computeTotalGuests(guests);
+  const nightsBadge  = pluralizeCount(nights, labels.LABEL_NIGHT, labels.LABEL_NIGHTS);
 
   return (
     <ReservationDetailCard title={labels.SECTION_ROOM}>
-      <p className={S.roomName}>{room.name}</p>
-      <p className={S.roomLocation}>{room.location}</p>
+      <p className={STYLES.roomName}>{room.name}</p>
+      <p className={STYLES.roomLocation}>{room.location}</p>
 
       <Divider />
-      <div className={S.datesBlock}>
-        {arrivesToday && <span className={S.arrivesToday}>{labels.ARRIVES_TODAY}</span>}
-        <div className={S.datesRow}>
-          <div className={S.dateCard}>
-            <span className={S.dateLabel}>{labels.LABEL_CHECKIN}</span>
-            <span className={S.dateValue}>{formatDetailDate(checkIn)}</span>
-            <span className={S.dateTime}>{CHECK_IN_TIME}</span>
+      <div className={STYLES.datesBlock}>
+        {arrivesToday && (
+          <span className={STYLES.arrivesToday}>{labels.ARRIVES_TODAY}</span>
+        )}
+        <div className={STYLES.datesRow}>
+          <div className={STYLES.dateCard}>
+            <span className={STYLES.dateLabel}>{labels.LABEL_CHECKIN}</span>
+            <span className={STYLES.dateValue}>{formatDetailDate(checkIn)}</span>
+            <span className={STYLES.dateTime}>{CHECK_IN_TIME}</span>
           </div>
 
-          <div className={S.nightsConnector}>
-            <div className={S.nightsConnectorLine} />
-            <span className={S.nightsBadge}>{nightsBadge}</span>
-            <div className={S.nightsConnectorLine} />
+          <div className={STYLES.nightsConnector}>
+            <div className={STYLES.nightsConnectorLine} />
+            <span className={STYLES.nightsBadge}>{nightsBadge}</span>
+            <div className={STYLES.nightsConnectorLine} />
           </div>
 
-          <div className={S.dateCard}>
-            <span className={S.dateLabel}>{labels.LABEL_CHECKOUT}</span>
-            <span className={S.dateValue}>{formatDetailDate(checkOut)}</span>
-            <span className={S.dateTime}>{CHECK_OUT_TIME}</span>
+          <div className={STYLES.dateCard}>
+            <span className={STYLES.dateLabel}>{labels.LABEL_CHECKOUT}</span>
+            <span className={STYLES.dateValue}>{formatDetailDate(checkOut)}</span>
+            <span className={STYLES.dateTime}>{CHECK_OUT_TIME}</span>
           </div>
         </div>
       </div>
 
       <Divider />
-      <span className={S.guestsLabel}>
+      <span className={STYLES.guestsLabel}>
         {labels.LABEL_GUESTS_TOTAL} · {totalGuests}
       </span>
-      <div className={S.guestBreakdown}>
-        <span className={S.guestChip}>
+      <div className={STYLES.guestBreakdown}>
+        <span className={STYLES.guestChip}>
           {labels.LABEL_ADULTS}: {guests.adults}
         </span>
         {guests.children != null && guests.children > 0 && (
-          <span className={S.guestChip}>
+          <span className={STYLES.guestChip}>
             {labels.LABEL_CHILDREN}: {guests.children}
           </span>
         )}
         {guests.pets != null && guests.pets > 0 && (
-          <span className={S.guestChip}>
+          <span className={STYLES.guestChip}>
             {labels.LABEL_PETS}: {guests.pets}
           </span>
         )}

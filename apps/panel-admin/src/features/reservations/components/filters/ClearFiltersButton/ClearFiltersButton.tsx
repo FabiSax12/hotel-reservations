@@ -2,8 +2,8 @@
 
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
+import { CLEAR_FILTERS_BUTTON_STYLES as STYLES } from "./ClearFiltersButton.styles";
 import type { ClearFiltersButtonProps } from "./ClearFiltersButton.interface";
-import { CLEAR_FILTERS_BUTTON_STYLES as S } from "./ClearFiltersButton.styles";
 
 export const ClearFiltersButton = ({ isFiltered, onClear }: ClearFiltersButtonProps) => {
   const { t } = useI18n();
@@ -12,7 +12,7 @@ export const ClearFiltersButton = ({ isFiltered, onClear }: ClearFiltersButtonPr
     <Button
       variant="ghost"
       size="sm"
-      className={`${S.pill} ${S.pillInactive}`}
+      className={`${STYLES.pill} ${STYLES.pillInactive}`}
       isDisabled={!isFiltered}
       onPress={onClear}
     >

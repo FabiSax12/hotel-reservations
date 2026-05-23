@@ -2,11 +2,11 @@
 
 import { Button, ButtonGroup } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { FILTERED_RESULTS } from "../../../constants/filtered-results";
+import { STATUS_PILL_GROUP_STYLES as STYLES } from "./StatusPillGroup.styles";
 import { RESERVATION_STATUSES } from "../../../constants/reservation-statuses";
+import { FILTERED_RESULTS } from "../../../constants/filtered-results";
 import { StatusPill } from "../StatusPill/StatusPill";
 import type { StatusPillGroupProps } from "./StatusPillGroup.interface";
-import { STATUS_PILL_GROUP_STYLES as S } from "./StatusPillGroup.styles";
 
 export const StatusPillGroup = ({
   statuses,
@@ -19,15 +19,15 @@ export const StatusPillGroup = ({
   const isAllActive = statuses.length === FILTERED_RESULTS.EMPTY;
 
   return (
-    <ButtonGroup className={S.leftSection}>
+    <ButtonGroup className={STYLES.leftSection}>
       <Button
         variant="ghost"
         aria-pressed={isAllActive}
-        className={`${S.pill} ${isAllActive ? S.pillActive : S.pillInactive}`}
+        className={`${STYLES.pill} ${isAllActive ? STYLES.pillActive : STYLES.pillInactive}`}
         onPress={onAllClick}
       >
         {t.RESERVATIONS.FILTERS.ALL}
-        <span className={S.pillCount}>{totalCount}</span>
+        <span className={STYLES.pillCount}>{totalCount}</span>
       </Button>
 
       {RESERVATION_STATUSES.map((status) => (

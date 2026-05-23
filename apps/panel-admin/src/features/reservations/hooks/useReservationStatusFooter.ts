@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "@/locales";
-import type { ReservationStatusFooterProps } from "../components/status/ReservationStatusFooter/ReservationStatusFooter.interface";
-import { RESERVATION_STATUS as S } from "../constants/reservation-statuses";
-import type { ReservationStatus } from "../domain/reservation";
 import { useReservationStatusReducer } from "../reducer/reservations.reducer";
-import { RESERVATION_STATUS_ACTIONS as A } from "../reducer/reservations.reducer.constants";
+import { useGuardedClose } from "./useGuardedClose";
+import { RESERVATION_STATUS_ACTIONS as ACTIONS } from "../reducer/reservations.reducer.constants";
+import { RESERVATION_STATUS as CONSTANTS } from "../constants/reservation-statuses";
+import type { ReservationStatus } from "../domain/reservation";
+import type { ReservationStatusFooterProps } from "../components/status/ReservationStatusFooter/ReservationStatusFooter.interface";
 
 export function useReservationStatusFooter({
   reservationId,
@@ -15,6 +16,7 @@ export function useReservationStatusFooter({
   onRequestClose,
   onRegisterClose,
   onSave,
+  onPendingChangesChange,
 }: ReservationStatusFooterProps) {
   const { t } = useI18n();
   const { state, dispatch } = useReservationStatusReducer(originalCancellationReason);
@@ -23,74 +25,61 @@ export function useReservationStatusFooter({
 
   const currentStatus: ReservationStatus = state.pendingStatus ?? currentSavedStatus;
   const hasPendingChanges = state.pendingStatus !== null;
-  const isAlreadySaved = currentSavedStatus === S.CANCELLED && state.pendingStatus === null;
-  const showCancellationField = currentStatus === S.CANCELLED;
+  const isAlreadySaved = currentSavedStatus === CONSTANTS.CANCELLED && state.pendingStatus === null;
+  const showCancellationField = currentStatus === CONSTANTS.CANCELLED;
   const cancellationFieldIsReadOnly = isAlreadySaved;
   const isSaveDisabled =
-    !hasPendingChanges || (state.pendingStatus === S.CANCELLED && !state.cancellationReason.trim());
+    !hasPendingChanges ||
+    (state.pendingStatus === CONSTANTS.CANCELLED && !state.cancellationReason.trim());
 
-  const guardedCloseRef = useRef<() => void>(() => {});
-  guardedCloseRef.current = () => {
-    if (hasPendingChanges) {
-      setIsUnsavedChangesModalOpen(true);
-    } else {
-      onRequestClose();
-    }
-  };
-
-  useEffect(() => {
-    const stableClose = () => guardedCloseRef.current();
-    return onRegisterClose(reservationId, stableClose);
-  }, [onRegisterClose, reservationId]);
+  useGuardedClose({
+    reservationId,
+    hasPendingChanges,
+    onRequestClose,
+    onRegisterClose,
+    onPendingChangesChange,
+    openUnsavedChangesModal: () => setIsUnsavedChangesModalOpen(true),
+  });
 
   const handleApprove = () => {
-    dispatch({ type: A.SELECT_STATUS, payload: S.APPROVED });
+    dispatch({ type: ACTIONS.SELECT_STATUS, payload: CONSTANTS.APPROVED });
   };
 
   const handleCancelReservation = () => {
-    dispatch({ type: A.SELECT_STATUS, payload: S.CANCELLED });
+    dispatch({ type: ACTIONS.SELECT_STATUS, payload: CONSTANTS.CANCELLED });
   };
 
   const handleComplete = () => {
-    dispatch({ type: A.SELECT_STATUS, payload: S.COMPLETED });
+    dispatch({ type: ACTIONS.SELECT_STATUS, payload: CONSTANTS.COMPLETED });
   };
 
   const handleRevertChanges = () => {
-    dispatch({
-      type: A.REVERT_CHANGES,
-      payload: { originalCancellationReason },
-    });
+    dispatch({ type: ACTIONS.REVERT_CHANGES, payload: { originalCancellationReason } });
     setIsSaveConfirmDialogOpen(false);
     setIsUnsavedChangesModalOpen(false);
   };
 
-  const handleOpenSaveDialog = () => {
-    setIsSaveConfirmDialogOpen(true);
-  };
-
-  const handleCloseSaveDialog = () => {
-    setIsSaveConfirmDialogOpen(false);
-  };
-
-  const handleCloseUnsavedChangesModal = () => {
-    setIsUnsavedChangesModalOpen(false);
-  };
+  const handleOpenSaveDialog = () => setIsSaveConfirmDialogOpen(true);
+  const handleCloseSaveDialog = () => setIsSaveConfirmDialogOpen(false);
+  const handleCloseUnsavedChangesModal = () => setIsUnsavedChangesModalOpen(false);
 
   const handleReasonChange = (value: string) => {
-    dispatch({ type: A.UPDATE_CANCELLATION_REASON, payload: value });
+    dispatch({ type: ACTIONS.UPDATE_CANCELLATION_REASON, payload: value });
   };
 
   const handleConfirmSave = () => {
     const statusToSave = state.pendingStatus;
     const reasonToSave = state.cancellationReason;
-    dispatch({ type: A.SAVE_COMMITTED });
+    dispatch({ type: ACTIONS.SAVE_COMMITTED });
     setIsSaveConfirmDialogOpen(false);
     if (statusToSave !== null) {
       // TODO: implementar comunicacion con la pasarela de pagos
-      if (currentSavedStatus === S.PENDING && statusToSave === S.APPROVED) {
-        console.log(`${t.RESERVATIONS.STATUS_MANAGEMENT.LOG_PAYMENT_PROCESSED} ${reservationId}.`);
+      if (currentSavedStatus === CONSTANTS.PENDING && statusToSave === CONSTANTS.APPROVED) {
+        console.log(
+          `${t.RESERVATIONS.STATUS_MANAGEMENT.LOG_PAYMENT_PROCESSED} ${reservationId}.`,
+        );
       }
-      const cancellationReason = statusToSave === S.CANCELLED ? reasonToSave : undefined;
+      const cancellationReason = statusToSave === CONSTANTS.CANCELLED ? reasonToSave : undefined;
       onSave?.(statusToSave, cancellationReason);
     }
   };

@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      cms_content: {
+        Row: {
+          id: string
+          locale: string
+          section: string
+          content: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          locale: string
+          section: string
+          content?: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          locale?: string
+          section?: string
+          content?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pending_invitations: {
         Row: {
           accepted_at: string | null

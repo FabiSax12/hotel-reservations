@@ -1,11 +1,11 @@
 "use client";
 
-import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
 import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
-import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
 import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
+import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
+import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
+import { RESERVATION_EXPANDED_PANEL_STYLES as STYLES } from "./ReservationExpandedPanel.styles";
 import type { ReservationExpandedPanelProps } from "./ReservationExpandedPanel.interface";
-import { RESERVATION_EXPANDED_PANEL_STYLES as S } from "./ReservationExpandedPanel.styles";
 
 const noop = () => {};
 const noopRegister = (_id: string, _handler: () => void) => noop;
@@ -17,11 +17,11 @@ export const ReservationExpandedPanel = ({
   onRequestClose = noop,
   onRegisterClose = noopRegister,
 }: ReservationExpandedPanelProps) => {
-  const wrapperClassName = `${S.wrapperBase} ${isClosing ? S.wrapperExit : S.wrapperEnter}`;
+  const wrapperClassName = `${STYLES.wrapperBase} ${isClosing ? STYLES.wrapperExit : STYLES.wrapperEnter}`;
 
   return (
     <div className={wrapperClassName}>
-      <div className={S.body}>
+      <div className={STYLES.body}>
         <ReservationGuestCard guest={r.guest} />
         <ReservationRoomCard
           room={r.room}

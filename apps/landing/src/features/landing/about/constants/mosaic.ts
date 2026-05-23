@@ -1,9 +1,5 @@
 export const MOSAIC_SIZES = "(max-width: 1024px) 50vw, 25vw";
 
-export const MOSAIC_IMAGE_1 = "https://picsum.photos/seed/about-forest/480/720";
-export const MOSAIC_IMAGE_2 = "https://picsum.photos/seed/about-warm/480/340";
-export const MOSAIC_IMAGE_3 = "https://picsum.photos/seed/about-stone/480/340";
-
 export const MOSAIC_OVERLAYS_1: string[] = [
   "linear-gradient(170deg, oklch(28% 0.07 143 / 0.5) 0%, oklch(11% 0.04 143 / 0.65) 100%)",
   "radial-gradient(ellipse 80% 60% at 40% 30%, oklch(35% 0.08 143 / 0.5), transparent)",

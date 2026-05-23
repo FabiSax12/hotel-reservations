@@ -7,7 +7,7 @@
 import { APP_PAGE_STRINGS } from "../constants/app-pages.constants";
 import { ERROR_PAGE_STYLES as S } from "../theme/app-pages.theme";
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {

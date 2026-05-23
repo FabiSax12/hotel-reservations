@@ -106,6 +106,11 @@ export type ReservationsTexts = {
     RESULTS_SUFFIX: string;
     RESULTS_OF: string;
   };
+  DETAIL_PAGE: {
+    BACK_TO_LIST: string;
+    PAGE_TITLE: string;
+    STAT_STATUS_LABEL: string;
+  };
   ERRORS: {
     FETCH_RESERVATIONS: string;
     FETCH_ROOMS: string;

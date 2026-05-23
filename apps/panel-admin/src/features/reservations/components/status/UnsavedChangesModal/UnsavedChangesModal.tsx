@@ -1,18 +1,18 @@
 "use client";
 
 import {
-  Button,
   ModalBackdrop,
-  ModalBody,
   ModalContainer,
   ModalDialog,
-  ModalFooter,
   ModalHeader,
   ModalHeading,
+  ModalBody,
+  ModalFooter,
+  Button,
 } from "@heroui/react";
 import { useI18n } from "@/locales";
+import { UNSAVED_CHANGES_MODAL_STYLES as STYLES } from "./UnsavedChangesModal.styles";
 import type { UnsavedChangesModalProps } from "./UnsavedChangesModal.interface";
-import { UNSAVED_CHANGES_MODAL_STYLES as S } from "./UnsavedChangesModal.styles";
 
 export const UnsavedChangesModal = ({ isOpen, onStay }: UnsavedChangesModalProps) => {
   const { t } = useI18n();
@@ -30,10 +30,10 @@ export const UnsavedChangesModal = ({ isOpen, onStay }: UnsavedChangesModalProps
             <ModalHeading>{texts.TITLE}</ModalHeading>
           </ModalHeader>
           <ModalBody>
-            <p className={S.description}>{texts.DESCRIPTION}</p>
+            <p className={STYLES.description}>{texts.DESCRIPTION}</p>
           </ModalBody>
-          <ModalFooter className={S.footer}>
-            <Button className={S.stayButton} onPress={onStay}>
+          <ModalFooter className={STYLES.footer}>
+            <Button className={STYLES.stayButton} onPress={onStay}>
               {texts.BTN_STAY}
             </Button>
           </ModalFooter>

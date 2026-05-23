@@ -11,4 +11,5 @@ export async function updateReservationStatusAction(
 ): Promise<void> {
   await updateReservationStatus(id, status, cancellationReason);
   revalidatePath("/admin/reservations");
+  revalidatePath(`/admin/reservations/${id}`);
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import { Label, TextArea, TextField } from "@heroui/react";
+import { TextField, TextArea, Label } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { CANCELLATION_REASON_MAX_LENGTH } from "../../../constants/status-management";
+import { CANCELLATION_REASON_FIELD_STYLES as STYLES } from "./CancellationReasonModal.styles";
 import type { CancellationReasonFieldProps } from "./CancellationReasonModal.interface";
-import { CANCELLATION_REASON_FIELD_STYLES as S } from "./CancellationReasonModal.styles";
 
 export const CancellationReasonField = ({
   reason,
@@ -15,10 +15,10 @@ export const CancellationReasonField = ({
   const texts = t.RESERVATIONS.CANCELLATION_MODAL;
 
   const counterClassName =
-    reason.length >= CANCELLATION_REASON_MAX_LENGTH ? S.counterAtLimit : S.counter;
+    reason.length >= CANCELLATION_REASON_MAX_LENGTH ? STYLES.counterAtLimit : STYLES.counter;
 
   return (
-    <div className={S.wrapper}>
+    <div className={STYLES.wrapper}>
       <TextField
         value={reason}
         onChange={onChange}
@@ -28,7 +28,7 @@ export const CancellationReasonField = ({
       >
         <Label>{texts.TEXTAREA_LABEL}</Label>
         <TextArea
-          className={S.textArea}
+          className={STYLES.textArea}
           placeholder={isReadOnly ? undefined : texts.TEXTAREA_PLACEHOLDER}
           maxLength={CANCELLATION_REASON_MAX_LENGTH}
           rows={2}
