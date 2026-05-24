@@ -42,6 +42,7 @@ import {
 } from "@hotel/db";
 import type { ActivationErrorCode } from "./config/constants";
 import { ACTIVATION_ERROR_CODES, AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
+import { hasRole } from "./shared/utils";
 
 // ============================================================================
 // Re-exported types from shared/
@@ -98,6 +99,7 @@ export {
   createAuthError,
   getRedirectUrl,
   getUserId,
+  hasRole,
   isAdminUser,
   isSessionValid,
   validateProfile,
@@ -323,8 +325,8 @@ export async function verifyAdminRole(userId: string): Promise<AdminUser | null>
   if (profileError) throw new Error(profileError.message);
   if (roleError) throw new Error(roleError.message);
 
-  if (roleData.role === AUTH_ROLES.ADMIN && profileData.is_active) {
-    return { ...profileData, role: AUTH_ROLES.ADMIN } as AdminUser;
+  if (hasRole(roleData, [AUTH_ROLES.ADMIN, AUTH_ROLES.OWNER]) && profileData.is_active) {
+    return { ...profileData, role: roleData.role } as AdminUser;
   }
 
   return null;
