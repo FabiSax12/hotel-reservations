@@ -1,6 +1,6 @@
 "use server";
 
-import { verifyAdminRole } from "@hotel/core/auth";
+import { hasRole, verifyAdminRole } from "@hotel/core/auth";
 import { createSupabaseServerClient, DB_COLUMNS, DB_ENUMS, DB_TABLES } from "@hotel/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -34,7 +34,7 @@ export async function loginAction(
       .eq(DB_COLUMNS.user_roles.user_id, data.user.id)
       .single();
 
-    if (roleData?.role === DB_ENUMS.user_role.admin) {
+    if (hasRole(roleData, [DB_ENUMS.user_role.admin, DB_ENUMS.user_role.owner])) {
       return { error: "ACCOUNT_DEACTIVATED" };
     }
 
