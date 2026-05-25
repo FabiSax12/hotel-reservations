@@ -150,7 +150,7 @@ export async function setUserPermissions(
   }
 
   // Remove any permissions not in the provided list
-  const permissionsList = permissions.map((p) => `'${p}'`).join(",");
+  const permissionsList = permissions.map((p) => p).join(",");
   const { error: deleteError } = await supabase
     .from(DB_TABLES.USER_PERMISSIONS)
     .delete()
