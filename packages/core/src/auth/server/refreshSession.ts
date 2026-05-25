@@ -60,7 +60,7 @@ export async function refreshSession(): Promise<AuthState> {
   if (user) {
     const adminProfile = await verifyAdminRole(user.id);
     if (adminProfile) {
-      profile = adminProfile as AdminProfile;
+      profile = adminProfile as unknown as AdminProfile;
       isAdmin = true;
     }
   }

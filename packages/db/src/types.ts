@@ -18,7 +18,7 @@ export interface ClientProfile {
 export type UserProfile = AdminProfile | ClientProfile;
 
 export interface AdminUser extends AdminProfile {
-  role: "admin";
+  role: "admin" | "owner";
 }
 
 export interface ClientUser extends ClientProfile {

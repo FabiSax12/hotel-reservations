@@ -49,24 +49,26 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                 <Table.Cell>{user.role}</Table.Cell>
                 {/* <Table.Cell>{user.created_at}</Table.Cell> */}
                 <Table.Cell>
-                  <ButtonGroup isDisabled={togglingId === user.id}>
-                    <Button
-                      variant="danger"
-                      isIconOnly
-                      isDisabled={!user.is_active}
-                      onPress={() => onToggle(user.id, user.is_active)}
-                    >
-                      <X />
-                    </Button>
-                    <Button
-                      variant="primary"
-                      isIconOnly
-                      isDisabled={user.is_active}
-                      onPress={() => onToggle(user.id, user.is_active)}
-                    >
-                      <Check />
-                    </Button>
-                  </ButtonGroup>
+                  {user.role !== "owner" && (
+                    <ButtonGroup isDisabled={togglingId === user.id}>
+                      <Button
+                        variant="danger"
+                        isIconOnly
+                        isDisabled={!user.is_active}
+                        onPress={() => onToggle(user.id, user.is_active)}
+                      >
+                        <X />
+                      </Button>
+                      <Button
+                        variant="primary"
+                        isIconOnly
+                        isDisabled={user.is_active}
+                        onPress={() => onToggle(user.id, user.is_active)}
+                      >
+                        <Check />
+                      </Button>
+                    </ButtonGroup>
+                  )}
                 </Table.Cell>
               </Table.Row>
             ))}
