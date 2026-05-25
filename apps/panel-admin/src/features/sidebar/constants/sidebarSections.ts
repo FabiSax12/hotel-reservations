@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   LayoutPanelTop,
   Receipt,
-  UserKey,
   UserPlus,
   UserRound,
 } from "lucide-react";
