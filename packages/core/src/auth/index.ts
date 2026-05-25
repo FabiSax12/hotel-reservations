@@ -329,7 +329,11 @@ export async function verifyAdminRole(userId: string): Promise<AdminUser | null>
   if (hasRole(roleData, [AUTH_ROLES.ADMIN, AUTH_ROLES.OWNER]) && profileData.is_active) {
     let permissions: string[] | undefined;
     try {
-      permissions = await getUserPermissions(userId);
+      if (roleData.role === AUTH_ROLES.OWNER) {
+        permissions = Object.values(DB_ENUMS.user_permission);
+      } else {
+        permissions = await getUserPermissions(userId);
+      }
     } catch {
       // If permissions can't be fetched, don't break backward compatibility
       permissions = undefined;
