@@ -1,17 +1,17 @@
-CREATE ENUM user_permission AS (
-    "view:dashboard", -- Ver el dashboard con estadísticas
-    "reservations:view", -- Ver lista de reservaciones
-    "reservations:edit", -- Editar una reservación
-    "reservations:delete", -- Eliminar/cancelar reservación
-    "admins:view", -- Ver lista de administradores
-    "admins:invite", -- Invitar nuevos administradores
-    "admins:disable", -- Desactivar/reactivar cuentas de admins
-    "admins:revoke", -- Revocar invitaciones pendientes
-    "cms:manage", -- Editar contenido del CMS (landing page)
-    "permissions:manage", -- Asignar/revocar permisos a otros admins
-    "rooms:manage", -- Crear/editar/gestionar habitaciones
-    "invoices:view", -- Ver facturas
-    "clients:view", -- Ver lista de clientes
+CREATE TYPE user_permission AS ENUM (
+    'view:dashboard', -- Ver el dashboard con estadísticas
+    'reservations:view', -- Ver lista de reservaciones
+    'reservations:edit', -- Editar una reservación
+    'reservations:delete', -- Eliminar/cancelar reservación
+    'admins:view', -- Ver lista de administradores
+    'admins:invite', -- Invitar nuevos administradores
+    'admins:disable', -- Desactivar/reactivar cuentas de admins
+    'admins:revoke', -- Revocar invitaciones pendientes
+    'cms:manage', -- Editar contenido del CMS (landing page)
+    'permissions:manage', -- Asignar/revocar permisos a otros admins
+    'rooms:manage', -- Crear/editar/gestionar habitaciones
+    'invoices:view', -- Ver facturas
+    'clients:view' -- Ver lista de clientes
 );
 
 CREATE TABLE
