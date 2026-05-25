@@ -1,26 +1,48 @@
 // Auto-generated types will go in database.types.ts via `pnpm generate-types`
 // Re-export and extend them here
 
-export type { Database } from "./database.types";
+import type { Database } from "./database.types";
 
-export type AdminUser = {
+export interface AdminProfile {
   id: string;
-  email: string;
+  is_active: boolean;
+  full_name: string | null;
+}
+
+export interface ClientProfile {
+  id: string;
+  is_active: boolean;
+  full_name: string | null;
+}
+
+export type UserProfile = AdminProfile | ClientProfile;
+
+export interface AdminUser extends AdminProfile {
   role: "admin";
-  is_active: boolean;
-};
+}
 
-export type ClientUser = {
-  id: string;
-  email: string;
+export interface ClientUser extends ClientProfile {
   role: "client";
-  is_active: boolean;
-  created_at: string;
-};
+}
 
-export type UserProfile = AdminUser | ClientUser;
+export type User = AdminUser | ClientUser;
 
 export type SignUpPayload = {
   email: string;
   password: string;
 };
+
+export type AdminsList = Database["public"]["Functions"]["get_admins"]["Returns"];
+
+export interface PendingInvitation {
+  id: string;
+  email: string;
+  invited_by: string | null;
+  user_id: string | null;
+  status: "pending" | "accepted" | "revoked" | "expired";
+  expires_at: string;
+  created_at: string;
+  accepted_at: string | null;
+  revoked_at: string | null;
+  revoked_by: string | null;
+}

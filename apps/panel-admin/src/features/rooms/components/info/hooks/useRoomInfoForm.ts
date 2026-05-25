@@ -1,8 +1,9 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useI18n } from "@/locales";
-import { roomInfoSchema, type RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
-import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
+import { useForm } from "react-hook-form";
+import {
+  type RoomInfoFormData,
+  roomInfoSchema,
+} from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
 import {
   DEFAULT_ADULTS,
   DEFAULT_HIGH_SEASON_FEE,
@@ -12,7 +13,9 @@ import {
   DEFAULT_ROOM_STATE,
   VALIDATION_ERROR_PREFIX,
 } from "@/features/rooms/constants/info.constants";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
 import type { Room } from "@/features/rooms/domain/room.interface";
+import { useI18n } from "@/locales";
 
 export const useRoomInfoForm = (initialData?: Room) => {
   const { t } = useI18n();

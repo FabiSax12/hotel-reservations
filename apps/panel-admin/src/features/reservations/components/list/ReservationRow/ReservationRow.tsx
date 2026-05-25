@@ -1,96 +1,84 @@
 "use client";
 
+import Link from "next/link";
 import { Avatar, Button } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { formatTableDate } from "../../../utils/format-reservation-date";
 import { formatAmount } from "../../../utils/format-currency";
 import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
-import { Copy, Check, Eye, EyeOff } from "lucide-react";
+import { Copy, Check, Eye } from "lucide-react";
 import { useCopyCode } from "./useCopyCode";
-import { RESERVATION_ROW_STYLES as S } from "./ReservationRow.styles";
+import { RESERVATION_ROW_STYLES as STYLES } from "./ReservationRow.styles";
 import type { ReservationRowProps } from "./ReservationRow.interface";
 
-export const ReservationRow = ({ reservation: r, isExpanded, onToggle }: ReservationRowProps) => {
+export const ReservationRow = ({ reservation: r }: ReservationRowProps) => {
   const { t } = useI18n();
   const { copied, handleCopyCode } = useCopyCode(r.code);
 
-  const rowClassName    = `${S.row} ${isExpanded ? S.rowExpanded : ""}`;
-  const toggleClassName = isExpanded ? S.toggleButtonOn : S.toggleButtonOff;
-  const buttonLabel     = isExpanded ? t.RESERVATIONS.ACTIONS.VIEW_LESS : t.RESERVATIONS.ACTIONS.VIEW_MORE;
-
   return (
-    <tr className={rowClassName}>
-      <td className={S.cell}>
-        <div className={S.codeChip}>
-          <code className={S.codeText}>{r.code}</code>
+    <tr className={STYLES.row}>
+      <td className={STYLES.cell}>
+        <div className={STYLES.codeChip}>
+          <code className={STYLES.codeText}>{r.code}</code>
           <Button
             isIconOnly
             size="sm"
             variant="ghost"
-            className={S.copyButton}
+            className={STYLES.copyButton}
             aria-label={t.RESERVATIONS.ACTIONS.COPY_CODE}
             onPress={handleCopyCode}
           >
             {copied ? (
-              <Check className={S.copyIcon} />
+              <Check className={STYLES.copyIcon} />
             ) : (
-              <Copy className={S.copyIcon} />
+              <Copy className={STYLES.copyIcon} />
             )}
           </Button>
         </div>
       </td>
 
-      <td className={S.cell}>
-        <div className={S.guestRow}>
+      <td className={STYLES.cell}>
+        <div className={STYLES.guestRow}>
           <Avatar size="sm">
             <Avatar.Fallback>{r.guest.initials}</Avatar.Fallback>
           </Avatar>
-          <div className={S.guestTextBlock}>
-            <p className={S.textPrimary}>{r.guest.name}</p>
-            <p className={S.textSecondary}>{r.guest.email}</p>
+          <div className={STYLES.guestTextBlock}>
+            <p className={STYLES.textPrimary}>{r.guest.name}</p>
+            <p className={STYLES.textSecondary}>{r.guest.email}</p>
           </div>
         </div>
       </td>
 
-      <td className={S.cell}>
-        <p className={S.textPrimary}>{r.room.name}</p>
-        <p className={S.textSecondary}>{r.room.location}</p>
+      <td className={STYLES.cell}>
+        <p className={STYLES.textPrimary}>{r.room.name}</p>
+        <p className={STYLES.textSecondary}>{r.room.location}</p>
       </td>
 
-      <td className={S.cell}>
-        <span className={S.textDefault}>{formatTableDate(r.checkIn)}</span>
+      <td className={STYLES.cell}>
+        <span className={STYLES.textDefault}>{formatTableDate(r.checkIn)}</span>
       </td>
 
-      <td className={S.cell}>
-        <span className={S.textDefault}>{formatTableDate(r.checkOut)}</span>
+      <td className={STYLES.cell}>
+        <span className={STYLES.textDefault}>{formatTableDate(r.checkOut)}</span>
       </td>
 
-      <td className={S.cell}>
-        <span className={S.textDefault}>{r.nights}</span>
+      <td className={STYLES.cell}>
+        <span className={STYLES.textDefault}>{r.nights}</span>
       </td>
 
-      <td className={S.cell}>
-        <span className={S.textAmount}>{formatAmount(r.totalUSD)}</span>
+      <td className={STYLES.cell}>
+        <span className={STYLES.textAmount}>{formatAmount(r.totalUSD)}</span>
       </td>
 
-      <td className={S.cell}>
+      <td className={STYLES.cell}>
         <StatusBadge status={r.status} />
       </td>
 
-      <td className={S.cell}>
-        <Button
-          size="sm"
-          variant="outline"
-          className={toggleClassName}
-          onPress={onToggle}
-        >
-          {isExpanded ? (
-            <EyeOff className={S.toggleIcon} />
-          ) : (
-            <Eye className={S.toggleIcon} />
-          )}
-          {buttonLabel}
-        </Button>
+      <td className={STYLES.cell}>
+        <Link href={`/admin/reservations/${r.id}`} className={STYLES.detailLink}>
+          <Eye className={STYLES.detailIcon} />
+          {t.RESERVATIONS.ACTIONS.VIEW_DETAIL}
+        </Link>
       </td>
     </tr>
   );

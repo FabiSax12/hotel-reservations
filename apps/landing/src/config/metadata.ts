@@ -1,6 +1,6 @@
+import type { SupportedLocale } from "@hotel/i18n";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import type { SupportedLocale } from "@hotel/i18n";
 import { fetchContent } from "@/lib/content";
 
 export async function generateSiteMetadata(): Promise<Metadata> {

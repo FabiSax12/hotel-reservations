@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
-import { SERVICES } from "@/features/landing/services/constants/styles";
+import { useRef } from "react";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import { HEADER_ITEM } from "@/features/landing/services/constants/animations";
+import { SERVICES } from "@/features/landing/services/constants/styles";
+import { useI18n } from "@/locales";
 
 export function ServicesHeader() {
   const { t } = useI18n();

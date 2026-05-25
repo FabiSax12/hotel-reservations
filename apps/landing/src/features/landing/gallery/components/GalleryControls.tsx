@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useI18n } from "@/locales";
 import { GALLERY } from "@/features/landing/gallery/constants/styles";
+import { useI18n } from "@/locales";
 
 interface GalleryControlsProps {
   current: number;
@@ -14,7 +14,12 @@ interface GalleryControlsProps {
 }
 
 export function GalleryControls({
-  current, total, isHovered, prefersReducedMotion, autoInterval, onSelect,
+  current,
+  total,
+  isHovered,
+  prefersReducedMotion,
+  autoInterval,
+  onSelect,
 }: GalleryControlsProps) {
   const { t } = useI18n();
   const dotLabel = t.LANDING.GALLERY.DOT_LABEL;

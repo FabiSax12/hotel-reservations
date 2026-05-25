@@ -8,7 +8,7 @@
 
 import { useCallback } from "react";
 import { SEARCH_VALS, TIMEOUTS, SEARCH_SECTIONS } from "../constants/search.constants";
-import type { UseSearchTriggerDeps } from "../domain/types";
+import type { UseSearchTriggerDeps, ActiveSection } from "../domain/types";
 
 export function useSearchTrigger({
   destination,

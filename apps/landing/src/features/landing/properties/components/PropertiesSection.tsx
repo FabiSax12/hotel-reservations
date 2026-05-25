@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useMotionValue, animate, AnimatePresence, useReducedMotion } from "framer-motion";
-import { useI18n } from "@/locales";
-import { PROPERTIES } from "@/features/landing/properties/constants/styles";
-import { PROPERTIES_CONFIG } from "@/features/landing/properties/constants/properties-config";
+import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
-import { AUTO_INTERVAL, SLIDE_VARIANTS, SLIDE_VARIANTS_REDUCED } from "@/features/landing/properties/constants/animations";
-import { PropertiesHeader } from "./PropertiesHeader";
-import { PropertyVisualPanel } from "./PropertyVisualPanel";
-import { PropertyInfoPanel } from "./PropertyInfoPanel";
+import {
+  AUTO_INTERVAL,
+  SLIDE_VARIANTS,
+  SLIDE_VARIANTS_REDUCED,
+} from "@/features/landing/properties/constants/animations";
+import { PROPERTIES_CONFIG } from "@/features/landing/properties/constants/properties-config";
+import { PROPERTIES } from "@/features/landing/properties/constants/styles";
+import { useI18n } from "@/locales";
 import { PropertiesControls } from "./PropertiesControls";
+import { PropertiesHeader } from "./PropertiesHeader";
+import { PropertyInfoPanel } from "./PropertyInfoPanel";
+import { PropertyVisualPanel } from "./PropertyVisualPanel";
 
 export function PropertiesSection() {
   const { t } = useI18n();

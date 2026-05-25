@@ -2,10 +2,7 @@ import type { TestimonialsTexts } from "../i18n/testimonialsTexts.type";
 
 export const RATING_MAX = 5;
 
-export type TestimonialId = keyof Omit<
-  TestimonialsTexts,
-  "EYEBROW" | "HEADLINE" | "SUBHEADLINE"
->;
+export type TestimonialId = keyof Omit<TestimonialsTexts, "EYEBROW" | "HEADLINE" | "SUBHEADLINE">;
 
 export type TestimonialConfig = {
   id: TestimonialId;

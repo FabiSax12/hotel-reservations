@@ -2,7 +2,7 @@
 
 import { ListBox, Select } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { ROOM_SELECTOR_STYLES as S } from "./RoomSelector.styles";
+import { ROOM_SELECTOR_STYLES as STYLES } from "./RoomSelector.styles";
 import { ROOM_ALL_KEY } from "../../../constants/reservation-filters";
 import type { RoomSelectorProps } from "./RoomSelector.interface";
 
@@ -11,7 +11,7 @@ export const RoomSelector = ({ value, rooms, onChange }: RoomSelectorProps) => {
 
   return (
     <Select value={value} onChange={onChange} aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_ROOM_FILTER}>
-      <Select.Trigger className={`${S.pill} ${S.pillInactive} ${S.selectTrigger}`}>
+      <Select.Trigger className={`${STYLES.pill} ${STYLES.pillInactive} ${STYLES.selectTrigger}`}>
         <Select.Value />
         <Select.Indicator />
       </Select.Trigger>

@@ -11,7 +11,8 @@ export const TESTIMONIALS = Object.freeze({
   CARD_QUOTE: "font-serif text-5xl leading-none text-gold-500/25 select-none -mb-3",
   CARD_BODY: "text-stone-400 text-sm leading-relaxed font-light flex-1",
   CARD_FOOTER: "flex items-center gap-3 pt-5 border-t border-stone-800/60",
-  CARD_AVATAR: "w-10 h-10 rounded-full bg-forest-900 border border-forest-700/60 flex items-center justify-center shrink-0",
+  CARD_AVATAR:
+    "w-10 h-10 rounded-full bg-forest-900 border border-forest-700/60 flex items-center justify-center shrink-0",
   CARD_AVATAR_INITIALS: "text-xs font-medium text-gold-400 tracking-wider",
   CARD_AUTHOR: "flex flex-col gap-0.5 flex-1",
   CARD_NAME: "text-stone-100 text-sm font-medium",
