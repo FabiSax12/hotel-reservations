@@ -32,7 +32,12 @@ export type { RoomsContextValue, SearchDates } from "./context/RoomsContext";
 // Context — shared state provider. Distributes room-related state without prop drilling.
 export { RoomsProvider, useRoomsContext } from "./context/RoomsContext";
 export { extractFilterAttributes } from "./domain/filter-attributes";
-export { applyRoomFilters, filterRoomsByDestination, hasActiveFilters } from "./domain/filters";
+export {
+  applyGroupedRoomFilters,
+  applyRoomFilters,
+  filterRoomsByDestination,
+  hasActiveFilters,
+} from "./domain/filters";
 export type { GroupedRoom } from "./domain/grouping";
 export { groupRoomsByType, groupRoomsIntoPackages } from "./domain/grouping";
 export { sortGroupedRooms, sortRooms } from "./domain/sorting";

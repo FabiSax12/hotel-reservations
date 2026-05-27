@@ -5,8 +5,14 @@
 import { describe, expect, it } from "vitest";
 import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
 import { createEmptyRoomFilters } from "../constants/rooms-filters.constants";
-import { applyRoomFilters, filterRoomsByDestination, hasActiveFilters } from "./filters";
-import type { Room } from "./types";
+import {
+  applyGroupedRoomFilters,
+  applyRoomFilters,
+  filterRoomsByDestination,
+  hasActiveFilters,
+} from "./filters";
+import type { GroupedRoom } from "./grouping";
+import type { Room, RoomPackage } from "./types";
 
 const room = (overrides: Partial<Room>): Room =>
   ({
@@ -99,6 +105,57 @@ describe("applyRoomFilters", () => {
     const original = rooms.slice();
     applyRoomFilters(rooms, { ...createEmptyRoomFilters(), amenities: ["WiFi"] });
     expect(rooms).toEqual(original);
+  });
+});
+
+describe("applyGroupedRoomFilters", () => {
+  const individualCheap = room({ id: "ind-cheap", price: 100 });
+  const individualMid = room({ id: "ind-mid", price: 250 });
+  const cheapPackage: RoomPackage = {
+    id: "pkg-cheap",
+    rooms: [room({ id: "pc-a", price: 100 }), room({ id: "pc-b", price: 150 })],
+    totalCapacity: 4,
+    totalPricePerNight: 250,
+    isHomogeneous: false,
+  };
+  const expensivePackage: RoomPackage = {
+    id: "pkg-expensive",
+    // Each room <= 300 (would pass per-room filter), but total = 600 > 300.
+    rooms: [room({ id: "pe-a", price: 300 }), room({ id: "pe-b", price: 300 })],
+    totalCapacity: 4,
+    totalPricePerNight: 600,
+    isHomogeneous: true,
+  };
+  const items: GroupedRoom[] = [individualCheap, individualMid, cheapPackage, expensivePackage];
+
+  it("returns all items when no price range is set", () => {
+    expect(applyGroupedRoomFilters(items, createEmptyRoomFilters())).toHaveLength(4);
+  });
+
+  it("drops packages whose total exceeds the user's max price", () => {
+    const result = applyGroupedRoomFilters(items, {
+      ...createEmptyRoomFilters(),
+      priceRange: { min: 0, max: 300 },
+    });
+    expect(result.map((i) => i.id)).toEqual(["ind-cheap", "ind-mid", "pkg-cheap"]);
+  });
+
+  it("drops packages whose total is below the user's min price", () => {
+    const result = applyGroupedRoomFilters(items, {
+      ...createEmptyRoomFilters(),
+      priceRange: { min: 400, max: 1000 },
+    });
+    // Individuals pass through (handled upstream); only the expensive package qualifies here.
+    expect(result.map((i) => i.id)).toEqual(["ind-cheap", "ind-mid", "pkg-expensive"]);
+  });
+
+  it("does not mutate the input array", () => {
+    const original = items.slice();
+    applyGroupedRoomFilters(items, {
+      ...createEmptyRoomFilters(),
+      priceRange: { min: 0, max: 300 },
+    });
+    expect(items).toEqual(original);
   });
 });
 

@@ -23,9 +23,11 @@
  *  - Shows an empty state when filters return zero options.
  */
 
+import { useMemo } from "react";
 import { useI18n } from "@/locales";
 import { ROOM_FILTERS_BAR_STYLES, ROOM_LIST_STYLES } from "../../../theme/rooms.theme";
 import { useRoomsContext } from "../context/RoomsContext";
+import { applyGroupedRoomFilters } from "../domain/filters";
 import type { RoomListProps } from "../domain/types";
 import { useRoomFilters } from "../hooks/useRoomFilters";
 import { isRoomPackage, useRoomPackages } from "../hooks/useRoomPackages";
@@ -42,7 +44,14 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
     useRoomFilters(rooms);
 
   const groupedRooms = useRoomPackages(visibleRooms, guestCount, prioritizedRoomId);
-  const optionCount = groupedRooms.length;
+  // Packages can have a total price that exceeds the user's price ceiling
+  // even when every constituent room individually passed. Re-apply the
+  // price filter at the package level so it drops accordingly.
+  const visibleGrouped = useMemo(
+    () => applyGroupedRoomFilters(groupedRooms, filters),
+    [groupedRooms, filters],
+  );
+  const optionCount = visibleGrouped.length;
   const hasNoResults = !isLoading && optionCount === 0;
 
   return (
@@ -92,7 +101,7 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
             <p className={ROOM_FILTERS_BAR_STYLES.emptyHint}>{t.ROOMS.FILTERS_NO_RESULTS_HINT}</p>
           </div>
         ) : (
-          groupedRooms.map((item, index) =>
+          visibleGrouped.map((item, index) =>
             isRoomPackage(item) ? (
               <PackageCard key={item.id} pkg={item} index={index} selectedDest={selectedDest} />
             ) : (
