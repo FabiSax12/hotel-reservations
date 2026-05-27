@@ -1,4 +1,4 @@
-import type { PERMISSION_CATEGORY_KEYS, PERMISSIONS } from "@/shared/constants/permissions";
+import type { PERMISSION_CATEGORY_KEYS } from "@/shared/constants/permissions";
 import type { DB_ENUMS } from "../../../../../../packages/db/src/enums/enums.constants";
 
 export type AdminsTexts = {
