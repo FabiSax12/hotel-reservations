@@ -24,9 +24,9 @@ import { useRoomPackages, isRoomPackage } from "../hooks/useRoomPackages";
 
 export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
-  const { guestCount } = useRoomsContext();
+  const { guestCount, prioritizedRoomId } = useRoomsContext();
 
-  const groupedRooms = useRoomPackages(rooms, guestCount);
+  const groupedRooms = useRoomPackages(rooms, guestCount, prioritizedRoomId);
   const optionCount = groupedRooms.length;
 
   return (

@@ -69,6 +69,7 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
               <RoomRangeCalendar
                 availableDates={primaryRoom.availableDates}
                 location={primaryRoom.location}
+                roomId={primaryRoom.id}
                 onClose={closeCalendar}
               />
             )}

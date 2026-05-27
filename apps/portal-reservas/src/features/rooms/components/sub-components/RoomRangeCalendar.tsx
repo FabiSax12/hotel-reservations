@@ -18,12 +18,14 @@ import { useRoomCalendarState } from "../../hooks/useRoomCalendarState";
 export function RoomRangeCalendar({
   availableDates,
   location,
+  roomId,
   onClose,
 }: RoomRangeCalendarProps) {
   const { t } = useI18n();
   const { checkIn, checkOut, invalidState, handlePickDate } = useRoomCalendarState(
     availableDates,
     location,
+    roomId,
     onClose,
   );
 

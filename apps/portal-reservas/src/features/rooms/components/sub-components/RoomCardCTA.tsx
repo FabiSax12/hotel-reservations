@@ -60,6 +60,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
         <RoomRangeCalendar
           availableDates={room.availableDates}
           location={room.location}
+          roomId={room.id}
           onClose={() => setIsCalendarOpen(false)}
         />
       )}
