@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { PackageCardProps } from "../domain/types";
 import { PACKAGE_CARD_STYLES } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
@@ -31,8 +31,10 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
   const primaryRoom = pkg.rooms[0];
   const [isExpanded, setIsExpanded] = useState(false);
+  const ctaRef = useRef<HTMLDivElement>(null);
   const {
     wrapperRef,
+    calendarRef,
     hasDates,
     isAvailable,
     isLoading,
@@ -67,14 +69,16 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
           totalPricePerNight={pkg.totalPricePerNight}
         >
           {/* CTA slot — inline with price */}
-          <div className={PACKAGE_CARD_STYLES.ctaWrapperRelative}>
-            {/* Inline calendar popover */}
+          <div ref={ctaRef} className={PACKAGE_CARD_STYLES.ctaWrapperRelative}>
+            {/* Calendar portal — rendered at document.body to escape overflow-hidden */}
             {isCalendarOpen && (
               <RoomRangeCalendar
                 availableDates={primaryRoom.availableDates}
                 location={primaryRoom.location}
                 roomId={primaryRoom.id}
                 onClose={closeCalendar}
+                anchorRef={ctaRef}
+                onPortalRef={(el) => { calendarRef.current = el; }}
               />
             )}
 

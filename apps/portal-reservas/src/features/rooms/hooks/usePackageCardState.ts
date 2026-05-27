@@ -11,6 +11,7 @@ export function usePackageCardState(primaryRoom: Room) {
   const [isReserving, setIsReserving] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLDivElement | null>(null);
 
   const { isAvailable, isLoading } = useRoomAvailability(
     primaryRoom.id,
@@ -24,9 +25,9 @@ export function usePackageCardState(primaryRoom: Room) {
   useEffect(() => {
     if (!isCalendarOpen) return;
     const handleOutsideClick = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-        setIsCalendarOpen(false);
-      }
+      const target = event.target as Node;
+      if (wrapperRef.current?.contains(target) || calendarRef.current?.contains(target)) return;
+      setIsCalendarOpen(false);
     };
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
@@ -41,6 +42,7 @@ export function usePackageCardState(primaryRoom: Room) {
 
   return {
     wrapperRef,
+    calendarRef,
     hasDates,
     isAvailable,
     isLoading,

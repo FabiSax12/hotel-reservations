@@ -138,6 +138,8 @@ export const ROOM_CARD_STYLES = {
   // ─── Room Availability Calendar ─────────────────────────────────────────────
   availCalWrapper:
     "absolute z-[9999] bottom-full mb-3 right-0 bg-forest-950 rounded-[1.6rem] shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-forest-800 p-4 sm:p-5 animate-in fade-in slide-in-from-bottom-3 duration-200 w-[680px] max-w-[95vw] overflow-hidden",
+  availCalWrapperFixed:
+    "fixed z-[9999] bg-forest-950 rounded-[1.6rem] shadow-[0_30px_60px_rgba(0,0,0,0.5)] border border-forest-800 p-4 sm:p-5 animate-in fade-in slide-in-from-bottom-3 duration-200 w-[680px] max-w-[95vw] overflow-hidden",
   availCalInner: "w-full",
   availCalHeader: "flex items-center justify-between mb-4",
   availCalTitle: "text-sm font-bold text-stone-50 uppercase tracking-wider",

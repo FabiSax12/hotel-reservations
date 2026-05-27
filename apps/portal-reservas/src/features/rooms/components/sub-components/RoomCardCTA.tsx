@@ -34,13 +34,14 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
   const [isReserving, setIsReserving] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!isCalendarOpen) return;
     const handler = (e: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setIsCalendarOpen(false);
-      }
+      const target = e.target as Node;
+      if (wrapperRef.current?.contains(target) || calendarRef.current?.contains(target)) return;
+      setIsCalendarOpen(false);
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
@@ -62,6 +63,8 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
           location={room.location}
           roomId={room.id}
           onClose={() => setIsCalendarOpen(false)}
+          anchorRef={wrapperRef}
+          onPortalRef={(el) => { calendarRef.current = el; }}
         />
       )}
 

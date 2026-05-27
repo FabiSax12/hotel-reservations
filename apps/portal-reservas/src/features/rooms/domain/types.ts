@@ -1,3 +1,5 @@
+import type { RefObject } from "react";
+
 /**
  * @file types.ts — Room-feature domain types for Portal de Reservas.
  *
@@ -139,6 +141,10 @@ export interface RoomRangeCalendarProps {
   location: string;
   roomId: string;
   onClose: () => void;
+  /** Ref to the element the calendar should appear above (for fixed positioning). */
+  anchorRef: RefObject<HTMLElement>;
+  /** Callback to receive the portal root element (for click-outside detection). */
+  onPortalRef?: (el: HTMLDivElement | null) => void;
 }
 
 // ─── Package Types (US-DM-04) ──────────────────────────────────────────────
