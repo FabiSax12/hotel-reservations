@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { RoomInfoForm } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm";
-import { mockRoomService } from "@/features/rooms/services/mockRoomService";
+import { createRoomAction } from "@/features/rooms/services/roomActions";
 import { NEW_ROOM_VIEW_STYLES } from "./NewRoomView.styles";
 
 export const NewRoomView = () => {
@@ -11,7 +11,9 @@ export const NewRoomView = () => {
 
   const handleSubmit = async (data: any) => {
     try {
-      await mockRoomService.createRoom(data);
+      const { error } = await createRoomAction(data);
+      if (error) throw new Error(error);
+
       router.push(ROUTES.ADMIN.DASHBOARD);
     } catch (error) {
       console.error(error);
