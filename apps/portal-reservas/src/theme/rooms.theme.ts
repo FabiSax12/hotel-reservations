@@ -321,3 +321,61 @@ export const PACKAGE_CARD_STYLES = {
   expansionTitle: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-4",
   expansionGridInner: "flex flex-col gap-6",
 } as const;
+
+// ─── Room Filters Bar Styles (US-DM-03) ──────────────────────────────────────
+// Sort dropdown + expandable filter panel rendered above the card grid.
+// Only mounted post-search (hasSearched === true).
+
+export const ROOM_FILTERS_BAR_STYLES = {
+  bar: "flex flex-col gap-3 mb-6 rounded-2xl border border-forest-800/60 bg-forest-900/50 p-4 sm:p-5",
+  topRow: "flex flex-wrap items-center justify-between gap-3",
+  topRowLeft: "flex items-center gap-3 flex-wrap",
+  toggleBtn: (isOpen: boolean) =>
+    `inline-flex items-center gap-2 h-10 px-4 rounded-xl border text-sm font-semibold transition-colors ${
+      isOpen
+        ? "bg-forest-800 border-gold-500/50 text-gold-400"
+        : "bg-forest-900 border-forest-700 text-stone-200 hover:border-gold-500/40 hover:text-stone-50"
+    }`,
+  toggleIcon: (isOpen: boolean) =>
+    `w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`,
+  activeBadge:
+    "inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full bg-gold-500/15 border border-gold-500/30 text-xs font-bold text-gold-400 uppercase tracking-wider",
+  resetBtn:
+    "inline-flex items-center h-10 px-3 text-sm font-medium text-stone-300 hover:text-gold-400 transition-colors underline-offset-2 hover:underline disabled:opacity-40 disabled:cursor-not-allowed disabled:no-underline",
+  sortWrapper: "flex items-center gap-2",
+  sortLabel: "text-xs font-bold text-stone-400 uppercase tracking-wider hidden sm:inline",
+  sortSelect:
+    "h-10 px-3 rounded-xl bg-forest-900 border border-forest-700 text-sm font-semibold text-stone-100 hover:border-gold-500/40 focus:border-gold-500 focus:outline-none transition-colors cursor-pointer",
+  panelGrid: (isOpen: boolean) =>
+    `grid transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+      isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+    }`,
+  panelInner: "overflow-hidden",
+  panelContent: "pt-5 mt-1 border-t border-forest-800/70 flex flex-col gap-6",
+  groupBlock: "flex flex-col gap-2.5",
+  groupTitle: "text-xs font-bold text-stone-400 uppercase tracking-wider",
+  chipsRow: "flex flex-wrap gap-2",
+  chip: (isSelected: boolean) =>
+    `inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold border transition-colors active:scale-[0.97] ${
+      isSelected
+        ? "bg-gold-500/20 border-gold-500/60 text-gold-300"
+        : "bg-forest-800/50 border-forest-700 text-stone-300 hover:border-gold-500/30 hover:text-stone-100"
+    }`,
+  rangeRow: "flex flex-col sm:flex-row items-stretch sm:items-end gap-3",
+  rangeInputBlock: "flex flex-col gap-1.5 flex-1 min-w-[140px]",
+  rangeInputLabel: "text-xs font-medium text-stone-400",
+  rangeInput:
+    "h-10 px-3 rounded-xl bg-forest-900 border border-forest-700 text-sm font-semibold text-stone-100 hover:border-gold-500/40 focus:border-gold-500 focus:outline-none transition-colors",
+  rangeBounds: "text-xs text-stone-500",
+  emptyState:
+    "rounded-2xl border border-dashed border-forest-700 bg-forest-900/40 px-6 py-10 text-center",
+  emptyTitle: "text-lg font-semibold text-stone-100",
+  emptyHint: "mt-2 text-sm text-stone-400",
+} as const;
+
+// ─── Room Card Featured Badge (US-DM-03) ────────────────────────────────────
+export const ROOM_CARD_FEATURED_BADGE_STYLES = {
+  badge:
+    "inline-flex items-center gap-1.5 h-6 px-2.5 rounded-lg bg-gold-500/20 border border-gold-500/40 text-[10px] font-bold uppercase tracking-wider text-gold-300",
+  dot: "w-1.5 h-1.5 rounded-full bg-gold-400",
+} as const;
