@@ -26,6 +26,11 @@ export interface SearchDates {
 export interface RoomsContextValue {
   /** Currently selected destination name, or null if none selected. */
   selectedLocation: string | null;
+  /**
+   * Whether the user has submitted at least one search (full search interface active).
+   * Gates the US-DM-03 sort + filter bar — it renders only post-search.
+   */
+  hasSearched: boolean;
   /** Whether both checkIn and checkOut are set. Prices + availability only shown when true. */
   hasDates: boolean;
   /** The actual date strings; null when no search has been triggered yet. */

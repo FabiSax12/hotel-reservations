@@ -16,13 +16,11 @@ export const ROOM_SORT_OPTIONS = Object.freeze({
 } as const);
 
 /** Ordered list of sort options for rendering the dropdown UI. */
-export const ROOM_SORT_OPTIONS_ORDER = Object.freeze(
-  [
-    ROOM_SORT_OPTIONS.FEATURED,
-    ROOM_SORT_OPTIONS.PRICE_ASC,
-    ROOM_SORT_OPTIONS.PRICE_DESC,
-  ] as const,
-);
+export const ROOM_SORT_OPTIONS_ORDER = Object.freeze([
+  ROOM_SORT_OPTIONS.FEATURED,
+  ROOM_SORT_OPTIONS.PRICE_ASC,
+  ROOM_SORT_OPTIONS.PRICE_DESC,
+] as const);
 
 /** Default sort applied on first render and after reset. */
 export const DEFAULT_ROOM_SORT: RoomSortOption = ROOM_SORT_OPTIONS.FEATURED;

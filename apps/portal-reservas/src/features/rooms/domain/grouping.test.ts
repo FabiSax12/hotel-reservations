@@ -29,6 +29,7 @@ function makeRoom(
     images: [],
     amenities: [],
     availableDates: [],
+    isFeatured: false,
   };
 }
 

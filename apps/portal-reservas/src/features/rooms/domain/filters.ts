@@ -65,8 +65,6 @@ export const applyRoomFilters = (rooms: readonly Room[], filters: RoomFilters): 
  */
 export const hasActiveFilters = (filters: RoomFilters): boolean => {
   return (
-    filters.amenities.length > 0 ||
-    filters.roomTypes.length > 0 ||
-    filters.priceRange !== null
+    filters.amenities.length > 0 || filters.roomTypes.length > 0 || filters.priceRange !== null
   );
 };
