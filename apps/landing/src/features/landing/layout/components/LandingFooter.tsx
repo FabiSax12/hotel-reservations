@@ -1,9 +1,9 @@
 "use client";
 
-import { useI18n } from "@/locales";
-import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { ROUTES } from "@/config/routes";
-import { NAV_KEYS, NAV_HREFS, CURRENT_YEAR } from "@/features/landing/layout/constants/nav";
+import { CURRENT_YEAR, NAV_HREFS, NAV_KEYS } from "@/features/landing/layout/constants/nav";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { useI18n } from "@/locales";
 import { FooterContactLinks } from "./FooterContactLinks";
 import { FooterSocialLinks } from "./FooterSocialLinks";
 

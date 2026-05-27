@@ -1,18 +1,22 @@
 "use client";
 
-import React from "react";
+import { FieldError, Label, TextArea, TextField } from "@heroui/react";
+import { Activity, AlignLeft, PawPrint } from "lucide-react";
+import type React from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { TextField, Label, TextArea, FieldError } from "@heroui/react";
-import { ROOM_EXTRA_INFO_STYLES as s } from "./RoomExtraInfo.styles";
-import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
-import { ICON_SIZES } from "@/features/rooms/constants/info.constants";
 import type { RoomInfoFormData } from "@/features/rooms/components/info/RoomInfoForm/RoomInfoForm.interface";
-import { Activity, PawPrint, AlignLeft } from "lucide-react";
-import type { RoomExtraInfoProps } from "./RoomExtraInfo.interface";
+import { ICON_SIZES } from "@/features/rooms/constants/info.constants";
+import { ROOM_FORM_FIELDS } from "@/features/rooms/constants/roomFormFields";
 import { SwitchCard } from "./components/SwitchCard";
+import type { RoomExtraInfoProps } from "./RoomExtraInfo.interface";
+import { ROOM_EXTRA_INFO_STYLES as s } from "./RoomExtraInfo.styles";
 
 export const RoomExtraInfo: React.FC<RoomExtraInfoProps> = ({ texts, getErrorMessage }) => {
-  const { register, control, formState: { errors } } = useFormContext<RoomInfoFormData>();
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<RoomInfoFormData>();
 
   return (
     <div className={s.section}>
@@ -73,4 +77,3 @@ export const RoomExtraInfo: React.FC<RoomExtraInfoProps> = ({ texts, getErrorMes
     </div>
   );
 };
-

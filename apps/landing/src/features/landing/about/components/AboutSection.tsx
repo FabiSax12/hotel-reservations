@@ -1,7 +1,7 @@
 import { ABOUT } from "@/features/landing/about/constants/styles";
-import { AboutTextPanel } from "./AboutTextPanel";
 import { AboutMosaic } from "./AboutMosaic";
 import { AboutStats } from "./AboutStats";
+import { AboutTextPanel } from "./AboutTextPanel";
 
 export function AboutSection() {
   return (

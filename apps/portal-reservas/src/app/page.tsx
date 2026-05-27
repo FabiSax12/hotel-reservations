@@ -8,8 +8,8 @@
 
 "use client";
 
-import { useHomePageState } from "../hooks/useHomePageState";
 import { RoomsInnerPage } from "../components/RoomsInnerPage";
+import { useHomePageState } from "../hooks/useHomePageState";
 
 export default function HomePage() {
   const state = useHomePageState();

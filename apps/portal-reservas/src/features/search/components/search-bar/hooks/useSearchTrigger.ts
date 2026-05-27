@@ -7,8 +7,8 @@
  */
 
 import { useCallback } from "react";
-import { SEARCH_VALS, TIMEOUTS, SEARCH_SECTIONS } from "../constants/search.constants";
-import type { UseSearchTriggerDeps } from "../domain/types";
+import { SEARCH_SECTIONS, SEARCH_VALS, TIMEOUTS } from "../constants/search.constants";
+import type { ActiveSection, UseSearchTriggerDeps } from "../domain/types";
 
 export function useSearchTrigger({
   destination,
@@ -44,7 +44,20 @@ export function useSearchTrigger({
           pets,
         });
     }, TIMEOUTS.SEARCH_TRIGGER_DELAY);
-  }, [destination, checkIn, checkOut, adults, childrenCount, pets, onlyOneSede, validateSearch, clearError, setActive, setIsSearching, onSearch]);
+  }, [
+    destination,
+    checkIn,
+    checkOut,
+    adults,
+    childrenCount,
+    pets,
+    onlyOneSede,
+    validateSearch,
+    clearError,
+    setActive,
+    setIsSearching,
+    onSearch,
+  ]);
 
   const activateSectionIntercepted = useCallback(
     (section: ActiveSection, onClearError?: () => void) => {

@@ -33,16 +33,28 @@ export const SidebarFooter = ({ isCollapsed }: SidebarFooterProps) => {
         </Avatar>
         {!isCollapsed && (
           <div className={STYLES.identityText}>
-            <p className={STYLES.identityName}>{user?.user_metadata?.full_name ?? user?.email}</p>
+            <p className={STYLES.identityName}>{profile?.full_name ?? user?.email}</p>
             <p className={STYLES.identityRole}>{profile?.role ?? user?.role}</p>
           </div>
         )}
       </div>
-      <Button isIconOnly={isCollapsed} onPress={handleSignOut} variant="danger-soft" size="sm" className={STYLES.logoutButton} type="submit" isPending={isSigningOut}>
-        {({ isPending }) => <>
-          {isPending ? <Spinner color="current" size="sm" /> : <LogOut className={STYLES.icon} />}
-          {!isCollapsed && <span>{isPending ? t.SIDEBAR.FOOTER.LOGGING_OUT : t.SIDEBAR.FOOTER.LOGOUT}</span>}
-        </>}
+      <Button
+        isIconOnly={isCollapsed}
+        onPress={handleSignOut}
+        variant="danger-soft"
+        size="sm"
+        className={STYLES.logoutButton}
+        type="submit"
+        isPending={isSigningOut}
+      >
+        {({ isPending }) => (
+          <>
+            {isPending ? <Spinner color="current" size="sm" /> : <LogOut className={STYLES.icon} />}
+            {!isCollapsed && (
+              <span>{isPending ? t.SIDEBAR.FOOTER.LOGGING_OUT : t.SIDEBAR.FOOTER.LOGOUT}</span>
+            )}
+          </>
+        )}
       </Button>
     </div>
   );

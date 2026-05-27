@@ -11,6 +11,9 @@ export const ABOUT_TEXTS: Record<SupportedLocale, AboutTexts> = {
     MOSAIC_ALT_1: "Bosque de ALTAVERDE",
     MOSAIC_ALT_2: "Naturaleza en ALTAVERDE",
     MOSAIC_ALT_3: "Propiedad ALTAVERDE",
+    MOSAIC_URL_1: "https://picsum.photos/seed/about-forest/480/720",
+    MOSAIC_URL_2: "https://picsum.photos/seed/about-warm/480/340",
+    MOSAIC_URL_3: "https://picsum.photos/seed/about-stone/480/340",
     STATS: {
       SUITES: { VALUE: "48", LABEL: "Suites exclusivas" },
       YEARS: { VALUE: "22", LABEL: "Años de excelencia" },
@@ -27,6 +30,9 @@ export const ABOUT_TEXTS: Record<SupportedLocale, AboutTexts> = {
     MOSAIC_ALT_1: "ALTAVERDE forest",
     MOSAIC_ALT_2: "ALTAVERDE nature",
     MOSAIC_ALT_3: "ALTAVERDE property",
+    MOSAIC_URL_1: "https://picsum.photos/seed/about-forest/480/720",
+    MOSAIC_URL_2: "https://picsum.photos/seed/about-warm/480/340",
+    MOSAIC_URL_3: "https://picsum.photos/seed/about-stone/480/340",
     STATS: {
       SUITES: { VALUE: "48", LABEL: "Exclusive suites" },
       YEARS: { VALUE: "22", LABEL: "Years of excellence" },

@@ -46,8 +46,7 @@ export const SEARCH_BAR_STYLES = {
     },
   },
 
-  fieldLabel:
-    "font-extrabold tracking-widest text-stone-400 uppercase mb-0.5 pointer-events-none",
+  fieldLabel: "font-extrabold tracking-widest text-stone-400 uppercase mb-0.5 pointer-events-none",
   fieldValueWrapper: "flex items-center gap-2",
   fieldValue: (hasValue: boolean) =>
     `w-full bg-transparent border-none outline-none focus:outline-none font-bold mt-0.5 truncate pointer-events-none ${hasValue ? "text-stone-50" : "text-stone-500"}`,

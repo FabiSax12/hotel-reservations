@@ -2,8 +2,8 @@
  * @file MonthHeader.tsx — Navigation header for a single calendar month.
  */
 
-import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import type { MonthHeaderProps } from "../../types/calendar.types";
+import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
 export function MonthHeader({
   monthIndexLocal,
@@ -17,28 +17,62 @@ export function MonthHeader({
   return (
     <div className={S.monthHeader(isHero)}>
       {monthIndexLocal === 0 ? (
-        <button type="button" disabled={currentMonthOffset === 0}
-          onClick={(e) => { e.stopPropagation(); onPrev(); }} className={S.navBtn}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            viewBox={S.icons.prev.viewBox} fill="none" stroke="currentColor"
-            strokeWidth={S.icons.prev.strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+        <button
+          type="button"
+          disabled={currentMonthOffset === 0}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPrev();
+          }}
+          className={S.navBtn}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox={S.icons.prev.viewBox}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={S.icons.prev.strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d={S.icons.prev.path} />
           </svg>
         </button>
-      ) : <div className={S.navSpacer} />}
+      ) : (
+        <div className={S.navSpacer} />
+      )}
 
       <h3 className={S.monthTitle(isHero)}>{monthHeader}</h3>
 
       {monthIndexLocal === 1 ? (
-        <button type="button" disabled={currentMonthOffset >= maxMonths - 2}
-          onClick={(e) => { e.stopPropagation(); onNext(); }} className={S.navBtn}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            viewBox={S.icons.next.viewBox} fill="none" stroke="currentColor"
-            strokeWidth={S.icons.next.strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+        <button
+          type="button"
+          disabled={currentMonthOffset >= maxMonths - 2}
+          onClick={(e) => {
+            e.stopPropagation();
+            onNext();
+          }}
+          className={S.navBtn}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox={S.icons.next.viewBox}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={S.icons.next.strokeWidth}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d={S.icons.next.path} />
           </svg>
         </button>
-      ) : <div className={S.navSpacer} />}
+      ) : (
+        <div className={S.navSpacer} />
+      )}
     </div>
   );
 }

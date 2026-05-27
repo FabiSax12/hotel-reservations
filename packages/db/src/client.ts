@@ -10,7 +10,13 @@ export function createSupabaseServerClient(cookieStore: {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookies) =>
-        cookies.forEach(({ name, value, options }) => cookieStore.set(name, value, options)),
+        cookies.forEach(({ name, value, options }) => {
+          try {
+            cookieStore.set(name, value, options);
+          } catch {
+            // Ignored: setAll is called from Server Components where cookies are read-only.
+          }
+        }),
     },
   });
 }

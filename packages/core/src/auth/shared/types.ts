@@ -24,7 +24,7 @@ export type { Session, User as SupabaseUser } from "@supabase/supabase-js";
 export interface AdminProfile {
   id: string;
   email: string;
-  role: "admin" | "client" | "guest";
+  role: "admin" | "owner";
   is_active: boolean;
 }
 
@@ -68,6 +68,7 @@ export type AuthError =
   | { code: "USER_NOT_FOUND"; message: string }
   | { code: "USER_NOT_ACTIVE"; message: string }
   | { code: "NETWORK_ERROR"; message: string }
+  | { code: "EMAIL_ALREADY_REGISTERED"; message: string }
   | { code: "UNKNOWN_ERROR"; message: string };
 
 /**

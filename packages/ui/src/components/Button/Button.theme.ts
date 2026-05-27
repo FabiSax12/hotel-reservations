@@ -10,7 +10,8 @@ export const BUTTON_STYLES = {
       "bg-gold-600 hover:bg-gold-500 text-forest-950 shadow-[0_8px_20px_rgba(202,138,4,0.3)] hover:shadow-[0_12px_28px_rgba(202,138,4,0.35)]",
     secondary: "bg-forest-800 hover:bg-forest-700 text-stone-50",
     ghost: "bg-transparent hover:bg-forest-800/50 text-stone-300",
-    outline: "bg-transparent border-2 border-forest-800 hover:border-gold-500 text-stone-200 hover:text-gold-500",
+    outline:
+      "bg-transparent border-2 border-forest-800 hover:border-gold-500 text-stone-200 hover:text-gold-500",
   },
 
   sizes: {

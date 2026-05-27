@@ -22,7 +22,8 @@
     "db:reset": "supabase reset",
     "db:status": "supabase status",
     "db:logs": "supabase logs",
-    "db:dump": "supabase db dump"
+    "db:dump": "supabase db dump",
+    "db:reset-remote": "supabase db reset --linked"
   },
   "dependencies": {
     "@supabase/ssr": "^0.10.0"

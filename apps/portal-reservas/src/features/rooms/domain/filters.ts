@@ -5,8 +5,8 @@
  * Each function is pure (no side effects) and unit-tested in `filters.test.ts`.
  */
 
-import type { Room } from "./types";
 import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
+import type { Room } from "./types";
 
 /**
  * Filters a list of rooms by destination name.

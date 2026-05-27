@@ -5,8 +5,8 @@
  * This separation keeps the root page as a pure composition layer.
  */
 
-import type { SearchParams } from "../features/search/domain/types";
 import type { Room } from "../features/rooms/domain/types";
+import type { SearchParams } from "../features/search/domain/types";
 
 export interface RoomsInnerPageProps {
   /** Whether the user has triggered at least one search (switches from hero to sticky bar). */

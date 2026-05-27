@@ -7,6 +7,7 @@
 
 import { BrandLogo } from "@hotel/ui";
 import { useI18n } from "@/locales";
+import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 import type { HeaderBrandProps } from "../domain/types";
 
 export function HeaderBrand({ onReset }: HeaderBrandProps) {

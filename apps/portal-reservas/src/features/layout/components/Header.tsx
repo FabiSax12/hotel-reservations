@@ -8,8 +8,8 @@
  *    State B (after the user has searched), pinned below the main header bar.
  */
 
-import type { HeaderProps } from "../domain/types";
 import { HEADER_STYLES as S } from "../../../theme/layout.theme";
+import type { HeaderProps } from "../domain/types";
 import { HeaderBrand } from "./HeaderBrand";
 import { HeaderNav } from "./HeaderNav";
 import { StickySearchBar } from "./StickySearchBar";

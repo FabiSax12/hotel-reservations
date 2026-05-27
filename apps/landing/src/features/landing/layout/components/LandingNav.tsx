@@ -1,10 +1,11 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useI18n } from "@/locales";
-import { LAYOUT } from "@/features/landing/layout/constants/styles";
 import { ROUTES } from "@/config/routes";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
+import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { useI18n } from "@/locales";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 const NAV_LINKS: { key: "HOME" | "ABOUT" | "ROOMS" | "CONTACT"; href: string }[] = [
   { key: "HOME", href: ROUTES.HOME },
@@ -22,14 +23,8 @@ export function LandingNav() {
 
   return (
     <header className={LAYOUT.NAV_WRAPPER}>
-      <motion.div
-        className={LAYOUT.NAV_BACKDROP}
-        style={{ opacity: backdropOpacity }}
-      />
-      <motion.div
-        className={LAYOUT.NAV_BORDER}
-        style={{ opacity: borderOpacity }}
-      />
+      <motion.div className={LAYOUT.NAV_BACKDROP} style={{ opacity: backdropOpacity }} />
+      <motion.div className={LAYOUT.NAV_BORDER} style={{ opacity: borderOpacity }} />
       <nav className={LAYOUT.NAV_INNER} aria-label="Main navigation">
         <motion.a
           href={ROUTES.HOME}
@@ -56,6 +51,8 @@ export function LandingNav() {
             </li>
           ))}
         </motion.ul>
+
+        <LocaleSwitcher />
 
         <motion.a
           href={ROUTES.PORTAL}

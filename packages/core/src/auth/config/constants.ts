@@ -1,5 +1,6 @@
 export const AUTH_ROLES = Object.freeze({
   ADMIN: "admin",
+  OWNER: "owner",
   CLIENT: "client",
 } as const);
 
@@ -14,7 +15,7 @@ export type ActivationErrorCode =
 
 export type AuthRole = (typeof AUTH_ROLES)[keyof typeof AUTH_ROLES];
 
-export const AUTH_TABLE = "users" as const;
+export const AUTH_TABLE = "profiles" as const;
 
 export const AUTH_COLUMNS = Object.freeze({
   ID: "id",

@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useI18n } from "@/locales";
-import { GALLERY } from "@/features/landing/gallery/constants/styles";
+import { useRef } from "react";
 import { EXPO_OUT } from "@/features/landing/constants/animations";
 import { HEADER_ITEM } from "@/features/landing/gallery/constants/animations";
+import { GALLERY } from "@/features/landing/gallery/constants/styles";
+import { useI18n } from "@/locales";
 
 export function GalleryHeader() {
   const { t } = useI18n();
@@ -22,7 +22,9 @@ export function GalleryHeader() {
         animate={inView ? "visible" : "hidden"}
         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
       >
-        <motion.span className={GALLERY.EYEBROW} variants={HEADER_ITEM}>{gallery.EYEBROW}</motion.span>
+        <motion.span className={GALLERY.EYEBROW} variants={HEADER_ITEM}>
+          {gallery.EYEBROW}
+        </motion.span>
         <div className={GALLERY.HEADLINE_WRAPPER}>
           <motion.h2
             className={GALLERY.HEADLINE}
@@ -33,8 +35,17 @@ export function GalleryHeader() {
             {gallery.HEADLINE}
           </motion.h2>
         </div>
-        <motion.p className={GALLERY.SUBHEADLINE}
-          variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay: 0.2, ease: EXPO_OUT } } }}>
+        <motion.p
+          className={GALLERY.SUBHEADLINE}
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: {
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.8, delay: 0.2, ease: EXPO_OUT },
+            },
+          }}
+        >
           {gallery.SUBHEADLINE}
         </motion.p>
       </motion.div>

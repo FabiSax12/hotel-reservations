@@ -21,9 +21,7 @@ export function TestimonialCard({ texts, rating }: TestimonialCardProps) {
 
       <footer className={TESTIMONIALS.CARD_FOOTER}>
         <div className={TESTIMONIALS.CARD_AVATAR} aria-hidden="true">
-          <span className={TESTIMONIALS.CARD_AVATAR_INITIALS}>
-            {getInitials(texts.NAME)}
-          </span>
+          <span className={TESTIMONIALS.CARD_AVATAR_INITIALS}>{getInitials(texts.NAME)}</span>
         </div>
 
         <div className={TESTIMONIALS.CARD_AUTHOR}>
@@ -31,7 +29,11 @@ export function TestimonialCard({ texts, rating }: TestimonialCardProps) {
           <span className={TESTIMONIALS.CARD_ORIGIN}>{texts.ORIGIN}</span>
         </div>
 
-        <div className={TESTIMONIALS.STARS} role="img" aria-label={`${rating} out of ${RATING_MAX} stars`}>
+        <div
+          className={TESTIMONIALS.STARS}
+          role="img"
+          aria-label={`${rating} out of ${RATING_MAX} stars`}
+        >
           {Array.from({ length: RATING_MAX }, (_, i) => (
             <Star
               key={i}

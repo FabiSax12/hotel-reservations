@@ -1,10 +1,12 @@
 import {
   BedDouble,
   ClipboardList,
+  KeyRound,
   LayoutDashboard,
   LayoutPanelTop,
   Receipt,
   UserKey,
+  UserPlus,
   UserRound,
 } from "lucide-react";
 import { ROUTES } from "@/config/routes";
@@ -25,7 +27,13 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
       {
         labelKey: LABEL_KEYS.ADMINS,
         route: ROUTES.ADMIN.ADMINS,
-        icon: UserKey,
+        icon: KeyRound,
+        isPrimary: true,
+      },
+      {
+        labelKey: LABEL_KEYS.INVITATIONS,
+        route: ROUTES.ADMIN.INVITATIONS,
+        icon: UserPlus,
         isPrimary: true,
       },
     ],
@@ -75,8 +83,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     items: [
       {
         labelKey: LABEL_KEYS.CMS_LANDING,
-        // TODO: Change when this route is created
-        route: "/admin/cms/landing",
+        route: ROUTES.ADMIN.CMS,
         icon: LayoutPanelTop,
       },
     ],

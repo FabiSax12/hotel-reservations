@@ -1,7 +1,7 @@
 "use server";
 
-import { verifyAdminRole } from "@hotel/core/auth";
-import { createSupabaseServerClient } from "@hotel/db";
+import { hasRole, verifyAdminRole } from "@hotel/core/auth";
+import { createSupabaseServerClient, DB_COLUMNS, DB_ENUMS, DB_TABLES } from "@hotel/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/config/routes";
@@ -27,6 +27,17 @@ export async function loginAction(
 
   if (!admin) {
     await supabase.auth.signOut();
+
+    const { data: roleData } = await supabase
+      .from(DB_TABLES.USER_ROLES)
+      .select(DB_COLUMNS.user_roles.role)
+      .eq(DB_COLUMNS.user_roles.user_id, data.user.id)
+      .single();
+
+    if (hasRole(roleData, [DB_ENUMS.user_role.admin, DB_ENUMS.user_role.owner])) {
+      return { error: "ACCOUNT_DEACTIVATED" };
+    }
+
     return { error: "ACCESS_DENIED" };
   }
 

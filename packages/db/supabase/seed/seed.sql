@@ -23,7 +23,11 @@ begin
     created_at,
     updated_at,
     role,
-    aud
+    aud,
+    confirmation_token,
+    recovery_token,
+    email_change_token_new,
+    email_change
   ) values (
     v_user_id,
     '00000000-0000-0000-0000-000000000000',
@@ -35,7 +39,11 @@ begin
     now(),
     now(),
     'authenticated',
-    'authenticated'
+    'authenticated',
+    '',
+    '',
+    '',
+    ''
   )
   on conflict do nothing;
 

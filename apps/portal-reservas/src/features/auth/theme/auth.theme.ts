@@ -6,8 +6,8 @@ export const AUTH_BACKGROUND_IMAGE = "url('/images/auth-bg.png')" as const;
 export const AUTH_STYLES = {
   main: "relative flex min-h-screen items-center justify-center px-4 overflow-hidden",
   background: "absolute inset-0 z-0",
-  bgImage: "absolute inset-0 bg-cover bg-center scale-105", 
-  bgOverlay: "absolute inset-0 bg-white/40 backdrop-blur-md", 
+  bgImage: "absolute inset-0 bg-cover bg-center scale-105",
+  bgOverlay: "absolute inset-0 bg-white/40 backdrop-blur-md",
   bgGradient: "absolute inset-0 bg-gradient-to-tr from-emerald-900/20 via-transparent to-white/60",
   card: "relative z-10 w-full max-w-md rounded-2xl bg-white/90 backdrop-blur-xl border border-white/20 p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] transition-all duration-500",
   title: "text-3xl font-black text-emerald-950 tracking-tight mb-2",
@@ -16,17 +16,22 @@ export const AUTH_STYLES = {
   field: "flex flex-col gap-2",
   label: "text-[11px] font-black uppercase tracking-widest text-emerald-900/60 ml-1",
   inputWrapper: "relative group",
-  input: "w-full bg-white/50 border border-neutral-200/60 rounded-xl px-4 py-3 text-[15px] font-bold text-emerald-950 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 transition-all duration-200",
-  submitBtn: "w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-emerald-900/10 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2",
-  googleBtn: "w-full py-3.5 bg-white border border-neutral-200 rounded-xl font-bold text-[15px] text-neutral-700 shadow-sm hover:bg-neutral-50 hover:shadow-md transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-3",
+  input:
+    "w-full bg-white/50 border border-neutral-200/60 rounded-xl px-4 py-3 text-[15px] font-bold text-emerald-950 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 transition-all duration-200",
+  submitBtn:
+    "w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-black text-sm uppercase tracking-widest shadow-lg shadow-emerald-900/10 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2",
+  googleBtn:
+    "w-full py-3.5 bg-white border border-neutral-200 rounded-xl font-bold text-[15px] text-neutral-700 shadow-sm hover:bg-neutral-50 hover:shadow-md transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-3",
   googleIcon: "w-5 h-5",
   link: "text-center text-xs font-bold text-emerald-700 hover:text-emerald-900 transition-colors uppercase tracking-widest",
   dividerWrapper: "relative my-4",
   dividerLine: "absolute inset-0 flex items-center",
   dividerStroke: "w-full border-t border-neutral-200",
-  dividerTextWrapper: "relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em]",
+  dividerTextWrapper:
+    "relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em]",
   dividerText: "bg-transparent px-4 text-neutral-400",
-  error: "rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-xs font-bold text-red-800 animate-in fade-in zoom-in duration-300",
+  error:
+    "rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-xs font-bold text-red-800 animate-in fade-in zoom-in duration-300",
 } as const;
 
 export const AUTH_FORM_STYLES = {

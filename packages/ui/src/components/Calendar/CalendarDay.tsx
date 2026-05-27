@@ -4,8 +4,8 @@
 
 "use client";
 
-import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import type { CalendarDayProps } from "../../types/calendar.types";
+import { CALENDAR_STYLES as S } from "./Calendar.theme";
 
 export function CalendarDay({
   d,
