@@ -1,19 +1,21 @@
 "use client";
 
 import { Button, Drawer, useOverlayState } from "@heroui/react";
-import type { PermissionName } from "@hotel/db/types";
-import { useEffect, useState } from "react";
 import { useI18n } from "@/locales";
 import { PERMISSION_CATEGORIES } from "../../constants/permissionCategories";
-import { getUserPermissionsService, updateUserPermissions } from "../../services/permissions";
+import { usePermissionDrawer } from "../../hooks/usePermissionDrawer";
 import type { PermissionDrawerProps } from "./PermissionDrawer.interface";
 
 export function PermissionDrawer({ isOpen, onClose, admin, onSuccess }: PermissionDrawerProps) {
-  const [selectedPermissions, setSelectedPermissions] = useState<Set<PermissionName>>(
-    new Set(admin?.permissions ?? []),
-  );
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
+  const TEXTS = t.ADMINS.PERMISSIONS;
+
+  const { selectedPermissions, isSaving, error, isLoading, handleTogglePermission, handleSave } =
+    usePermissionDrawer({
+      admin,
+      onSuccess,
+      onClose,
+    });
 
   const state = useOverlayState({
     isOpen,
@@ -21,64 +23,6 @@ export function PermissionDrawer({ isOpen, onClose, admin, onSuccess }: Permissi
       if (!open) onClose();
     },
   });
-
-  // Reset state when admin changes
-  useEffect(() => {
-    if (admin) {
-      getUserPermissionsService(admin.id)
-        .then((permissions) => {
-          setSelectedPermissions(new Set(permissions));
-          setError(null);
-        })
-        .catch(() => {
-          setSelectedPermissions(new Set());
-          setError("Failed to load permissions");
-        });
-    } else {
-      setSelectedPermissions(new Set());
-      setError(null);
-    }
-  }, [admin]);
-
-  const handleTogglePermission = (permission: PermissionName) => {
-    setSelectedPermissions((prev) => {
-      const next = new Set(prev);
-      if (next.has(permission)) {
-        next.delete(permission);
-      } else {
-        next.add(permission);
-      }
-      return next;
-    });
-  };
-
-  const handleSave = async () => {
-    if (!admin) return;
-
-    setIsSaving(true);
-    setError(null);
-
-    const result = await updateUserPermissions(admin.id, Array.from(selectedPermissions));
-
-    setIsSaving(false);
-
-    if ("error" in result) {
-      const errorMessages: Record<string, string> = {
-        SELF_MODIFY: "No puedes modificar tus propios permisos",
-        OWNER_MODIFY: "No se pueden modificar los permisos del owner",
-        INVALID_PERMISSION: "Permiso inválido",
-        UNKNOWN_ERROR: "Error desconocido",
-      };
-      setError(errorMessages[result.error] ?? "Error desconocido");
-      return;
-    }
-
-    onSuccess?.();
-    onClose();
-  };
-
-  const { t } = useI18n();
-  const TEXTS = t.ADMINS.PERMISSIONS;
 
   if (!admin) return null;
 
@@ -92,12 +36,22 @@ export function PermissionDrawer({ isOpen, onClose, admin, onSuccess }: Permissi
       <Drawer.Content placement="right">
         <Drawer.Dialog>
           <Drawer.Header>
-            <Drawer.Heading>Permisos de {admin.full_name ?? admin.email}</Drawer.Heading>
+            <Drawer.Heading>
+              {TEXTS.TITLE} - {admin.full_name ?? admin.email}
+            </Drawer.Heading>
           </Drawer.Header>
 
           <Drawer.Body>
             {error && (
-              <div className="mb-4 rounded-lg bg-danger-50 p-3 text-danger text-sm">{error}</div>
+              <div className="mb-4 rounded-lg bg-danger-50 p-3 text-danger text-sm">
+                {TEXTS.ERRORS[error]}
+              </div>
+            )}
+
+            {isLoading && (
+              <div className="mb-4 rounded-lg bg-default-100 p-3 text-sm">
+                {t.COMMON.STATUS.LOADING}
+              </div>
             )}
 
             <div className="space-y-6">
@@ -128,9 +82,9 @@ export function PermissionDrawer({ isOpen, onClose, admin, onSuccess }: Permissi
 
           <Drawer.Footer>
             <Button slot="close" variant="secondary" onPress={onClose}>
-              Cancelar
+              {t.COMMON.ACTIONS.CANCEL}
             </Button>
-            <Button variant="primary" onPress={handleSave} isDisabled={isSaving}>
+            <Button variant="primary" onPress={handleSave} isDisabled={isSaving || isLoading}>
               {isSaving ? t.COMMON.ACTIONS.SAVING : t.COMMON.ACTIONS.SAVE}
             </Button>
           </Drawer.Footer>
