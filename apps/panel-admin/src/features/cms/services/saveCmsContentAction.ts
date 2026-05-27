@@ -1,20 +1,28 @@
 "use server";
 
 import { createSupabaseServiceClient } from "@hotel/db";
-import type { CmsSection, CmsLocale, SaveCmsResult, UploadCmsImageResult } from "@/features/cms/domain/cms.interface";
 import {
+  CMS_ACCEPTED_IMAGE_TYPES,
+  CMS_ERROR_MISSING_DATA,
   CMS_IMAGE_BUCKET,
   CMS_IMAGE_MAX_SIZE_BYTES,
-  CMS_ACCEPTED_IMAGE_TYPES,
   CMS_STORAGE_SLOT_PREFIX,
-  CMS_ERROR_MISSING_DATA,
 } from "@/features/cms/constants/cms-fields";
+import type {
+  CmsLocale,
+  CmsSection,
+  SaveCmsResult,
+  UploadCmsImageResult,
+} from "@/features/cms/domain/cms.interface";
+import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export async function saveCmsTextAction(
   locale: CmsLocale,
   section: CmsSection,
   content: Record<string, string>,
 ): Promise<SaveCmsResult> {
+  await requirePermission(PERMISSIONS.CMS.MANAGE);
   const supabase = createSupabaseServiceClient();
   const { error } = await supabase
     .from("cms_content")
@@ -28,6 +36,7 @@ export async function saveCmsTextAction(
 }
 
 export async function uploadCmsImageAction(formData: FormData): Promise<UploadCmsImageResult> {
+  await requirePermission(PERMISSIONS.CMS.MANAGE);
   const file = formData.get("file") as File | null;
   const slot = formData.get("slot") as string | null;
 

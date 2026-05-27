@@ -4,12 +4,15 @@ import { inviteAdminByEmail } from "@hotel/core/auth";
 import { createSupabaseServiceClient, DB_COLUMNS, DB_ENUMS, DB_TABLES } from "@hotel/db";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
+import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import type { CreateInvitationActionState } from "../domain/invitation.types";
 
 export async function createInvitationAction(
   _prevState: CreateInvitationActionState,
   formData: FormData,
 ): Promise<CreateInvitationActionState> {
+  await requirePermission(PERMISSIONS.ADMINS.INVITE);
   const email = ((formData.get("email") as string) ?? "").trim().toLowerCase();
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
