@@ -55,4 +55,22 @@ export type RoomsTexts = {
   PACKAGE_COLLAPSE: string;
   PACKAGE_ROOMS_TITLE: string;
   ROOMS_OPTIONS_FOUND: string;
+  // US-DM-03 — Sort & Filter UI
+  SORT_LABEL: string;
+  SORT_FEATURED: string;
+  SORT_PRICE_ASC: string;
+  SORT_PRICE_DESC: string;
+  FILTERS_TITLE: string;
+  FILTERS_SHOW: string;
+  FILTERS_HIDE: string;
+  FILTERS_RESET: string;
+  FILTERS_NO_RESULTS: string;
+  FILTERS_NO_RESULTS_HINT: string;
+  FILTERS_AMENITIES_TITLE: string;
+  FILTERS_ROOM_TYPES_TITLE: string;
+  FILTERS_PRICE_RANGE_TITLE: string;
+  FILTERS_PRICE_MIN_LABEL: string;
+  FILTERS_PRICE_MAX_LABEL: string;
+  FILTERS_ACTIVE_BADGE: string;
+  FEATURED_BADGE: string;
 };

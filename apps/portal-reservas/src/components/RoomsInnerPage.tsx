@@ -50,6 +50,7 @@ export function RoomsInnerPage({
 
   const roomsContextValue = {
     selectedLocation,
+    hasSearched,
     hasDates,
     searchDates: hasDates
       ? { checkIn: searchParams.checkIn, checkOut: searchParams.checkOut }
