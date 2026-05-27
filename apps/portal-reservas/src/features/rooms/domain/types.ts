@@ -142,7 +142,7 @@ export interface RoomRangeCalendarProps {
   roomId: string;
   onClose: () => void;
   /** Ref to the element the calendar should appear above (for fixed positioning). */
-  anchorRef: RefObject<HTMLElement>;
+  anchorRef: RefObject<HTMLElement | null>;
   /** Callback to receive the portal root element (for click-outside detection). */
   onPortalRef?: (el: HTMLDivElement | null) => void;
 }
