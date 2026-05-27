@@ -11,6 +11,7 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       SETTINGS: "Configuración",
     },
     ACTIONS: {
+      SAVING: "Guardando...",
       SAVE: "Guardar",
       CANCEL: "Cancelar",
       DELETE: "Eliminar",
@@ -39,6 +40,7 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       SETTINGS: "Settings",
     },
     ACTIONS: {
+      SAVING: "Saving...",
       SAVE: "Save",
       CANCEL: "Cancel",
       DELETE: "Delete",

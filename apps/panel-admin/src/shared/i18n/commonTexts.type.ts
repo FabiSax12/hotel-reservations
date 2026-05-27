@@ -8,6 +8,7 @@ export type CommonTexts = {
   };
   ACTIONS: {
     SAVE: string;
+    SAVING: string;
     CANCEL: string;
     DELETE: string;
     EDIT: string;

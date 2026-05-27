@@ -31,3 +31,16 @@ export const PERMISSIONS = {
     MANAGE: DB_ENUMS.user_permission.permissions_manage,
   },
 };
+
+export const PERMISSION_CATEGORY_KEYS: {
+  [key in keyof typeof PERMISSIONS]: Uppercase<key>;
+} = {
+  DASHBOARD: "DASHBOARD",
+  RESERVATIONS: "RESERVATIONS",
+  ADMINS: "ADMINS",
+  PERMISSIONS: "PERMISSIONS",
+  CMS: "CMS",
+  ROOMS: "ROOMS",
+  CLIENTS: "CLIENTS",
+  INVOICES: "INVOICES",
+};
