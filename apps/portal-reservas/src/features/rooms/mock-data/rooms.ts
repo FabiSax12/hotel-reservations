@@ -74,6 +74,7 @@ export const mockRooms: Room[] = [
     ],
     amenities: ["WiFi", "Terraza privada", "Desayuno incluido", "AC", "Cafetera"],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 3),
+    isFeatured: false,
   },
   {
     id: "mv-2",
@@ -104,6 +105,7 @@ export const mockRooms: Room[] = [
       "Vista al dosel",
     ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 5, 3),
+    isFeatured: true,
   },
   {
     id: "mv-3",
@@ -138,6 +140,7 @@ export const mockRooms: Room[] = [
       "Lavadora",
     ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 7, 4),
+    isFeatured: false,
   },
   {
     id: "mv-4",
@@ -172,6 +175,7 @@ export const mockRooms: Room[] = [
       "Spa privado",
     ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 10, 5),
+    isFeatured: true,
   },
 
   // ─── Arenal & La Fortuna ─────────────────────────────────────────────────────
@@ -197,6 +201,7 @@ export const mockRooms: Room[] = [
     ],
     amenities: ["WiFi", "Vista al volcán", "Tina de piedra", "AC", "Desayuno incluido"],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 2),
+    isFeatured: false,
   },
   {
     id: "lf-2",
@@ -226,6 +231,7 @@ export const mockRooms: Room[] = [
       "Servicio de habitación",
     ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 6, 3),
+    isFeatured: true,
   },
   {
     id: "lf-3",
@@ -260,6 +266,7 @@ export const mockRooms: Room[] = [
       "Desayuno energético",
     ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 4, 2),
+    isFeatured: false,
   },
   {
     id: "lf-4",
@@ -295,5 +302,6 @@ export const mockRooms: Room[] = [
       "Sala de cine",
     ],
     availableDates: generateAvailableDates(ROOM_MOCK.AVAILABLE_DATE_COUNT, 14, 6),
+    isFeatured: true,
   },
 ];

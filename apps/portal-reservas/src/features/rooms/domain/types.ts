@@ -4,6 +4,8 @@
  * Defines the data shape for a single hotel room listing.
  * Updated in US-DM-02 to include capacity, amenities, adminTip, additional
  * images, and dynamically-computed available dates for mock availability logic.
+ * Updated in US-DM-03 to include isFeatured (admin-defined highlight flag)
+ * and add sort/filter UI types.
  */
 
 /** Bed configuration entry. */
@@ -50,6 +52,11 @@ export interface Room {
    * Used by the mock availability resolver and AvailabilityCalendarDialog.
    */
   availableDates: string[];
+  /**
+   * Whether this room is highlighted/featured by the administrator.
+   * Drives the "Destacado" sort option (US-DM-03 AC #1).
+   */
+  isFeatured: boolean;
 }
 
 // ─── Sub-Component Props ────────────────────────────────────────────────────
@@ -184,4 +191,86 @@ export interface PackageCardCTAProps {
   onToggleCalendar: () => void;
   /** Handles the reservation action. */
   onReserve: () => void;
+}
+
+// ─── Sort & Filter Types (US-DM-03) ─────────────────────────────────────────
+
+/** Sort option for the room listing. */
+export type RoomSortOption = "FEATURED" | "PRICE_ASC" | "PRICE_DESC";
+
+/** Inclusive `[min, max]` numeric range used for price filters. */
+export interface NumericRange {
+  min: number;
+  max: number;
+}
+
+/**
+ * Active filter state applied to the visible room list.
+ * Each collection-based group is a multi-select; an empty array means "no filter applied".
+ */
+export interface RoomFilters {
+  /** Selected amenity tags (must match `Room.amenities` strings exactly). */
+  amenities: string[];
+  /** Selected room types (must match `Room.type`). */
+  roomTypes: string[];
+  /** Inclusive price range (USD). `null` = no price filter applied. */
+  priceRange: NumericRange | null;
+}
+
+/**
+ * Auto-derived attribute panel options for the current room list.
+ * Computed from the rooms currently in scope (after destination filter).
+ */
+export interface RoomFilterAttributes {
+  /** Unique amenity tags found in the current rooms (sorted). */
+  amenities: string[];
+  /** Unique room types found in the current rooms (sorted). */
+  roomTypes: string[];
+  /** Full price bounds in the current rooms — clamps the slider. */
+  priceBounds: NumericRange;
+}
+
+/** Props for the SortControl dropdown. */
+export interface SortControlProps {
+  value: RoomSortOption;
+  onChange: (next: RoomSortOption) => void;
+}
+
+/** Props for the FiltersPanel collapsible. */
+export interface FiltersPanelProps {
+  attributes: RoomFilterAttributes;
+  filters: RoomFilters;
+  onChange: (next: RoomFilters) => void;
+  onReset: () => void;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+/** Props for the top-level RoomFiltersBar that wires SortControl + FiltersPanel. */
+export interface RoomFiltersBarProps {
+  attributes: RoomFilterAttributes;
+  filters: RoomFilters;
+  onFiltersChange: (next: RoomFilters) => void;
+  sort: RoomSortOption;
+  onSortChange: (next: RoomSortOption) => void;
+  onReset: () => void;
+}
+
+/** Props for sub-component groups inside FiltersPanel. */
+export interface AmenityChipsFilterProps {
+  options: string[];
+  selected: string[];
+  onToggle: (amenity: string) => void;
+}
+
+export interface RoomTypeChipsFilterProps {
+  options: string[];
+  selected: string[];
+  onToggle: (type: string) => void;
+}
+
+export interface PriceRangeFilterProps {
+  bounds: NumericRange;
+  value: NumericRange;
+  onChange: (next: NumericRange) => void;
 }
