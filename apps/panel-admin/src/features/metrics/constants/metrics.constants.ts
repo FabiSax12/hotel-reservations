@@ -31,6 +31,13 @@ export const OCCUPANCY_COLORS = Object.freeze({
   FULL:   "accent"   as ProgressColor,
 } as const);
 
+export const MONTH_NAMES_ES = Object.freeze([
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
+] as const);
+
+export const STATUS_ORDER: ReservationStatus[] = ["pending", "approved", "cancelled", "completed"];
+
 export const MAX_WEEKLY_BARS = 7;
 
 export const PERCENTAGE_SCALE = 100;

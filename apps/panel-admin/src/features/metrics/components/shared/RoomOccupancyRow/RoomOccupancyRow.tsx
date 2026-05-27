@@ -1,31 +1,9 @@
 "use client";
 
 import { Label, ProgressBar } from "@heroui/react";
-import {
-  OCCUPANCY_COLORS,
-  OCCUPANCY_THRESHOLDS,
-  CURRENCY_CODE,
-  CURRENCY_LOCALE,
-} from "../../../constants/metrics.constants";
+import { formatCurrency, resolveOccupancyColor } from "../../../utils/metrics.format.utils";
 import { ROOM_OCCUPANCY_ROW_STYLES as STYLES } from "./RoomOccupancyRow.styles";
 import type { RoomOccupancyRowProps } from "./RoomOccupancyRow.interface";
-
-type ProgressBarColor = "success" | "warning" | "accent" | "default" | "danger";
-
-function resolveOccupancyColor(pct: number): ProgressBarColor {
-  if (pct < OCCUPANCY_THRESHOLDS.LOW) return OCCUPANCY_COLORS.LOW;
-  if (pct < OCCUPANCY_THRESHOLDS.MEDIUM) return OCCUPANCY_COLORS.MEDIUM;
-  if (pct < OCCUPANCY_THRESHOLDS.HIGH) return OCCUPANCY_COLORS.HIGH;
-  return OCCUPANCY_COLORS.FULL;
-}
-
-function formatRevenue(amount: number): string {
-  return new Intl.NumberFormat(CURRENCY_LOCALE, {
-    style: "currency",
-    currency: CURRENCY_CODE,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 export function RoomOccupancyRow({ roomName, occupancyPct, revenue }: RoomOccupancyRowProps) {
   const color = resolveOccupancyColor(occupancyPct);
@@ -42,7 +20,7 @@ export function RoomOccupancyRow({ roomName, occupancyPct, revenue }: RoomOccupa
         </ProgressBar>
         <div className={STYLES.footer}>
           <span className={STYLES.pct}>{occupancyPct.toFixed(1)}%</span>
-          <span className={STYLES.revenue}>{formatRevenue(revenue)}</span>
+          <span className={STYLES.revenue}>{formatCurrency(revenue)}</span>
         </div>
       </div>
     </div>

@@ -1,16 +1,8 @@
 "use client";
 
-import { CURRENCY_CODE, CURRENCY_LOCALE } from "../../constants/metrics.constants";
+import { formatCurrency } from "../../utils/metrics.format.utils";
 import { STAT_CARDS_STYLES as STYLES } from "./StatCards.styles";
 import type { StatCardsProps } from "./StatCards.interface";
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat(CURRENCY_LOCALE, {
-    style: "currency",
-    currency: CURRENCY_CODE,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
 
 export function StatCards({
   totalReservations,

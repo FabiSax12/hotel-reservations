@@ -1,17 +1,12 @@
 "use client";
 
-import { PERCENTAGE_SCALE } from "../../../constants/metrics.constants";
+import { computePct } from "../../../utils/metrics.format.utils";
 import { StatusChip } from "../../shared/StatusChip/StatusChip";
 import { ProportionalBar } from "../../shared/ProportionalBar/ProportionalBar";
 import { WeeklyStackedBarChart } from "../../charts/WeeklyStackedBarChart/WeeklyStackedBarChart";
 import { RESERVATIONS_BY_STATUS_TAB_STYLES as STYLES } from "./ReservationsByStatusTab.styles";
 import type { ReservationsByStatusTabProps } from "./ReservationsByStatusTab.interface";
 import type { ProportionalBarSegment } from "../../shared/ProportionalBar/ProportionalBar.interface";
-
-function computePct(count: number, total: number): number {
-  if (total === 0) return 0;
-  return parseFloat(((count / total) * PERCENTAGE_SCALE).toFixed(1));
-}
 
 export function ReservationsByStatusTab({
   statusCounts,
