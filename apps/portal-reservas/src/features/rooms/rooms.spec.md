@@ -241,3 +241,132 @@ OUTPUT: (Room | RoomPackage)[]
   9. `components/RoomList.tsx` — render packages alongside individual rooms.
   10. `i18n/rooms.texts.ts` + `roomsTexts.type.ts` — new keys.
   11. `page.tsx` — pass `guestCount` into `RoomsProvider`.
+
+---
+
+## 9. US-DM-03 — Dynamic Sort & Filter for the Full Search Interface
+
+**Status:** in-progress (US-DM-03)
+**Depends on:** US-DM-04 (built atop the package-grouped listing).
+
+### 9.1 Scope & Boundaries
+
+#### In Scope
+* **Sort controls (AC #1):** A dropdown rendered above the card grid offers
+  three options — *Destacados* (admin-defined), *Precio: menor a mayor* and
+  *Precio: mayor a menor*. Implemented via `sortRooms` (Room[]) and
+  `sortGroupedRooms` (Room | RoomPackage), keeping the visible order coherent
+  across individuals and packages.
+* **Expandable filters panel (AC #2):** A collapsible section under the sort
+  dropdown holds three filter groups — amenities (multi-select chips, AND
+  semantics), room types (multi-select chips, OR semantics) and an inclusive
+  price-range with min/max inputs.
+* **Auto-derived attributes (AC #3):** `extractFilterAttributes` rebuilds the
+  panel options (sorted unique amenities, room types, price bounds) from the
+  rooms in the current search. No hardcoded lists.
+* **Admin-defined featured flag:** `Room.isFeatured` (boolean) drives the
+  *Destacados* sort and a subtle `FeaturedBadge` rendered inside
+  `RoomCardHeader`.
+* **Post-search gate:** The `RoomFiltersBar` only mounts when
+  `RoomsContext.hasSearched === true` — i.e. after the user presses
+  *Buscar*, satisfying the AC wording *"el que aparece cuando se presiona
+  buscar"*.
+* **Empty-state UI:** When filters yield zero options the grid renders a
+  dashed-border message with reset hint.
+
+#### Out of Scope
+* Persisting filters to URL/search params (defer until query-string layer lands).
+* Server-side filtering — all logic is client-side over the mock list.
+* Sorting/filtering inside an individual `PackageCard` (packages remain atomic).
+
+### 9.2 Architecture
+
+```
+features/rooms/
+├── domain/
+│   ├── sorting.ts                      (NEW)
+│   ├── filter-attributes.ts            (NEW)
+│   ├── filters.ts                      (modified: +applyRoomFilters, +hasActiveFilters)
+│   ├── types.ts                        (modified: +isFeatured, +RoomFilters,
+│   │                                                +RoomFilterAttributes,
+│   │                                                +RoomSortOption, +Props)
+│   ├── sorting.test.ts                 (NEW)
+│   ├── filter-attributes.test.ts       (NEW)
+│   └── filters.test.ts                 (extended)
+├── constants/
+│   └── rooms-filters.constants.ts      (NEW — ROOM_SORT_OPTIONS, defaults)
+├── hooks/
+│   └── useRoomFilters.ts               (NEW — orchestrator hook)
+├── components/
+│   ├── RoomFiltersBar.tsx              (NEW)
+│   ├── RoomList.tsx                    (modified — pipes through useRoomFilters)
+│   └── sub-components/
+│       ├── SortControl.tsx             (NEW)
+│       ├── FiltersPanel.tsx            (NEW)
+│       ├── AmenityChipsFilter.tsx      (NEW)
+│       ├── RoomTypeChipsFilter.tsx     (NEW)
+│       ├── PriceRangeFilter.tsx        (NEW)
+│       ├── FeaturedBadge.tsx           (NEW)
+│       └── RoomCardHeader.tsx          (modified — renders FeaturedBadge)
+├── context/RoomsContext.tsx            (modified — +hasSearched)
+└── i18n/
+    ├── rooms.texts.ts                  (modified — SORT_*, FILTERS_*, FEATURED_BADGE)
+    └── roomsTexts.type.ts              (modified — strict typing for new keys)
+```
+
+### 9.3 Pipeline
+
+```
+destination-filtered rooms (input from page state)
+  -> applyRoomFilters(filters)            // intra-amenity AND, intra-type OR, inclusive price
+  -> sortRooms(option)                    // FEATURED / PRICE_ASC / PRICE_DESC
+  -> visibleRooms
+  -> useRoomPackages(visibleRooms, guestCount, prioritizedRoomId)
+  -> (Room | RoomPackage)[] rendered as RoomCard / PackageCard
+```
+
+Sort runs on the flat `Room[]` before grouping; the package-aware
+`sortGroupedRooms` is exported from the barrel for callers that need to sort
+a mixed result list directly. Packages inherit ordering from their primary
+room's price (`totalPricePerNight`) and from any featured constituent room.
+
+### 9.4 Acceptance Criteria
+
+* [x] Sort controls offer "Destacados", "Precio: menor a mayor" and
+  "Precio: mayor a menor" — implemented and tested in `sortRooms` /
+  `sortGroupedRooms`.
+* [x] Filters panel is expandable, hidden by default, and groups amenities,
+  room types and price-range controls — `FiltersPanel` + sub-components,
+  controlled by `RoomFiltersBar`'s local `isPanelOpen` state.
+* [x] Filterable attributes are derived automatically from the rooms in the
+  current search — `extractFilterAttributes` rebuilds on every input
+  (memoized in `useRoomFilters`).
+* [x] Featured rooms are visibly marked — `FeaturedBadge` rendered when
+  `room.isFeatured`.
+* [x] Sort + filter UI gated to `hasSearched === true` — only present in the
+  full search interface (`RoomList` mounts `RoomFiltersBar` accordingly).
+* [x] Empty result state shows a clear message with reset hint when filters
+  exclude all rooms.
+* [x] Unit tests cover all three sort options (rooms + grouped), all three
+  filter groups including combined semantics, the attribute extractor and
+  the `hasActiveFilters` predicate. **38/38 passing.**
+
+### 9.5 i18n — New Keys
+
+| Key | ES | EN |
+|-----|----|----|
+| `SORT_LABEL` | "Ordenar por" | "Sort by" |
+| `SORT_FEATURED` | "Destacados" | "Featured" |
+| `SORT_PRICE_ASC` | "Precio: menor a mayor" | "Price: low to high" |
+| `SORT_PRICE_DESC` | "Precio: mayor a menor" | "Price: high to low" |
+| `FILTERS_TITLE` | "Filtros" | "Filters" |
+| `FILTERS_SHOW` / `FILTERS_HIDE` | "Mostrar filtros" / "Ocultar filtros" | "Show filters" / "Hide filters" |
+| `FILTERS_RESET` | "Limpiar" | "Clear" |
+| `FILTERS_AMENITIES_TITLE` | "Amenidades" | "Amenities" |
+| `FILTERS_ROOM_TYPES_TITLE` | "Tipo de habitación" | "Room type" |
+| `FILTERS_PRICE_RANGE_TITLE` | "Rango de precio" | "Price range" |
+| `FILTERS_PRICE_MIN_LABEL` / `_MAX_LABEL` | "Precio mínimo" / "Precio máximo" | "Minimum price" / "Maximum price" |
+| `FILTERS_NO_RESULTS` | "Ninguna opción coincide con los filtros" | "No options match the current filters" |
+| `FILTERS_NO_RESULTS_HINT` | "Ajusta o limpia los filtros…" | "Adjust or clear the filters…" |
+| `FILTERS_ACTIVE_BADGE` | "filtros activos" | "active filters" |
+| `FEATURED_BADGE` | "Destacado" | "Featured" |
