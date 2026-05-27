@@ -9,7 +9,7 @@
 "use client";
 
 import React from "react";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_BAR_STYLES } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
 import { useI18n } from "@/locales";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
@@ -35,7 +35,7 @@ export function SearchBarFrame() {
   const C = t.SEARCH.SEARCH_BAR;
 
   return (
-    <div className={S.bar(isHero)}>
+    <div className={SEARCH_BAR_STYLES.bar(isHero)}>
       <SearchBarFields />
 
       {active === SEARCH_SECTIONS.WHERE && (

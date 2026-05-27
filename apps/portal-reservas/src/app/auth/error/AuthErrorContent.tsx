@@ -6,7 +6,7 @@ import { ROUTES } from "@/config/routes";
 import { useI18n } from "@/locales";
 import { CALLBACK_SEARCH_PARAMS } from "@/features/auth/constants/callback-search-params";
 import { SUPABASE_ERROR_CODES } from "@/features/auth/constants/supabaseErrors";
-import { AUTH_ERROR_STYLES as S } from "./page.styles";
+import { AUTH_ERROR_STYLES } from "./page.styles";
 import type { AuthErrorContentProps } from "./page.interface";
  
 export function AuthErrorContent({ searchParams }: AuthErrorContentProps) {
@@ -30,21 +30,21 @@ export function AuthErrorContent({ searchParams }: AuthErrorContentProps) {
   };
  
   return (
-    <div className={S.root}>
-      <div className={S.card}>
-        <h1 className={S.title}>{t.AUTH.ERRORS.AUTH_ERROR_TITLE}</h1>
-        <p className={S.description}>{getTranslatedDescription()}</p>
-        
-        <div className={S.codeWrapper}>
-          <p className={S.codeText}>
+    <div className={AUTH_ERROR_STYLES.root}>
+      <div className={AUTH_ERROR_STYLES.card}>
+        <h1 className={AUTH_ERROR_STYLES.title}>{t.AUTH.ERRORS.AUTH_ERROR_TITLE}</h1>
+        <p className={AUTH_ERROR_STYLES.description}>{getTranslatedDescription()}</p>
+
+        <div className={AUTH_ERROR_STYLES.codeWrapper}>
+          <p className={AUTH_ERROR_STYLES.codeText}>
             <strong>{t.AUTH.ERRORS.AUTH_ERROR_CODE}</strong> {errorCode}
           </p>
         </div>
- 
+
         <Button
           render={(props: any) => <Link {...props} href={ROUTES.AUTH.LOGIN} />}
-          variant={S.buttonVariant}
-          className={S.button}
+          variant={AUTH_ERROR_STYLES.buttonVariant}
+          className={AUTH_ERROR_STYLES.button}
         >
           {t.AUTH.ERRORS.BACK_TO_LOGIN}
         </Button>

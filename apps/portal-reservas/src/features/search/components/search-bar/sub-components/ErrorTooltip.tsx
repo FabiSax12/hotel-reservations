@@ -3,25 +3,25 @@
  */
 
 import React from "react";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_BAR_STYLES } from "../theme/search-bar.theme";
 import type { ErrorTooltipProps } from "../domain/types";
 
 export function ErrorTooltip({ message }: ErrorTooltipProps) {
-  const { icons } = S;
+  const errorIcon = SEARCH_BAR_STYLES.icons.error;
 
   return (
-    <div className={S.errorTooltipWrapper}>
-      <div className={S.errorTooltipPill}>
+    <div className={SEARCH_BAR_STYLES.errorTooltipWrapper}>
+      <div className={SEARCH_BAR_STYLES.errorTooltipPill}>
         <svg
-          className={S.errorTooltipIcon}
+          className={SEARCH_BAR_STYLES.errorTooltipIcon}
           fill="none"
-          viewBox={icons.error.viewBox}
+          viewBox={errorIcon.viewBox}
           stroke="currentColor"
-          strokeWidth={icons.error.strokeWidth}
+          strokeWidth={errorIcon.strokeWidth}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d={icons.error.path} />
+          <path strokeLinecap="round" strokeLinejoin="round" d={errorIcon.path} />
         </svg>
-        <span className={S.errorTooltipText}>{message}</span>
+        <span className={SEARCH_BAR_STYLES.errorTooltipText}>{message}</span>
       </div>
     </div>
   );

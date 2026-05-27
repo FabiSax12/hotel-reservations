@@ -1,10 +1,10 @@
 "use client";
  
 import { useEffect } from "react";
-import { AUTH_STYLES as AS, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
+import { AUTH_STYLES, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { LOGIN_ERROR_STYLES as S } from "./error.styles";
+import { LOGIN_ERROR_STYLES } from "./error.styles";
  
 export default function LoginError({
   error,
@@ -20,28 +20,28 @@ export default function LoginError({
   }, [error]);
  
   return (
-    <main className={AS.main}>
-      <div className={AS.background}>
-        <div 
-          className={AS.bgImage} 
-          style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }} 
+    <main className={AUTH_STYLES.main}>
+      <div className={AUTH_STYLES.background}>
+        <div
+          className={AUTH_STYLES.bgImage}
+          style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }}
         />
-        <div className={AS.bgOverlay} />
-        <div className={AS.bgGradient} />
+        <div className={AUTH_STYLES.bgOverlay} />
+        <div className={AUTH_STYLES.bgGradient} />
       </div>
- 
-      <div className={S.contentWrapper}>
-        <h2 className={S.title}>
+
+      <div className={LOGIN_ERROR_STYLES.contentWrapper}>
+        <h2 className={LOGIN_ERROR_STYLES.title}>
           {t.AUTH.ERRORS.ERROR_BOUNDARY_TITLE}
         </h2>
-        
-        <p className={S.description}>
+
+        <p className={LOGIN_ERROR_STYLES.description}>
           {error.message || t.AUTH.ERRORS.UNKNOWN_ERROR}
         </p>
- 
+
         <Button
           onPress={() => reset()}
-          className={S.button}
+          className={LOGIN_ERROR_STYLES.button}
         >
           {t.AUTH.ERRORS.TRY_AGAIN}
         </Button>

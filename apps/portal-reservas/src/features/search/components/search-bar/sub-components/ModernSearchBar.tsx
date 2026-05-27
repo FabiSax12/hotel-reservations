@@ -24,7 +24,7 @@
 "use client";
 
 import type { SearchBarProps } from "../domain/types";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_BAR_STYLES } from "../theme/search-bar.theme";
 import { SEARCH_VARIANTS } from "../constants/search.constants";
 
 import { useSearchBarState } from "../hooks/useSearchBarState";
@@ -115,7 +115,7 @@ export function ModernSearchBar({
 
   return (
     <SearchBarProvider value={contextValue}>
-      <div ref={barState.containerRef} className={`${S.container} ${className}`}>
+      <div ref={barState.containerRef} className={`${SEARCH_BAR_STYLES.container} ${className}`}>
         {/* Hero-only: full-screen calendar overlay behind the search bar. */}
         {barState.isHero && <HeroCalendarFloat />}
         {/* The visual frame: sections, fields, search button. */}

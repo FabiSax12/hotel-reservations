@@ -10,7 +10,7 @@
 
 "use client";
 
-import { ERROR_PAGE_STYLES as S } from "../theme/app-pages.theme";
+import { ERROR_PAGE_STYLES } from "../theme/app-pages.theme";
 import { APP_PAGE_STRINGS } from "../constants/app-pages.constants";
 
 export default function Error({
@@ -21,23 +21,23 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <main className={S.main}>
-      <div className={S.contentWrapper}>
+    <main className={ERROR_PAGE_STYLES.main}>
+      <div className={ERROR_PAGE_STYLES.contentWrapper}>
         {/* Warning icon */}
-        <div className={S.iconCircle}>
-          <svg className={S.icon} fill="none" viewBox={S.icons.error.viewBox} stroke="currentColor" strokeWidth={S.icons.error.strokeWidth}>
-            <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.error.path} />
+        <div className={ERROR_PAGE_STYLES.iconCircle}>
+          <svg className={ERROR_PAGE_STYLES.icon} fill="none" viewBox={ERROR_PAGE_STYLES.icons.error.viewBox} stroke="currentColor" strokeWidth={ERROR_PAGE_STYLES.icons.error.strokeWidth}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={ERROR_PAGE_STYLES.icons.error.path} />
           </svg>
         </div>
-        <h2 className={S.title}>{APP_PAGE_STRINGS.ERROR_TITLE}</h2>
-        <p className={S.message}>
+        <h2 className={ERROR_PAGE_STYLES.title}>{APP_PAGE_STRINGS.ERROR_TITLE}</h2>
+        <p className={ERROR_PAGE_STYLES.message}>
           {APP_PAGE_STRINGS.ERROR_MESSAGE}
         </p>
         {/* Retry button — calls reset() to re-render the errored segment. */}
         <button
           type="button"
           onClick={reset}
-          className={S.retryBtn}
+          className={ERROR_PAGE_STYLES.retryBtn}
         >
           {APP_PAGE_STRINGS.ERROR_RETRY}
         </button>

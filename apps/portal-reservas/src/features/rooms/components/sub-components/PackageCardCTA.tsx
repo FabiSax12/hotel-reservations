@@ -11,9 +11,14 @@
 "use client";
 
 import type { PackageCardCTAProps } from "../../domain/types";
-import { PACKAGE_CARD_STYLES as PS } from "../../../../theme/rooms.theme";
+import { PACKAGE_CARD_STYLES } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { CTASpinner } from "./CTASpinner";
+
+const SVG_VIEW_BOX = "0 0 24 24";
+const CALENDAR_ICON_PATH =
+  "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z";
+const CHEVRON_RIGHT_ICON_PATH = "M9 5l7 7-7 7";
 
 export function PackageCardCTA({
   primaryRoom,
@@ -33,13 +38,13 @@ export function PackageCardCTA({
       {!hasDates && (
         <button
           type="button"
-          className={PS.checkDatesBtn}
+          className={PACKAGE_CARD_STYLES.checkDatesBtn}
           onClick={onToggleCalendar}
           aria-expanded={isCalendarOpen}
           aria-label={t.ROOMS.CHECK_DATES_ACTION}
         >
-          <svg className={PS.ctaBtnCalendarIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <svg className={PACKAGE_CARD_STYLES.ctaBtnCalendarIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={CALENDAR_ICON_PATH} />
           </svg>
           {t.ROOMS.CHECK_DATES_ACTION}
         </button>
@@ -47,7 +52,7 @@ export function PackageCardCTA({
 
       {/* STATE 2 — Dates selected, loading */}
       {hasDates && isLoading && (
-        <button type="button" className={PS.reserveBtn} disabled aria-busy="true">
+        <button type="button" className={PACKAGE_CARD_STYLES.reserveBtn} disabled aria-busy="true">
           <CTASpinner /> {t.ROOMS.VERIFYING}
         </button>
       )}
@@ -56,7 +61,7 @@ export function PackageCardCTA({
       {hasDates && !isLoading && isAvailable && (
         <button
           type="button"
-          className={PS.reserveBtn}
+          className={PACKAGE_CARD_STYLES.reserveBtn}
           onClick={onReserve}
           disabled={isReserving}
           aria-busy={isReserving}
@@ -65,8 +70,8 @@ export function PackageCardCTA({
             <><CTASpinner /> {t.ROOMS.LOADING_RESERVE}</>
           ) : (
             <>
-              <svg className={PS.ctaBtnArrowIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              <svg className={PACKAGE_CARD_STYLES.ctaBtnArrowIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={CHEVRON_RIGHT_ICON_PATH} />
               </svg>
               {t.ROOMS.PACKAGE_RESERVE}
             </>
@@ -77,10 +82,10 @@ export function PackageCardCTA({
       {/* STATE 3b — Dates selected, unavailable */}
       {hasDates && !isLoading && !isAvailable && (
         <>
-          <p className={PS.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>
+          <p className={PACKAGE_CARD_STYLES.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>
           <button
             type="button"
-            className={PS.seeFreeDatesBtn}
+            className={PACKAGE_CARD_STYLES.seeFreeDatesBtn}
             onClick={onToggleCalendar}
             aria-expanded={isCalendarOpen}
           >

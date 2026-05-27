@@ -11,8 +11,13 @@
 "use client";
 
 import type { Room } from "../../domain/types";
-import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import { PACKAGE_CARD_STYLES } from "../../../../theme/rooms.theme";
 import { formatBedConfig, getAmenityIcon } from "../../constants/amenity-icons.const";
+
+const MAX_TREE_AMENITIES = 3;
+const BED_ICON_VIEW_BOX = "0 0 20 20";
+const BED_ICON_PATH = "M3 11h14M5 11V7a2 2 0 012-2h6a2 2 0 012 2v4M3 11v4M17 11v4M3 15h14";
+const AMENITY_ICON_VIEW_BOX = "0 0 20 20";
 
 interface RoomTreeItemProps {
   room: Room;
@@ -25,42 +30,42 @@ export function RoomTreeItem({ room, count, currency, showAmenities = true }: Ro
   const bedText = formatBedConfig(room.beds);
 
   // Show top 3 amenities (all amenities, not just those with icons)
-  const topAmenities = showAmenities ? room.amenities.slice(0, 3) : [];
+  const topAmenities = showAmenities ? room.amenities.slice(0, MAX_TREE_AMENITIES) : [];
 
   return (
-    <div className={S.roomTreeItem}>
+    <div className={PACKAGE_CARD_STYLES.roomTreeItem}>
       {/* Header: room title + price */}
-      <div className={S.roomTreeHeader}>
-        <span className={S.roomTreeTitle}>
+      <div className={PACKAGE_CARD_STYLES.roomTreeHeader}>
+        <span className={PACKAGE_CARD_STYLES.roomTreeTitle}>
           {count > 1 && (
-            <span className={S.roomTreeCountPrefix}>{count}× </span>
+            <span className={PACKAGE_CARD_STYLES.roomTreeCountPrefix}>{count}× </span>
           )}
           {room.title}
         </span>
-        <span className={S.roomTreePrice}>
+        <span className={PACKAGE_CARD_STYLES.roomTreePrice}>
           ${room.price * count} {currency}
         </span>
       </div>
 
       {/* Bed configuration */}
-      <div className={S.roomTreeBedRow}>
-        <svg className={S.roomTreeBedIcon} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 11h14M5 11V7a2 2 0 012-2h6a2 2 0 012 2v4M3 11v4M17 11v4M3 15h14" />
+      <div className={PACKAGE_CARD_STYLES.roomTreeBedRow}>
+        <svg className={PACKAGE_CARD_STYLES.roomTreeBedIcon} viewBox={BED_ICON_VIEW_BOX} fill="none" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d={BED_ICON_PATH} />
         </svg>
         <span>{bedText}</span>
       </div>
 
       {/* Top amenities with icon + text */}
       {topAmenities.length > 0 && (
-        <div className={S.roomTreeAmenityRow}>
+        <div className={PACKAGE_CARD_STYLES.roomTreeAmenityRow}>
           {topAmenities.map((amenity) => {
             const icon = getAmenityIcon(amenity);
             return (
-              <span key={amenity} className={S.roomTreeAmenityTag}>
+              <span key={amenity} className={PACKAGE_CARD_STYLES.roomTreeAmenityTag}>
                 {icon && (
                   <svg
-                    className={S.roomTreeAmenityIcon}
-                    viewBox="0 0 20 20"
+                    className={PACKAGE_CARD_STYLES.roomTreeAmenityIcon}
+                    viewBox={AMENITY_ICON_VIEW_BOX}
                     fill={icon.isStroke ? "none" : "currentColor"}
                     stroke={icon.isStroke ? "currentColor" : "none"}
                     strokeWidth={1.5}
@@ -70,7 +75,7 @@ export function RoomTreeItem({ room, count, currency, showAmenities = true }: Ro
                     <path d={icon.path} />
                   </svg>
                 )}
-                <span className={S.roomTreeAmenityText}>{amenity}</span>
+                <span className={PACKAGE_CARD_STYLES.roomTreeAmenityText}>{amenity}</span>
               </span>
             );
           })}

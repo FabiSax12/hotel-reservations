@@ -8,16 +8,16 @@
  * Styles come from app-pages.theme.ts.
  */
 
-import { LOADING_PAGE_STYLES as S } from "../theme/app-pages.theme";
+import { LOADING_PAGE_STYLES } from "../theme/app-pages.theme";
 import { APP_PAGE_STRINGS } from "../constants/app-pages.constants";
 
 export default function Loading() {
   return (
-    <main className={S.main}>
-      <div className={S.contentWrapper}>
+    <main className={LOADING_PAGE_STYLES.main}>
+      <div className={LOADING_PAGE_STYLES.contentWrapper}>
         {/* CSS-only spinner — no JavaScript needed. */}
-        <div className={S.spinner} />
-        <p className={S.text}>
+        <div className={LOADING_PAGE_STYLES.spinner} />
+        <p className={LOADING_PAGE_STYLES.text}>
           {APP_PAGE_STRINGS.LOADING_TEXT}
         </p>
       </div>

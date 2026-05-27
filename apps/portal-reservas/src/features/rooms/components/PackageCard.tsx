@@ -14,13 +14,11 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import type { PackageCardProps } from "../domain/types";
-import { PACKAGE_CARD_STYLES as PS } from "../../../theme/rooms.theme";
+import { PACKAGE_CARD_STYLES } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
-import { useRoomsContext } from "../context/RoomsContext";
-import { useRoomAvailability } from "../hooks/useRoomAvailability";
-import { ROOM_ANIMATION, ROOM_MOCK } from "../constants/rooms.constants";
+import { ROOM_ANIMATION } from "../constants/rooms.constants";
+import { usePackageCardState } from "../hooks/usePackageCardState";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
 import { PackageCardSummary } from "./sub-components/PackageCardSummary";
@@ -28,44 +26,24 @@ import { PackageCardCTA } from "./sub-components/PackageCardCTA";
 
 export function PackageCard({ pkg, index }: PackageCardProps) {
   const { t } = useI18n();
-  const { hasDates, searchDates } = useRoomsContext();
-  const [isReserving, setIsReserving] = useState(false);
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-
-  // Check availability using primary room (most expensive).
   const primaryRoom = pkg.rooms[0];
-  const { isAvailable, isLoading } = useRoomAvailability(
-    primaryRoom.id,
-    searchDates?.checkIn,
-    searchDates?.checkOut,
-    primaryRoom.availableDates,
-  );
-
-  const isUnavailable = hasDates && !isLoading && !isAvailable;
-
-  useEffect(() => {
-    if (!isCalendarOpen) return;
-    const handler = (e: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setIsCalendarOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [isCalendarOpen]);
-
-  const handleReserve = () => {
-    setIsReserving(true);
-    setTimeout(() => { setIsReserving(false); }, ROOM_MOCK.RESERVE_DELAY_MS);
-  };
-
-  const toggleCalendar = () => setIsCalendarOpen((v) => !v);
+  const {
+    wrapperRef,
+    hasDates,
+    isAvailable,
+    isLoading,
+    isReserving,
+    isUnavailable,
+    isCalendarOpen,
+    handleReserve,
+    toggleCalendar,
+    closeCalendar,
+  } = usePackageCardState(primaryRoom);
 
   return (
     <div ref={wrapperRef}>
       <article
-        className={PS.card(isUnavailable)}
+        className={PACKAGE_CARD_STYLES.card(isUnavailable)}
         style={{
           animationDelay: `${index * ROOM_ANIMATION.CASCADE_DELAY_MS}ms`,
           animationDuration: `${ROOM_ANIMATION.ENTRANCE_DURATION_MS}ms`,
@@ -73,7 +51,7 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
         aria-label={t.ROOMS.PACKAGE_LABEL.replace("{count}", String(pkg.rooms.length))}
       >
         {/* Hover glow overlay */}
-        <div className={PS.cardHoverGlow} aria-hidden="true" />
+        <div className={PACKAGE_CARD_STYLES.cardHoverGlow} aria-hidden="true" />
 
         {/* Left: image collage panel */}
         <PackageCardHeader rooms={pkg.rooms} isHomogeneous={pkg.isHomogeneous} />
@@ -85,13 +63,13 @@ export function PackageCard({ pkg, index }: PackageCardProps) {
           totalPricePerNight={pkg.totalPricePerNight}
         >
           {/* CTA slot — inline with price */}
-          <div className={PS.ctaWrapperRelative}>
+          <div className={PACKAGE_CARD_STYLES.ctaWrapperRelative}>
             {/* Inline calendar popover */}
             {isCalendarOpen && (
               <RoomRangeCalendar
                 availableDates={primaryRoom.availableDates}
                 location={primaryRoom.location}
-                onClose={() => setIsCalendarOpen(false)}
+                onClose={closeCalendar}
               />
             )}
 

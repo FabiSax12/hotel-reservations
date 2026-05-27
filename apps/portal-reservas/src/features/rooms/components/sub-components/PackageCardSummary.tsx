@@ -10,12 +10,16 @@
 "use client";
 
 import type { PackageCardSummaryProps } from "../../domain/types";
-import { PACKAGE_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import { PACKAGE_CARD_STYLES } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { groupRoomsByType } from "../../domain/grouping";
 import { RoomTreeItem } from "./RoomTreeItem";
 
 const MAX_VISIBLE_ROOMS = 4;
+const AMENITY_VISIBILITY_ROOM_COUNT_THRESHOLD = 3;
+const SVG_VIEW_BOX = "0 0 24 24";
+const USERS_GROUP_ICON_PATH =
+  "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z";
 
 interface ExtendedSummaryProps extends PackageCardSummaryProps {
   children?: React.ReactNode;
@@ -37,18 +41,18 @@ export function PackageCardSummary({
     : 0;
 
   return (
-    <div className={S.body}>
+    <div className={PACKAGE_CARD_STYLES.body}>
       {/* Header row: package label + capacity chips */}
-      <div className={S.bodyHeader}>
+      <div className={PACKAGE_CARD_STYLES.bodyHeader}>
         <div>
-          <div className={S.packageLabel}>
+          <div className={PACKAGE_CARD_STYLES.packageLabel}>
             {t.ROOMS.PACKAGE_LABEL.replace("{count}", String(rooms.length))}
           </div>
         </div>
-        <div className={S.chipRow}>
-          <span className={S.capacityChip}>
-            <svg className={S.chipIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        <div className={PACKAGE_CARD_STYLES.chipRow}>
+          <span className={PACKAGE_CARD_STYLES.capacityChip}>
+            <svg className={PACKAGE_CARD_STYLES.chipIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d={USERS_GROUP_ICON_PATH} />
             </svg>
             {totalCapacity}
           </span>
@@ -56,30 +60,30 @@ export function PackageCardSummary({
       </div>
 
       {/* Room tree: vertical list with bed counts */}
-      <div className={S.roomTree}>
+      <div className={PACKAGE_CARD_STYLES.roomTree}>
         {visibleRooms.map(({ type, room, count }) => (
           <RoomTreeItem
             key={type}
             room={room}
             count={count}
             currency={t.ROOMS.CURRENCY}
-            showAmenities={rooms.length < 3}
+            showAmenities={rooms.length < AMENITY_VISIBILITY_ROOM_COUNT_THRESHOLD}
           />
         ))}
         {overflowCount > 0 && (
-          <div className={S.roomTreeOverflow}>
+          <div className={PACKAGE_CARD_STYLES.roomTreeOverflow}>
             +{overflowCount} {t.ROOMS.MORE_ROOMS}
           </div>
         )}
       </div>
 
       {/* Price tier + CTA */}
-      <div className={S.priceTier}>
-        <div className={S.priceBlock}>
-          <div className={S.priceLabel}>{t.ROOMS.PACKAGE_TOTAL_LABEL}</div>
-          <div className={S.priceRow}>
-            <span className={S.priceAmount}>${totalPricePerNight}</span>
-            <span className={S.priceCurrency}>{t.ROOMS.CURRENCY}</span>
+      <div className={PACKAGE_CARD_STYLES.priceTier}>
+        <div className={PACKAGE_CARD_STYLES.priceBlock}>
+          <div className={PACKAGE_CARD_STYLES.priceLabel}>{t.ROOMS.PACKAGE_TOTAL_LABEL}</div>
+          <div className={PACKAGE_CARD_STYLES.priceRow}>
+            <span className={PACKAGE_CARD_STYLES.priceAmount}>${totalPricePerNight}</span>
+            <span className={PACKAGE_CARD_STYLES.priceCurrency}>{t.ROOMS.CURRENCY}</span>
           </div>
         </div>
 
