@@ -27,16 +27,6 @@ export const MIN_PRICE = 1;
 export const MIN_NAME_LENGTH = 3;
 export const MIN_STRING_LENGTH = 1;
 
-// Mock Service Constants
-export const MOCK_SERVICE_DELAYS = {
-  GET_ALL: 800,
-  GET_BY_ID: 800,
-  CREATE: 1200,
-  UPDATE: 1000,
-  TOGGLE: 500,
-} as const;
-
-export const MOCK_STORAGE_KEY = "hotel_rooms_mock";
 export const ROOM_NOT_FOUND_ERROR = "ROOM_NOT_FOUND";
 
 // Theme Constants (Natural Premium Emerald)
