@@ -9,8 +9,8 @@
  * proper reading context and removing clutter from the image panel.
  */
 
-import type { RoomCardMetaProps } from "../../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import type { RoomCardMetaProps } from "../../domain/types";
 
 export function RoomCardMeta({ room }: RoomCardMetaProps) {
   return (
@@ -27,9 +27,7 @@ export function RoomCardMeta({ room }: RoomCardMetaProps) {
             {/* Decorative open-quote glyph */}
             <path d="M0 24V14.4C0 6.48 4.32 1.44 12.96 0l1.44 2.64C9.6 3.84 7.2 6.72 6.48 11.28H12V24H0Zm18 0V14.4C18 6.48 22.32 1.44 30.96 0l1.44 2.64C27.6 3.84 25.2 6.72 24.48 11.28H30V24H18Z" />
           </svg>
-          <blockquote className={S.adminTipQuoteText}>
-            {room.adminTip}
-          </blockquote>
+          <blockquote className={S.adminTipQuoteText}>{room.adminTip}</blockquote>
         </figure>
       )}
 

@@ -77,8 +77,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
     },
     SAVE_DIALOG: {
       TITLE: "¿Guardar cambios?",
-      DESCRIPTION:
-        "Una vez guardados, los cambios no podrán revertirse. ¿Desea continuar?",
+      DESCRIPTION: "Una vez guardados, los cambios no podrán revertirse. ¿Desea continuar?",
       BTN_CONFIRM: "Confirmar",
       BTN_CANCEL: "Cancelar",
     },

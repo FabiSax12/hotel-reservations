@@ -21,7 +21,8 @@ export const DATE_RANGE_PICKER_STYLES = {
     "data-[today=true]:data-[selection-start=true]:[&>*]:!text-white",
     "data-[today=true]:data-[selection-end=true]:[&>*]:!text-white",
   ].join(" "),
-  navButton: "!text-emerald-700 !bg-transparent data-[hovered=true]:!bg-emerald-50 hover:!bg-emerald-50",
+  navButton:
+    "!text-emerald-700 !bg-transparent data-[hovered=true]:!bg-emerald-50 hover:!bg-emerald-50",
   yearPickerTrigger: "group",
   yearPickerTriggerHeading: "group-data-[open=true]:!text-emerald-700",
   yearPickerTriggerIndicator: "!text-emerald-700",

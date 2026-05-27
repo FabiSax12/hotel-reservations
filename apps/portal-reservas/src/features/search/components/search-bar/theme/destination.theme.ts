@@ -37,8 +37,7 @@ export const DESTINATION_POPOVER_STYLES = {
   highlightText: "leading-snug",
   popover:
     "absolute top-[100%] mt-4 left-0 w-[420px] bg-forest-900 rounded-[2rem] shadow-[0_24px_60px_rgba(0,0,0,0.5)] border border-forest-800 z-50 p-3 animate-in fade-in slide-in-from-top-4 duration-300",
-  regionLabel:
-    "px-4 pt-4 pb-2 text-xs font-bold text-stone-400 uppercase tracking-widest",
+  regionLabel: "px-4 pt-4 pb-2 text-xs font-bold text-stone-400 uppercase tracking-widest",
   grid: "grid grid-cols-2 gap-2 mt-1",
   itemWrapper:
     "flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-colors hover:bg-forest-800",

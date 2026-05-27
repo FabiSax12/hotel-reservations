@@ -8,11 +8,11 @@
  *    when a new search is submitted.
  */
 
+import { useI18n } from "@/locales";
+import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
 import type { RoomListProps } from "../domain/types";
 import { RoomCard } from "./RoomCard";
 import { RoomCardSkeleton } from "./RoomCardSkeleton";
-import { ROOM_LIST_STYLES as S } from "../../../theme/rooms.theme";
-import { useI18n } from "@/locales";
 
 export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: RoomListProps) {
   const { t } = useI18n();
@@ -40,9 +40,7 @@ export function RoomList({ rooms, selectedDest, searchKey, isLoading = false }: 
       {/* Card grid — key forces re-mount for staggered animations on new search */}
       <div key={searchKey} className={S.grid}>
         {isLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <RoomCardSkeleton key={`skel-${index}`} />
-            ))
+          ? Array.from({ length: 3 }).map((_, index) => <RoomCardSkeleton key={`skel-${index}`} />)
           : rooms.map((room, index) => (
               <RoomCard key={room.id} room={room} index={index} selectedDest={selectedDest} />
             ))}
