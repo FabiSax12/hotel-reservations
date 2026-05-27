@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useSearchBarState.ts — Hook for managing the overall state and interactions of the search bar.
  */

@@ -130,6 +130,7 @@ export interface RoomDetailsPopoverProps {
 export interface RoomRangeCalendarProps {
   availableDates: string[];
   location: string;
+  roomId: string;
   onClose: () => void;
 }
 

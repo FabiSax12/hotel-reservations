@@ -10,9 +10,9 @@
  * - SearchParams: Domain type for the search output payload
  */
 
+export type { SearchBarProps, SearchState, ValidationError } from "./components/search-bar";
 // Search Bar — the orchestrator and its public types.
 export { ModernSearchBar } from "./components/search-bar";
-export type { SearchState, SearchBarProps, ValidationError } from "./components/search-bar";
 
 // Domain types — the external contract of the search feature.
 export type { SearchParams } from "./domain/types";

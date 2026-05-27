@@ -31,8 +31,7 @@ export async function GET(request: NextRequest) {
 
     if (!error) {
       // Success: redirect to the callback URL (from "redirect after login" flow) or home.
-      const callbackUrl =
-        searchParams.get(CALLBACK_SEARCH_PARAMS.CALLBACK_URL) || ROUTES.HOME;
+      const callbackUrl = searchParams.get(CALLBACK_SEARCH_PARAMS.CALLBACK_URL) || ROUTES.HOME;
       return NextResponse.redirect(new URL(callbackUrl, origin));
     }
   }

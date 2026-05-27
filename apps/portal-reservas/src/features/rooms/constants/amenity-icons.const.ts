@@ -23,7 +23,7 @@ export interface AmenityIcon {
  * Order determines display priority (first = most important).
  */
 export const AMENITY_ICON_MAP: Record<string, AmenityIcon> = {
-  "WiFi": {
+  WiFi: {
     path: "M1 8.5a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 01-1 1H2a1 1 0 01-1-1v-2zm12-4a7 7 0 015.2 2.4M16.7 8a4.5 4.5 0 013 2M3 12.5a10 10 0 0114 0",
     label: "WiFi",
     isStroke: true,
@@ -83,12 +83,12 @@ export const AMENITY_ICON_MAP: Record<string, AmenityIcon> = {
     label: "Terraza",
     isStroke: true,
   },
-  "AC": {
+  AC: {
     path: "M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83",
     label: "AC",
     isStroke: true,
   },
-  "Minibar": {
+  Minibar: {
     path: "M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2zm0 7h14M12 3v18",
     label: "Minibar",
     isStroke: true,
@@ -140,10 +140,6 @@ export function getAmenityIcon(amenity: string): AmenityIcon | null {
  * Formats a bed configuration into a human-readable string.
  * Example: [{type:"king",count:1},{type:"individual",count:2}] → "1 King · 2 Individual"
  */
-export function formatBedConfig(
-  beds: Array<{ type: string; count: number }>,
-): string {
-  return beds
-    .map((b) => `${b.count} ${BED_TYPE_LABELS[b.type] ?? b.type}`)
-    .join(" · ");
+export function formatBedConfig(beds: Array<{ type: string; count: number }>): string {
+  return beds.map((b) => `${b.count} ${BED_TYPE_LABELS[b.type] ?? b.type}`).join(" · ");
 }

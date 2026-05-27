@@ -2,7 +2,7 @@
  * @file Calendar.theme.ts — Component-specific styles for the Calendar.
  */
 
-export const CALENDAR_STYLES = {
+export const CALENDAR_STYLES = Object.freeze({
   wrapper: (isHero: boolean) =>
     isHero
       ? "w-full max-w-[1150px] bg-forest-900 rounded-[3rem] shadow-[0_32px_80px_rgba(0,0,0,0.4)] relative z-10"
@@ -67,10 +67,10 @@ export const CALENDAR_STYLES = {
 
   hoverRing:
     "absolute h-[85%] aspect-square rounded-full bg-transparent group-hover:bg-forest-800/80 transition-colors pointer-events-none",
-  selectedStart:
-    "absolute h-[85%] aspect-square rounded-full z-10 shadow-sm transition-[background-color,box-shadow] duration-150 ring-2 ring-offset-1",
-  selectedEnd:
-    "absolute h-[85%] aspect-square rounded-full z-10 shadow-sm transition-[background-color,box-shadow] duration-150 ring-2 ring-offset-1",
+  selectedStart: (isActive: boolean) =>
+    `absolute h-[85%] aspect-square rounded-full z-10 shadow-sm transition-[background-color,box-shadow] duration-150 ring-2 ring-offset-1 ${isActive ? "bg-gold-500 ring-gold-500 ring-offset-forest-900" : "bg-transparent ring-transparent ring-offset-transparent"}`,
+  selectedEnd: (isActive: boolean) =>
+    `absolute h-[85%] aspect-square rounded-full z-10 shadow-sm transition-[background-color,box-shadow] duration-150 ring-2 ring-offset-1 ${isActive ? "bg-gold-500 ring-gold-500 ring-offset-forest-900" : "bg-transparent ring-transparent ring-offset-transparent"}`,
 
   invalidDot: (isFading: boolean) =>
     `absolute h-[85%] aspect-square bg-red-900/50 border border-red-500/50 rounded-full z-20 shadow-[0_0_15px_rgba(239,68,68,0.2)] transition-all ease-in-out ${isFading ? "opacity-0 duration-300" : "opacity-100 animate-search-bar-shake duration-300"}`,
@@ -99,4 +99,4 @@ export const CALENDAR_STYLES = {
     heroMaxWidth: "1150px",
     compactWidth: "650px",
   },
-} as const;
+} as const);

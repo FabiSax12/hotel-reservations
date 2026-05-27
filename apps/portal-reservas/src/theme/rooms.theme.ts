@@ -19,7 +19,7 @@ export const ROOM_CARD_STYLES = {
   // ─── Card Shell ─────────────────────────────────────────────────────────────
   // Fixed height on desktop for consistent card dimensions across rooms and packages
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[420px] bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -41,8 +41,10 @@ export const ROOM_CARD_STYLES = {
 
   // ─── Image Panel ────────────────────────────────────────────────────────────
   // Fixed width on desktop, fills parent height
-  imageWrapper: "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
-  image: "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
+  imageWrapper:
+    "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
+  image:
+    "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
   urgencyBadge:
     "absolute top-4 left-4 bg-red-900/90 backdrop-blur-sm text-stone-50 px-3 py-1.5 rounded-xl font-bold text-xs shadow-lg flex items-center gap-1.5 animate-in slide-in-from-top-2",
   urgencyIcon: "w-3.5 h-3.5 flex-shrink-0 text-red-400",
@@ -63,7 +65,8 @@ export const ROOM_CARD_STYLES = {
 
   // ─── Header Row ─────────────────────────────────────────────────────────────
   locationLabel: "text-gold-500 font-extrabold uppercase tracking-widest text-xs mb-1",
-  title: "text-2xl font-serif font-normal text-stone-50 leading-tight group-hover:text-gold-400 transition-colors",
+  title:
+    "text-2xl font-serif font-normal text-stone-50 leading-tight group-hover:text-gold-400 transition-colors",
   chipRow: "flex flex-wrap items-center gap-2 mt-2",
   capacityChip:
     "flex items-center gap-1 px-2.5 py-1 bg-forest-800/50 text-stone-300 rounded-lg text-xs font-bold border border-forest-700",
@@ -96,15 +99,18 @@ export const ROOM_CARD_STYLES = {
   expansionInner: "overflow-hidden",
   expansionContent: "pt-6 pb-2 border-t border-forest-800 mt-4",
   galleryStrip: "flex gap-3 overflow-x-auto pb-2 scrollbar-hide",
-  galleryImage: "w-36 h-24 rounded-xl object-cover flex-shrink-0 bg-forest-800 border border-forest-700",
+  galleryImage:
+    "w-36 h-24 rounded-xl object-cover flex-shrink-0 bg-forest-800 border border-forest-700",
   galleryImg: "w-full h-full object-cover rounded-xl",
   fullDescription: "mt-4 text-sm text-stone-300 leading-relaxed",
   amenitiesTitle: "mt-4 mb-2 text-xs font-bold text-stone-400 uppercase tracking-widest",
   amenityList: "flex flex-wrap gap-2",
-  amenityTag: "px-2.5 py-1 bg-forest-800 text-stone-200 rounded-lg text-xs font-medium border border-forest-700",
+  amenityTag:
+    "px-2.5 py-1 bg-forest-800 text-stone-200 rounded-lg text-xs font-medium border border-forest-700",
 
   // ─── Price Tier ─────────────────────────────────────────────────────────────
-  priceTier: "mt-auto flex w-full flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
+  priceTier:
+    "mt-auto flex w-full flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
   priceBlock: "flex flex-col",
   priceLabel: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-0.5",
   priceRow: "flex items-baseline gap-1.5",
@@ -125,7 +131,8 @@ export const ROOM_CARD_STYLES = {
   reserveBtnLoader: "animate-spin w-4 h-4 text-forest-950",
   checkDatesBtn:
     "flex items-center justify-center gap-2 h-14 bg-transparent hover:bg-forest-800 text-stone-50 font-bold text-base px-8 rounded-xl border-2 border-forest-700 hover:border-gold-500 transition-all duration-200 active:scale-[0.98]",
-  seeFreeDatesBtn: "text-sm font-medium text-gold-500 hover:text-gold-400 underline-offset-2 hover:underline transition-colors py-2",
+  seeFreeDatesBtn:
+    "text-sm font-medium text-gold-500 hover:text-gold-400 underline-offset-2 hover:underline transition-colors py-2",
   unavailableLabel: "text-xs font-bold text-red-500 uppercase tracking-wider",
 
   // ─── Room Availability Calendar ─────────────────────────────────────────────
@@ -134,22 +141,26 @@ export const ROOM_CARD_STYLES = {
   availCalInner: "w-full",
   availCalHeader: "flex items-center justify-between mb-4",
   availCalTitle: "text-sm font-bold text-stone-50 uppercase tracking-wider",
-  availCalClose: "w-7 h-7 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-200 hover:bg-forest-800 transition-colors",
+  availCalClose:
+    "w-7 h-7 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-200 hover:bg-forest-800 transition-colors",
   availCalGrid: "grid grid-cols-7 gap-0.5",
   availCalDayHeader: "text-center text-[10px] font-bold text-stone-400 uppercase py-1",
   availCalDay: (isAvailable: boolean, isSelected: boolean, isPast: boolean) =>
     [
       "h-9 w-full rounded-lg text-xs font-medium flex items-center justify-center transition-all duration-150",
-      isPast ? "text-stone-600 cursor-not-allowed" :
-      isSelected ? "bg-gold-500 text-forest-950 font-bold shadow-sm" :
-      isAvailable
-        ? "bg-forest-900 text-stone-200 hover:bg-forest-800 cursor-pointer font-semibold border border-transparent hover:border-gold-500/30"
-        : "text-stone-500 opacity-40 cursor-not-allowed",
+      isPast
+        ? "text-stone-600 cursor-not-allowed"
+        : isSelected
+          ? "bg-gold-500 text-forest-950 font-bold shadow-sm"
+          : isAvailable
+            ? "bg-forest-900 text-stone-200 hover:bg-forest-800 cursor-pointer font-semibold border border-transparent hover:border-gold-500/30"
+            : "text-stone-500 opacity-40 cursor-not-allowed",
     ].join(" "),
   availCalDot: "w-1 h-1 rounded-full bg-gold-500 mx-auto -mt-0.5",
   availCalMonthNav: "flex items-center justify-between mb-4",
   availCalMonthLabel: "text-sm font-bold text-stone-200",
-  availCalNavBtn: "w-7 h-7 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-200 hover:bg-forest-800 transition-colors",
+  availCalNavBtn:
+    "w-7 h-7 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-200 hover:bg-forest-800 transition-colors",
   availCalLegend: "flex gap-4 mt-4 pt-3 border-t border-forest-800",
   availCalLegendItem: "flex items-center gap-1.5 text-[10px] text-stone-400",
   availCalLegendDot: (type: "available" | "booked") =>
@@ -169,10 +180,13 @@ export const ROOM_CARD_STYLES = {
   dialogMonthList: "space-y-4 max-h-56 overflow-y-auto pr-1",
   dialogMonthLabel: "text-xs font-bold text-stone-400 uppercase tracking-widest mb-2 capitalize",
   dialogDatesWrapper: "flex flex-wrap gap-2",
-  dialogDateBadge: "px-2.5 py-1 bg-forest-800 text-gold-400 rounded-lg text-xs font-medium border border-forest-700 capitalize",
+  dialogDateBadge:
+    "px-2.5 py-1 bg-forest-800 text-gold-400 rounded-lg text-xs font-medium border border-forest-700 capitalize",
   dialogActions: "mt-4 flex justify-end gap-3",
-  dialogConfirmBtn: "h-11 px-6 bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold text-sm rounded-xl transition-colors active:scale-[0.98]",
-  dialogCancelBtn: "h-11 px-5 bg-transparent hover:bg-forest-800 text-stone-300 font-bold text-sm rounded-xl border border-forest-700 transition-colors",
+  dialogConfirmBtn:
+    "h-11 px-6 bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold text-sm rounded-xl transition-colors active:scale-[0.98]",
+  dialogCancelBtn:
+    "h-11 px-5 bg-transparent hover:bg-forest-800 text-stone-300 font-bold text-sm rounded-xl border border-forest-700 transition-colors",
   guestRow: "flex items-center justify-between py-3 border-b border-forest-800/50 last:border-0",
   guestLabel: "text-sm font-medium text-stone-50",
   guestSub: "text-xs text-stone-400 mt-0.5",
@@ -184,7 +198,9 @@ export const ROOM_CARD_STYLES = {
   // ─── Detail Popover ─────────────────────────────────────────────────────────
   detailOverlay: (isOpen: boolean) =>
     `fixed inset-0 z-[100] flex items-center justify-center p-5 sm:p-8 transition-opacity duration-300 ${
-      isOpen ? "opacity-100 pointer-events-auto bg-black/0" : "opacity-0 pointer-events-none bg-black/0"
+      isOpen
+        ? "opacity-100 pointer-events-auto bg-black/0"
+        : "opacity-0 pointer-events-none bg-black/0"
     }`,
   detailPanel: (isOpen: boolean) =>
     `relative w-[min(70vw,1050px)] max-w-[1050px] max-h-[88vh] overflow-hidden rounded-[2.2rem] border border-forest-800 bg-forest-900 shadow-[0_45px_120px_rgba(0,0,0,0.6)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
@@ -207,7 +223,7 @@ export const PACKAGE_CARD_STYLES = {
   // Same horizontal layout and fixed height as RoomCard
   // Top corners only — bottom corners are handled by the expand button
   card: (isUnavailable: boolean) =>
-    `group relative flex flex-col lg:flex-row lg:h-[360px] bg-forest-900 rounded-t-[2rem] border border-b-0 border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
+    `group relative flex flex-col lg:flex-row lg:h-[420px] bg-forest-900 rounded-t-[2rem] border border-b-0 border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in slide-in-from-bottom-8 fill-mode-both ${
       isUnavailable ? "opacity-50" : "opacity-100"
     }`,
   cardHoverGlow:
@@ -216,7 +232,7 @@ export const PACKAGE_CARD_STYLES = {
   // ─── Image Panel ────────────────────────────────────────────────────────────
   // Same dimensions as RoomCard image panel, fills parent height
   imageWrapper:
-    "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
+    "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-tl-[2rem]",
 
   // Collage grid layouts for multiple rooms
   imageGrid2: "grid grid-cols-2 gap-[2px] h-full",
@@ -224,7 +240,8 @@ export const PACKAGE_CARD_STYLES = {
   imageGrid4: "grid grid-cols-2 grid-rows-2 gap-[2px] h-full",
   imageSingle: "relative w-full h-full",
   imageCell: "relative overflow-hidden",
-  image: "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
+  image:
+    "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
 
   /** Room count overlay badge at bottom-right of image. */
   roomCountBadge:
@@ -238,7 +255,8 @@ export const PACKAGE_CARD_STYLES = {
   // ─── Header Row ─────────────────────────────────────────────────────────────
   // Package label replaces room title
   packageLabel: "text-gold-500 font-extrabold uppercase tracking-widest text-xs mb-1",
-  title: "text-2xl font-serif font-normal text-stone-50 leading-tight group-hover:text-gold-400 transition-colors",
+  title:
+    "text-2xl font-serif font-normal text-stone-50 leading-tight group-hover:text-gold-400 transition-colors",
   chipRow: "flex flex-wrap items-center gap-2 mt-2",
   capacityChip:
     "flex items-center gap-1 px-2.5 py-1 bg-forest-800/50 text-stone-300 rounded-lg text-xs font-bold border border-forest-700",
@@ -262,7 +280,8 @@ export const PACKAGE_CARD_STYLES = {
 
   // ─── Price Tier ─────────────────────────────────────────────────────────────
   // Same price tier structure as RoomCard
-  priceTier: "mt-auto flex w-full flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
+  priceTier:
+    "mt-auto flex w-full flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
   priceBlock: "flex flex-col",
   priceLabel: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-0.5",
   priceRow: "flex items-baseline gap-1.5",
@@ -282,7 +301,8 @@ export const PACKAGE_CARD_STYLES = {
   reserveBtnLoader: "animate-spin w-4 h-4 text-forest-950",
   checkDatesBtn:
     "flex items-center justify-center gap-2 h-14 bg-transparent hover:bg-forest-800 text-stone-50 font-bold text-base px-8 rounded-xl border-2 border-forest-700 hover:border-gold-500 transition-all duration-200 active:scale-[0.98]",
-  seeFreeDatesBtn: "text-sm font-medium text-gold-500 hover:text-gold-400 underline-offset-2 hover:underline transition-colors py-2",
+  seeFreeDatesBtn:
+    "text-sm font-medium text-gold-500 hover:text-gold-400 underline-offset-2 hover:underline transition-colors py-2",
   unavailableLabel: "text-xs font-bold text-red-500 uppercase tracking-wider",
 
   // ─── Expand/Collapse ────────────────────────────────────────────────────────
@@ -298,7 +318,6 @@ export const PACKAGE_CARD_STYLES = {
     }`,
   expansionInner: "overflow-hidden",
   expansionContent: "px-7 pb-7 pt-2",
-  expansionTitle:
-    "text-xs font-bold text-stone-400 uppercase tracking-wider mb-4",
+  expansionTitle: "text-xs font-bold text-stone-400 uppercase tracking-wider mb-4",
   expansionGridInner: "flex flex-col gap-6",
 } as const;

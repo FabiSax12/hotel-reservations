@@ -27,6 +27,8 @@ export interface RoomsInnerPageProps {
   isSearchingData: boolean;
   /** Rooms filtered by the selected destination. */
   filteredRooms: Room[];
+  /** Room ID to show first in the list (set when user checks availability from a specific room card). */
+  prioritizedRoomId: string | null;
   /** Callback to trigger a search with the given parameters. */
   onSearchTrigger: (params: SearchParams) => void;
   /** Callback when the destination changes in the search bar. */

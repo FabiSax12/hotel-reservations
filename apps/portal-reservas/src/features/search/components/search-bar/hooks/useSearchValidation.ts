@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useSearchValidation.ts — Hook for managing search bar validation state.
  */

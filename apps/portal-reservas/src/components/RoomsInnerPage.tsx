@@ -26,6 +26,7 @@ export function RoomsInnerPage({
   hasDates,
   isSearchingData,
   filteredRooms,
+  prioritizedRoomId,
   onSearchTrigger,
   onDestinationChange,
   onReset,
@@ -57,6 +58,7 @@ export function RoomsInnerPage({
     setExpandedRoomId,
     onSearch: onSearchTrigger,
     guestCount: (searchParams.adults ?? 0) + (searchParams.children ?? 0),
+    prioritizedRoomId,
   };
 
   return (

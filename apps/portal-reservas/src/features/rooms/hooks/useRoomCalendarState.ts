@@ -8,16 +8,17 @@
 
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
+import { ROOM_MOCK } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
 import { getBlockedDatesBetween } from "../domain/date-range.utils";
-import { ROOM_MOCK } from "../constants/rooms.constants";
 
 const SUBMIT_DELAY_MS = ROOM_MOCK.CALENDAR_SUBMIT_DELAY_MS;
 
 export function useRoomCalendarState(
   availableDates: string[],
   location: string,
+  roomId: string,
   onClose: () => void,
 ) {
   const { onSearch } = useRoomsContext();
@@ -41,9 +42,7 @@ export function useRoomCalendarState(
       setInvalidState({ dayStrs, isFading: true, animationKey });
     }, 400);
     setTimeout(() => {
-      setInvalidState((current) =>
-        current?.animationKey === animationKey ? null : current,
-      );
+      setInvalidState((current) => (current?.animationKey === animationKey ? null : current));
     }, 700);
   };
 
@@ -61,11 +60,12 @@ export function useRoomCalendarState(
           adults: 2,
           children: 0,
           pets: 0,
+          prioritizedRoomId: roomId,
         });
         onClose();
       }, SUBMIT_DELAY_MS);
     },
-    [onSearch, location, onClose],
+    [onSearch, location, roomId, onClose],
   );
 
   const handlePickDate = (dayStr: string) => {
