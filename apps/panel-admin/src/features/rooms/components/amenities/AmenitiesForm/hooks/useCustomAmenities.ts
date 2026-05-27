@@ -5,7 +5,11 @@ import {
   AMENITIES_VALIDATION,
 } from "@/features/rooms/constants/amenities.constants";
 import type { Amenity } from "@/features/rooms/domain/amenity.interface";
-import { mockAmenitiesService } from "@/features/rooms/services/mockAmenitiesService";
+import {
+  addCustomAmenityAction,
+  deleteCustomAmenityAction,
+  updateCustomAmenityAction,
+} from "@/features/rooms/services/amenityActions";
 import type { AmenitiesFormValues } from "../AmenitiesForm.interface";
 import { AMENITIES_FORM_CONSTANTS } from "../constants/amenitiesForm.constants";
 
@@ -32,7 +36,9 @@ export const useCustomAmenities = (
 
     setIsAddingCustom(true);
     try {
-      const newAmenity = await mockAmenitiesService.addCustomAmenity(trimmed, icon, description);
+      const { data: newAmenity, error } = await addCustomAmenityAction(trimmed, icon, description);
+      if (error || !newAmenity) throw new Error(error || "Failed to add amenity");
+      
       setAmenities((prev) => [...prev, newAmenity]);
       setValue(FORM_FIELD_NAME, [...selectedIds, newAmenity.id], { shouldValidate: true });
     } catch (error) {
@@ -48,12 +54,14 @@ export const useCustomAmenities = (
 
     setIsAddingCustom(true);
     try {
-      const updated = await mockAmenitiesService.updateCustomAmenity(
+      const { data: updated, error } = await updateCustomAmenityAction(
         id,
         trimmed,
         icon,
         description,
       );
+      if (error || !updated) throw new Error(error || "Failed to update amenity");
+
       setAmenities((prev) => prev.map((a) => (a.id === id ? updated : a)));
     } catch (error) {
       console.error(ERROR_MESSAGES.UPDATE_CUSTOM, error);
@@ -65,7 +73,9 @@ export const useCustomAmenities = (
   const handleDeleteCustom = async (id: string) => {
     setIsAddingCustom(true);
     try {
-      await mockAmenitiesService.deleteCustomAmenity(id);
+      const { error } = await deleteCustomAmenityAction(id);
+      if (error) throw new Error(error);
+
       setAmenities((prev) => prev.filter((a) => a.id !== id));
       setValue(
         FORM_FIELD_NAME,
