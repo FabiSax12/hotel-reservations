@@ -5,6 +5,7 @@
  * consistent session/profile handling and avoid desync between client and server.
  */
 
+import type { PermissionName } from "@hotel/db/types";
 import type { Session, User as SupabaseUser } from "@supabase/supabase-js";
 
 /**
@@ -26,6 +27,7 @@ export interface AdminProfile {
   email: string;
   role: "admin" | "owner";
   is_active: boolean;
+  permissions?: PermissionName[];
 }
 
 /**
