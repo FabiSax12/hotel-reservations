@@ -1,6 +1,7 @@
 "use client";
 
-import { formatCurrency } from "../../utils/metrics.format.utils";
+import { formatCurrency, formatPct } from "../../utils/metrics.format.utils";
+import { ROOMS_SEPARATOR } from "../../constants/metrics.constants";
 import { STAT_CARDS_STYLES as STYLES } from "./StatCards.styles";
 import type { StatCardsProps } from "./StatCards.interface";
 
@@ -24,11 +25,11 @@ export function StatCards({
       </div>
       <div className={STYLES.card}>
         <p className={STYLES.label}>{labels.AVG_OCCUPANCY}</p>
-        <p className={STYLES.value}>{averageOccupancy.toFixed(1)}%</p>
+        <p className={STYLES.value}>{formatPct(averageOccupancy)}</p>
       </div>
       <div className={STYLES.card}>
         <p className={STYLES.label}>{labels.ACTIVE_ROOMS}</p>
-        <p className={STYLES.value}>{activeRooms} / {totalRooms}</p>
+        <p className={STYLES.value}>{activeRooms}{ROOMS_SEPARATOR}{totalRooms}</p>
       </div>
     </div>
   );

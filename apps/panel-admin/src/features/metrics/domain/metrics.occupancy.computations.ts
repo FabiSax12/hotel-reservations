@@ -1,19 +1,24 @@
-import { PERCENTAGE_SCALE } from "../constants/metrics.constants";
-import { getDaysInMonth } from "../utils/metrics.date.utils";
+import {
+  MS_PER_DAY,
+  OCCUPANCY_COLORS,
+  OCCUPANCY_THRESHOLDS,
+  PCT_DECIMAL_PLACES,
+  PERCENTAGE_SCALE,
+} from "../constants/metrics.constants";
+import type { ProgressColor } from "../constants/metrics.constants";
 import type { MetricsDateRange, MetricsReservation, MetricsRoom, RoomOccupancy } from "./metrics.types";
 
-// NOTE: Uses full calendar months overlapping the range as the denominator — not just days within
-// the range. E.g. April 5–May 14 → denominator is 30 (April) + 31 (May) = 61.
-function computeTotalMonthNights(start: string, end: string): number {
+export function resolveOccupancyColor(pct: number): ProgressColor {
+  if (pct < OCCUPANCY_THRESHOLDS.LOW)    return OCCUPANCY_COLORS.LOW;
+  if (pct < OCCUPANCY_THRESHOLDS.MEDIUM) return OCCUPANCY_COLORS.MEDIUM;
+  if (pct < OCCUPANCY_THRESHOLDS.HIGH)   return OCCUPANCY_COLORS.HIGH;
+  return OCCUPANCY_COLORS.FULL;
+}
+
+function computeRangeDays(start: string, end: string): number {
   const s = new Date(start);
   const e = new Date(end);
-  let total = 0;
-  const cursor = new Date(s.getFullYear(), s.getMonth(), 1);
-  while (cursor <= e) {
-    total += getDaysInMonth(cursor.getFullYear(), cursor.getMonth());
-    cursor.setMonth(cursor.getMonth() + 1);
-  }
-  return total;
+  return Math.round((e.getTime() - s.getTime()) / MS_PER_DAY) + 1;
 }
 
 export function computeRoomOccupancies(
@@ -21,15 +26,15 @@ export function computeRoomOccupancies(
   rooms: MetricsRoom[],
   dateRange: MetricsDateRange,
 ): RoomOccupancy[] {
-  const totalMonthNights = computeTotalMonthNights(dateRange.start, dateRange.end);
+  const totalMonthNights = computeRangeDays(dateRange.start, dateRange.end);
 
   return rooms.map((room) => {
     const roomReservations = activeReservations.filter((r) => r.roomId === room.id);
-    const nights = roomReservations.reduce((sum, r) => sum + r.nights, 0);
+    const nights  = roomReservations.reduce((sum, r) => sum + r.nights, 0);
     const revenue = roomReservations.reduce((sum, r) => sum + r.totalAmount, 0);
     const occupancyPct =
       totalMonthNights > 0
-        ? Math.min(PERCENTAGE_SCALE, parseFloat(((nights / totalMonthNights) * PERCENTAGE_SCALE).toFixed(1)))
+        ? Math.min(PERCENTAGE_SCALE, parseFloat(((nights / totalMonthNights) * PERCENTAGE_SCALE).toFixed(PCT_DECIMAL_PLACES)))
         : 0;
 
     return { roomId: room.id, roomName: room.name, occupancyPct, revenue, reservationCount: roomReservations.length };

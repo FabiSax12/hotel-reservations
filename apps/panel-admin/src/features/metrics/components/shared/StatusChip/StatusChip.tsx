@@ -1,6 +1,7 @@
 "use client";
 
 import { STATUS_DOT_COLORS } from "../../../constants/metrics.constants";
+import { formatPct } from "../../../utils/metrics.format.utils";
 import { STATUS_CHIP_STYLES as STYLES } from "./StatusChip.styles";
 import type { StatusChipProps } from "./StatusChip.interface";
 
@@ -15,7 +16,7 @@ export function StatusChip({ status, label, count, pct }: StatusChipProps) {
       </div>
       <div className={STYLES.row}>
         <span className={STYLES.count}>{count.toLocaleString()}</span>
-        <span className={STYLES.pct}>{pct.toFixed(1)}%</span>
+        <span className={STYLES.pct}>{formatPct(pct)}</span>
       </div>
     </div>
   );

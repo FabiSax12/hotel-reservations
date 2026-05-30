@@ -31,8 +31,13 @@ export interface StatusCounts {
   completed: number;
 }
 
+export interface WeeklyLabel {
+  range: string;
+  month: string;
+}
+
 export interface WeeklyDataPoint {
-  weekLabel: string;
+  weekLabel: WeeklyLabel;
   pending: number;
   approved: number;
   cancelled: number;

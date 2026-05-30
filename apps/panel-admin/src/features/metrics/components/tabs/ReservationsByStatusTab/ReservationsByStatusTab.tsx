@@ -1,6 +1,7 @@
 "use client";
 
 import { computePct } from "../../../utils/metrics.format.utils";
+import { STATUS_ORDER } from "../../../constants/metrics.constants";
 import { StatusChip } from "../../shared/StatusChip/StatusChip";
 import { ProportionalBar } from "../../shared/ProportionalBar/ProportionalBar";
 import { WeeklyStackedBarChart } from "../../charts/WeeklyStackedBarChart/WeeklyStackedBarChart";
@@ -17,16 +18,16 @@ export function ReservationsByStatusTab({
   totalLabel,
   periodPrefix,
   weeklyTitle,
-  weeklySubtitle,
+  weeklyEmptyText,
+  chartAriaLabel,
+  barAriaLabel,
 }: ReservationsByStatusTabProps) {
   const total = totalReservations;
 
-  const barSegments: ProportionalBarSegment[] = [
-    { status: "pending",   pct: computePct(statusCounts.pending,   total) },
-    { status: "approved",  pct: computePct(statusCounts.approved,  total) },
-    { status: "cancelled", pct: computePct(statusCounts.cancelled, total) },
-    { status: "completed", pct: computePct(statusCounts.completed, total) },
-  ];
+  const barSegments: ProportionalBarSegment[] = STATUS_ORDER.map((status) => ({
+    status,
+    pct: computePct(statusCounts[status], total),
+  }));
 
   return (
     <div className={STYLES.wrapper}>
@@ -68,14 +69,23 @@ export function ReservationsByStatusTab({
         />
       </div>
 
-      <ProportionalBar segments={barSegments} />
+      <ProportionalBar segments={barSegments} ariaLabel={barAriaLabel} />
 
       <div>
         <p className={STYLES.sectionTitle}>{weeklyTitle}</p>
-        <p className={STYLES.sectionSub}>{weeklySubtitle}</p>
       </div>
 
-      <WeeklyStackedBarChart data={weeklyData} />
+      <WeeklyStackedBarChart
+        data={weeklyData}
+        statusLabels={{
+          pending:   statusLabels.PENDING,
+          approved:  statusLabels.APPROVED,
+          cancelled: statusLabels.CANCELLED,
+          completed: statusLabels.COMPLETED,
+        }}
+        emptyText={weeklyEmptyText}
+        ariaLabel={chartAriaLabel}
+      />
     </div>
   );
 }

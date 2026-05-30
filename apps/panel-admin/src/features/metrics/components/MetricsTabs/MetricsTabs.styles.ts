@@ -1,8 +1,9 @@
 export const METRICS_TABS_STYLES = {
-  wrapper:    "w-full",
-  list:       "w-full",
-  tab:        "text-sm font-medium",
-  panel:      "rounded-xl border border-gray-100 bg-white p-6 shadow-sm mt-4",
+  wrapper: "w-full",
+  list: "w-full",
+  tab: "text-sm font-medium",
+  indicator: "!bg-emerald-700 h-[3px]",
+  panel: "rounded-xl border border-gray-100 bg-white p-6 shadow-sm mt-4",
   panelTitle: "mb-4 text-base font-semibold text-gray-900",
 } as const;
 

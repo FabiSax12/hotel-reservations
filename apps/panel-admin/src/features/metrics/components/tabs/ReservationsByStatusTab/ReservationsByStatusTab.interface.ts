@@ -14,5 +14,7 @@ export interface ReservationsByStatusTabProps {
   totalLabel: string;
   periodPrefix: string;
   weeklyTitle: string;
-  weeklySubtitle: string;
+  weeklyEmptyText: string;
+  chartAriaLabel: string;
+  barAriaLabel: string;
 }

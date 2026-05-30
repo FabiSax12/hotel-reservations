@@ -1,14 +1,27 @@
-import { MAX_WEEKLY_BARS } from "../constants/metrics.constants";
-import { getISOWeek } from "../utils/metrics.date.utils";
-import type { MetricsReservation, StatusCounts, WeeklyDataPoint } from "./metrics.types";
+import { DAYS_TO_SUNDAY, STATUS_ORDER } from "../constants/metrics.constants";
+import { getISOWeek, getMondayOfWeek } from "../utils/metrics.date.utils";
+import type { MetricsReservation, StatusCounts, WeeklyDataPoint, WeeklyLabel } from "./metrics.types";
 
-export function computeWeeklyData(reservations: MetricsReservation[]): WeeklyDataPoint[] {
-  const weekMap = new Map<number, StatusCounts & { weekLabel: string }>();
+export function computeWeeklyData(
+  reservations: MetricsReservation[],
+  monthNames: readonly string[],
+): WeeklyDataPoint[] {
+  const weekMap = new Map<number, StatusCounts & { weekLabel: WeeklyLabel }>();
 
   for (const r of reservations) {
     const week = getISOWeek(r.checkIn);
     if (!weekMap.has(week)) {
-      weekMap.set(week, { weekLabel: `Sem ${week}`, pending: 0, approved: 0, cancelled: 0, completed: 0 });
+      const monday = getMondayOfWeek(r.checkIn);
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + DAYS_TO_SUNDAY);
+      const label: WeeklyLabel = {
+        range: `${monday.getDate()} - ${sunday.getDate()}`,
+        month: monthNames[monday.getMonth()],
+      };
+      const statusInit = Object.fromEntries(
+        STATUS_ORDER.map((s) => [s, 0]),
+      ) as unknown as StatusCounts;
+      weekMap.set(week, { weekLabel: label, ...statusInit });
     }
     const entry = weekMap.get(week)!;
     entry[r.status] += 1;
@@ -16,13 +29,12 @@ export function computeWeeklyData(reservations: MetricsReservation[]): WeeklyDat
 
   return Array.from(weekMap.entries())
     .sort(([a], [b]) => a - b)
-    .slice(-MAX_WEEKLY_BARS)
     .map(([, entry]) => ({
       weekLabel: entry.weekLabel,
-      pending: entry.pending,
-      approved: entry.approved,
+      pending:   entry.pending,
+      approved:  entry.approved,
       cancelled: entry.cancelled,
       completed: entry.completed,
-      total: entry.pending + entry.approved + entry.cancelled + entry.completed,
+      total: STATUS_ORDER.reduce((sum, s) => sum + entry[s], 0),
     }));
 }

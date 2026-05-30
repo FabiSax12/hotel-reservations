@@ -5,4 +5,5 @@ export interface RankingRowProps {
   proportionPct: number;
   revenue: number;
   reservationsSuffix: string;
+  meterAriaLabel: string;
 }

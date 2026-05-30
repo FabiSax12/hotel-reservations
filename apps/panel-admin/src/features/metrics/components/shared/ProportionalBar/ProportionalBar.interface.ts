@@ -7,4 +7,5 @@ export interface ProportionalBarSegment {
 
 export interface ProportionalBarProps {
   segments: ProportionalBarSegment[];
+  ariaLabel: string;
 }

@@ -2,7 +2,8 @@
 
 import { useI18n } from "@/locales";
 import { useMetricsDashboard } from "../../hooks/useMetricsDashboard";
-import { buildPeriodLabel } from "../../utils/metrics.format.utils";
+import { MONTH_NAMES_ES } from "../../constants/metrics.constants";
+import { buildPeriodLabel } from "../../utils/metrics.date.utils";
 import { DashboardHeader } from "../DashboardHeader/DashboardHeader";
 import { StatCards } from "../StatCards/StatCards";
 import { MetricsTabs } from "../MetricsTabs/MetricsTabs";
@@ -13,7 +14,7 @@ export function MetricsDashboardView({ reservations, rooms }: MetricsDashboardVi
   const { t } = useI18n();
   const { dateRange, setDateRange, metrics } = useMetricsDashboard(reservations, rooms);
 
-  const periodLabel = buildPeriodLabel(dateRange);
+  const periodLabel = buildPeriodLabel(dateRange, MONTH_NAMES_ES);
 
   return (
     <main className={STYLES.page}>

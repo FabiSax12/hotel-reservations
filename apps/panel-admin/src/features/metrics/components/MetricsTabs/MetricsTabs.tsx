@@ -11,18 +11,18 @@ export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
   return (
     <Tabs className={STYLES.wrapper} variant="secondary" defaultSelectedKey={KEYS.RESERVATIONS_BY_STATUS}>
       <Tabs.ListContainer>
-        <Tabs.List aria-label="Secciones del dashboard" className={STYLES.list}>
+        <Tabs.List aria-label={texts.TABS.LIST_ARIA_LABEL} className={STYLES.list}>
           <Tabs.Tab id={KEYS.RESERVATIONS_BY_STATUS} className={STYLES.tab}>
             {texts.TABS.RESERVATIONS_BY_STATUS}
-            <Tabs.Indicator />
+            <Tabs.Indicator className={STYLES.indicator} />
           </Tabs.Tab>
           <Tabs.Tab id={KEYS.ROOM_OCCUPANCY} className={STYLES.tab}>
             {texts.TABS.ROOM_OCCUPANCY}
-            <Tabs.Indicator />
+            <Tabs.Indicator className={STYLES.indicator} />
           </Tabs.Tab>
           <Tabs.Tab id={KEYS.RANKING} className={STYLES.tab}>
             {texts.TABS.RANKING}
-            <Tabs.Indicator />
+            <Tabs.Indicator className={STYLES.indicator} />
           </Tabs.Tab>
         </Tabs.List>
       </Tabs.ListContainer>
@@ -38,7 +38,9 @@ export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
           totalLabel={texts.STATUS_TAB.TOTAL_LABEL}
           periodPrefix={texts.STATUS_TAB.PERIOD_PREFIX}
           weeklyTitle={texts.STATUS_TAB.WEEKLY_TITLE}
-          weeklySubtitle={texts.STATUS_TAB.WEEKLY_SUBTITLE}
+          weeklyEmptyText={texts.STATUS_TAB.WEEKLY_EMPTY}
+          chartAriaLabel={texts.STATUS_TAB.CHART_ARIA_LABEL}
+          barAriaLabel={texts.STATUS_TAB.BAR_ARIA_LABEL}
         />
       </Tabs.Panel>
 
@@ -58,6 +60,7 @@ export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
           ranking={metrics.ranking}
           subtitle={texts.RANKING_TAB.SUBTITLE}
           reservationsSuffix={texts.RANKING_TAB.RESERVATIONS_SUFFIX}
+          meterAriaLabelSuffix={texts.RANKING_TAB.METER_ARIA_LABEL_SUFFIX}
           emptyText={texts.RANKING_TAB.EMPTY}
         />
       </Tabs.Panel>

@@ -1,5 +1,7 @@
 import type { ReservationStatus } from "../domain/metrics.types";
 
+export type ProgressColor = "success" | "warning" | "accent" | "default" | "danger";
+
 export const ACTIVE_STATUSES = Object.freeze(["approved", "completed"] as const satisfies ReservationStatus[]);
 
 export const STATUS_COLORS = Object.freeze({
@@ -22,8 +24,6 @@ export const OCCUPANCY_THRESHOLDS = Object.freeze({
   HIGH:   80,
 } as const);
 
-type ProgressColor = "success" | "warning" | "accent" | "default" | "danger";
-
 export const OCCUPANCY_COLORS = Object.freeze({
   LOW:    "success"  as ProgressColor,
   MEDIUM: "warning"  as ProgressColor,
@@ -36,11 +36,20 @@ export const MONTH_NAMES_ES = Object.freeze([
   "Jul", "Ago", "Sep", "Oct", "Nov", "Dic",
 ] as const);
 
+export const MONTH_NAMES_EN = Object.freeze([
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+] as const);
+
 export const STATUS_ORDER: ReservationStatus[] = ["pending", "approved", "cancelled", "completed"];
 
-export const MAX_WEEKLY_BARS = 7;
+export const MAX_WEEKLY_BARS  = 7;
+export const DAYS_TO_SUNDAY   = 6;
+export const MS_PER_DAY       = 86_400_000;
 
-export const PERCENTAGE_SCALE = 100;
+export const PERCENTAGE_SCALE   = 100;
+export const PCT_DECIMAL_PLACES = 1;
+export const ROOMS_SEPARATOR    = " / ";
 
 export const CURRENCY_LOCALE = "en-US";
 export const CURRENCY_CODE   = "USD";

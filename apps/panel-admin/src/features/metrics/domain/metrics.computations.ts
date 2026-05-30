@@ -1,3 +1,4 @@
+import { MONTH_NAMES_ES, PCT_DECIMAL_PLACES } from "../constants/metrics.constants";
 import { isInRange } from "../utils/metrics.date.utils";
 import { isActive, computeStatusCounts } from "./metrics.status.computations";
 import { computeWeeklyData } from "./metrics.weekly.computations";
@@ -10,27 +11,27 @@ export function computeMetrics(
   rooms: MetricsRoom[],
   dateRange: MetricsDateRange,
 ): DashboardMetrics {
-  const inRange = reservations.filter((r) => isInRange(r.checkIn, dateRange.start, dateRange.end));
+  const inRange      = reservations.filter((r) => isInRange(r.checkIn, dateRange.start, dateRange.end));
   const activeInRange = inRange.filter((r) => isActive(r.status));
 
-  const activeRooms = rooms.filter((r) => r.isActive);
+  const activeRooms    = rooms.filter((r) => r.isActive);
   const roomOccupancies = computeRoomOccupancies(activeInRange, activeRooms, dateRange);
 
   const averageOccupancy =
     roomOccupancies.length > 0
       ? parseFloat(
-          (roomOccupancies.reduce((sum, r) => sum + r.occupancyPct, 0) / roomOccupancies.length).toFixed(1),
+          (roomOccupancies.reduce((sum, r) => sum + r.occupancyPct, 0) / roomOccupancies.length).toFixed(PCT_DECIMAL_PLACES),
         )
       : 0;
 
   return {
     totalReservations: inRange.length,
-    totalRevenue: activeInRange.reduce((sum, r) => sum + r.totalAmount, 0),
+    totalRevenue:      activeInRange.reduce((sum, r) => sum + r.totalAmount, 0),
     averageOccupancy,
-    activeRooms: activeRooms.length,
-    totalRooms: rooms.length,
+    activeRooms:  activeRooms.length,
+    totalRooms:   rooms.length,
     statusCounts: computeStatusCounts(inRange),
-    weeklyData: computeWeeklyData(inRange),
+    weeklyData:   computeWeeklyData(inRange, MONTH_NAMES_ES),
     roomOccupancies,
     ranking: computeRanking(activeInRange, activeRooms),
   };

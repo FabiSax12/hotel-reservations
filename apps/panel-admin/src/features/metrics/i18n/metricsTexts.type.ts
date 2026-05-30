@@ -16,14 +16,17 @@ export interface MetricsTexts {
     RESERVATIONS_BY_STATUS: string;
     ROOM_OCCUPANCY: string;
     RANKING: string;
+    LIST_ARIA_LABEL: string;
   };
   STATUS_TAB: {
     TITLE: string;
     TOTAL_LABEL: string;
     PERIOD_PREFIX: string;
     WEEKLY_TITLE: string;
-    WEEKLY_SUBTITLE: string;
+    WEEKLY_EMPTY: string;
+    CHART_ARIA_LABEL: string;
     LEGEND_LABEL: string;
+    BAR_ARIA_LABEL: string;
   };
   STATUS_LABELS: {
     PENDING: string;
@@ -41,6 +44,7 @@ export interface MetricsTexts {
     SUBTITLE: string;
     RESERVATIONS_SUFFIX: string;
     EMPTY: string;
+    METER_ARIA_LABEL_SUFFIX: string;
   };
   ERRORS: {
     FETCH_RESERVATIONS: string;

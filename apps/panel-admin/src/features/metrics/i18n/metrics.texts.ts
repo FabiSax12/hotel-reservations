@@ -20,14 +20,17 @@ export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
       RESERVATIONS_BY_STATUS: "Reservaciones por Estado",
       ROOM_OCCUPANCY: "Ocupación por Cuarto",
       RANKING: "Ranking & Ingresos",
+      LIST_ARIA_LABEL: "Secciones del dashboard",
     },
     STATUS_TAB: {
       TITLE: "Reservaciones por Estado",
       TOTAL_LABEL: "reservaciones en el rango seleccionado",
       PERIOD_PREFIX: "PERÍODO",
       WEEKLY_TITLE: "Distribución semanal",
-      WEEKLY_SUBTITLE: "Reservaciones por estado · últimas 7 semanas",
+      WEEKLY_EMPTY: "Sin datos para el período seleccionado",
+      CHART_ARIA_LABEL: "Distribución semanal de reservaciones",
       LEGEND_LABEL: "Leyenda",
+      BAR_ARIA_LABEL: "Distribución de estados",
     },
     STATUS_LABELS: {
       PENDING: "Pendiente",
@@ -45,6 +48,7 @@ export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
       SUBTITLE: "Cuartos ordenados por número de reservaciones aprobadas o completadas",
       RESERVATIONS_SUFFIX: "reserv.",
       EMPTY: "No hay reservaciones activas para el rango seleccionado.",
+      METER_ARIA_LABEL_SUFFIX: "de reservaciones",
     },
     ERRORS: {
       FETCH_RESERVATIONS: "Error al obtener métricas de reservaciones",
@@ -69,14 +73,17 @@ export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
       RESERVATIONS_BY_STATUS: "Reservations by Status",
       ROOM_OCCUPANCY: "Occupancy by Room",
       RANKING: "Ranking & Revenue",
+      LIST_ARIA_LABEL: "Dashboard sections",
     },
     STATUS_TAB: {
       TITLE: "Reservations by Status",
       TOTAL_LABEL: "reservations in selected range",
       PERIOD_PREFIX: "PERIOD",
       WEEKLY_TITLE: "Weekly distribution",
-      WEEKLY_SUBTITLE: "Reservations by status · last 7 weeks",
+      WEEKLY_EMPTY: "No data for the selected period",
+      CHART_ARIA_LABEL: "Weekly distribution of reservations",
       LEGEND_LABEL: "Legend",
+      BAR_ARIA_LABEL: "Status distribution",
     },
     STATUS_LABELS: {
       PENDING: "Pending",
@@ -94,6 +101,7 @@ export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
       SUBTITLE: "Rooms ordered by number of approved or completed reservations",
       RESERVATIONS_SUFFIX: "reserv.",
       EMPTY: "No active reservations for the selected range.",
+      METER_ARIA_LABEL_SUFFIX: "of reservations",
     },
     ERRORS: {
       FETCH_RESERVATIONS: "Error fetching reservation metrics",
