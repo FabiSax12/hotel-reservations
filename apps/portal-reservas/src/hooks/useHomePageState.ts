@@ -9,20 +9,22 @@
 
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { SearchParams } from "../features/search/domain/types";
-import { mockRooms } from "../features/rooms/mock-data/rooms";
-import { filterRoomsByDestination } from "../features/rooms/domain/filters";
-import { SEARCH_VALS, TIMEOUTS } from "../features/search/components/search-bar/constants/search.constants";
-import { REGIONS_CONFIG } from "../features/search/components/search-bar/constants/regionsConfig";
-import { useScrollLock } from "./useScrollLock";
+import { useState } from "react";
 import { ROUTES } from "../config/routes";
+import { filterRoomsByDestination } from "../features/rooms/domain/filters";
+import { mockRooms } from "../features/rooms/mock-data/rooms";
+import { REGIONS_CONFIG } from "../features/search/components/search-bar/constants/regionsConfig";
+import {
+  SEARCH_VALS,
+  TIMEOUTS,
+} from "../features/search/components/search-bar/constants/search.constants";
+import type { SearchParams } from "../features/search/domain/types";
+import { useScrollLock } from "./useScrollLock";
 
 // If the hotel only operates in a single region, auto-select it so the user
 // skips the destination picker and sees rooms immediately (US-DM-02 AC #1).
-const AUTO_SELECTED_LOCATION =
-  REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
+const AUTO_SELECTED_LOCATION = REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
 
 export function useHomePageState() {
   const router = useRouter();
@@ -69,7 +71,9 @@ export function useHomePageState() {
     }, TIMEOUTS.SEARCH_TRIGGER_DELAY);
   };
 
-  const handleReset = () => { router.push(ROUTES.HOME); };
+  const handleReset = () => {
+    router.push(ROUTES.HOME);
+  };
 
   const filteredRooms = filterRoomsByDestination(
     mockRooms,

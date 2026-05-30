@@ -5,7 +5,7 @@
  * exists, and notifies the parent component on changes.
  */
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { SEARCH_VALS } from "../constants/search.constants";
 import type { UseDestinationStateOptions } from "../domain/types";

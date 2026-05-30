@@ -5,11 +5,11 @@
 "use client";
 
 import { useState } from "react";
+import { UI_PACKAGE_CONSTANTS, UI_VARIANTS } from "../../constants/ui.constants";
+import type { CalendarPopoverProps } from "../../types/calendar.types";
 import { parseDateHelper } from "../../utils/date.utils";
 import { CALENDAR_STYLES as S } from "./Calendar.theme";
 import { CalendarMonth } from "./CalendarMonth";
-import { UI_VARIANTS, UI_PACKAGE_CONSTANTS } from "../../constants/ui.constants";
-import type { CalendarPopoverProps } from "../../types/calendar.types";
 
 export function CalendarPopover({
   checkIn,
@@ -54,17 +54,17 @@ export function CalendarPopover({
           onPickDate={onPickDate}
           onHoverDay={setHoveredDay}
           onPrev={() => setCurrentMonthOffset((prev) => Math.max(0, prev - 1))}
-          onNext={() => setCurrentMonthOffset((prev) => Math.min(UI_PACKAGE_CONSTANTS.CALENDAR.MAX_MONTHS - 2, prev + 1))}
+          onNext={() =>
+            setCurrentMonthOffset((prev) =>
+              Math.min(UI_PACKAGE_CONSTANTS.CALENDAR.MAX_MONTHS - 2, prev + 1),
+            )
+          }
           startLabel={startLabel}
           endLabel={endLabel}
           availableDates={availableDates}
         />
       ))}
-      {bottomContent && (
-        <div className={S.bottomContentWrapper}>
-          {bottomContent}
-        </div>
-      )}
+      {bottomContent && <div className={S.bottomContentWrapper}>{bottomContent}</div>}
     </div>
   );
 }

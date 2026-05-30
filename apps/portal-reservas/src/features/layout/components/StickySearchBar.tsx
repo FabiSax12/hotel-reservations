@@ -7,9 +7,9 @@
  * re-triggers the results with updated filters.
  */
 
+import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 import { ModernSearchBar } from "../../search/components/search-bar";
 import type { StickySearchBarProps } from "../domain/types";
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 
 export function StickySearchBar({ searchParams, onSearch }: StickySearchBarProps) {
   return (

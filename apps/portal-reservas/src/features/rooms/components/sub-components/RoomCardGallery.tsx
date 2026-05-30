@@ -11,10 +11,10 @@
  * markup, relying on the grid animation to show/hide it without layout shifts.
  */
 
-import type { RoomCardGalleryProps } from "../../domain/types";
-import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
-import { useI18n } from "@/locales";
 import Image from "next/image";
+import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import type { RoomCardGalleryProps } from "../../domain/types";
 
 export function RoomCardGallery({ room }: RoomCardGalleryProps) {
   const { t } = useI18n();

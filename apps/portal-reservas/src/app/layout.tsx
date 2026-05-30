@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   description: "Sistema de reservas hoteleras",
 };
 
-import { playfair, dmSans } from "@/config/fonts";
+import { dmSans, playfair } from "@/config/fonts";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

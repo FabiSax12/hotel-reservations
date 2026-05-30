@@ -46,7 +46,6 @@ export async function updateReservationStatus(
       : {}),
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error } = await supabase
     .from(DB_TABLES.RESERVATIONS)
     .update(updateData)

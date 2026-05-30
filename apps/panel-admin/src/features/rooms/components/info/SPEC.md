@@ -1,7 +1,7 @@
 # Feature Specification: Register Room Info and Fees
 
-**Status:** in-progress
-**Version:** 1.5
+**Status:** completed
+**Version:** 2.0
 
 ## 1. Objective 
 As an administrator I need to register new room with all the neccesary textual information (name, category, capacity{adults, kids}, description), fees (regular fee, high season fee) and state (active, inactive). 
@@ -9,13 +9,13 @@ As an administrator I need to register new room with all the neccesary textual i
 ## 2. Scope & Boundaries
 **In Scope:**
 * Create a sql file with the neccesary structure for needed table inside packages/db/supabase/migrations.
-* Create a mock-service to mimic how the service would be with a real DB and API implementation.
-* Create a new room with all the neccesary info and storage in a local file.
+* Implement `roomService.ts` using Supabase for real DB and API interaction.
+* Create a new room with all the neccesary info and storage in Supabase.
 
 **Out of Scope (Do Not Modify):**
 * Do not modify any other feature outside the rooms feature, neither the other folders (amenities, schedule).
 * Do not add images, check-in/check-out schedules.
-* Do not create real database implementation.
+
 
 ## 3. Architecture & Context
 **Core Folders Involved:**

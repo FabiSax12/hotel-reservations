@@ -67,4 +67,22 @@ export interface RoomsTexts {
     DELETE_WARNING_CONFIRM: string;
     DELETE_WARNING_CANCEL: string;
   };
+  SCHEDULES: {
+    TITLE: string;
+    SUBTITLE: string;
+    CHECK_IN_LABEL: string;
+    CHECK_IN_PLACEHOLDER: string;
+    CHECK_IN_RANGE_HINT: string;
+    CHECK_OUT_LABEL: string;
+    CHECK_OUT_PLACEHOLDER: string;
+    CHECK_OUT_RANGE_HINT: string;
+    SUBMIT: string;
+    HINT: string;
+    LOADING: string;
+    SUCCESS_SAVE: string;
+    EMPTY_SELECTION: string;
+    CANCEL: string;
+    ERROR_LOAD: string;
+    ERROR_SAVE: string;
+  };
 }

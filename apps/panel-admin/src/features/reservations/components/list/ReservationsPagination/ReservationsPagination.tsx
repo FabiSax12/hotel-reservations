@@ -1,14 +1,14 @@
 "use client";
 
 import { Pagination } from "@heroui/react";
-import type { ReservationsPaginationProps } from "./ReservationsPagination.interface";
-import { RESERVATIONS_PAGINATION_STYLES } from "./ReservationsPagination.styles";
 import {
   PAGINATION_ELLIPSIS_THRESHOLD,
   PAGINATION_LABELS,
   PAGINATION_MAX_VISIBLE_PAGES,
   PAGINATION_NEIGHBOR_WINDOW,
 } from "../../../constants/pagination";
+import type { ReservationsPaginationProps } from "./ReservationsPagination.interface";
+import { RESERVATIONS_PAGINATION_STYLES } from "./ReservationsPagination.styles";
 
 function getPageNumbers(page: number, totalPages: number): (number | "ellipsis")[] {
   const pages: (number | "ellipsis")[] = [];
@@ -44,7 +44,8 @@ export function ReservationsPagination({
   return (
     <Pagination className={RESERVATIONS_PAGINATION_STYLES.wrapper}>
       <Pagination.Summary>
-        {PAGINATION_LABELS.SHOWING} {startItem}–{endItem} {PAGINATION_LABELS.OF} {totalItems} {PAGINATION_LABELS.ITEMS_LABEL}
+        {PAGINATION_LABELS.SHOWING} {startItem}–{endItem} {PAGINATION_LABELS.OF} {totalItems}{" "}
+        {PAGINATION_LABELS.ITEMS_LABEL}
       </Pagination.Summary>
       <Pagination.Content>
         <Pagination.Item>
@@ -65,7 +66,7 @@ export function ReservationsPagination({
                 {p}
               </Pagination.Link>
             </Pagination.Item>
-          )
+          ),
         )}
 
         <Pagination.Item>

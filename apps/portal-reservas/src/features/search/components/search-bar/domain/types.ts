@@ -96,7 +96,12 @@ export interface UseSearchBarContextValueDeps {
     validationError: ValidationError | null;
     isShaking: boolean;
     clearError: () => void;
-    validateSearch: (dest: string, inDate: string, outDate: string, onlyOneSede: string | null) => boolean;
+    validateSearch: (
+      dest: string,
+      inDate: string,
+      outDate: string,
+      onlyOneSede: string | null,
+    ) => boolean;
     fieldHasError: (k: string) => boolean;
   };
   destState: {
@@ -131,7 +136,12 @@ export interface UseSearchTriggerDeps {
   childrenCount: number;
   pets: number;
   onlyOneSede: string | null;
-  validateSearch: (dest: string, inDate: string, outDate: string, onlyOneSede: string | null) => boolean;
+  validateSearch: (
+    dest: string,
+    inDate: string,
+    outDate: string,
+    onlyOneSede: string | null,
+  ) => boolean;
   clearError: () => void;
   showError: (error: ValidationError) => void;
   setActive: (s: ActiveSection) => void;

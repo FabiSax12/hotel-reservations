@@ -3,8 +3,8 @@
  */
 
 import React from "react";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 import type { ErrorTooltipProps } from "../domain/types";
+import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
 
 export function ErrorTooltip({ message }: ErrorTooltipProps) {
   const { icons } = S;

@@ -2,8 +2,8 @@
  * @file ScrollIndicator.tsx — Animated scroll hint shown below the hero.
  */
 
-import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 import { useI18n } from "@/locales";
+import { HERO_SEARCH_STYLES as S } from "../../../theme/search.theme";
 import type { ScrollIndicatorProps } from "../domain/types";
 
 export function ScrollIndicator({ heroCalendarActive }: ScrollIndicatorProps) {
@@ -11,12 +11,16 @@ export function ScrollIndicator({ heroCalendarActive }: ScrollIndicatorProps) {
 
   return (
     <div className={S.scrollIndicator.container(heroCalendarActive)}>
-      <span className={S.scrollIndicator.badge}>
-        {t.SEARCH.HERO.BROWSE_ROOMS}
-      </span>
+      <span className={S.scrollIndicator.badge}>{t.SEARCH.HERO.BROWSE_ROOMS}</span>
 
       <div className={S.scrollIndicator.iconWrapper}>
-        <svg className={S.scrollIndicator.mouseIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <svg
+          className={S.scrollIndicator.mouseIcon}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={1.5}
+        >
           <rect x="7" y="3" width="10" height="18" rx="5" ry="5"></rect>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v4" />
         </svg>
