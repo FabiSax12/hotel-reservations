@@ -1,3 +1,7 @@
+export const MIN_SLOT_WIDTH      = 64;
+export const MIN_SVG_WIDTH       = 600;
+export const Y_AXIS_FALLBACK_MAX = 10;
+
 export const CHART_LAYOUT = {
   height:          244,
   marginTop:       16,

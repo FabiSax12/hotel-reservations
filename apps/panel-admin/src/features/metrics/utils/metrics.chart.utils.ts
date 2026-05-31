@@ -1,30 +1,9 @@
 import { STATUS_COLORS, STATUS_ORDER } from "../constants/metrics.constants";
-import { CHART_LAYOUT } from "../constants/metrics.chart.constants";
-import type { ReservationStatus, WeeklyDataPoint } from "../domain/metrics.types";
-
-export interface ChartDimensions {
-  svgWidth:   number;
-  plotWidth:  number;
-  plotHeight: number;
-}
-
-export interface BarLayout {
-  slotWidth:  number;
-  barWidth:   number;
-  barXOffset: number;
-}
-
-export interface BarSegment {
-  status: ReservationStatus;
-  path:   string;
-  fill:   string;
-}
-
-const MIN_SLOT_WIDTH = 64;
-const MIN_SVG_WIDTH  = 600;
+import { CHART_LAYOUT, MIN_SLOT_WIDTH, MIN_SVG_WIDTH, Y_AXIS_FALLBACK_MAX } from "../constants/metrics.chart.constants";
+import type { BarLayout, BarSegment, ChartDimensions, WeeklyDataPoint } from "../domain/metrics.types";
 
 export function computeYMax(maxTotal: number): number {
-  if (maxTotal === 0) return 10;
+  if (maxTotal === 0) return Y_AXIS_FALLBACK_MAX;
   const magnitude = Math.pow(10, Math.floor(Math.log10(maxTotal)));
   return Math.ceil(maxTotal / magnitude) * magnitude;
 }

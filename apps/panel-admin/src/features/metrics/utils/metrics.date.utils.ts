@@ -1,8 +1,19 @@
-import { MS_PER_DAY } from "../constants/metrics.constants";
+import {
+  DAYS_IN_WEEK,
+  FIRST_DAY_OF_MONTH,
+  ISO_DATE_LENGTH,
+  ISO_WEEK1_JAN_DAY,
+  ISO_WEEK_START,
+  JANUARY_MONTH_IDX,
+  LAST_DAY_PREV_MONTH,
+  MONDAY_JS_OFFSET,
+  MS_PER_DAY,
+  THURSDAY_ISO_DAY,
+} from "../constants/metrics.constants";
 import type { MetricsDateRange } from "../domain/metrics.types";
 
 function toDateIso(d: Date): string {
-  return d.toISOString().slice(0, 10);
+  return d.toISOString().slice(0, ISO_DATE_LENGTH);
 }
 
 export function getTodayIso(): string {
@@ -11,7 +22,7 @@ export function getTodayIso(): string {
 
 export function getStartOfMonthIso(): string {
   const d = new Date();
-  return toDateIso(new Date(d.getFullYear(), d.getMonth(), 1));
+  return toDateIso(new Date(d.getFullYear(), d.getMonth(), FIRST_DAY_OF_MONTH));
 }
 
 export function isInRange(dateIso: string, start: string, end: string): boolean {
@@ -21,20 +32,25 @@ export function isInRange(dateIso: string, start: string, end: string): boolean 
 export function getISOWeek(dateIso: string): number {
   const d = new Date(dateIso);
   d.setHours(0, 0, 0, 0);
-  // Shift to the nearest Thursday to determine the ISO week year
-  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7));
-  const jan4 = new Date(d.getFullYear(), 0, 4);
-  return 1 + Math.round(((d.getTime() - jan4.getTime()) / MS_PER_DAY - 3 + ((jan4.getDay() + 6) % 7)) / 7);
+  // Shift to nearest Thursday — ISO weeks are identified by their Thursday
+  d.setDate(d.getDate() + THURSDAY_ISO_DAY - ((d.getDay() + MONDAY_JS_OFFSET) % DAYS_IN_WEEK));
+  const jan4 = new Date(d.getFullYear(), JANUARY_MONTH_IDX, ISO_WEEK1_JAN_DAY);
+  return ISO_WEEK_START + Math.round(
+    ((d.getTime() - jan4.getTime()) / MS_PER_DAY
+      - THURSDAY_ISO_DAY
+      + ((jan4.getDay() + MONDAY_JS_OFFSET) % DAYS_IN_WEEK))
+    / DAYS_IN_WEEK,
+  );
 }
 
 export function getDaysInMonth(year: number, month: number): number {
-  return new Date(year, month + 1, 0).getDate();
+  return new Date(year, month + 1, LAST_DAY_PREV_MONTH).getDate();
 }
 
 export function getMondayOfWeek(dateIso: string): Date {
   const d = new Date(dateIso);
   d.setHours(0, 0, 0, 0);
-  const dayOfWeek = (d.getDay() + 6) % 7;
+  const dayOfWeek = (d.getDay() + MONDAY_JS_OFFSET) % DAYS_IN_WEEK;
   d.setDate(d.getDate() - dayOfWeek);
   return d;
 }

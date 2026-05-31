@@ -1,5 +1,6 @@
 import { CHART_LAYOUT } from "../../../constants/metrics.chart.constants";
 import { buildBarSegments } from "../../../utils/metrics.chart.utils";
+import { CHART_BARS_STYLES as STYLES } from "./ChartBars.styles";
 import type { ChartBarsProps } from "./ChartBars.interface";
 
 export function ChartBars({ data, yMax, plotHeight, slotWidth, barWidth, barXOffset, labelY, onBarEnter, onMouseMove }: ChartBarsProps) {
@@ -13,7 +14,7 @@ export function ChartBars({ data, yMax, plotHeight, slotWidth, barWidth, barXOff
         return (
           <g
             key={`${point.weekLabel.range}-${point.weekLabel.month}`}
-            style={{ cursor: "pointer" }}
+            style={STYLES.barGroup}
             onMouseEnter={(e) => onBarEnter(e, point)}
             onMouseMove={onMouseMove}
           >
@@ -24,7 +25,7 @@ export function ChartBars({ data, yMax, plotHeight, slotWidth, barWidth, barXOff
               textAnchor="middle"
               fontSize={11}
               fontWeight="bold"
-              style={{ fill: "#9ca3af", letterSpacing: "0.1em", textTransform: "uppercase" }}
+              style={STYLES.axisLabel}
             >
               <tspan x={centerX} y={labelY}>{point.weekLabel.range}</tspan>
               <tspan x={centerX} dy={CHART_LAYOUT.labelLineHeight}>{point.weekLabel.month}</tspan>

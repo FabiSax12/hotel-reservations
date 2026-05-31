@@ -1,10 +1,11 @@
 "use client";
 
 import { RoomOccupancyRow } from "../../shared/RoomOccupancyRow/RoomOccupancyRow";
+import { formatPct } from "../../../utils/metrics.format.utils";
 import { ROOM_OCCUPANCY_TAB_STYLES as STYLES } from "./RoomOccupancyTab.styles";
 import type { RoomOccupancyTabProps } from "./RoomOccupancyTab.interface";
 
-export function RoomOccupancyTab({ roomOccupancies, subtitle, emptyText }: RoomOccupancyTabProps) {
+export function RoomOccupancyTab({ roomOccupancies, subtitle, emptyText, reservationsSuffix, nightsSuffix, meterAriaLabelSuffix }: RoomOccupancyTabProps) {
   const hasData = roomOccupancies.length > 0;
 
   return (
@@ -17,7 +18,11 @@ export function RoomOccupancyTab({ roomOccupancies, subtitle, emptyText }: RoomO
               key={room.roomId}
               roomName={room.roomName}
               occupancyPct={room.occupancyPct}
-              revenue={room.revenue}
+              reservationCount={room.reservationCount}
+              nights={room.nights}
+              reservationsSuffix={reservationsSuffix}
+              nightsSuffix={nightsSuffix}
+              meterAriaLabel={`${room.roomName}: ${formatPct(room.occupancyPct)} ${meterAriaLabelSuffix}`}
             />
           ))}
         </div>

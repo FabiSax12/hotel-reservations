@@ -37,6 +37,6 @@ export function computeRoomOccupancies(
         ? Math.min(PERCENTAGE_SCALE, parseFloat(((nights / totalMonthNights) * PERCENTAGE_SCALE).toFixed(PCT_DECIMAL_PLACES)))
         : 0;
 
-    return { roomId: room.id, roomName: room.name, occupancyPct, revenue, reservationCount: roomReservations.length };
+    return { roomId: room.id, roomName: room.name, occupancyPct, revenue, reservationCount: roomReservations.length, nights };
   });
 }

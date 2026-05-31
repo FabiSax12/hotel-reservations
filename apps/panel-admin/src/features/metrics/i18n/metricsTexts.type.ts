@@ -38,6 +38,9 @@ export interface MetricsTexts {
     TITLE: string;
     SUBTITLE: string;
     EMPTY: string;
+    RESERVATIONS_SUFFIX: string;
+    NIGHTS_SUFFIX: string;
+    METER_ARIA_LABEL_SUFFIX: string;
   };
   RANKING_TAB: {
     TITLE: string;

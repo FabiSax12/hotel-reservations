@@ -51,6 +51,9 @@ export function MetricsTabs({ metrics, periodLabel, texts }: MetricsTabsProps) {
           title={texts.OCCUPANCY_TAB.TITLE}
           subtitle={texts.OCCUPANCY_TAB.SUBTITLE}
           emptyText={texts.OCCUPANCY_TAB.EMPTY}
+          reservationsSuffix={texts.OCCUPANCY_TAB.RESERVATIONS_SUFFIX}
+          nightsSuffix={texts.OCCUPANCY_TAB.NIGHTS_SUFFIX}
+          meterAriaLabelSuffix={texts.OCCUPANCY_TAB.METER_ARIA_LABEL_SUFFIX}
         />
       </Tabs.Panel>
 

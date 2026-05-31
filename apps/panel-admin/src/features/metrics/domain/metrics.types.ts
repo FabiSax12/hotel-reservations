@@ -51,6 +51,7 @@ export interface RoomOccupancy {
   occupancyPct: number;
   revenue: number;
   reservationCount: number;
+  nights: number;
 }
 
 export interface RankingEntry {
@@ -60,6 +61,24 @@ export interface RankingEntry {
   reservationCount: number;
   revenue: number;
   proportionPct: number;
+}
+
+export interface ChartDimensions {
+  svgWidth:   number;
+  plotWidth:  number;
+  plotHeight: number;
+}
+
+export interface BarLayout {
+  slotWidth:  number;
+  barWidth:   number;
+  barXOffset: number;
+}
+
+export interface BarSegment {
+  status: ReservationStatus;
+  path:   string;
+  fill:   string;
 }
 
 export interface DashboardMetrics {

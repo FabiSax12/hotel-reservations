@@ -19,7 +19,7 @@ export function ChartTooltip({ tooltip, statusLabels }: ChartTooltipProps) {
       <p className={STYLES.title}>
         {tooltip.point.weekLabel.range} {tooltip.point.weekLabel.month}
       </p>
-      <div className="flex flex-col gap-1">
+      <div className={STYLES.statusList}>
         {STATUS_ORDER.filter((s) => tooltip.point[s] > 0).map((status) => (
           <div key={status} className={STYLES.row}>
             <span className={STYLES.dot} style={{ backgroundColor: STATUS_COLORS[status].hex }} />

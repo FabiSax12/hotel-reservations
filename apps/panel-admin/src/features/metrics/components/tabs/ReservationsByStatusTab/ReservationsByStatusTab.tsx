@@ -24,6 +24,13 @@ export function ReservationsByStatusTab({
 }: ReservationsByStatusTabProps) {
   const total = totalReservations;
 
+  const statusLabelMap = {
+    pending:   statusLabels.PENDING,
+    approved:  statusLabels.APPROVED,
+    cancelled: statusLabels.CANCELLED,
+    completed: statusLabels.COMPLETED,
+  };
+
   const barSegments: ProportionalBarSegment[] = STATUS_ORDER.map((status) => ({
     status,
     pct: computePct(statusCounts[status], total),
@@ -43,30 +50,15 @@ export function ReservationsByStatusTab({
       </div>
 
       <div className={STYLES.chipsGrid}>
-        <StatusChip
-          status="pending"
-          label={statusLabels.PENDING}
-          count={statusCounts.pending}
-          pct={computePct(statusCounts.pending, total)}
-        />
-        <StatusChip
-          status="approved"
-          label={statusLabels.APPROVED}
-          count={statusCounts.approved}
-          pct={computePct(statusCounts.approved, total)}
-        />
-        <StatusChip
-          status="cancelled"
-          label={statusLabels.CANCELLED}
-          count={statusCounts.cancelled}
-          pct={computePct(statusCounts.cancelled, total)}
-        />
-        <StatusChip
-          status="completed"
-          label={statusLabels.COMPLETED}
-          count={statusCounts.completed}
-          pct={computePct(statusCounts.completed, total)}
-        />
+        {STATUS_ORDER.map((status) => (
+          <StatusChip
+            key={status}
+            status={status}
+            label={statusLabelMap[status]}
+            count={statusCounts[status]}
+            pct={computePct(statusCounts[status], total)}
+          />
+        ))}
       </div>
 
       <ProportionalBar segments={barSegments} ariaLabel={barAriaLabel} />

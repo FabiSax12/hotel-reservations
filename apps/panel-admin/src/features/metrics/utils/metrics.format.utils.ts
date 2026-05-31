@@ -1,5 +1,6 @@
 import {
   CURRENCY_CODE,
+  CURRENCY_FRACTION_DIGITS,
   CURRENCY_LOCALE,
   PCT_DECIMAL_PLACES,
   PERCENTAGE_SCALE,
@@ -7,9 +8,9 @@ import {
 
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat(CURRENCY_LOCALE, {
-    style: "currency",
-    currency: CURRENCY_CODE,
-    maximumFractionDigits: 0,
+    style:                "currency",
+    currency:             CURRENCY_CODE,
+    maximumFractionDigits: CURRENCY_FRACTION_DIGITS,
   }).format(amount);
 }
 

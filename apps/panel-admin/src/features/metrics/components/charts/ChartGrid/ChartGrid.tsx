@@ -1,5 +1,6 @@
 import { CHART_LAYOUT } from "../../../constants/metrics.chart.constants";
 import { toPlotY } from "../../../utils/metrics.chart.utils";
+import { CHART_GRID_STYLES as STYLES } from "./ChartGrid.styles";
 import type { ChartGridProps } from "./ChartGrid.interface";
 
 export function ChartGrid({ gridValues, yMax, plotWidth, plotHeight }: ChartGridProps) {
@@ -14,7 +15,7 @@ export function ChartGrid({ gridValues, yMax, plotWidth, plotHeight }: ChartGrid
               y1={y}
               x2={CHART_LAYOUT.marginLeft + plotWidth}
               y2={y}
-              style={{ stroke: "var(--border)" }}
+              style={STYLES.gridLine}
               strokeWidth={1}
             />
             <text
@@ -23,7 +24,7 @@ export function ChartGrid({ gridValues, yMax, plotWidth, plotHeight }: ChartGrid
               textAnchor="end"
               fontSize={11}
               fontWeight="bold"
-              style={{ fill: "#9ca3af", letterSpacing: "0.1em", textTransform: "uppercase" }}
+              style={STYLES.axisLabel}
             >
               {val}
             </text>

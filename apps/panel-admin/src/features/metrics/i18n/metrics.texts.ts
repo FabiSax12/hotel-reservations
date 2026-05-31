@@ -40,12 +40,16 @@ export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
     },
     OCCUPANCY_TAB: {
       TITLE: "Ocupación por Cuarto",
-      SUBTITLE: "Porcentaje de ocupación y revenue por habitación",
+      SUBTITLE: "Porcentaje de ocupación por habitación en el período seleccionado",
       EMPTY: "No hay datos de ocupación para el rango seleccionado.",
+      RESERVATIONS_SUFFIX: "reserv.",
+      NIGHTS_SUFFIX: "noches",
+      METER_ARIA_LABEL_SUFFIX: "de ocupación",
     },
     RANKING_TAB: {
       TITLE: "Ranking & Ingresos",
-      SUBTITLE: "Cuartos ordenados por número de reservaciones aprobadas o completadas",
+      SUBTITLE:
+        "Cuartos ordenados por número de reservaciones aprobadas o completadas",
       RESERVATIONS_SUFFIX: "reserv.",
       EMPTY: "No hay reservaciones activas para el rango seleccionado.",
       METER_ARIA_LABEL_SUFFIX: "de reservaciones",
@@ -93,8 +97,11 @@ export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
     },
     OCCUPANCY_TAB: {
       TITLE: "Occupancy by Room",
-      SUBTITLE: "Occupancy percentage and revenue per room",
+      SUBTITLE: "Occupancy percentage per room in the selected period",
       EMPTY: "No occupancy data for the selected range.",
+      RESERVATIONS_SUFFIX: "reserv.",
+      NIGHTS_SUFFIX: "nights",
+      METER_ARIA_LABEL_SUFFIX: "occupancy",
     },
     RANKING_TAB: {
       TITLE: "Ranking & Revenue",
