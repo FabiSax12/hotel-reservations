@@ -5,11 +5,14 @@ import { useAdminsFiltering } from "../../hooks/useAdminsFiltering";
 import { useToggleAdminStatus } from "../../hooks/useToggleAdminStatus";
 import { AdminsPageHeader } from "../AdminsPageHeader/AdminsPageHeader";
 import { AdminsTable } from "../AdminsTable/AdminsTable";
+import { AdminsFilters } from "../Filters/AdminsFilters";
 import type { AdminsTableViewProps } from "./AdminsTableView.interface";
-import { ADMINS_PAGE_STYLES } from "./AdminsTableView.styles";
+import { ADMINS_PAGE_STYLES, CARD_STYLES } from "./AdminsTableView.styles";
+import type { AdminStatusFilter } from "../Filters/AdminsFilters.interface";
 
 export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps) => {
   const [admins, setAdmins] = useState(initialAdmins);
+  const [activeFilter, setActiveFilter] = useState<AdminStatusFilter>("all");
   const { statusCounts } = useAdminsFiltering(admins);
 
   const refreshAdmins = useCallback(async () => {
@@ -23,6 +26,16 @@ export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps)
   return (
     <main className={ADMINS_PAGE_STYLES.wrapper}>
       <AdminsPageHeader totalCount={admins.length} statusCounts={statusCounts} />
+
+      <div className={CARD_STYLES.bodySmall}>
+        <AdminsFilters
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          isFiltered={activeFilter !== "all"}
+          onClear={() => setActiveFilter("all")}
+          statusCounts={statusCounts}
+        />
+      </div>
 
       <AdminsTable admins={admins} onToggle={handleToggle} togglingId={togglingId} />
     </main>

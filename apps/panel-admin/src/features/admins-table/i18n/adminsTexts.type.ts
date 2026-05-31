@@ -26,6 +26,11 @@ export type AdminsTexts = {
     TITLE: string;
     DESCRIPTION: string;
   };
+  FILTERS: {
+    ACTIVE: string;
+    INACTIVE: string;
+    CLEAR: string;
+  };
   INVITATIONS: {
     SECTION_TITLE: string;
     TAB_PENDING: string;
