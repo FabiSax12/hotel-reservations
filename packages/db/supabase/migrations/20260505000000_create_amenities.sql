@@ -1,6 +1,6 @@
 -- Create amenities table
 CREATE TABLE IF NOT EXISTS public.amenities (
-    id UUID PRIMARY KEY DEFAULT crypto.random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL UNIQUE,
     icon TEXT, -- Name of the icon (e.g., from Lucide)
     description TEXT,
