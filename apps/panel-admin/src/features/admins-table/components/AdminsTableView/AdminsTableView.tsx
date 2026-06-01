@@ -13,7 +13,7 @@ import type { AdminStatusFilter } from "../Filters/AdminsFilters.interface";
 export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps) => {
   const [admins, setAdmins] = useState(initialAdmins);
   const [activeFilter, setActiveFilter] = useState<AdminStatusFilter>("all");
-  const { statusCounts } = useAdminsFiltering(admins);
+  const { statusCounts, filtered } = useAdminsFiltering(admins, activeFilter);
 
   const refreshAdmins = useCallback(async () => {
     const { getAdmins } = await import("../../services/getAdmins");
@@ -37,7 +37,7 @@ export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps)
         />
       </div>
 
-      <AdminsTable admins={admins} onToggle={handleToggle} togglingId={togglingId} />
+      <AdminsTable admins={filtered} onToggle={handleToggle} togglingId={togglingId} />
     </main>
   );
 };

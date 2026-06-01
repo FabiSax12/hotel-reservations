@@ -19,31 +19,28 @@ export const AdminsFilters = ({
   const { t } = useI18n();
   const texts = t.ADMINS.FILTERS;
 
+  const filterOptions = [
+    { value: "active" as const, label: texts.ACTIVE, dotColor: ADMIN_STATUS_DOT_COLOR.active },
+    { value: "inactive" as const, label: texts.INACTIVE, dotColor: ADMIN_STATUS_DOT_COLOR.inactive },
+  ];
+
   return (
     <div className={STYLES.wrapper}>
       <div className={STYLES.bar}>
-        <ButtonGroup className="flex flex-wrap items-center gap-2">
-          <Button
-            variant="ghost"
-            aria-pressed={activeFilter === "active"}
-            className={`${PILL.pill} ${activeFilter === "active" ? PILL.pillActive : PILL.pillInactive}`}
-            onPress={() => onFilterChange("active")}
-          >
-            <span className={`${PILL.pillStatusDot} ${ADMIN_STATUS_DOT_COLOR.active}`} />
-            {texts.ACTIVE}
-            <span className={PILL.pillCount}>{statusCounts.active}</span>
-          </Button>
-
-          <Button
-            variant="ghost"
-            aria-pressed={activeFilter === "inactive"}
-            className={`${PILL.pill} ${activeFilter === "inactive" ? PILL.pillActive : PILL.pillInactive}`}
-            onPress={() => onFilterChange("inactive")}
-          >
-            <span className={`${PILL.pillStatusDot} ${ADMIN_STATUS_DOT_COLOR.inactive}`} />
-            {texts.INACTIVE}
-            <span className={PILL.pillCount}>{statusCounts.inactive}</span>
-          </Button>
+        <ButtonGroup className={STYLES.buttonGroup}>
+          {filterOptions.map(({ value, label, dotColor }) => (
+            <Button
+              key={value}
+              variant="ghost"
+              aria-pressed={activeFilter === value}
+              className={`${PILL.pill} ${activeFilter === value ? PILL.pillActive : PILL.pillInactive}`}
+              onPress={() => onFilterChange(value)}
+            >
+              <span className={`${PILL.pillStatusDot} ${dotColor}`} />
+              {label}
+              <span className={PILL.pillCount}>{statusCounts[value]}</span>
+            </Button>
+          ))}
         </ButtonGroup>
 
         <div className={STYLES.spacer} />
