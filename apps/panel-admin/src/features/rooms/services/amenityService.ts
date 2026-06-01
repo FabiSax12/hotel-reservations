@@ -12,7 +12,10 @@ export const amenityService = {
     return data as Amenity[];
   },
 
-  getRoomAmenities: async (roomId: string, supabase = createSupabaseClient()): Promise<string[]> => {
+  getRoomAmenities: async (
+    roomId: string,
+    supabase = createSupabaseClient(),
+  ): Promise<string[]> => {
     const { data, error } = await supabase
       .from(DB_TABLES.ROOM_AMENITIES)
       .select(DB_COLUMNS.room_amenities.amenity_id)
@@ -56,11 +59,13 @@ export const amenityService = {
   ): Promise<Amenity> => {
     const { data, error } = await supabase
       .from(DB_TABLES.AMENITIES)
-      .insert([{ 
-        [DB_COLUMNS.amenities.name]: name, 
-        [DB_COLUMNS.amenities.icon]: icon, 
-        [DB_COLUMNS.amenities.description]: description 
-      }])
+      .insert([
+        {
+          [DB_COLUMNS.amenities.name]: name,
+          [DB_COLUMNS.amenities.icon]: icon,
+          [DB_COLUMNS.amenities.description]: description,
+        },
+      ])
       .select()
       .single();
 
@@ -77,10 +82,10 @@ export const amenityService = {
   ): Promise<Amenity> => {
     const { data, error } = await supabase
       .from(DB_TABLES.AMENITIES)
-      .update({ 
-        [DB_COLUMNS.amenities.name]: name, 
-        [DB_COLUMNS.amenities.icon]: icon, 
-        [DB_COLUMNS.amenities.description]: description 
+      .update({
+        [DB_COLUMNS.amenities.name]: name,
+        [DB_COLUMNS.amenities.icon]: icon,
+        [DB_COLUMNS.amenities.description]: description,
       })
       .eq(DB_COLUMNS.amenities.id, id)
       .select()

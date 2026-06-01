@@ -1,11 +1,11 @@
 "use client";
 
-import { CMS_LOCALES, CMS_LOCALE_LIST } from "@/features/cms/constants/cms-fields";
-import { CMS_LOCALE_LABELS } from "@/features/cms/constants/sectionConfigs";
-import { ImageUploadSlot } from "@/features/cms/components/ImageUploadSlot/ImageUploadSlot";
 import { CmsSaveFooter } from "@/features/cms/components/CmsSaveFooter/CmsSaveFooter";
-import { CMS_SECTION_EDITOR_STYLES as s } from "./CmsSectionEditor.styles";
+import { ImageUploadSlot } from "@/features/cms/components/ImageUploadSlot/ImageUploadSlot";
+import { CMS_LOCALE_LIST, CMS_LOCALES } from "@/features/cms/constants/cms-fields";
+import { CMS_LOCALE_LABELS } from "@/features/cms/constants/sectionConfigs";
 import type { CmsSectionEditorProps } from "./CmsSectionEditor.interface";
+import { CMS_SECTION_EDITOR_STYLES as s } from "./CmsSectionEditor.styles";
 
 export function CmsSectionEditor({
   config,
@@ -30,9 +30,7 @@ export function CmsSectionEditor({
 
   const body = (
     <>
-      {config.getBodyLabel && (
-        <span className={s.bodyLabel}>{config.getBodyLabel(texts)}</span>
-      )}
+      {config.getBodyLabel && <span className={s.bodyLabel}>{config.getBodyLabel(texts)}</span>}
 
       <div className={config.imageGrid ? s.grid : s.fields}>
         {config.fields.map((field, idx) => {
@@ -95,12 +93,24 @@ export function CmsSectionEditor({
       {hasTextFields ? (
         <form onSubmit={handleSubmit} className={s.formBody}>
           {body}
-          <CmsSaveFooter type="submit" isSaving={isSaving} isSuccess={isSuccess} isError={isError} texts={texts} />
+          <CmsSaveFooter
+            type="submit"
+            isSaving={isSaving}
+            isSuccess={isSuccess}
+            isError={isError}
+            texts={texts}
+          />
         </form>
       ) : (
         <div className={s.formBody}>
           {body}
-          <CmsSaveFooter isSaving={isSaving} isSuccess={isSuccess} isError={isError} texts={texts} onSave={onSave} />
+          <CmsSaveFooter
+            isSaving={isSaving}
+            isSuccess={isSuccess}
+            isError={isError}
+            texts={texts}
+            onSave={onSave}
+          />
         </div>
       )}
     </div>

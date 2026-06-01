@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { Avatar, Button } from "@heroui/react";
+import { Check, Copy, Eye } from "lucide-react";
+import Link from "next/link";
 import { useI18n } from "@/locales";
-import { formatTableDate } from "../../../utils/format-reservation-date";
 import { formatAmount } from "../../../utils/format-currency";
+import { formatTableDate } from "../../../utils/format-reservation-date";
 import { StatusBadge } from "../../shared/StatusBadge/StatusBadge";
-import { Copy, Check, Eye } from "lucide-react";
-import { useCopyCode } from "./useCopyCode";
-import { RESERVATION_ROW_STYLES as STYLES } from "./ReservationRow.styles";
 import type { ReservationRowProps } from "./ReservationRow.interface";
+import { RESERVATION_ROW_STYLES as STYLES } from "./ReservationRow.styles";
+import { useCopyCode } from "./useCopyCode";
 
 export const ReservationRow = ({ reservation: r }: ReservationRowProps) => {
   const { t } = useI18n();
@@ -28,11 +28,7 @@ export const ReservationRow = ({ reservation: r }: ReservationRowProps) => {
             aria-label={t.RESERVATIONS.ACTIONS.COPY_CODE}
             onPress={handleCopyCode}
           >
-            {copied ? (
-              <Check className={STYLES.copyIcon} />
-            ) : (
-              <Copy className={STYLES.copyIcon} />
-            )}
+            {copied ? <Check className={STYLES.copyIcon} /> : <Copy className={STYLES.copyIcon} />}
           </Button>
         </div>
       </td>

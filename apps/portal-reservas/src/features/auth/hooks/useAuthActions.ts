@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { signOut } from "../services/authSessionService";
 import { ROUTES } from "@/config/routes";
 import { useUserStore } from "@/store/userStore";
+import { signOut } from "../services/authSessionService";
 
 export function useAuthActions() {
   const router = useRouter();

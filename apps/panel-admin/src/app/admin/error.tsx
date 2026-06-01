@@ -6,7 +6,7 @@ import { useI18n } from "@/locales";
 const ADMIN_ERROR_PAGE_STYLES = {
   main: "flex h-screen flex-col items-center justify-center bg-background",
   alertWrapper: "max-w-lg",
-} as const
+} as const;
 
 interface AdminErrorProps {
   error: Error & { digest?: string };
@@ -27,9 +27,7 @@ export default function AdminError({ error, reset }: AdminErrorProps) {
         <Alert.Indicator />
         <Alert.Content>
           <Alert.Title>{t.COMMON.STATUS.ERROR_TITLE}</Alert.Title>
-          <Alert.Description>
-            {t.COMMON.STATUS.ERROR_MESSAGE}
-          </Alert.Description>
+          <Alert.Description>{t.COMMON.STATUS.ERROR_MESSAGE}</Alert.Description>
           <Button onPress={handleRetry} className="mt-2 sm:hidden" size="sm" variant="danger">
             {t.COMMON.STATUS.TRY_AGAIN}
           </Button>
