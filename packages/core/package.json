@@ -9,7 +9,8 @@
     "./auth": "./src/auth/index.ts",
     "./booking": "./src/booking/index.ts",
     "./payments": "./src/payments/index.ts",
-    "./email": "./src/email/index.ts"
+    "./email": "./src/email/index.ts",
+    "./permissions": "./src/permissions/index.ts"
   },
   "scripts": {
     "lint": "biome check .",

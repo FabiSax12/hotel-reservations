@@ -281,6 +281,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_permissions: {
+        Row: {
+          user_id: string
+          permission: Database["public"]["Enums"]["user_permission"]
+          granted_by: string | null
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          permission: Database["public"]["Enums"]["user_permission"]
+          granted_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          user_id?: string
+          permission?: Database["public"]["Enums"]["user_permission"]
+          granted_by?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_permissions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_permissions_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       user_roles: {
         Row: {
           role: Database["public"]["Enums"]["user_role"]
@@ -315,6 +351,20 @@ export type Database = {
     }
     Enums: {
       invitation_status: "pending" | "accepted" | "revoked" | "expired"
+      user_permission:
+        | "view:dashboard"
+        | "reservations:view"
+        | "reservations:edit"
+        | "reservations:delete"
+        | "admins:view"
+        | "admins:invite"
+        | "admins:disable"
+        | "admins:revoke"
+        | "cms:manage"
+        | "permissions:manage"
+        | "rooms:manage"
+        | "invoices:view"
+        | "clients:view"
       user_role: "owner" | "admin" | "client"
     }
     CompositeTypes: {
@@ -444,6 +494,21 @@ export const Constants = {
   public: {
     Enums: {
       invitation_status: ["pending", "accepted", "revoked", "expired"],
+      user_permission: [
+        "view:dashboard",
+        "reservations:view",
+        "reservations:edit",
+        "reservations:delete",
+        "admins:view",
+        "admins:invite",
+        "admins:disable",
+        "admins:revoke",
+        "cms:manage",
+        "permissions:manage",
+        "rooms:manage",
+        "invoices:view",
+        "clients:view",
+      ],
       user_role: ["owner", "admin", "client"],
     },
   },

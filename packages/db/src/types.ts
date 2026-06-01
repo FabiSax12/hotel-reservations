@@ -17,8 +17,17 @@ export interface ClientProfile {
 
 export type UserProfile = AdminProfile | ClientProfile;
 
+export interface UserPermission {
+  user_id: string;
+  permission: Database["public"]["Enums"]["user_permission"];
+  granted_by: string | null;
+  created_at: string;
+}
+
+export type PermissionName = Database["public"]["Enums"]["user_permission"];
 export interface AdminUser extends AdminProfile {
   role: "admin" | "owner";
+  permissions?: PermissionName[];
 }
 
 export interface ClientUser extends ClientProfile {
