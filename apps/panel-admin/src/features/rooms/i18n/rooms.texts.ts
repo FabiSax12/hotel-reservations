@@ -1,9 +1,11 @@
 import type { SupportedLocale } from "@hotel/i18n";
 import { PREDEFINED_AMENITY_IDS } from "../constants/amenities.constants";
+import { ROOMS_LIST_TEXTS } from "./roomsList.texts";
 import type { RoomsTexts } from "./roomsTexts.type";
 
 export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
   es: {
+    LIST: ROOMS_LIST_TEXTS.es,
     FORM: {
       TITLE_CREATE: "Registrar Nueva Habitación",
       TITLE_EDIT: "Editar Habitación",
@@ -134,6 +136,7 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     },
   },
   en: {
+    LIST: ROOMS_LIST_TEXTS.en,
     FORM: {
       TITLE_CREATE: "Register New Room",
       TITLE_EDIT: "Edit Room",
