@@ -31,6 +31,13 @@ export type AdminsTexts = {
     INACTIVE: string;
     CLEAR: string;
   };
+  PAGINATION: {
+    SHOWING: string;
+    OF: string;
+    ITEMS_LABEL: string;
+    PREVIOUS: string;
+    NEXT: string;
+  };
   INVITATIONS: {
     SECTION_TITLE: string;
     TAB_PENDING: string;

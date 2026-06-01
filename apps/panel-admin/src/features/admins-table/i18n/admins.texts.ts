@@ -35,6 +35,13 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       INACTIVE: "Inactivo",
       CLEAR: "Limpiar filtros",
     },
+    PAGINATION: {
+      SHOWING: "Mostrando",
+      OF: "de",
+      ITEMS_LABEL: "administradores",
+      PREVIOUS: "Anterior",
+      NEXT: "Siguiente",
+    },
     INVITATIONS: {
       SECTION_TITLE: "Invitaciones pendientes",
       TAB_PENDING: "Pendientes",
@@ -99,6 +106,13 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       ACTIVE: "Active",
       INACTIVE: "Inactive",
       CLEAR: "Clear filters",
+    },
+    PAGINATION: {
+      SHOWING: "Showing",
+      OF: "of",
+      ITEMS_LABEL: "administrators",
+      PREVIOUS: "Previous",
+      NEXT: "Next",
     },
     INVITATIONS: {
       SECTION_TITLE: "Pending invitations",
