@@ -1,8 +1,6 @@
 import type { Room } from "@/features/rooms/domain/room.interface";
-import type {
-  RoomsFilterAction,
-  RoomsFilterState,
-} from "@/features/rooms/reducers/roomsFilter/actions";
+import type { RoomsFilterAction } from "@/features/rooms/reducers/roomsFilter/actions";
+import type { RoomsFilterState } from "../../reducers/roomsFilter/initial-state";
 
 export interface RoomsFilterContextValue {
   state: RoomsFilterState;
