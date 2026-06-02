@@ -12,9 +12,10 @@
 
 import { useI18n } from "@/locales";
 import { PACKAGE_CARD_STYLES } from "../../../../theme/rooms.theme";
-import { CTA_ICON_PATHS, CTA_ICON_VIEW_BOX } from "../../constants/cta-icons.const";
+import { CTA_ICON_PATHS } from "../../constants/cta-icons.const";
 import type { PackageCardCTAProps } from "../../domain/types";
 import { CTASpinner } from "./CTASpinner";
+import { CtaIcon } from "./CtaIcon";
 
 export function PackageCardCTA({
   hasDates,
@@ -38,16 +39,11 @@ export function PackageCardCTA({
           aria-expanded={isCalendarOpen}
           aria-label={t.ROOMS.CHECK_DATES_ACTION}
         >
-          <svg
+          <CtaIcon
+            path={CTA_ICON_PATHS.calendar}
             className={PACKAGE_CARD_STYLES.ctaBtnCalendarIcon}
-            fill="none"
-            aria-hidden="true"
-            viewBox={CTA_ICON_VIEW_BOX}
-            stroke="currentColor"
             strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d={CTA_ICON_PATHS.calendar} />
-          </svg>
+          />
           {t.ROOMS.CHECK_DATES_ACTION}
         </button>
       )}
@@ -74,20 +70,11 @@ export function PackageCardCTA({
             </>
           ) : (
             <>
-              <svg
+              <CtaIcon
+                path={CTA_ICON_PATHS.chevronRight}
                 className={PACKAGE_CARD_STYLES.ctaBtnArrowIcon}
-                fill="none"
-                aria-hidden="true"
-                viewBox={CTA_ICON_VIEW_BOX}
-                stroke="currentColor"
                 strokeWidth={2.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d={CTA_ICON_PATHS.chevronRight}
-                />
-              </svg>
+              />
               {t.ROOMS.PACKAGE_RESERVE}
             </>
           )}

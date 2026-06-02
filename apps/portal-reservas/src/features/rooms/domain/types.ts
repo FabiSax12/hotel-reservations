@@ -97,6 +97,14 @@ export interface RoomCardCTAProps {
   room: Room;
 }
 
+/** A decorative stroke icon for the reserve/check-dates buttons. */
+export interface CtaIconProps {
+  /** SVG path data from CTA_ICON_PATHS. */
+  path: string;
+  className: string;
+  strokeWidth: number;
+}
+
 export interface RoomCardHeaderProps {
   room: Room;
   selectedDest?: string | null;

@@ -54,6 +54,12 @@ export const STRIPE_SESSION_PLACEHOLDER = "{CHECKOUT_SESSION_ID}";
 /** Query-string key carrying the gateway session ID on the success page. */
 export const SESSION_ID_PARAM = "session_id";
 
+/** DOM ids wiring the terms checkbox to its label and error message. */
+export const TERMS_FIELD = Object.freeze({
+  CHECKBOX_ID: "accept-terms",
+  ERROR_ID: "accept-terms-error",
+} as const);
+
 /** Stable codes for checkout submission failures (mapped to i18n text). */
 export const CHECKOUT_ERROR_CODE = Object.freeze({
   PAYMENT: "PAYMENT",

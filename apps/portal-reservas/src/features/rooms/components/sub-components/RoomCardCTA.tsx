@@ -9,45 +9,29 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { DOM_EVENTS } from "@/constants/dom-events.constants";
 import { useI18n } from "@/locales";
 import { ROOM_CARD_STYLES } from "../../../../theme/rooms.theme";
-import { CTA_ICON_PATHS, CTA_ICON_VIEW_BOX } from "../../constants/cta-icons.const";
-import { useRoomsContext } from "../../context/RoomsContext";
+import { CTA_ICON_PATHS } from "../../constants/cta-icons.const";
 import type { RoomCardCTAProps } from "../../domain/types";
+import { usePackageCardState } from "../../hooks/usePackageCardState";
 import { useReserveAction } from "../../hooks/useReserveAction";
-import { useRoomAvailability } from "../../hooks/useRoomAvailability";
 import { CTASpinner } from "./CTASpinner";
+import { CtaIcon } from "./CtaIcon";
 import { RoomRangeCalendar } from "./RoomRangeCalendar";
 
 export function RoomCardCTA({ room }: RoomCardCTAProps) {
   const { t } = useI18n();
-  const { hasDates, searchDates } = useRoomsContext();
-  const { isAvailable, isLoading } = useRoomAvailability(
-    room.id,
-    searchDates?.checkIn,
-    searchDates?.checkOut,
-    room.availableDates,
-  );
+  const {
+    wrapperRef,
+    calendarRef,
+    hasDates,
+    isAvailable,
+    isLoading,
+    isCalendarOpen,
+    toggleCalendar,
+    closeCalendar,
+  } = usePackageCardState(room);
   const { reserve, isReserving } = useReserveAction();
-
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const calendarRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!isCalendarOpen) return;
-    const handler = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (wrapperRef.current?.contains(target) || calendarRef.current?.contains(target)) return;
-      setIsCalendarOpen(false);
-    };
-    document.addEventListener(DOM_EVENTS.MOUSEDOWN, handler);
-    return () => document.removeEventListener(DOM_EVENTS.MOUSEDOWN, handler);
-  }, [isCalendarOpen]);
-
-  const toggleCalendar = () => setIsCalendarOpen((v) => !v);
 
   return (
     <div ref={wrapperRef} className={ROOM_CARD_STYLES.ctaWrapperRelative}>
@@ -57,7 +41,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
           availableDates={room.availableDates}
           location={room.location}
           roomId={room.id}
-          onClose={() => setIsCalendarOpen(false)}
+          onClose={closeCalendar}
           anchorRef={wrapperRef}
           onPortalRef={(el) => {
             calendarRef.current = el;
@@ -74,16 +58,11 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
           aria-expanded={isCalendarOpen}
           aria-label={t.ROOMS.CHECK_DATES_ACTION}
         >
-          <svg
+          <CtaIcon
+            path={CTA_ICON_PATHS.calendar}
             className={ROOM_CARD_STYLES.ctaBtnCalendarIcon}
-            fill="none"
-            aria-hidden="true"
-            viewBox={CTA_ICON_VIEW_BOX}
-            stroke="currentColor"
             strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d={CTA_ICON_PATHS.calendar} />
-          </svg>
+          />
           {t.ROOMS.CHECK_DATES_ACTION}
         </button>
       )}
@@ -110,20 +89,11 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
             </>
           ) : (
             <>
-              <svg
+              <CtaIcon
+                path={CTA_ICON_PATHS.chevronRight}
                 className={ROOM_CARD_STYLES.ctaBtnArrowIcon}
-                fill="none"
-                aria-hidden="true"
-                viewBox={CTA_ICON_VIEW_BOX}
-                stroke="currentColor"
                 strokeWidth={2.5}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d={CTA_ICON_PATHS.chevronRight}
-                />
-              </svg>
+              />
               {t.ROOMS.RESERVE_ACTION}
             </>
           )}

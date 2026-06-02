@@ -12,12 +12,13 @@
 
 import {
   CTASpinner,
+  CtaIcon,
   RoomRangeCalendar,
   usePackageCardState,
   useReserveAction,
 } from "@/features/rooms";
 import { useI18n } from "@/locales";
-import { ICON_PATHS, ICON_VIEW_BOX } from "../constants/room-detail-icons.const";
+import { ICON_PATHS } from "../constants/room-detail-icons.const";
 import type { RoomDetailCtaProps } from "../domain/types";
 import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 
@@ -59,16 +60,11 @@ export function RoomDetailCta({ room, reserveRooms, isPackage }: RoomDetailCtaPr
           onClick={toggleCalendar}
           aria-expanded={isCalendarOpen}
         >
-          <svg
+          <CtaIcon
+            path={ICON_PATHS.calendar}
             className={ROOM_DETAIL_STYLES.ctaIcon}
-            fill="none"
-            viewBox={ICON_VIEW_BOX}
-            stroke="currentColor"
             strokeWidth={2}
-            aria-hidden="true"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.calendar} />
-          </svg>
+          />
           {t.ROOMS.CHECK_DATES_ACTION}
         </button>
       )}
@@ -94,16 +90,11 @@ export function RoomDetailCta({ room, reserveRooms, isPackage }: RoomDetailCtaPr
           ) : (
             <>
               {reserveLabel}
-              <svg
+              <CtaIcon
+                path={ICON_PATHS.chevronRight}
                 className={ROOM_DETAIL_STYLES.ctaIcon}
-                fill="none"
-                viewBox={ICON_VIEW_BOX}
-                stroke="currentColor"
                 strokeWidth={2.5}
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronRight} />
-              </svg>
+              />
             </>
           )}
         </button>

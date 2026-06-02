@@ -27,8 +27,3 @@ export function validateGuestDetails(values: GuestDetails): GuestFormErrors {
 
   return errors;
 }
-
-/** True when the guest details pass every validation rule. */
-export function isGuestFormValid(values: GuestDetails): boolean {
-  return Object.keys(validateGuestDetails(values)).length === 0;
-}

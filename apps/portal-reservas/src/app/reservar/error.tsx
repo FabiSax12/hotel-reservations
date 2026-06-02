@@ -10,15 +10,11 @@
 
 import { APP_PAGE_STRINGS } from "@/constants/app-pages.constants";
 import { ERROR_PAGE_STYLES } from "@/theme/app-pages.theme";
+import type { ReserveErrorProps } from "./error.interface";
 
-export default function ReserveError({
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function ReserveError({ reset }: ReserveErrorProps) {
   return (
-    <main className={ERROR_PAGE_STYLES.main}>
+    <main className={ERROR_PAGE_STYLES.main} role="alert">
       <div className={ERROR_PAGE_STYLES.contentWrapper}>
         <div className={ERROR_PAGE_STYLES.iconCircle}>
           <svg

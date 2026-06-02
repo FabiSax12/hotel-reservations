@@ -9,11 +9,9 @@
 
 import { useState } from "react";
 import { useI18n } from "@/locales";
+import { TERMS_FIELD } from "../constants/checkout.constants";
 import type { TermsAcceptanceProps } from "../domain/types";
 import { CHECKOUT_STYLES } from "../theme/checkout.theme";
-
-const TERMS_CHECKBOX_ID = "accept-terms";
-const TERMS_ERROR_ID = "accept-terms-error";
 
 export function TermsAcceptance({ checked, error, onChange }: TermsAcceptanceProps) {
   const { t } = useI18n();
@@ -23,15 +21,15 @@ export function TermsAcceptance({ checked, error, onChange }: TermsAcceptancePro
     <div className={CHECKOUT_STYLES.terms}>
       <div className={CHECKOUT_STYLES.termsRow}>
         <input
-          id={TERMS_CHECKBOX_ID}
+          id={TERMS_FIELD.CHECKBOX_ID}
           type="checkbox"
           className={CHECKOUT_STYLES.termsCheckbox}
           checked={checked}
           onChange={(event) => onChange(event.target.checked)}
           aria-invalid={Boolean(error)}
-          aria-describedby={error ? TERMS_ERROR_ID : undefined}
+          aria-describedby={error ? TERMS_FIELD.ERROR_ID : undefined}
         />
-        <label htmlFor={TERMS_CHECKBOX_ID} className={CHECKOUT_STYLES.termsLabel}>
+        <label htmlFor={TERMS_FIELD.CHECKBOX_ID} className={CHECKOUT_STYLES.termsLabel}>
           {t.CHECKOUT.TERMS_PREFIX}
           {t.CHECKOUT.TERMS_LINK}
         </label>
@@ -49,7 +47,7 @@ export function TermsAcceptance({ checked, error, onChange }: TermsAcceptancePro
       {showTerms ? <p className={CHECKOUT_STYLES.termsBody}>{t.CHECKOUT.TERMS_BODY}</p> : null}
 
       {error ? (
-        <span id={TERMS_ERROR_ID} className={CHECKOUT_STYLES.fieldError} role="alert">
+        <span id={TERMS_FIELD.ERROR_ID} className={CHECKOUT_STYLES.fieldError} role="alert">
           {error}
         </span>
       ) : null}

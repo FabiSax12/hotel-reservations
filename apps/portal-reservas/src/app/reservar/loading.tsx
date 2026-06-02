@@ -10,7 +10,7 @@ import { LOADING_PAGE_STYLES } from "@/theme/app-pages.theme";
 
 export default function Loading() {
   return (
-    <main className={LOADING_PAGE_STYLES.main}>
+    <main className={LOADING_PAGE_STYLES.main} role="status" aria-busy="true">
       <div className={LOADING_PAGE_STYLES.contentWrapper}>
         <div className={LOADING_PAGE_STYLES.spinner} />
         <p className={LOADING_PAGE_STYLES.text}>{APP_PAGE_STRINGS.LOADING_TEXT}</p>
