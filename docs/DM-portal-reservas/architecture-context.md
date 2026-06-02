@@ -172,6 +172,13 @@ Each file does ONE thing. Each component does ONE thing.
 Zero tolerance for inline raw strings and numbers in logic.
 
 * **Constants Files:** All functional strings and numbers centralized in `constants/` files.
+* **No Data Constants in Component Files:** Component files (`.tsx`) MUST NOT declare standalone data constants — SVG `path` data, `viewBox` strings, icon maps, query strings, magic numbers, thresholds, delays. These belong in a dedicated `constants/` file (e.g. `<feature>-icons.const.ts` for SVG path/viewBox data, `<feature>.constants.ts` for thresholds/queries) and are imported by name. The ONLY module-level `const` permitted in a `.tsx` is a framework singleton that must live at module scope (e.g. `const Ctx = createContext(...)`). Concrete violation to reject in review:
+  ```tsx
+  // ❌ Declared at the top of a .tsx component file:
+  const ICON_VIEW_BOX = "0 0 24 24";
+  const PACKAGE_PATH = "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5";
+  ```
+  Move these to `constants/<feature>-icons.const.ts` (e.g. `export const ICON_VIEW_BOX = "0 0 24 24"` and an `ICON_PATHS` map) and reference `ICON_VIEW_BOX` / `ICON_PATHS.package` in the JSX.
 * **Immutability:** ALL constant objects MUST use `Object.freeze()` AND `as const` (e.g., `export const X = Object.freeze({ ... } as const)`). This catches typos at compile-time.
 * **Routes & Queries:** Zero hardcoded route strings outside `config/routes.ts`. Zero raw query key strings outside `config/queryKeys.ts`.
 * **Environment Variables:** All env vars accessed through `config/env.ts`, never via `process.env` inline.
@@ -274,6 +281,7 @@ Before considering a PR complete, verify:
 
 ### Constants, Configuration & Theming
 - [ ] No hardcoded route strings, query keys, or API URLs.
+- [ ] No standalone data constants (SVG `path`/`viewBox` data, icon maps, query strings, magic numbers/thresholds) declared in `.tsx` component files — they live in `constants/` files and are imported by name.
 - [ ] ALL constant objects use `Object.freeze()` AND `as const`.
 - [ ] All env vars accessed through `config/env.ts`.
 - [ ] All CSS values are CSS variables or Tailwind tokens consumed via isolated `.theme.ts` files.
