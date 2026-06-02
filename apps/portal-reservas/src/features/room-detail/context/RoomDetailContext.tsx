@@ -13,7 +13,7 @@
 
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 import type { Room, RoomPackage } from "@/features/rooms";
-import { ROOM_DETAIL } from "../constants/room-detail.constants";
+import { ROOM_DETAIL, SELECTION_KIND } from "../constants/room-detail.constants";
 import type { RoomDetailContextValue, RoomDetailSelection } from "../domain/types";
 
 const RoomDetailContext = createContext<RoomDetailContextValue | null>(null);
@@ -35,8 +35,11 @@ export function RoomDetailProvider({ children }: { children: React.ReactNode }) 
     setIsOpen(true);
   }, []);
 
-  const openRoom = useCallback((room: Room) => open({ kind: "room", room }), [open]);
-  const openPackage = useCallback((pkg: RoomPackage) => open({ kind: "package", pkg }), [open]);
+  const openRoom = useCallback((room: Room) => open({ kind: SELECTION_KIND.ROOM, room }), [open]);
+  const openPackage = useCallback(
+    (pkg: RoomPackage) => open({ kind: SELECTION_KIND.PACKAGE, pkg }),
+    [open],
+  );
 
   const close = useCallback(() => {
     setIsOpen(false);

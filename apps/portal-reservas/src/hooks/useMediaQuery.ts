@@ -9,6 +9,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DOM_EVENTS } from "@/constants/dom-events.constants";
 
 export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
@@ -17,8 +18,8 @@ export function useMediaQuery(query: string): boolean {
     const mql = window.matchMedia(query);
     setMatches(mql.matches);
     const handleChange = (event: MediaQueryListEvent) => setMatches(event.matches);
-    mql.addEventListener("change", handleChange);
-    return () => mql.removeEventListener("change", handleChange);
+    mql.addEventListener(DOM_EVENTS.CHANGE, handleChange);
+    return () => mql.removeEventListener(DOM_EVENTS.CHANGE, handleChange);
   }, [query]);
 
   return matches;

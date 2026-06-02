@@ -21,7 +21,7 @@ import { PACKAGE_CARD_STYLES, ROOM_CARD_STYLES } from "../../../theme/rooms.them
 import { useI18n } from "@/locales";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { usePackageCardState } from "../hooks/usePackageCardState";
-import { useRoomDetail } from "@/features/room-detail";
+import { SELECTION_KIND, useRoomDetail } from "@/features/room-detail";
 import { RoomCard } from "./RoomCard";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
@@ -32,7 +32,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
   const primaryRoom = pkg.rooms[0];
   const { selection, isOpen, openPackage, close } = useRoomDetail();
-  const isActive = isOpen && selection?.kind === "package" && selection.pkg.id === pkg.id;
+  const isActive = isOpen && selection?.kind === SELECTION_KIND.PACKAGE && selection.pkg.id === pkg.id;
   const handleOpenDetail = () => {
     if (isActive) close();
     else openPackage(pkg);

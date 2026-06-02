@@ -9,5 +9,6 @@
 
 export { RoomDetailMount } from "./components/RoomDetailMount";
 export { RoomDetailPush } from "./components/RoomDetailPush";
+export { SELECTION_KIND } from "./constants/room-detail.constants";
 export { RoomDetailProvider, useRoomDetail } from "./context/RoomDetailContext";
 export type { RoomDetailContextValue, RoomDetailSelection } from "./domain/types";

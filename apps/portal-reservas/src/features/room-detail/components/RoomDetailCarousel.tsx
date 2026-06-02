@@ -9,6 +9,7 @@
 
 import { useRef } from "react";
 import Image from "next/image";
+import { KEYBOARD_KEYS } from "@/constants/dom-events.constants";
 import { useI18n } from "@/locales";
 import { ROOM_DETAIL } from "../constants/room-detail.constants";
 import { ICON_PATHS, ICON_VIEW_BOX } from "../constants/room-detail-icons.const";
@@ -24,10 +25,10 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
     t.ROOM_DETAIL.IMAGE_POSITION.replace("{current}", String(i + 1)).replace("{total}", String(count));
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "ArrowLeft") {
+    if (event.key === KEYBOARD_KEYS.ARROW_LEFT) {
       event.preventDefault();
       onPrev();
-    } else if (event.key === "ArrowRight") {
+    } else if (event.key === KEYBOARD_KEYS.ARROW_RIGHT) {
       event.preventDefault();
       onNext();
     }

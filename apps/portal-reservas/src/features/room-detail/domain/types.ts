@@ -7,6 +7,7 @@
 
 import type { ReactNode } from "react";
 import type { Room, RoomPackage } from "@/features/rooms";
+import type { SELECTION_KIND } from "../constants/room-detail.constants";
 
 /**
  * What the side panel is currently showing: a single room or a full package.
@@ -14,8 +15,8 @@ import type { Room, RoomPackage } from "@/features/rooms";
  * panel's own availability calendar keeps the panel open and simply updates it.
  */
 export type RoomDetailSelection =
-  | { kind: "room"; room: Room }
-  | { kind: "package"; pkg: RoomPackage };
+  | { kind: typeof SELECTION_KIND.ROOM; room: Room }
+  | { kind: typeof SELECTION_KIND.PACKAGE; pkg: RoomPackage };
 
 /** Shared state for the room detail panel, distributed via RoomDetailContext. */
 export interface RoomDetailContextValue {

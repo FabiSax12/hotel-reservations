@@ -10,10 +10,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { DOM_EVENTS, KEYBOARD_KEYS } from "@/constants/dom-events.constants";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { useI18n } from "@/locales";
-import { ROOM_DETAIL_MOBILE_QUERY } from "../constants/room-detail.constants";
+import { ROOM_DETAIL_MOBILE_QUERY, SELECTION_KIND } from "../constants/room-detail.constants";
 import type { RoomDetailPanelProps } from "../domain/types";
 import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 import { PackageRoomsView } from "./PackageRoomsView";
@@ -44,14 +45,14 @@ export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelP
   // Close on Escape.
   useEffect(() => {
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === KEYBOARD_KEYS.ESCAPE) onClose();
     };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKey);
+    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKey);
   }, [onClose]);
 
   const isShown = entered && isOpen;
-  const isPackage = selection.kind === "package";
+  const isPackage = selection.kind === SELECTION_KIND.PACKAGE;
   const primaryRoom = isPackage ? selection.pkg.rooms[0] : selection.room;
   const price = isPackage ? selection.pkg.totalPricePerNight : selection.room.price;
   const eyebrow = primaryRoom.location;

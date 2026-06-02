@@ -17,3 +17,9 @@ export const ROOM_DETAIL = Object.freeze({
 
 /** Media query matching the mobile-sheet breakpoint (below Tailwind `lg`). */
 export const ROOM_DETAIL_MOBILE_QUERY = "(max-width: 1023px)";
+
+/** Discriminant values for a RoomDetailSelection. */
+export const SELECTION_KIND = Object.freeze({
+  ROOM: "room",
+  PACKAGE: "package",
+} as const);

@@ -20,7 +20,7 @@ import { useRoomsContext } from "../context/RoomsContext";
 import type { RoomCardProps } from "../domain/types";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { RoomImagePanel } from "./RoomImagePanel";
-import { useRoomDetail } from "@/features/room-detail";
+import { SELECTION_KIND, useRoomDetail } from "@/features/room-detail";
 import { RoomPriceTier } from "./RoomPriceTier";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
@@ -37,7 +37,7 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   );
 
   const isUnavailable = hasDates && !isLoading && !isAvailable;
-  const isActive = isOpen && selection?.kind === "room" && selection.room.id === room.id;
+  const isActive = isOpen && selection?.kind === SELECTION_KIND.ROOM && selection.room.id === room.id;
 
   const handleOpenDetail = () => {
     if (isActive) close();
