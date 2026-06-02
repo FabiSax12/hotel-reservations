@@ -11,7 +11,7 @@ import { getAmenityDetail, getAmenityIcon } from "@/features/rooms";
 import { useI18n } from "@/locales";
 import { AMENITY_VIEW_BOX } from "../constants/room-detail-icons.const";
 import type { RoomDetailAmenitiesProps } from "../domain/types";
-import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
+import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 
 export function RoomDetailAmenities({ amenities }: RoomDetailAmenitiesProps) {
   const { t } = useI18n();
@@ -20,17 +20,17 @@ export function RoomDetailAmenities({ amenities }: RoomDetailAmenitiesProps) {
 
   return (
     <div>
-      <p className={S.sectionLabel}>{t.ROOMS.AMENITIES_TITLE}</p>
-      <ul className={S.amenityList} aria-label={t.ROOMS.AMENITIES_TITLE}>
+      <p className={ROOM_DETAIL_STYLES.sectionLabel}>{t.ROOMS.AMENITIES_TITLE}</p>
+      <ul className={ROOM_DETAIL_STYLES.amenityList} aria-label={t.ROOMS.AMENITIES_TITLE}>
         {amenities.map((name) => {
           const icon = getAmenityIcon(name);
           const detail = getAmenityDetail(name);
           return (
-            <li key={name} className={S.amenityRow}>
-              <span className={S.amenityIconWrap}>
+            <li key={name} className={ROOM_DETAIL_STYLES.amenityRow}>
+              <span className={ROOM_DETAIL_STYLES.amenityIconWrap}>
                 {icon ? (
                   <svg
-                    className={S.amenityIconSvg}
+                    className={ROOM_DETAIL_STYLES.amenityIconSvg}
                     viewBox={AMENITY_VIEW_BOX}
                     fill={icon.isStroke ? "none" : "currentColor"}
                     stroke={icon.isStroke ? "currentColor" : "none"}
@@ -41,12 +41,12 @@ export function RoomDetailAmenities({ amenities }: RoomDetailAmenitiesProps) {
                     <path d={icon.path} />
                   </svg>
                 ) : (
-                  <span className={S.amenityDot} aria-hidden="true" />
+                  <span className={ROOM_DETAIL_STYLES.amenityDot} aria-hidden="true" />
                 )}
               </span>
-              <div className={S.amenityBody}>
-                <p className={S.amenityName}>{detail?.name ?? name}</p>
-                {detail?.description && <p className={S.amenityDesc}>{detail.description}</p>}
+              <div className={ROOM_DETAIL_STYLES.amenityBody}>
+                <p className={ROOM_DETAIL_STYLES.amenityName}>{detail?.name ?? name}</p>
+                {detail?.description && <p className={ROOM_DETAIL_STYLES.amenityDesc}>{detail.description}</p>}
               </div>
             </li>
           );

@@ -11,7 +11,7 @@
 import { useRoomsContext } from "@/features/rooms";
 import { useI18n } from "@/locales";
 import type { RoomDetailFooterProps } from "../domain/types";
-import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
+import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 import { RoomDetailCta } from "./RoomDetailCta";
 
 export function RoomDetailFooter({ room, price, isPackage }: RoomDetailFooterProps) {
@@ -19,16 +19,16 @@ export function RoomDetailFooter({ room, price, isPackage }: RoomDetailFooterPro
   const { hasDates } = useRoomsContext();
 
   return (
-    <footer className={S.footer}>
-      <div className={S.priceBlock}>
-        <span className={S.priceLabel}>{isPackage ? t.ROOMS.PACKAGE_TOTAL_LABEL : t.ROOMS.PRICE_LABEL}</span>
+    <footer className={ROOM_DETAIL_STYLES.footer}>
+      <div className={ROOM_DETAIL_STYLES.priceBlock}>
+        <span className={ROOM_DETAIL_STYLES.priceLabel}>{isPackage ? t.ROOMS.PACKAGE_TOTAL_LABEL : t.ROOMS.PRICE_LABEL}</span>
         {hasDates ? (
-          <span className={S.priceRow}>
-            <span className={S.priceAmount}>${price}</span>
-            <span className={S.priceCurrency}>{t.ROOMS.CURRENCY}</span>
+          <span className={ROOM_DETAIL_STYLES.priceRow}>
+            <span className={ROOM_DETAIL_STYLES.priceAmount}>${price}</span>
+            <span className={ROOM_DETAIL_STYLES.priceCurrency}>{t.ROOMS.CURRENCY}</span>
           </span>
         ) : (
-          <span className={S.pricePlaceholder}>{t.ROOM_DETAIL.PRICE_PLACEHOLDER}</span>
+          <span className={ROOM_DETAIL_STYLES.pricePlaceholder}>{t.ROOM_DETAIL.PRICE_PLACEHOLDER}</span>
         )}
       </div>
 

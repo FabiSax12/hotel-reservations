@@ -13,7 +13,7 @@
 
 "use client";
 
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
@@ -46,7 +46,7 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
 
   return (
     <article
-      className={`${S.card(isUnavailable)} ${isActive ? S.cardActive : ""}`}
+      className={`${ROOM_CARD_STYLES.card(isUnavailable)} ${isActive ? ROOM_CARD_STYLES.cardActive : ""}`}
       style={{
         animationDelay: `${index * ROOM_ANIMATION.CASCADE_DELAY_MS}ms`,
         animationDuration: `${ROOM_ANIMATION.ENTRANCE_DURATION_MS}ms`,
@@ -56,21 +56,21 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
       {/* Whole-card trigger — opens the detail panel (CTA is raised above it) */}
       <button
         type="button"
-        className={S.triggerOverlay}
+        className={ROOM_CARD_STYLES.triggerOverlay}
         onClick={handleOpenDetail}
         aria-expanded={isActive}
         aria-label={t.ROOM_DETAIL.OPEN_LABEL.replace("{title}", room.title)}
       />
 
       {/* Hover glow overlay */}
-      <div className={S.cardHoverGlow} aria-hidden="true" />
+      <div className={ROOM_CARD_STYLES.cardHoverGlow} aria-hidden="true" />
 
       {/* Left: image panel with badges */}
       <RoomImagePanel room={room} />
 
       {/* Right: card body */}
-      <div className={S.body}>
-        <div className={S.bodyHeader}>
+      <div className={ROOM_CARD_STYLES.body}>
+        <div className={ROOM_CARD_STYLES.bodyHeader}>
           <RoomCardHeader room={room} selectedDest={selectedDest} />
         </div>
 

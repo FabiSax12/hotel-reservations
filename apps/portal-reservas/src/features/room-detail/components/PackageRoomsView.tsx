@@ -10,7 +10,7 @@
 import { useI18n } from "@/locales";
 import { ICON_PATHS, ICON_VIEW_BOX } from "../constants/room-detail-icons.const";
 import type { PackageRoomsViewProps } from "../domain/types";
-import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
+import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 import { RoomDetailRoomSection } from "./RoomDetailRoomSection";
 
 export function PackageRoomsView({ pkg }: PackageRoomsViewProps) {
@@ -18,12 +18,12 @@ export function PackageRoomsView({ pkg }: PackageRoomsViewProps) {
   const total = pkg.rooms.length;
 
   return (
-    <div className={S.bodyStack}>
-      <div className={S.packageBanner}>
-        <svg className={S.packageBannerIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={1.8}>
+    <div className={ROOM_DETAIL_STYLES.bodyStack}>
+      <div className={ROOM_DETAIL_STYLES.packageBanner}>
+        <svg className={ROOM_DETAIL_STYLES.packageBannerIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={1.8}>
           <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.package} />
         </svg>
-        <p className={S.packageBannerText}>
+        <p className={ROOM_DETAIL_STYLES.packageBannerText}>
           {t.ROOM_DETAIL.PACKAGE_COUNT.replace("{count}", String(total))}
         </p>
       </div>

@@ -8,7 +8,7 @@
  *    State B (after the user has searched), pinned below the main header bar.
  */
 
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
+import { HEADER_STYLES } from "../../../theme/layout.theme";
 import type { HeaderProps } from "../domain/types";
 import { HeaderBrand } from "./HeaderBrand";
 import { HeaderNav } from "./HeaderNav";
@@ -16,8 +16,8 @@ import { StickySearchBar } from "./StickySearchBar";
 
 export function Header({ hasSearched, searchParams, onReset, onSearch, isDetailOpen = false }: HeaderProps) {
   return (
-    <header className={`${S.root} ${isDetailOpen ? S.rootDetailPush : ""}`}>
-      <div className={S.inner}>
+    <header className={`${HEADER_STYLES.root} ${isDetailOpen ? HEADER_STYLES.rootDetailPush : ""}`}>
+      <div className={HEADER_STYLES.inner}>
         <HeaderBrand onReset={onReset} />
         <HeaderNav />
       </div>
