@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import type { ReactNode, RefObject } from "react";
 
 /**
  * @file types.ts — Room-feature domain types for Portal de Reservas.
@@ -294,6 +294,10 @@ export interface RoomDetailContextValue {
   openPackage: (pkg: RoomPackage) => void;
   /** Closes the panel and restores focus to the trigger element. */
   close: () => void;
+}
+
+export interface RoomDetailPushProps {
+  children: ReactNode;
 }
 
 /** A 1-based position of a room within a package (e.g. room 2 of 3). */

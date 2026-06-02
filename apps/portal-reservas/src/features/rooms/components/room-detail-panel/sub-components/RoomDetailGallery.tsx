@@ -15,12 +15,11 @@ export function RoomDetailGallery({ images, index, title, onSelect }: RoomDetail
   const { t } = useI18n();
 
   return (
-    <div className={S.gallery} role="list" aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}>
+    <div className={S.gallery} role="group" aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}>
       {images.map((src, i) => (
         <button
           key={src}
           type="button"
-          role="listitem"
           className={S.galleryThumb(i === index)}
           onClick={() => onSelect(i)}
           aria-current={i === index}

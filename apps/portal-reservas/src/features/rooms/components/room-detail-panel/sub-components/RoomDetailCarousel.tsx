@@ -48,7 +48,7 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
     <div
       className={S.carouselViewport}
       role="group"
-      aria-roledescription="carousel"
+      aria-roledescription={t.ROOMS.DETAIL_CAROUSEL_ROLE}
       aria-label={t.ROOMS.DETAIL_CAROUSEL_LABEL}
       tabIndex={0}
       onKeyDown={handleKeyDown}
@@ -57,7 +57,7 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
     >
       <div className={S.carouselTrack} style={{ transform: `translateX(-${index * 100}%)` }}>
         {images.map((src, i) => (
-          <div key={src} className={S.carouselSlide} role="group" aria-roledescription="slide" aria-hidden={i !== index}>
+          <div key={src} className={S.carouselSlide} aria-hidden={i !== index}>
             <Image
               src={src}
               alt={`${title}, ${positionLabel(i)}`}

@@ -77,6 +77,7 @@ export type RoomsTexts = {
   DETAIL_PACKAGE_COUNT: string;
   DETAIL_ROOM_POSITION: string;
   DETAIL_CAROUSEL_LABEL: string;
+  DETAIL_CAROUSEL_ROLE: string;
   DETAIL_PREV_IMAGE: string;
   DETAIL_NEXT_IMAGE: string;
   DETAIL_IMAGE_POSITION: string;
