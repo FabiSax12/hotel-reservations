@@ -14,9 +14,9 @@ import { HeaderBrand } from "./HeaderBrand";
 import { HeaderNav } from "./HeaderNav";
 import { StickySearchBar } from "./StickySearchBar";
 
-export function Header({ hasSearched, searchParams, onReset, onSearch }: HeaderProps) {
+export function Header({ hasSearched, searchParams, onReset, onSearch, isDetailOpen = false }: HeaderProps) {
   return (
-    <header className={S.root}>
+    <header className={`${S.root} ${isDetailOpen ? S.rootDetailPush : ""}`}>
       <div className={S.inner}>
         <HeaderBrand onReset={onReset} />
         <HeaderNav />

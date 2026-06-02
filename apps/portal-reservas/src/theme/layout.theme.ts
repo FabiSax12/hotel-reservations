@@ -25,7 +25,10 @@ export const BACKGROUND_STYLES = {
 } as const;
 
 export const HEADER_STYLES = {
-  root: "fixed top-0 inset-x-0 z-50 bg-forest-950/90 backdrop-blur-xl border-b border-forest-800/60",
+  root: "fixed top-0 inset-x-0 z-50 bg-forest-950/90 backdrop-blur-xl border-b border-forest-800/60 transition-[right] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+  // Pushes the header (and its sticky search bar) left so the detail side panel
+  // (US-DM-05) never covers it. Widths match the panel in room-detail.theme.
+  rootDetailPush: "lg:right-[28rem] xl:right-[32rem]",
   inner: "w-full max-w-[1500px] mx-auto px-6 h-24 flex items-center justify-between",
   nav: "flex items-center gap-6 text-sm font-bold text-stone-300",
   helpBtn: "hover:text-gold-400 transition-colors",

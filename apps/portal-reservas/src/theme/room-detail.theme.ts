@@ -18,8 +18,10 @@ export const ROOM_DETAIL_STYLES = {
 
   // ─── Panel Shell ──────────────────────────────────────────────────────────
   // Full-screen sheet on mobile; right-docked column under the header on desktop.
+  // Full-height right dock. The header is pushed left (see HEADER_STYLES) so the
+  // panel can span top-0 to bottom-0 without being covered by the sticky search bar.
   panel: (isShown: boolean) =>
-    `fixed right-0 top-0 bottom-0 z-[60] lg:top-24 lg:z-40 flex flex-col w-full lg:w-[28rem] xl:w-[32rem] bg-forest-950/95 backdrop-blur-xl border-l border-forest-800/60 shadow-[-30px_0_60px_rgba(0,0,0,0.5)] transition-transform duration-300 ${EASE} motion-reduce:transition-none ${
+    `fixed right-0 top-0 bottom-0 z-[60] flex flex-col w-full lg:w-[28rem] xl:w-[32rem] bg-forest-950/95 backdrop-blur-xl border-l border-forest-800/60 shadow-[-30px_0_60px_rgba(0,0,0,0.5)] transition-transform duration-300 ${EASE} motion-reduce:transition-none ${
       isShown ? "translate-x-0" : "translate-x-full"
     }`,
 
