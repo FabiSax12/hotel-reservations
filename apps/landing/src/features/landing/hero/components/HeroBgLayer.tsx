@@ -2,6 +2,7 @@
 
 import type { MotionValue } from "framer-motion";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { BG_GRADIENT } from "@/features/landing/hero/constants/gradients";
 import { HERO_ORBS } from "@/features/landing/hero/constants/orbs";
 import { HERO } from "@/features/landing/hero/constants/styles";
@@ -11,7 +12,10 @@ interface HeroBgLayerProps {
 }
 
 export function HeroBgLayer({ bgTransform }: HeroBgLayerProps) {
-  const prefersReducedMotion = useReducedMotion() ?? false;
+  const reducedMotion = useReducedMotion() ?? false;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const prefersReducedMotion = mounted && reducedMotion;
 
   return (
     <motion.div
