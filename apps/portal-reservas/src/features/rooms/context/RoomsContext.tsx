@@ -5,7 +5,6 @@
  *  - `selectedLocation`: The currently selected destination (null = none selected).
  *  - `hasDates`: Whether both checkIn and checkOut dates are set.
  *  - `searchDates`: The actual date strings from the search bar.
- *  - `expandedRoomId`: Which room card is currently expanded (only one at a time).
  *  - `onSearch`: The page-level search callback for QuickSearchDialog.
  *
  * Usage:
@@ -35,10 +34,6 @@ export interface RoomsContextValue {
   hasDates: boolean;
   /** The actual date strings; null when no search has been triggered yet. */
   searchDates: SearchDates | null;
-  /** Room ID of the currently expanded card; null if all are collapsed. */
-  expandedRoomId: string | null;
-  /** Sets which room is expanded (null to collapse all). */
-  setExpandedRoomId: (id: string | null) => void;
   /**
    * Page-level search callback. Passed to QuickSearchDialog so it can trigger
    * a full search from within a room card without prop drilling.

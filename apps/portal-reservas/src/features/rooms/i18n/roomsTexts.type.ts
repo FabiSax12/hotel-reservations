@@ -17,8 +17,6 @@ export type RoomsTexts = {
   MORE_AMENITIES: string;
   MORE_ROOMS: string;
   ADMIN_TIP_LABEL: string;
-  EXPAND_DETAILS: string;
-  COLLAPSE_DETAILS: string;
   CLOSE_DETAILS: string;
   RESERVE_ACTION: string;
   LOADING_RESERVE: string;

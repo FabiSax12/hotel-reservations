@@ -31,7 +31,6 @@ export function RoomsInnerPage({
   onDestinationChange,
   onReset,
 }: RoomsInnerPageProps) {
-  const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
   const [roomsHidden, setRoomsHidden] = useState(false);
 
   useEffect(() => {
@@ -55,8 +54,6 @@ export function RoomsInnerPage({
     searchDates: hasDates
       ? { checkIn: searchParams.checkIn, checkOut: searchParams.checkOut }
       : null,
-    expandedRoomId,
-    setExpandedRoomId,
     onSearch: onSearchTrigger,
     guestCount: (searchParams.adults ?? 0) + (searchParams.children ?? 0),
     prioritizedRoomId,

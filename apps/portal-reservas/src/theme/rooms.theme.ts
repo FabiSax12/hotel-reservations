@@ -92,22 +92,6 @@ export const ROOM_CARD_STYLES = {
   adminTipQuoteText: "text-sm italic text-stone-300 leading-relaxed font-medium",
   description: "text-sm text-stone-400 leading-relaxed max-w-[65ch] line-clamp-3",
 
-  // ─── Expansion Panel ────────────────────────────────────────────────────────
-  expansionGrid: "grid transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]",
-  expansionGridOpen: "grid-rows-[1fr]",
-  expansionGridClosed: "grid-rows-[0fr]",
-  expansionInner: "overflow-hidden",
-  expansionContent: "pt-6 pb-2 border-t border-forest-800 mt-4",
-  galleryStrip: "flex gap-3 overflow-x-auto pb-2 scrollbar-hide",
-  galleryImage:
-    "w-36 h-24 rounded-xl object-cover flex-shrink-0 bg-forest-800 border border-forest-700",
-  galleryImg: "w-full h-full object-cover rounded-xl",
-  fullDescription: "mt-4 text-sm text-stone-300 leading-relaxed",
-  amenitiesTitle: "mt-4 mb-2 text-xs font-bold text-stone-400 uppercase tracking-widest",
-  amenityList: "flex flex-wrap gap-2",
-  amenityTag:
-    "px-2.5 py-1 bg-forest-800 text-stone-200 rounded-lg text-xs font-medium border border-forest-700",
-
   // ─── Price Tier ─────────────────────────────────────────────────────────────
   priceTier:
     "mt-auto flex w-full flex-col sm:flex-row items-end sm:items-center justify-between pt-6 gap-4",
@@ -196,25 +180,6 @@ export const ROOM_CARD_STYLES = {
   guestStepBtn:
     "w-8 h-8 rounded-full bg-forest-800 border border-forest-700 hover:border-gold-500 hover:text-gold-500 text-stone-300 font-bold flex items-center justify-center transition-colors text-sm disabled:opacity-40 disabled:hover:border-forest-700 disabled:cursor-not-allowed",
   guestCount: "w-6 text-center font-black text-stone-50 text-sm",
-
-  // ─── Detail Popover ─────────────────────────────────────────────────────────
-  detailOverlay: (isOpen: boolean) =>
-    `fixed inset-0 z-[100] flex items-center justify-center p-5 sm:p-8 transition-opacity duration-300 ${
-      isOpen
-        ? "opacity-100 pointer-events-auto bg-black/0"
-        : "opacity-0 pointer-events-none bg-black/0"
-    }`,
-  detailPanel: (isOpen: boolean) =>
-    `relative w-[min(70vw,1050px)] max-w-[1050px] max-h-[88vh] overflow-hidden rounded-[2.2rem] border border-forest-800 bg-forest-900 shadow-[0_45px_120px_rgba(0,0,0,0.6)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-      isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-5 scale-[0.96]"
-    }`,
-  detailCloseBtn:
-    "absolute top-5 right-5 z-20 flex items-center justify-center h-10 w-10 rounded-full border border-forest-700 bg-forest-950/95 text-stone-400 shadow-sm transition-colors hover:bg-forest-800 hover:text-gold-500",
-  detailCloseBtnIcon: "w-4 h-4",
-  detailHeader: "border-b border-forest-800 px-7 py-5 sm:px-9 sm:py-7",
-  detailTitle: "text-2xl sm:text-3xl font-normal font-serif tracking-tight text-stone-50",
-  detailSubtitle: "mt-1 text-sm uppercase tracking-[0.16em] text-gold-500 font-semibold",
-  detailBody: "max-h-[calc(88vh-120px)] overflow-auto px-7 pb-7 sm:px-9 sm:pb-9",
 } as const;
 
 // ─── Package Card Styles (US-DM-04) ─────────────────────────────────────────
