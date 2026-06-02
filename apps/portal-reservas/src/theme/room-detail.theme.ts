@@ -127,22 +127,24 @@ export const ROOM_DETAIL_STYLES = {
   amenityDesc: "mt-0.5 text-xs text-stone-400 leading-relaxed",
 
   // ─── Footer (price + CTA) ─────────────────────────────────────────────────
+  // Vertical stack: price above a full-width CTA. The panel is narrow, so a
+  // row layout (using viewport breakpoints) made long CTA copy wrap to 2 lines.
   footer:
-    "flex-shrink-0 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-t border-forest-800/60 px-6 sm:px-7 py-5",
+    "flex-shrink-0 flex flex-col gap-3 border-t border-forest-800/60 px-6 sm:px-7 py-5",
   priceBlock: "flex flex-col min-w-0",
   priceLabel: "text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-1",
   priceRow: "flex items-baseline gap-1.5",
   priceAmount: "text-3xl font-black text-stone-50 tracking-tighter",
   priceCurrency: "text-sm font-bold text-stone-400",
   pricePlaceholder: "text-sm text-stone-500 font-medium",
-  ctaWrap: "relative w-full sm:w-auto flex flex-col items-stretch sm:items-end gap-1.5",
+  ctaWrap: "relative w-full flex flex-col gap-1.5",
   reserveBtn:
-    "flex items-center justify-center gap-2 h-14 w-full sm:w-auto bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold text-base px-8 rounded-xl shadow-[0_8px_20px_rgba(202,138,4,0.3)] transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed",
+    "flex items-center justify-center gap-2 h-14 w-full whitespace-nowrap bg-gold-600 hover:bg-gold-500 text-forest-950 font-bold text-base px-8 rounded-xl shadow-[0_8px_20px_rgba(202,138,4,0.3)] transition-all duration-200 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed",
   reserveBtnLoader: "animate-spin w-4 h-4 text-forest-950",
   checkDatesBtn:
-    "flex items-center justify-center gap-2 h-14 w-full sm:w-auto bg-transparent hover:bg-forest-800 text-stone-50 font-bold text-base px-8 rounded-xl border-2 border-forest-700 hover:border-gold-500 transition-all duration-200 active:scale-[0.98]",
+    "flex items-center justify-center gap-2 h-14 w-full whitespace-nowrap bg-transparent hover:bg-forest-800 text-stone-50 font-bold text-base px-8 rounded-xl border-2 border-forest-700 hover:border-gold-500 transition-all duration-200 active:scale-[0.98]",
   ctaIcon: "w-4 h-4 flex-shrink-0",
-  unavailableLabel: "text-xs font-bold text-red-400 uppercase tracking-wider text-center sm:text-right",
+  unavailableLabel: "text-xs font-bold text-red-400 uppercase tracking-wider text-center",
   seeFreeDatesBtn:
     "text-sm font-medium text-gold-500 hover:text-gold-400 underline-offset-2 hover:underline transition-colors py-1",
 } as const;
