@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useSearchBarContextValue.ts — Assembles the SearchBarContextValue.
  *

@@ -26,6 +26,7 @@ export function RoomsInnerPage({
   hasDates,
   isSearchingData,
   filteredRooms,
+  prioritizedRoomId,
   onSearchTrigger,
   onDestinationChange,
   onReset,
@@ -49,6 +50,7 @@ export function RoomsInnerPage({
 
   const roomsContextValue = {
     selectedLocation,
+    hasSearched,
     hasDates,
     searchDates: hasDates
       ? { checkIn: searchParams.checkIn, checkOut: searchParams.checkOut }
@@ -56,6 +58,8 @@ export function RoomsInnerPage({
     expandedRoomId,
     setExpandedRoomId,
     onSearch: onSearchTrigger,
+    guestCount: (searchParams.adults ?? 0) + (searchParams.children ?? 0),
+    prioritizedRoomId,
   };
 
   return (

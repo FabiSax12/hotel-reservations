@@ -66,7 +66,6 @@ export function CalendarMonth({
           <div key={d}>{d}</div>
         ))}
       </div>
-
       <div className={S.daysGrid(isHero)}>
         {Array.from({ length: firstDayOfWeek }).map((_, i) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: empty spacers have no state

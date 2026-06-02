@@ -53,9 +53,60 @@ Each feature may contain these sub-modules (not all are required):
 
 The `search` feature contains a deeply nested `search-bar/` sub-feature at `features/search/components/search-bar/` with its own `context/`, `hooks/`, `constants/`, `domain/`, `theme/`, `utils/`, `sub-components/`, and `sub-components/sections/`. This pattern is used when a component is complex enough to be a self-contained orchestrator with its own internal architecture. The sub-feature has its own barrel export (`index.ts`).
 
+### 2.2.1 Room Grouping Pattern (US-DM-04)
+
+When guest count exceeds a single room's capacity, the `rooms` feature uses a **domain-level grouping algorithm** to create room packages:
+
+* **Pure function** in `domain/grouping.ts` — no hooks, no JSX, no side effects.
+* **Input:** `Room[]` + `guestCount` → **Output:** `(Room | RoomPackage)[]`.
+* **Algorithm:** Greedy bin-packing with constraints (MAX_WASTE, MAX_ROOMS).
+* **Rendering:** `PackageCard` wraps a primary `RoomCard` + decorative shadow cards + a package indicator badge.
+* **Data flow:** `search.guestCount` → `page.tsx` → `RoomsContext.guestCount` → `useRoomPackages` hook → `groupRoomsIntoPackages()`.
+
+The grouping algorithm is deterministic and pure — same inputs always produce the same output. Unit tests live in `domain/grouping.test.ts`.
+
 ### 2.3 Global Shared Code
 
 Global shared code lives outside features (`app/`, `components/`, `hooks/`, `lib/`, `config/`, `locales/`, `shared/`, `theme/`). App pages only import and compose feature components — no inline logic.
+
+### 2.4 Atomic File Organization Pattern (enforced since PR #24)
+
+Every component must follow the **atomic separation** — one file for interfaces, one for styles, one for TSX:
+
+* **Component Props interfaces** MUST be defined in `domain/types.ts` (or a dedicated `.types.ts` file for global components), NEVER inline in `.tsx` files.
+* **Hook dependency/option interfaces** (`Use*Deps`, `Use*Options`) MUST also live in `domain/types.ts`.
+* **Styles** MUST be in `.theme.ts` files, never inline Tailwind in JSX.
+* **Component markup** lives in the `.tsx` file, importing its Props from the types file and styles from the theme file.
+
+```
+features/rooms/
+├── domain/
+│   └── types.ts          ← ALL component Props + domain types here
+├── theme/
+│   └── rooms.theme.ts    ← ALL style dictionaries here
+└── components/
+    └── RoomCard.tsx      ← Imports Props from domain/types, styles from theme
+```
+
+**Exception:** `packages/ui/` component Props go in `packages/ui/src/types/*.types.ts`.
+
+### 2.5 App-Level Route Pages (`error.tsx`, `loading.tsx`)
+
+Next.js route-level pages (`error.tsx`, `loading.tsx`) render **outside** the I18nProvider boundary. Therefore:
+
+* Hardcoded user-visible strings MUST be extracted to a `constants/app-pages.constants.ts` file (not inline).
+* Styles MUST be extracted to a `theme/app-pages.theme.ts` file (not inline Tailwind).
+* These pages are the ONLY exception to the i18n rule — all other components MUST use `useI18n()`.
+
+### 2.6 Hardcoded String Audit Rules
+
+Every `aria-label`, `title`, `placeholder`, and visible text node MUST use i18n (`t.FEATURE.KEY`). Common violations caught in PR #24:
+
+* `aria-label="Imágenes adicionales"` → `aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}`
+* `<div>Explorar Habitaciones</div>` → `<div>{t.ROOMS.BROWSE_ROOMS}</div>`
+* `<h2>Algo salió mal</h2>` → `<h2>{APP_PAGE_STRINGS.ERROR_TITLE}</h2>` (app-level exception)
+
+**Zero tolerance:** If a reviewer can find a hardcoded Spanish string in JSX, it's a bug.
 
 ---
 
@@ -149,6 +200,7 @@ Domain functions have zero side effects and are deterministic.
 * No JSX, no hooks, no `fetch`, no `localStorage`, no `document` access.
 * Higher-order functions for configurable predicates.
 * Located in `domain/` directories within features.
+* **Grouping algorithms** (e.g., `domain/grouping.ts`) are pure functions that take data + constraints and return transformed data. They MUST have unit tests.
 
 ---
 
@@ -212,6 +264,13 @@ Before considering a PR complete, verify:
 - [ ] `app/` pages only compose — no inline logic.
 - [ ] No cross-feature coupling except through explicit shared interfaces or `index.ts` barrel files.
 - [ ] `'use client'` minimized — only where strictly necessary. Every client component has the directive.
+
+### Atomic File Separation (PR #24 enforcement)
+- [ ] ALL component Props interfaces in `domain/types.ts`, NEVER inline in `.tsx`.
+- [ ] ALL hook dependency/option interfaces in `domain/types.ts`.
+- [ ] ALL styles in `.theme.ts` files, NEVER inline Tailwind in JSX.
+- [ ] App-level pages (`error.tsx`, `loading.tsx`) have constants in `constants/app-pages.constants.ts` and styles in `theme/app-pages.theme.ts`.
+- [ ] No hardcoded Spanish strings in `aria-label`, `title`, `placeholder`, or visible text — all use i18n.
 
 ### Constants, Configuration & Theming
 - [ ] No hardcoded route strings, query keys, or API URLs.

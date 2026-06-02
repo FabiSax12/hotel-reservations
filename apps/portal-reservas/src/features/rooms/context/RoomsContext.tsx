@@ -26,6 +26,11 @@ export interface SearchDates {
 export interface RoomsContextValue {
   /** Currently selected destination name, or null if none selected. */
   selectedLocation: string | null;
+  /**
+   * Whether the user has submitted at least one search (full search interface active).
+   * Gates the US-DM-03 sort + filter bar — it renders only post-search.
+   */
+  hasSearched: boolean;
   /** Whether both checkIn and checkOut are set. Prices + availability only shown when true. */
   hasDates: boolean;
   /** The actual date strings; null when no search has been triggered yet. */
@@ -39,6 +44,18 @@ export interface RoomsContextValue {
    * a full search from within a room card without prop drilling.
    */
   onSearch: (params: SearchParams) => void;
+  /**
+   * Total guest count (adults + children) from search params.
+   * Used by the room grouping algorithm to create packages.
+   * When 0 or undefined, rooms are shown individually (no grouping).
+   */
+  guestCount: number;
+  /**
+   * Room ID to show first in the list.
+   * Set when the user checks availability from a specific room card's calendar.
+   * Cleared when a new search is triggered from the search bar.
+   */
+  prioritizedRoomId: string | null;
 }
 
 const RoomsContext = createContext<RoomsContextValue | null>(null);

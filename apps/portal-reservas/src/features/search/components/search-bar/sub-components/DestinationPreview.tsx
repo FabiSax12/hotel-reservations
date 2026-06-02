@@ -2,8 +2,10 @@
  * @file DestinationPreview.tsx — Hover preview panel for a destination region.
  */
 
+import {
+  DESTINATION_POPOVER_STYLES,
+} from "../theme/destination.theme";
 import type { DestinationPreviewProps } from "../domain/types";
-import { DESTINATION_POPOVER_STYLES as S } from "../theme/destination.theme";
 
 export function DestinationPreview({
   data,
@@ -15,37 +17,33 @@ export function DestinationPreview({
 }: DestinationPreviewProps) {
   return (
     <div
-      className={S.previewPanel(isHero, positionClasses)}
+      className={DESTINATION_POPOVER_STYLES.previewPanel(isHero, positionClasses)}
       onMouseLeave={onMouseLeave}
-      style={{ height: S.layout.previewHeight }}
+      style={{ height: DESTINATION_POPOVER_STYLES.layout.previewHeight }}
     >
-      <div className={S.previewImageCol}>
-        <div className={S.previewImageBg} style={{ backgroundImage: `url('${data.image}')` }} />
-        <div className={S.previewImageGrad} />
-        <div className={S.previewPriceBlock}>
-          <div className={S.previewFromLabel}>{fromLabel}</div>
-          <div className={S.previewPrice}>
-            ${data.priceFrom} <span className={S.previewPriceUnit}>{usdNightLabel}</span>
+      <div className={DESTINATION_POPOVER_STYLES.previewImageCol}>
+        <div className={DESTINATION_POPOVER_STYLES.previewImageBg} style={{ backgroundImage: `url('${data.image}')` }} />
+        <div className={DESTINATION_POPOVER_STYLES.previewImageGrad} />
+        <div className={DESTINATION_POPOVER_STYLES.previewPriceBlock}>
+          <div className={DESTINATION_POPOVER_STYLES.previewFromLabel}>{fromLabel}</div>
+          <div className={DESTINATION_POPOVER_STYLES.previewPrice}>
+            ${data.priceFrom} <span className={DESTINATION_POPOVER_STYLES.previewPriceUnit}>{usdNightLabel}</span>
           </div>
         </div>
       </div>
-      <div className={S.previewInfoCol}>
-        <h4 className={S.previewTitle}>{data.name}</h4>
-        <ul className={S.previewHighlights}>
+      <div className={DESTINATION_POPOVER_STYLES.previewInfoCol}>
+        <h4 className={DESTINATION_POPOVER_STYLES.previewTitle}>{data.name}</h4>
+        <ul className={DESTINATION_POPOVER_STYLES.previewHighlights}>
           {data.highlights.map((h, i) => (
-            <li key={i} className={S.previewHighlightItem}>
-              <div className={S.previewHighlightDot}>
-                <svg
-                  className={S.previewHighlightIcon}
-                  fill="none"
-                  viewBox={S.icons.check.viewBox}
-                  stroke="currentColor"
-                  strokeWidth={S.icons.check.strokeWidth}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.check.path} />
+            <li key={i} className={DESTINATION_POPOVER_STYLES.previewHighlightItem}>
+              <div className={DESTINATION_POPOVER_STYLES.previewHighlightDot}>
+                <svg className={DESTINATION_POPOVER_STYLES.previewHighlightIcon} fill="none"
+                  viewBox={DESTINATION_POPOVER_STYLES.icons.check.viewBox} stroke="currentColor"
+                  strokeWidth={DESTINATION_POPOVER_STYLES.icons.check.strokeWidth}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d={DESTINATION_POPOVER_STYLES.icons.check.path} />
                 </svg>
               </div>
-              <span className={S.highlightText}>{h}</span>
+              <span className={DESTINATION_POPOVER_STYLES.highlightText}>{h}</span>
             </li>
           ))}
         </ul>
