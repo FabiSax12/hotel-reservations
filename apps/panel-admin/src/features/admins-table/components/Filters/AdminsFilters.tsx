@@ -8,6 +8,7 @@ import {
   ADMIN_STATUS_DOT_COLOR,
 } from "./AdminsFilters.styles";
 import type { AdminsFiltersProps } from "./AdminsFilters.interface";
+import { FILTERS_STATUS } from "../../constants/filters-status";
 
 export const AdminsFilters = ({
   activeFilter,
@@ -20,8 +21,8 @@ export const AdminsFilters = ({
   const texts = t.ADMINS.FILTERS;
 
   const filterOptions = [
-    { value: "active" as const, label: texts.ACTIVE, dotColor: ADMIN_STATUS_DOT_COLOR.active },
-    { value: "inactive" as const, label: texts.INACTIVE, dotColor: ADMIN_STATUS_DOT_COLOR.inactive },
+    { value: FILTERS_STATUS.ACTIVE, label: texts.ACTIVE, dotColor: ADMIN_STATUS_DOT_COLOR.active },
+    { value: FILTERS_STATUS.INACTIVE, label: texts.INACTIVE, dotColor: ADMIN_STATUS_DOT_COLOR.inactive },
   ];
 
   return (
