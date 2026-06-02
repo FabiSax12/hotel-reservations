@@ -57,7 +57,7 @@ export const RoomBasicInfo: React.FC<RoomBasicInfoProps> = ({ texts, getErrorMes
               </Select.Trigger>
               <Select.Popover>
                 <ListBox className={s.listBox}>
-                  {ROOM_CATEGORIES.map((category) => (
+                  {Object.values(ROOM_CATEGORIES).map((category) => (
                     <ListBox.Item key={category} id={category}>
                       {category}
                     </ListBox.Item>
