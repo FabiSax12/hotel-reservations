@@ -33,7 +33,7 @@ export function RoomDetailCta({ room, reserveRooms, isPackage }: RoomDetailCtaPr
     isCalendarOpen,
     toggleCalendar,
     closeCalendar,
-  } = usePackageCardState(room);
+  } = usePackageCardState();
   const { reserve, isReserving } = useReserveAction();
 
   const reserveLabel = isPackage ? t.ROOMS.PACKAGE_RESERVE : t.ROOMS.RESERVE_ACTION;

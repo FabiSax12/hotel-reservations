@@ -44,7 +44,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
     isCalendarOpen,
     toggleCalendar,
     closeCalendar,
-  } = usePackageCardState(primaryRoom);
+  } = usePackageCardState();
   const { reserve, isReserving } = useReserveAction();
 
   return (

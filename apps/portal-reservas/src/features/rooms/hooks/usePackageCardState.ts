@@ -3,20 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import { DOM_EVENTS } from "@/constants/dom-events.constants";
 import { useRoomsContext } from "../context/RoomsContext";
-import type { Room } from "../domain/types";
 import { useRoomAvailability } from "./useRoomAvailability";
 
-export function usePackageCardState(primaryRoom: Room) {
+export function usePackageCardState() {
   const { hasDates, searchDates } = useRoomsContext();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
   const { isAvailable, isLoading } = useRoomAvailability(
-    primaryRoom.id,
     searchDates?.checkIn,
     searchDates?.checkOut,
-    primaryRoom.availableDates,
   );
 
   const isUnavailable = hasDates && !isLoading && !isAvailable;
