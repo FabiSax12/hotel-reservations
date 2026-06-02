@@ -49,9 +49,9 @@ export const ROOM_DETAIL_STYLES = {
   body: "flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-6 sm:px-7 py-6",
   bodyStack: "flex flex-col gap-7",
 
-  // ─── Package Banner (sticky room count) ───────────────────────────────────
+  // ─── Package Banner (room count, scrolls with content) ────────────────────
   packageBanner:
-    "sticky top-0 z-10 -mx-6 sm:-mx-7 -mt-6 mb-1 px-6 sm:px-7 py-3 bg-forest-950/90 backdrop-blur-md border-b border-forest-800/50 flex items-center gap-2.5",
+    "flex items-center gap-2.5 pb-3 mb-1 border-b border-forest-800/50",
   packageBannerIcon: "w-4 h-4 text-gold-500 flex-shrink-0",
   packageBannerText: "text-sm font-semibold text-stone-200",
   packageBannerCount: "text-gold-400 font-bold",
