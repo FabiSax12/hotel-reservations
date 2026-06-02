@@ -164,6 +164,11 @@ export interface PackageCardHeaderProps {
   isHomogeneous: boolean;
 }
 
+export interface PackageCardExpansionProps {
+  pkg: RoomPackage;
+  selectedDest?: string | null;
+}
+
 export interface PackageCardSummaryProps {
   rooms: Room[];
   totalCapacity: number;
