@@ -12,11 +12,19 @@
  */
 export const ROUTES = Object.freeze({
   HOME: "/",
+  /** Reservation confirmation + guest details + payment hand-off (US-DM-06). */
+  RESERVE: "/reservar",
+  /** Post-payment success screen (US-DM-06). */
+  RESERVE_SUCCESS: "/reservar/exito",
   AUTH: Object.freeze({
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
     VERIFY_EMAIL: "/auth/verify-email",
     ERROR: "/auth/error",
     CALLBACK: "/auth/callback",
+  } as const),
+  API: Object.freeze({
+    /** Creates the payment-gateway checkout session (US-DM-06). */
+    CHECKOUT: "/api/checkout",
   } as const),
 } as const);

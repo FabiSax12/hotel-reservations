@@ -10,13 +10,18 @@
 
 "use client";
 
-import { CTASpinner, RoomRangeCalendar, usePackageCardState } from "@/features/rooms";
+import {
+  CTASpinner,
+  RoomRangeCalendar,
+  usePackageCardState,
+  useReserveAction,
+} from "@/features/rooms";
 import { useI18n } from "@/locales";
 import { ICON_PATHS, ICON_VIEW_BOX } from "../constants/room-detail-icons.const";
 import type { RoomDetailCtaProps } from "../domain/types";
 import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 
-export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
+export function RoomDetailCta({ room, reserveRooms, isPackage }: RoomDetailCtaProps) {
   const { t } = useI18n();
   const {
     wrapperRef,
@@ -24,12 +29,11 @@ export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
     hasDates,
     isAvailable,
     isLoading,
-    isReserving,
     isCalendarOpen,
-    handleReserve,
     toggleCalendar,
     closeCalendar,
   } = usePackageCardState(room);
+  const { reserve, isReserving } = useReserveAction();
 
   const reserveLabel = isPackage ? t.ROOMS.PACKAGE_RESERVE : t.ROOMS.RESERVE_ACTION;
 
@@ -42,13 +46,27 @@ export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
           roomId={room.id}
           onClose={closeCalendar}
           anchorRef={wrapperRef}
-          onPortalRef={(el) => { calendarRef.current = el; }}
+          onPortalRef={(el) => {
+            calendarRef.current = el;
+          }}
         />
       )}
 
       {!hasDates && (
-        <button type="button" className={ROOM_DETAIL_STYLES.checkDatesBtn} onClick={toggleCalendar} aria-expanded={isCalendarOpen}>
-          <svg className={ROOM_DETAIL_STYLES.ctaIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+        <button
+          type="button"
+          className={ROOM_DETAIL_STYLES.checkDatesBtn}
+          onClick={toggleCalendar}
+          aria-expanded={isCalendarOpen}
+        >
+          <svg
+            className={ROOM_DETAIL_STYLES.ctaIcon}
+            fill="none"
+            viewBox={ICON_VIEW_BOX}
+            stroke="currentColor"
+            strokeWidth={2}
+            aria-hidden="true"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.calendar} />
           </svg>
           {t.ROOMS.CHECK_DATES_ACTION}
@@ -62,13 +80,28 @@ export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
       )}
 
       {hasDates && !isLoading && isAvailable && (
-        <button type="button" className={ROOM_DETAIL_STYLES.reserveBtn} onClick={handleReserve} disabled={isReserving} aria-busy={isReserving}>
+        <button
+          type="button"
+          className={ROOM_DETAIL_STYLES.reserveBtn}
+          onClick={() => reserve(reserveRooms)}
+          disabled={isReserving}
+          aria-busy={isReserving}
+        >
           {isReserving ? (
-            <><CTASpinner /> {t.ROOMS.LOADING_RESERVE}</>
+            <>
+              <CTASpinner /> {t.ROOMS.LOADING_RESERVE}
+            </>
           ) : (
             <>
               {reserveLabel}
-              <svg className={ROOM_DETAIL_STYLES.ctaIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2.5}>
+              <svg
+                className={ROOM_DETAIL_STYLES.ctaIcon}
+                fill="none"
+                viewBox={ICON_VIEW_BOX}
+                stroke="currentColor"
+                strokeWidth={2.5}
+                aria-hidden="true"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronRight} />
               </svg>
             </>
@@ -79,7 +112,12 @@ export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
       {hasDates && !isLoading && !isAvailable && (
         <>
           <p className={ROOM_DETAIL_STYLES.unavailableLabel}>{t.ROOMS.UNAVAILABLE_LABEL}</p>
-          <button type="button" className={ROOM_DETAIL_STYLES.seeFreeDatesBtn} onClick={toggleCalendar} aria-expanded={isCalendarOpen}>
+          <button
+            type="button"
+            className={ROOM_DETAIL_STYLES.seeFreeDatesBtn}
+            onClick={toggleCalendar}
+            aria-expanded={isCalendarOpen}
+          >
             {t.ROOMS.SEE_FREE_DATES}
           </button>
         </>

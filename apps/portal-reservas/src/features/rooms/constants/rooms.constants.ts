@@ -35,10 +35,6 @@ export const ROOM_MOCK = Object.freeze({
    */
   AVAILABILITY_DELAY_MS: 600,
   /**
-   * Simulated delay (ms) for the reservation action.
-   */
-  RESERVE_DELAY_MS: 1200,
-  /**
    * Number of available-date slots generated per room in mock data.
    */
   AVAILABLE_DATE_COUNT: 18,

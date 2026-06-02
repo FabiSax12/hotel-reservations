@@ -26,8 +26,6 @@ export { RoomList } from "./components/RoomList";
 export { CTASpinner } from "./components/sub-components/CTASpinner";
 export { RoomRangeCalendar } from "./components/sub-components/RoomRangeCalendar";
 export { formatBedConfig, getAmenityIcon } from "./constants/amenity-icons.const";
-export { usePackageCardState } from "./hooks/usePackageCardState";
-export { getAmenityDetail } from "./mock-data/amenities";
 export {
   createEmptyRoomFilters,
   DEFAULT_ROOM_SORT,
@@ -46,6 +44,8 @@ export {
 } from "./domain/filters";
 export type { GroupedRoom } from "./domain/grouping";
 export { groupRoomsByType, groupRoomsIntoPackages } from "./domain/grouping";
+// Room lookups by ID — used by the checkout flow to rebuild a reservation.
+export { findRoomById, findRoomsByIds } from "./domain/room-lookup";
 export { sortGroupedRooms, sortRooms } from "./domain/sorting";
 // Domain types and functions — pure TypeScript, no React.
 export type {
@@ -56,7 +56,10 @@ export type {
   RoomPackage,
   RoomSortOption,
 } from "./domain/types";
-
+export { usePackageCardState } from "./hooks/usePackageCardState";
 // Hooks — React state orchestration. No JSX.
+export type { ReserveAction } from "./hooks/useReserveAction";
+export { useReserveAction } from "./hooks/useReserveAction";
 export { useRoomFilters } from "./hooks/useRoomFilters";
 export { isRoomPackage, useRoomPackages } from "./hooks/useRoomPackages";
+export { getAmenityDetail } from "./mock-data/amenities";

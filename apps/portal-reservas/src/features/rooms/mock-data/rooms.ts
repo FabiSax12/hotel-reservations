@@ -54,6 +54,8 @@ export const mockRooms: Room[] = [
   // ─── Monteverde ─────────────────────────────────────────────────────────────
   {
     id: "mv-1",
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
     location: "Monteverde",
     title: "Cabaña Estándar del Bosque",
     type: "Standard",
@@ -78,6 +80,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: "mv-2",
+    checkInTime: "14:00",
+    checkOutTime: "12:00",
     location: "Monteverde",
     title: "Suite Dosel Panorámica",
     type: "Suite",
@@ -109,6 +113,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: "mv-3",
+    checkInTime: "16:00",
+    checkOutTime: "11:00",
     location: "Monteverde",
     title: "Eco-Lodge Familiar",
     type: "Family",
@@ -144,6 +150,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: "mv-4",
+    checkInTime: "13:00",
+    checkOutTime: "12:00",
     location: "Monteverde",
     title: "Villa Quetzal Exclusiva",
     type: "Villa",
@@ -181,6 +189,8 @@ export const mockRooms: Room[] = [
   // ─── Arenal & La Fortuna ─────────────────────────────────────────────────────
   {
     id: "lf-1",
+    checkInTime: "15:00",
+    checkOutTime: "10:00",
     location: "Arenal & La Fortuna",
     title: "Habitación Vista Volcán",
     type: "Standard",
@@ -205,6 +215,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: "lf-2",
+    checkInTime: "14:00",
+    checkOutTime: "12:00",
     location: "Arenal & La Fortuna",
     title: "Suite Aguas Termales Privadas",
     type: "Suite",
@@ -235,6 +247,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: "lf-3",
+    checkInTime: "16:00",
+    checkOutTime: "11:00",
     location: "Arenal & La Fortuna",
     title: "Lodge de Aventura",
     type: "Family",
@@ -270,6 +284,8 @@ export const mockRooms: Room[] = [
   },
   {
     id: "lf-4",
+    checkInTime: "12:00",
+    checkOutTime: "12:00",
     location: "Arenal & La Fortuna",
     title: "Gran Villa Tabacón Signature",
     type: "Villa",

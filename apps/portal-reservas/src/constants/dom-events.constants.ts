@@ -9,6 +9,7 @@
 export const DOM_EVENTS = Object.freeze({
   CHANGE: "change",
   KEYDOWN: "keydown",
+  MOUSEDOWN: "mousedown",
 } as const);
 
 export const KEYBOARD_KEYS = Object.freeze({
