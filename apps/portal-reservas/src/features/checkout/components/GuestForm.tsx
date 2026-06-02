@@ -9,7 +9,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
-import { GUEST_ERROR_CODE } from "../constants/checkout.constants";
+import { GUEST_ERROR_CODE, GUEST_FIELD_ID } from "../constants/checkout.constants";
 import type { GuestErrorCode, GuestFormProps } from "../domain/types";
 import { CHECKOUT_STYLES } from "../theme/checkout.theme";
 import { GuestField } from "./GuestField";
@@ -38,7 +38,7 @@ export function GuestForm({ values, errors, setField }: GuestFormProps) {
 
       <div className={CHECKOUT_STYLES.formGrid}>
         <GuestField
-          id="guest-name"
+          id={GUEST_FIELD_ID.NAME}
           label={t.CHECKOUT.NAME_LABEL}
           placeholder={t.CHECKOUT.NAME_PLACEHOLDER}
           value={values.fullName}
@@ -48,7 +48,7 @@ export function GuestForm({ values, errors, setField }: GuestFormProps) {
           onChange={(value) => setField("fullName", value)}
         />
         <GuestField
-          id="guest-email"
+          id={GUEST_FIELD_ID.EMAIL}
           type="email"
           label={t.CHECKOUT.EMAIL_LABEL}
           placeholder={t.CHECKOUT.EMAIL_PLACEHOLDER}
@@ -58,7 +58,7 @@ export function GuestForm({ values, errors, setField }: GuestFormProps) {
           onChange={(value) => setField("email", value)}
         />
         <GuestField
-          id="guest-phone"
+          id={GUEST_FIELD_ID.PHONE}
           type="tel"
           label={t.CHECKOUT.PHONE_LABEL}
           placeholder={t.CHECKOUT.PHONE_PLACEHOLDER}
@@ -68,7 +68,7 @@ export function GuestForm({ values, errors, setField }: GuestFormProps) {
           onChange={(value) => setField("phone", value)}
         />
         <GuestField
-          id="guest-requests"
+          id={GUEST_FIELD_ID.REQUESTS}
           label={t.CHECKOUT.REQUESTS_LABEL}
           placeholder={t.CHECKOUT.REQUESTS_PLACEHOLDER}
           value={values.specialRequests}

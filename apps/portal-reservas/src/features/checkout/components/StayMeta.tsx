@@ -8,6 +8,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
+import { STAY_META_KEY } from "../constants/checkout.constants";
 import { CHECKOUT_ICON_PATHS } from "../constants/checkout-icons.const";
 import { formatStayDate } from "../domain/format";
 import type { StayMetaProps } from "../domain/types";
@@ -19,25 +20,25 @@ export function StayMeta({ draft }: StayMetaProps) {
 
   const cards = [
     {
-      key: "in",
+      key: STAY_META_KEY.CHECK_IN,
       icon: CHECKOUT_ICON_PATHS.calendar,
       label: t.CHECKOUT.CHECK_IN_LABEL,
       value: formatStayDate(draft.checkIn, locale),
     },
     {
-      key: "out",
+      key: STAY_META_KEY.CHECK_OUT,
       icon: CHECKOUT_ICON_PATHS.calendar,
       label: t.CHECKOUT.CHECK_OUT_LABEL,
       value: formatStayDate(draft.checkOut, locale),
     },
     {
-      key: "nights",
+      key: STAY_META_KEY.NIGHTS,
       icon: CHECKOUT_ICON_PATHS.clock,
       label: t.CHECKOUT.NIGHTS_LABEL,
       value: String(draft.nights),
     },
     {
-      key: "guests",
+      key: STAY_META_KEY.GUESTS,
       icon: CHECKOUT_ICON_PATHS.guests,
       label: t.CHECKOUT.GUESTS_LABEL,
       value: String(draft.guests),

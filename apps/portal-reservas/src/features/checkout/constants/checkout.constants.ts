@@ -60,6 +60,31 @@ export const TERMS_FIELD = Object.freeze({
   ERROR_ID: "accept-terms-error",
 } as const);
 
+/** DOM ids for the guest form fields (label/input association). */
+export const GUEST_FIELD_ID = Object.freeze({
+  NAME: "guest-name",
+  EMAIL: "guest-email",
+  PHONE: "guest-phone",
+  REQUESTS: "guest-requests",
+} as const);
+
+/** Stable React keys for the stay-meta stat cards. */
+export const STAY_META_KEY = Object.freeze({
+  CHECK_IN: "check-in",
+  CHECK_OUT: "check-out",
+  NIGHTS: "nights",
+  GUESTS: "guests",
+} as const);
+
+/** Stable React keys for the room-card fact items. */
+export const ROOM_FACT_KEY = Object.freeze({
+  CHECK_IN: "check-in",
+  CHECK_OUT: "check-out",
+  CAPACITY: "capacity",
+  AREA: "area",
+  BEDS: "beds",
+} as const);
+
 /** Stable codes for checkout submission failures (mapped to i18n text). */
 export const CHECKOUT_ERROR_CODE = Object.freeze({
   PAYMENT: "PAYMENT",

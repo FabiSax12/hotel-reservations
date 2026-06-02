@@ -12,6 +12,7 @@
 import Image from "next/image";
 import { formatBedConfig } from "@/features/rooms";
 import { useI18n } from "@/locales";
+import { ROOM_FACT_KEY } from "../constants/checkout.constants";
 import { CHECKOUT_ICON_PATHS } from "../constants/checkout-icons.const";
 import type { SummaryRoomCardProps } from "../domain/types";
 import { CHECKOUT_STYLES } from "../theme/checkout.theme";
@@ -22,31 +23,31 @@ export function SummaryRoomCard({ room, position, total }: SummaryRoomCardProps)
 
   const facts = [
     {
-      key: "in",
+      key: ROOM_FACT_KEY.CHECK_IN,
       icon: CHECKOUT_ICON_PATHS.calendar,
       label: t.CHECKOUT.CHECK_IN_LABEL,
       value: room.checkInTime,
     },
     {
-      key: "out",
+      key: ROOM_FACT_KEY.CHECK_OUT,
       icon: CHECKOUT_ICON_PATHS.calendar,
       label: t.CHECKOUT.CHECK_OUT_LABEL,
       value: room.checkOutTime,
     },
     {
-      key: "cap",
+      key: ROOM_FACT_KEY.CAPACITY,
       icon: CHECKOUT_ICON_PATHS.guests,
       label: t.CHECKOUT.CAPACITY_LABEL,
       value: String(room.capacity),
     },
     {
-      key: "area",
+      key: ROOM_FACT_KEY.AREA,
       icon: CHECKOUT_ICON_PATHS.area,
       label: t.CHECKOUT.AREA_LABEL,
       value: t.CHECKOUT.AREA_VALUE.replace("{value}", String(room.sqft)),
     },
     {
-      key: "beds",
+      key: ROOM_FACT_KEY.BEDS,
       icon: CHECKOUT_ICON_PATHS.bed,
       label: t.CHECKOUT.BEDS_LABEL,
       value: formatBedConfig(room.beds),
