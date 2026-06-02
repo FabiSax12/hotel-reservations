@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useI18n } from "@/locales";
 import { useMetricsDashboard } from "../../hooks/useMetricsDashboard";
-import { MONTH_NAMES_ES } from "../../constants/metrics.constants";
-import { buildPeriodLabel } from "../../utils/metrics.date.utils";
+import { MONTH_NAMES_ES } from "../../constants/metricsConstants";
+import { buildPeriodLabel } from "../../utils/metricsDateUtils";
 import { DashboardHeader } from "../DashboardHeader/DashboardHeader";
 import { StatCards } from "../StatCards/StatCards";
 import { MetricsTabs } from "../MetricsTabs/MetricsTabs";

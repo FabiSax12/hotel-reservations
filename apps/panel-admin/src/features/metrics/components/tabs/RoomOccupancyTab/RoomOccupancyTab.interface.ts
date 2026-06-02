@@ -1,4 +1,4 @@
-import type { RoomOccupancy } from "../../../domain/metrics.types";
+﻿import type { RoomOccupancy } from "../../../domain/metricsTypes";
 
 export interface RoomOccupancyTabProps {
   roomOccupancies: RoomOccupancy[];

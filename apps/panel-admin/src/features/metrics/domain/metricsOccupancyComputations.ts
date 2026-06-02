@@ -1,12 +1,7 @@
-import {
-  MS_PER_DAY,
-  OCCUPANCY_COLORS,
-  OCCUPANCY_THRESHOLDS,
-  PCT_DECIMAL_PLACES,
-  PERCENTAGE_SCALE,
-} from "../constants/metrics.constants";
-import type { ProgressColor } from "../constants/metrics.constants";
-import type { MetricsDateRange, MetricsReservation, MetricsRoom, RoomOccupancy } from "./metrics.types";
+﻿import { OCCUPANCY_COLORS, OCCUPANCY_THRESHOLDS } from "../constants/metricsConstants";
+import type { ProgressColor } from "../constants/metricsConstants";
+import { MS_PER_DAY, PCT_DECIMAL_PLACES, PERCENTAGE_SCALE } from "../constants/metricsConfig";
+import type { MetricsDateRange, MetricsReservation, MetricsRoom, RoomOccupancy } from "./metricsTypes";
 
 export function resolveOccupancyColor(pct: number): ProgressColor {
   if (pct < OCCUPANCY_THRESHOLDS.LOW)    return OCCUPANCY_COLORS.LOW;

@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { RankingRow } from "../../shared/RankingRow/RankingRow";
 import { RANKING_TAB_STYLES as STYLES } from "./RankingTab.styles";
-import { formatPct } from "../../../utils/metrics.format.utils";
+import { formatPct } from "../../../utils/metricsFormatUtils";
 import type { RankingTabProps } from "./RankingTab.interface";
 
 export function RankingTab({ ranking, subtitle, reservationsSuffix, meterAriaLabelSuffix, emptyText }: RankingTabProps) {

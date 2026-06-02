@@ -1,4 +1,4 @@
-import type { SupportedLocale } from "@hotel/i18n";
+﻿import type { SupportedLocale } from "@hotel/i18n";
 import { useI18n as _useI18n, LOCALES } from "@hotel/i18n";
 import { ADMINS_TEXTS } from "@/features/admins-table/i18n/admins.texts";
 import type { AdminsTexts } from "@/features/admins-table/i18n/adminsTexts.type";
@@ -12,8 +12,8 @@ import { SIDEBAR_TEXTS } from "@/features/sidebar/i18n/sidebar.texts";
 import type { SidebarTexts } from "@/features/sidebar/i18n/sidebar.type";
 import { COMMON_TEXTS } from "@/shared/i18n/commonTexts";
 import type { CommonTexts } from "@/shared/i18n/commonTexts.type";
-import { METRICS_TEXTS } from "@/features/metrics/i18n/metrics.texts";
-import type { MetricsTexts } from "@/features/metrics/i18n/metricsTexts.type";
+import { METRICS_TEXTS } from "@/features/metrics/i18n/metricsTexts";
+import type { MetricsTexts } from "@/features/metrics/i18n/metricsTextsType";
 
 export type AppTranslations = {
   COMMON: CommonTexts;

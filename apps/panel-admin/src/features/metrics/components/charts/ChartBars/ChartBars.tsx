@@ -1,5 +1,5 @@
-import { CHART_LAYOUT } from "../../../constants/metrics.chart.constants";
-import { buildBarSegments } from "../../../utils/metrics.chart.utils";
+﻿import { CHART_LAYOUT } from "../../../constants/metricsChartConstants";
+import { buildBarSegments } from "../../../utils/metricsChartUtils";
 import { CHART_BARS_STYLES as STYLES } from "./ChartBars.styles";
 import type { ChartBarsProps } from "./ChartBars.interface";
 

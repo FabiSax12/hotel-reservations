@@ -1,10 +1,10 @@
-import {
+﻿import {
   CURRENCY_CODE,
   CURRENCY_FRACTION_DIGITS,
   CURRENCY_LOCALE,
   PCT_DECIMAL_PLACES,
   PERCENTAGE_SCALE,
-} from "../constants/metrics.constants";
+} from "../constants/metricsConfig";
 
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat(CURRENCY_LOCALE, {

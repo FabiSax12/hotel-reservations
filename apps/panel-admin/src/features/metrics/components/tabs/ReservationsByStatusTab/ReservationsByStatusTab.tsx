@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
-import { computePct } from "../../../utils/metrics.format.utils";
-import { STATUS_ORDER } from "../../../constants/metrics.constants";
+import { computePct } from "../../../utils/metricsFormatUtils";
+import { STATUS_ORDER } from "../../../constants/metricsConstants";
 import { StatusChip } from "../../shared/StatusChip/StatusChip";
 import { ProportionalBar } from "../../shared/ProportionalBar/ProportionalBar";
 import { WeeklyStackedBarChart } from "../../charts/WeeklyStackedBarChart/WeeklyStackedBarChart";

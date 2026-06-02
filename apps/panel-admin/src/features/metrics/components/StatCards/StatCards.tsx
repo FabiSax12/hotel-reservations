@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
-import { formatCurrency, formatPct } from "../../utils/metrics.format.utils";
-import { ROOMS_SEPARATOR } from "../../constants/metrics.constants";
+import { formatCurrency, formatPct } from "../../utils/metricsFormatUtils";
+import { ROOMS_SEPARATOR } from "../../constants/metricsConfig";
 import { STAT_CARDS_STYLES as STYLES } from "./StatCards.styles";
 import type { StatCardsProps } from "./StatCards.interface";
 

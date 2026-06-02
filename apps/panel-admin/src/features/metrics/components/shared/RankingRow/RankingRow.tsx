@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { Meter } from "@heroui/react";
-import { STATUS_COLORS } from "../../../constants/metrics.constants";
-import { formatCurrency } from "../../../utils/metrics.format.utils";
+import { STATUS_COLORS } from "../../../constants/metricsConstants";
+import { formatCurrency } from "../../../utils/metricsFormatUtils";
 import { RANKING_ROW_STYLES as STYLES } from "./RankingRow.styles";
 import type { RankingRowProps } from "./RankingRow.interface";
 

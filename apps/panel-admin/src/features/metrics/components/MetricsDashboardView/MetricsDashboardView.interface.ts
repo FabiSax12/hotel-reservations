@@ -1,4 +1,4 @@
-import type { MetricsReservation, MetricsRoom } from "../../domain/metrics.types";
+﻿import type { MetricsReservation, MetricsRoom } from "../../domain/metricsTypes";
 
 export interface MetricsDashboardViewProps {
   reservations: MetricsReservation[];

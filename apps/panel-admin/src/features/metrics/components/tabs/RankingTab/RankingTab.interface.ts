@@ -1,4 +1,4 @@
-import type { RankingEntry } from "../../../domain/metrics.types";
+﻿import type { RankingEntry } from "../../../domain/metricsTypes";
 
 export interface RankingTabProps {
   ranking: RankingEntry[];

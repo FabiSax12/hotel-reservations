@@ -1,4 +1,4 @@
-import { STATUS_COLORS, STATUS_ORDER } from "../../../constants/metrics.constants";
+﻿import { STATUS_COLORS, STATUS_ORDER } from "../../../constants/metricsConstants";
 import { CHART_LEGEND_STYLES as STYLES } from "./ChartLegend.styles";
 import type { ChartLegendProps } from "./ChartLegend.interface";
 

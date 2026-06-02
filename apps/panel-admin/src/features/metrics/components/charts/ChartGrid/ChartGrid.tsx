@@ -1,5 +1,5 @@
-import { CHART_LAYOUT } from "../../../constants/metrics.chart.constants";
-import { toPlotY } from "../../../utils/metrics.chart.utils";
+﻿import { CHART_LAYOUT } from "../../../constants/metricsChartConstants";
+import { toPlotY } from "../../../utils/metricsChartUtils";
 import { CHART_GRID_STYLES as STYLES } from "./ChartGrid.styles";
 import type { ChartGridProps } from "./ChartGrid.interface";
 

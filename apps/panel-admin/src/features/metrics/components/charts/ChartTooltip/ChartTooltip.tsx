@@ -1,5 +1,5 @@
-import { STATUS_COLORS, STATUS_ORDER } from "../../../constants/metrics.constants";
-import { TOOLTIP_LAYOUT } from "../../../constants/metrics.chart.constants";
+﻿import { STATUS_COLORS, STATUS_ORDER } from "../../../constants/metricsConstants";
+import { TOOLTIP_LAYOUT } from "../../../constants/metricsChartConstants";
 import { CHART_TOOLTIP_STYLES as STYLES } from "./ChartTooltip.styles";
 import type { ChartTooltipProps } from "./ChartTooltip.interface";
 

@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
-import { STATUS_DOT_COLORS } from "../../../constants/metrics.constants";
-import { formatPct } from "../../../utils/metrics.format.utils";
+import { STATUS_DOT_COLORS } from "../../../constants/metricsConstants";
+import { formatPct } from "../../../utils/metricsFormatUtils";
 import { STATUS_CHIP_STYLES as STYLES } from "./StatusChip.styles";
 import type { StatusChipProps } from "./StatusChip.interface";
 

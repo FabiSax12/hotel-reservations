@@ -1,5 +1,5 @@
-import type { ReservationStatus } from "../../../domain/metrics.types";
-import type { WeeklyDataPoint } from "../../../domain/metrics.types";
+﻿import type { ReservationStatus } from "../../../domain/metricsTypes";
+import type { WeeklyDataPoint } from "../../../domain/metricsTypes";
 
 export interface WeeklyStackedBarChartProps {
   data: WeeklyDataPoint[];

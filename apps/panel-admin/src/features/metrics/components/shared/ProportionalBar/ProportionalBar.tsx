@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import { ProgressBar } from "@heroui/react";
-import { STATUS_COLORS } from "../../../constants/metrics.constants";
+import { STATUS_COLORS } from "../../../constants/metricsConstants";
 import { PROPORTIONAL_BAR_STYLES as STYLES, segmentWidthStyle } from "./ProportionalBar.styles";
 import type { ProportionalBarProps } from "./ProportionalBar.interface";
 

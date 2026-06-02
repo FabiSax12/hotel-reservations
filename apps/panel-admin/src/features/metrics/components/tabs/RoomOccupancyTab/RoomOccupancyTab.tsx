@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import { RoomOccupancyRow } from "../../shared/RoomOccupancyRow/RoomOccupancyRow";
-import { formatPct } from "../../../utils/metrics.format.utils";
+import { formatPct } from "../../../utils/metricsFormatUtils";
 import { ROOM_OCCUPANCY_TAB_STYLES as STYLES } from "./RoomOccupancyTab.styles";
 import type { RoomOccupancyTabProps } from "./RoomOccupancyTab.interface";
 

@@ -1,5 +1,5 @@
-import type { SupportedLocale } from "@hotel/i18n";
-import type { MetricsTexts } from "./metricsTexts.type";
+﻿import type { SupportedLocale } from "@hotel/i18n";
+import type { MetricsTexts } from "./metricsTextsType";
 
 export const METRICS_TEXTS: Record<SupportedLocale, MetricsTexts> = {
   es: {

@@ -1,6 +1,6 @@
-import { STATUS_COLORS, STATUS_ORDER } from "../constants/metrics.constants";
-import { CHART_LAYOUT, MIN_SLOT_WIDTH, MIN_SVG_WIDTH, Y_AXIS_FALLBACK_MAX } from "../constants/metrics.chart.constants";
-import type { BarLayout, BarSegment, ChartDimensions, WeeklyDataPoint } from "../domain/metrics.types";
+﻿import { STATUS_COLORS, STATUS_ORDER } from "../constants/metricsConstants";
+import { CHART_LAYOUT, MIN_SLOT_WIDTH, MIN_SVG_WIDTH, Y_AXIS_FALLBACK_MAX } from "../constants/metricsChartConstants";
+import type { BarLayout, BarSegment, ChartDimensions, WeeklyDataPoint } from "../domain/metricsTypes";
 
 export function computeYMax(maxTotal: number): number {
   if (maxTotal === 0) return Y_AXIS_FALLBACK_MAX;

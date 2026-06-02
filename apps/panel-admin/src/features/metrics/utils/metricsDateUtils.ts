@@ -1,4 +1,4 @@
-import {
+﻿import {
   DAYS_IN_WEEK,
   FIRST_DAY_OF_MONTH,
   ISO_DATE_LENGTH,
@@ -9,8 +9,8 @@ import {
   MONDAY_JS_OFFSET,
   MS_PER_DAY,
   THURSDAY_ISO_DAY,
-} from "../constants/metrics.constants";
-import type { MetricsDateRange } from "../domain/metrics.types";
+} from "../constants/metricsConfig";
+import type { MetricsDateRange } from "../domain/metricsTypes";
 
 function toDateIso(d: Date): string {
   return d.toISOString().slice(0, ISO_DATE_LENGTH);

@@ -1,12 +1,9 @@
 "use client";
 
 import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from "@heroui/react";
-import { parseDate } from "@internationalized/date";
 import { DASHBOARD_HEADER_STYLES as STYLES } from "./DashboardHeader.styles";
 import type { DashboardHeaderProps } from "./DashboardHeader.interface";
-import type { MetricsDateRange } from "../../domain/metrics.types";
-
-type HeroDateRange = { start: ReturnType<typeof parseDate>; end: ReturnType<typeof parseDate> } | null;
+import { useDashboardDatePicker } from "../../hooks/useDashboardDatePicker";
 
 export function DashboardHeader({
   dateRange,
@@ -16,19 +13,7 @@ export function DashboardHeader({
   subtitle,
   ariaDateRange,
 }: DashboardHeaderProps) {
-  const pickerValue: HeroDateRange =
-    dateRange.start && dateRange.end
-      ? { start: parseDate(dateRange.start), end: parseDate(dateRange.end) }
-      : null;
-
-  const handleDateChange = (range: HeroDateRange) => {
-    if (!range) return;
-    const next: MetricsDateRange = {
-      start: range.start.toString(),
-      end: range.end.toString(),
-    };
-    onDateRangeChange(next);
-  };
+  const { pickerValue, handleDateChange } = useDashboardDatePicker(dateRange, onDateRangeChange);
 
   return (
     <div className={STYLES.wrapper}>

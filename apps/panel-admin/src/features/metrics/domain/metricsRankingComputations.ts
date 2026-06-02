@@ -1,5 +1,5 @@
-import { PERCENTAGE_SCALE } from "../constants/metrics.constants";
-import type { MetricsReservation, MetricsRoom, RankingEntry } from "./metrics.types";
+﻿import { PERCENTAGE_SCALE } from "../constants/metricsConfig";
+import type { MetricsReservation, MetricsRoom, RankingEntry } from "./metricsTypes";
 
 export function computeRanking(
   activeReservations: MetricsReservation[],

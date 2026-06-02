@@ -1,4 +1,4 @@
-import type { StatusCounts, WeeklyDataPoint } from "../../../domain/metrics.types";
+﻿import type { StatusCounts, WeeklyDataPoint } from "../../../domain/metricsTypes";
 
 export interface ReservationsByStatusTabProps {
   statusCounts: StatusCounts;

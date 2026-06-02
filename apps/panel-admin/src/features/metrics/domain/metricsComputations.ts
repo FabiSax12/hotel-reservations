@@ -1,18 +1,16 @@
-import {
-  MONTH_NAMES_ES,
-  PCT_DECIMAL_PLACES,
-} from "../constants/metrics.constants";
-import { isInRange } from "../utils/metrics.date.utils";
-import { isActive, computeStatusCounts } from "./metrics.status.computations";
-import { computeWeeklyData } from "./metrics.weekly.computations";
-import { computeRoomOccupancies } from "./metrics.occupancy.computations";
-import { computeRanking } from "./metrics.ranking.computations";
+﻿import { MONTH_NAMES_ES } from "../constants/metricsConstants";
+import { PCT_DECIMAL_PLACES } from "../constants/metricsConfig";
+import { isInRange } from "../utils/metricsDateUtils";
+import { isActive, computeStatusCounts } from "./metricsStatusComputations";
+import { computeWeeklyData } from "./metricsWeeklyComputations";
+import { computeRoomOccupancies } from "./metricsOccupancyComputations";
+import { computeRanking } from "./metricsRankingComputations";
 import type {
   DashboardMetrics,
   MetricsDateRange,
   MetricsReservation,
   MetricsRoom,
-} from "./metrics.types";
+} from "./metricsTypes";
 
 export function computeMetrics(
   reservations: MetricsReservation[],

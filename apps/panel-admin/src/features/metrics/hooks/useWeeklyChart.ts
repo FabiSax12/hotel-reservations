@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
-import { useState } from "react";
-import type { WeeklyDataPoint } from "../domain/metrics.types";
+import { useCallback, useState } from "react";
+import type { WeeklyDataPoint } from "../domain/metricsTypes";
 
 export interface TooltipState {
   point: WeeklyDataPoint;
@@ -16,21 +16,21 @@ function resolveWrapperRect(target: EventTarget & SVGGElement): DOMRect | null {
 export function useWeeklyChart() {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
-  function handleBarEnter(e: React.MouseEvent<SVGGElement>, point: WeeklyDataPoint) {
+  const handleBarEnter = useCallback((e: React.MouseEvent<SVGGElement>, point: WeeklyDataPoint) => {
     const rect = resolveWrapperRect(e.currentTarget);
     if (!rect) return;
     setTooltip({ point, x: e.clientX - rect.left, y: e.clientY - rect.top });
-  }
+  }, []);
 
-  function handleMouseMove(e: React.MouseEvent<SVGGElement>) {
+  const handleMouseMove = useCallback((e: React.MouseEvent<SVGGElement>) => {
     const rect = resolveWrapperRect(e.currentTarget);
     if (!rect) return;
     setTooltip((prev) => prev ? { ...prev, x: e.clientX - rect.left, y: e.clientY - rect.top } : null);
-  }
+  }, []);
 
-  function handleMouseLeave() {
+  const handleMouseLeave = useCallback(() => {
     setTooltip(null);
-  }
+  }, []);
 
   return { tooltip, handleBarEnter, handleMouseMove, handleMouseLeave };
 }

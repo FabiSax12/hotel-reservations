@@ -1,4 +1,4 @@
-import type { WeeklyDataPoint } from "../../../domain/metrics.types";
+﻿import type { WeeklyDataPoint } from "../../../domain/metricsTypes";
 
 export interface ChartBarsProps {
   data:        WeeklyDataPoint[];

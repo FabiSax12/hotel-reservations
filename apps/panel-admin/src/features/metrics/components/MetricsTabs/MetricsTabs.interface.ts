@@ -1,5 +1,5 @@
-import type { DashboardMetrics } from "../../domain/metrics.types";
-import type { MetricsTexts } from "../../i18n/metricsTexts.type";
+﻿import type { DashboardMetrics } from "../../domain/metricsTypes";
+import type { MetricsTexts } from "../../i18n/metricsTextsType";
 
 export interface MetricsTabsProps {
   metrics: DashboardMetrics;

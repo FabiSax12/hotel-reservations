@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { ProgressBar } from "@heroui/react";
-import { resolveOccupancyColor } from "../../../domain/metrics.occupancy.computations";
-import { formatPct } from "../../../utils/metrics.format.utils";
+import { resolveOccupancyColor } from "../../../domain/metricsOccupancyComputations";
+import { formatPct } from "../../../utils/metricsFormatUtils";
 import { ROOM_OCCUPANCY_ROW_STYLES as STYLES } from "./RoomOccupancyRow.styles";
 import type { RoomOccupancyRowProps } from "./RoomOccupancyRow.interface";
 

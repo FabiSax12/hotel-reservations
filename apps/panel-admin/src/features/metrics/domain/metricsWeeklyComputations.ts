@@ -1,6 +1,7 @@
-import { DAYS_TO_SUNDAY, STATUS_ORDER } from "../constants/metrics.constants";
-import { getISOWeek, getMondayOfWeek } from "../utils/metrics.date.utils";
-import type { MetricsReservation, StatusCounts, WeeklyDataPoint, WeeklyLabel } from "./metrics.types";
+﻿import { STATUS_ORDER } from "../constants/metricsConstants";
+import { DAYS_TO_SUNDAY } from "../constants/metricsConfig";
+import { getISOWeek, getMondayOfWeek } from "../utils/metricsDateUtils";
+import type { MetricsReservation, StatusCounts, WeeklyDataPoint, WeeklyLabel } from "./metricsTypes";
 
 export function computeWeeklyData(
   reservations: MetricsReservation[],

@@ -1,13 +1,13 @@
-"use client";
+﻿"use client";
 
-import { CHART_LAYOUT } from "../../../constants/metrics.chart.constants";
+import { CHART_LAYOUT } from "../../../constants/metricsChartConstants";
 import { WEEKLY_CHART_STYLES as STYLES } from "./WeeklyStackedBarChart.styles";
 import {
   computeYAxisMax,
   computeChartDimensions,
   computeBarLayout,
   computeGridValues,
-} from "../../../utils/metrics.chart.utils";
+} from "../../../utils/metricsChartUtils";
 import { useWeeklyChart } from "../../../hooks/useWeeklyChart";
 import { ChartLegend } from "../ChartLegend/ChartLegend";
 import { ChartGrid } from "../ChartGrid/ChartGrid";
