@@ -11,6 +11,8 @@ import type { SupportedLocale } from "@hotel/i18n";
 import { useI18n as _useI18n, LOCALES } from "@hotel/i18n";
 import { AUTH_TEXTS } from "@/features/auth/i18n/auth.texts";
 import type { AuthTexts } from "@/features/auth/i18n/authTexts.type";
+import { CHECKOUT_TEXTS } from "@/features/checkout/i18n/checkout.texts";
+import type { CheckoutTexts } from "@/features/checkout/i18n/checkoutTexts.type";
 import { LAYOUT_TEXTS } from "@/features/layout/i18n/layout.texts";
 import type { LayoutTexts } from "@/features/layout/i18n/layoutTexts.type";
 import { ROOM_DETAIL_TEXTS } from "@/features/room-detail/i18n/roomDetail.texts";
@@ -33,6 +35,7 @@ export type AppTranslations = {
   SEARCH: SearchTexts;
   ROOMS: RoomsTexts;
   ROOM_DETAIL: RoomDetailTexts;
+  CHECKOUT: CheckoutTexts;
 };
 
 /**
@@ -47,6 +50,7 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
     SEARCH: SEARCH_TEXTS.es,
     ROOMS: ROOMS_TEXTS.es,
     ROOM_DETAIL: ROOM_DETAIL_TEXTS.es,
+    CHECKOUT: CHECKOUT_TEXTS.es,
   },
   [LOCALES.EN]: {
     COMMON: COMMON_TEXTS.en,
@@ -55,6 +59,7 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
     SEARCH: SEARCH_TEXTS.en,
     ROOMS: ROOMS_TEXTS.en,
     ROOM_DETAIL: ROOM_DETAIL_TEXTS.en,
+    CHECKOUT: CHECKOUT_TEXTS.en,
   },
 };
 
