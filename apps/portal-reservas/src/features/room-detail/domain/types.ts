@@ -121,3 +121,19 @@ export interface UseImageCarouselOptions {
   /** Total number of slides. */
   count: number;
 }
+
+/** Options for the carousel-gestures hook. */
+export interface UseCarouselGesturesOptions {
+  /** Go to the previous slide. */
+  onPrev: () => void;
+  /** Go to the next slide. */
+  onNext: () => void;
+}
+
+/** Options for the detail-panel shell hook. */
+export interface UseRoomDetailPanelOptions {
+  /** Whether the panel is open; gates the mobile scroll lock. */
+  isOpen: boolean;
+  /** Closes the panel (invoked on Escape). */
+  onClose: () => void;
+}

@@ -9,14 +9,11 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { DOM_EVENTS, KEYBOARD_KEYS } from "@/constants/dom-events.constants";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { useScrollLock } from "@/hooks/useScrollLock";
 import { useI18n } from "@/locales";
-import { ROOM_DETAIL_MOBILE_QUERY, SELECTION_KIND } from "../constants/room-detail.constants";
+import { SELECTION_KIND } from "../constants/room-detail.constants";
 import type { RoomDetailPanelProps } from "../domain/types";
-import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
+import { useRoomDetailPanel } from "../hooks/useRoomDetailPanel";
+import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 import { PackageRoomsView } from "./PackageRoomsView";
 import { RoomDetailFooter } from "./RoomDetailFooter";
 import { RoomDetailHeader } from "./RoomDetailHeader";
@@ -24,32 +21,7 @@ import { RoomDetailRoomSection } from "./RoomDetailRoomSection";
 
 export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelProps) {
   const { t } = useI18n();
-  const [entered, setEntered] = useState(false);
-  const asideRef = useRef<HTMLElement>(null);
-  const isMobile = useMediaQuery(ROOM_DETAIL_MOBILE_QUERY);
-
-  // Lock body scroll only on mobile, where the panel is a modal sheet.
-  useScrollLock(isOpen && isMobile);
-
-  // Trigger the slide-in on the frame after mount.
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => setEntered(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  // Move focus into the panel once it has entered.
-  useEffect(() => {
-    if (entered) asideRef.current?.focus();
-  }, [entered]);
-
-  // Close on Escape.
-  useEffect(() => {
-    const handleKey = (event: KeyboardEvent) => {
-      if (event.key === KEYBOARD_KEYS.ESCAPE) onClose();
-    };
-    window.addEventListener(DOM_EVENTS.KEYDOWN, handleKey);
-    return () => window.removeEventListener(DOM_EVENTS.KEYDOWN, handleKey);
-  }, [onClose]);
+  const { entered, asideRef, isMobile } = useRoomDetailPanel({ isOpen, onClose });
 
   const isShown = entered && isOpen;
   const isPackage = selection.kind === SELECTION_KIND.PACKAGE;
@@ -62,10 +34,10 @@ export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelP
 
   return (
     <>
-      <div className={S.scrim(isShown)} aria-hidden="true" onClick={onClose} />
+      <div className={ROOM_DETAIL_STYLES.scrim(isShown)} aria-hidden="true" onClick={onClose} />
       <aside
         ref={asideRef}
-        className={S.panel(isShown)}
+        className={ROOM_DETAIL_STYLES.panel(isShown)}
         role="dialog"
         aria-modal={isMobile || undefined}
         aria-label={title}
@@ -73,11 +45,11 @@ export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelP
       >
         <RoomDetailHeader eyebrow={eyebrow} title={title} onClose={onClose} />
 
-        <div className={S.body}>
+        <div className={ROOM_DETAIL_STYLES.body}>
           {isPackage ? (
             <PackageRoomsView pkg={selection.pkg} />
           ) : (
-            <div className={S.bodyStack}>
+            <div className={ROOM_DETAIL_STYLES.bodyStack}>
               <RoomDetailRoomSection room={selection.room} />
             </div>
           )}

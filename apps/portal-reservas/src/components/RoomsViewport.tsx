@@ -9,13 +9,13 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
 import { Background } from "../features/layout/components/Background";
 import { Header } from "../features/layout/components/Header";
-import { RoomList } from "../features/rooms/components/RoomList";
 import { RoomDetailMount, RoomDetailPush, useRoomDetail } from "../features/room-detail";
+import { RoomList } from "../features/rooms/components/RoomList";
 import { HeroSearch } from "../features/search/components/HeroSearch";
-import { PAGE_STYLES as S } from "../theme/layout.theme";
+import { useRoomsReveal } from "../hooks/useRoomsReveal";
+import { PAGE_STYLES } from "../theme/layout.theme";
 import type { RoomsViewportProps } from "./RoomsViewport.types";
 
 export function RoomsViewport({
@@ -32,22 +32,10 @@ export function RoomsViewport({
   onReset,
 }: RoomsViewportProps) {
   const { isOpen } = useRoomDetail();
-  const [roomsHidden, setRoomsHidden] = useState(false);
-
-  useEffect(() => {
-    if (heroCalendarActive || isSearchingData) {
-      // Scroll to top immediately so the user sees the calendar / loading state
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      // Hide rooms after the calendar finishes its entrance animation (500 ms
-      // must match the CSS transition) to avoid a flash underneath.
-      const timer = setTimeout(() => setRoomsHidden(true), 500);
-      return () => clearTimeout(timer);
-    }
-    setRoomsHidden(false);
-  }, [heroCalendarActive, isSearchingData]);
+  const roomsHidden = useRoomsReveal(heroCalendarActive, isSearchingData);
 
   return (
-    <main className={S.main}>
+    <main className={PAGE_STYLES.main}>
       <Background />
 
       <Header
@@ -72,7 +60,7 @@ export function RoomsViewport({
 
       {selectedLocation && !roomsHidden && (
         <RoomDetailPush>
-          <div className={S.roomsWrapper(hasSearched, heroCalendarActive)}>
+          <div className={PAGE_STYLES.roomsWrapper(hasSearched, heroCalendarActive)}>
             <RoomList
               rooms={filteredRooms}
               selectedDest={selectedLocation}
