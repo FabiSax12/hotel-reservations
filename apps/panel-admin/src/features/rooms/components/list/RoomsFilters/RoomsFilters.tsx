@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { FILTER_BAR_STYLES as STYLES } from "@/features/rooms/components/list/RoomsFilters/RoomsFilters.styles";
-import { useRoomsFilterHandlers } from "../../hooks/useRoomsFilterHandlers";
+import { useRoomsFilterHandlers } from "../../../hooks/useRoomsFilterHandlers";
 import { AvailabilityFilter } from "./AvailabilityFilter/AvailabilityFilter";
 import { CapacityFilter } from "./CapacityFilter/CapacityFilter";
 import { CategoryFilter } from "./CategoryFilter/CategoryFilter";
