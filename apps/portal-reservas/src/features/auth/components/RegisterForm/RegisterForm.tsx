@@ -13,6 +13,7 @@ import {
   ARIA_ROLES as AR,
   BUTTON_UI as BU,
   INPUT_TYPES as IT,
+  FALLBACK_TEXTS as FT,
 } from "@/features/auth/constants/ui";
 import {
   REGISTER_THEME_STYLES as AS,
@@ -52,7 +53,7 @@ export const RegisterForm = () => {
       <div className={AS.card}>
         <div className={RS.header}>
           <h1 className={AS.title}>{t.AUTH.REGISTER.TITLE}</h1>
-          <p className={AS.subtitle}>{t.AUTH.REGISTER.SUBTITLE || "Create your account"}</p>
+          <p className={AS.subtitle}>{t.AUTH.REGISTER.SUBTITLE || FT.REGISTER_SUBTITLE}</p>
         </div>
 
         <Form action={formAction} className={AS.form}>
