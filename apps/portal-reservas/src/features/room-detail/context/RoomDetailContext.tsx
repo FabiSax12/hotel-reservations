@@ -13,7 +13,11 @@
 
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 import type { Room, RoomPackage } from "@/features/rooms";
-import { ROOM_DETAIL, SELECTION_KIND } from "../constants/room-detail.constants";
+import {
+  ROOM_DETAIL,
+  ROOM_DETAIL_ERRORS,
+  SELECTION_KIND,
+} from "../constants/room-detail.constants";
 import type { RoomDetailContextValue, RoomDetailSelection } from "../domain/types";
 
 const RoomDetailContext = createContext<RoomDetailContextValue | null>(null);
@@ -61,10 +65,7 @@ export function RoomDetailProvider({ children }: { children: React.ReactNode }) 
 export function useRoomDetail(): RoomDetailContextValue {
   const ctx = useContext(RoomDetailContext);
   if (!ctx) {
-    throw new Error(
-      "useRoomDetail must be used inside a <RoomDetailProvider>. " +
-        "Check that RoomDetailProvider wraps the rooms section in RoomsInnerPage.",
-    );
+    throw new Error(ROOM_DETAIL_ERRORS.PROVIDER_MISSING);
   }
   return ctx;
 }

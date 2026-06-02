@@ -23,3 +23,10 @@ export const SELECTION_KIND = Object.freeze({
   ROOM: "room",
   PACKAGE: "package",
 } as const);
+
+/** Developer-facing invariant messages (never shown to end users). */
+export const ROOM_DETAIL_ERRORS = Object.freeze({
+  PROVIDER_MISSING:
+    "useRoomDetail must be used inside a <RoomDetailProvider>. " +
+    "Check that RoomDetailProvider wraps the rooms section in RoomsInnerPage.",
+} as const);
