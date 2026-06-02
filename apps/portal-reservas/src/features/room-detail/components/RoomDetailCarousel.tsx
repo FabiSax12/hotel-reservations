@@ -33,11 +33,13 @@ export function RoomDetailCarousel({
     );
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: ARIA carousel pattern — no semantic HTML element exists for a carousel group
     <div
       className={ROOM_DETAIL_STYLES.carouselViewport}
       role="group"
       aria-roledescription={t.ROOM_DETAIL.CAROUSEL_ROLE}
       aria-label={t.ROOM_DETAIL.CAROUSEL_LABEL}
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: viewport is intentionally focusable for keyboard arrow-key navigation
       tabIndex={0}
       onKeyDown={onKeyDown}
       onPointerDown={onPointerDown}
@@ -77,6 +79,7 @@ export function RoomDetailCarousel({
               viewBox={ICON_VIEW_BOX}
               stroke="currentColor"
               strokeWidth={2}
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronLeft} />
             </svg>
@@ -94,6 +97,7 @@ export function RoomDetailCarousel({
               viewBox={ICON_VIEW_BOX}
               stroke="currentColor"
               strokeWidth={2}
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronRight} />
             </svg>
