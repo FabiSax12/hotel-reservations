@@ -1,4 +1,5 @@
-export const AUTH_BACKGROUND_IMAGE = "url('/images/auth-bg.png')" as const;
+export const AUTH_BACKGROUND_IMAGE =
+  "url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=2070&auto=format&fit=crop')" as const;
 
 export const LOGIN_FORM_STYLES = {
   header: "mb-10",
@@ -16,8 +17,8 @@ export const LOGIN_THEME_STYLES = {
   main: "relative flex min-h-screen items-center justify-center px-4 overflow-hidden",
   background: "absolute inset-0 z-0",
   bgImage: "absolute inset-0 bg-cover bg-center scale-105",
-  bgOverlay: "absolute inset-0 bg-forest-950/85 backdrop-blur-md",
-  bgGradient: "absolute inset-0 bg-gradient-to-b from-forest-950/90 via-transparent to-transparent",
+  bgOverlay: "absolute inset-0 bg-forest-950/60 backdrop-blur-md",
+  bgGradient: "absolute inset-0 bg-gradient-to-b from-forest-950/70 via-transparent to-transparent",
   card: "relative z-10 w-full max-w-md rounded-2xl bg-forest-900/40 backdrop-blur-xl border border-forest-800/60 p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.4)] transition-all duration-500",
   title: "text-3xl font-black text-stone-50 tracking-tight mb-2",
   subtitle: "text-stone-400 text-sm mb-8 font-medium",
