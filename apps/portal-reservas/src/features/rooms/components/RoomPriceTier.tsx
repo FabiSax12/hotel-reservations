@@ -18,7 +18,7 @@ export function RoomPriceTier({ room }: RoomPriceTierProps) {
   const { hasDates } = useRoomsContext();
 
   return (
-    <div className={`${ROOM_CARD_STYLES.priceTier} relative`}>
+    <div className={`${ROOM_CARD_STYLES.priceTier} ${ROOM_CARD_STYLES.triggerRaised}`}>
       {/* Price block — only shown when dates are selected */}
       {hasDates && (
         <div className={ROOM_CARD_STYLES.priceBlock}>
