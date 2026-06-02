@@ -1,7 +1,7 @@
 # Feature Specification: Rooms — Dynamic Listing, Detail Expansion & Smart Grouping
 
-**Status:** in-progress (Phase 3 / US-DM-04)
-**Version:** 3.0
+**Status:** in-progress (Phase 4 / US-DM-05)
+**Version:** 4.0
 **Depends on:** `search` feature (destination + guest count), `@hotel/ui` (Calendar, Button), `@hotel/i18n`
 
 ---
@@ -370,3 +370,145 @@ room's price (`totalPricePerNight`) and from any featured constituent room.
 | `FILTERS_NO_RESULTS_HINT` | "Ajusta o limpia los filtros…" | "Adjust or clear the filters…" |
 | `FILTERS_ACTIVE_BADGE` | "filtros activos" | "active filters" |
 | `FEATURED_BADGE` | "Destacado" | "Featured" |
+
+---
+
+## 10. US-DM-05 — Room Detail Side Panel
+
+**Status:** in-progress (US-DM-05)
+**Depends on:** US-DM-04 (package grouping), US-DM-02 (room card + availability calendar).
+
+### 10.1 Objective
+
+Let a client open a right-docked side panel from any room or package in the
+search results to digest every client-facing detail (image carousel + gallery,
+key info, the full amenity list with descriptions, and a conditional reserve
+CTA) without leaving the search interface. This replaces the unwired US-DM-02
+`RoomDetailsPopover` centered-modal stub, which is removed.
+
+### 10.2 Scope & Boundaries
+
+#### In Scope
+* Opens from **both** search states — brief (location only) and full
+  (`hasSearched`). Both render the same `RoomList`, so one implementation covers
+  both.
+* **Whole-card trigger:** clicking a room/package card opens the panel; the card
+  CTA and the package expand toggle stay independently clickable (raised above a
+  transparent trigger overlay). The active card is highlighted.
+* **Layout:** desktop (`>=lg`) docks the panel on the right and reflows the
+  results left (padding push) while the header/search stay put. Below `lg` the
+  panel is a full-screen sheet sliding in from the right over a scrim.
+* **Per-room content:** hero carousel over `[image, ...images]` (arrows, dots,
+  ArrowLeft/Right keyboard, pointer swipe), a thumbnail gallery that drives it,
+  capacity/area/type chips, a scarcity chip, bed configuration, the admin-tip
+  pull quote, the full description, and **every** amenity with its icon and
+  description.
+* **Package mode:** a sticky "N rooms in this package" banner; each room stacked
+  as its own section with a "Room X of N" heading; the footer shows the total
+  per night and reserves the package (availability via the primary room).
+* **CTA:** mirrors the card CTA states (no dates / verifying / reserve /
+  unavailable). Picking dates in the panel's availability calendar re-runs the
+  search, but the panel stays open and updates — the selection lives **above**
+  `RoomList`, so a list re-mount never closes it.
+* **Close:** X button, Escape, re-clicking the active card, and (mobile) scrim
+  tap; focus returns to the trigger. Body scroll is locked on mobile only, where
+  the panel is modal.
+
+#### Out of Scope (Do Not Modify)
+* The reservation / checkout action page — only the CTA is built.
+* URL persistence of the open panel (client state only, consistent with US-DM-03).
+* Real amenity descriptions from the DB — mirrored as mock data for now (see 10.4).
+
+### 10.3 Architecture
+
+```
+features/rooms/
+├── components/
+│   ├── RoomCard.tsx              (modified: whole-card trigger + active highlight)
+│   ├── PackageCard.tsx           (modified: whole-card trigger + raised CTA)
+│   ├── RoomPriceTier.tsx         (modified: CTA raised above the trigger overlay)
+│   └── room-detail-panel/        (NEW sub-feature)
+│       ├── context/RoomDetailContext.tsx   (RoomDetailProvider + useRoomDetail)
+│       ├── RoomDetailMount.tsx              (mounts the panel above the list)
+│       ├── RoomDetailPush.tsx               (reflows the results when open)
+│       ├── sub-components/
+│       │   ├── RoomDetailPanel.tsx          (orchestrator: header / body / footer)
+│       │   ├── RoomDetailHeader.tsx
+│       │   ├── RoomDetailMedia.tsx          (carousel + gallery, shared index)
+│       │   ├── RoomDetailCarousel.tsx
+│       │   ├── RoomDetailGallery.tsx
+│       │   ├── RoomDetailKeyInfo.tsx
+│       │   ├── RoomDetailAmenities.tsx
+│       │   ├── RoomDetailRoomSection.tsx    (reused for room + each package room)
+│       │   ├── PackageRoomsView.tsx
+│       │   ├── RoomDetailFooter.tsx
+│       │   └── RoomDetailCta.tsx
+│       └── index.ts
+├── hooks/useImageCarousel.ts     (NEW)
+├── mock-data/amenities.ts        (NEW: AMENITY_CATALOG mirroring the DB)
+├── constants/rooms.constants.ts  (modified: +ROOM_DETAIL.EXIT_MS)
+├── domain/types.ts               (modified: +RoomDetailSelection + panel Props;
+│                                            −RoomCardGalleryProps/RoomDetailsPopoverProps)
+└── i18n/rooms.texts.ts + .type   (modified: +DETAIL_* keys; −EXPAND/COLLAPSE_DETAILS)
+
+src/
+├── components/RoomsInnerPage.tsx (modified: mounts RoomDetailProvider/Mount/Push)
+├── hooks/useMediaQuery.ts        (NEW: mobile-only scroll-lock gating)
+└── theme/room-detail.theme.ts    (NEW: ROOM_DETAIL_STYLES dictionary)
+```
+
+### 10.4 Amenity descriptions — DB mirror
+
+Amenity descriptions live in `public.amenities.description` (TEXT), joined to
+rooms through `public.room_amenities` (migration
+`20260505000000_create_amenities.sql`). The mock `AMENITY_CATALOG`
+(`mock-data/amenities.ts`, Spanish content like `room.description`) resolves
+`Room.amenities[]` names to descriptions for the panel. When the mock layer is
+replaced by an API/DB fetch, point the lookup at `public.amenities.description`.
+
+### 10.5 Acceptance Criteria
+
+* [x] The panel opens from both the brief and the full search interfaces.
+* [x] Clicking a room (whole card, including the name) opens a right-side panel;
+  search stays on the left, results reflow.
+* [x] The panel has an image carousel and an image gallery.
+* [x] The panel shows the card's key info plus all client-facing room
+  information (capacity, area, type, beds, admin tip, full description, price).
+* [x] Every amenity is shown with its details (icon + name + description).
+* [x] Package-aware: shows how many rooms are offered and which room is being
+  viewed ("Room X of N" + sticky package count).
+* [x] Clear, availability-aware reserve CTA (action page out of scope); the
+  availability calendar re-search keeps the panel open and updates it.
+* [x] Clear close affordances (X / Escape / re-click / mobile scrim) return the
+  user to the default portal navigation.
+* [x] No regressions: US-DM-02/03/04 continue to pass; `type-check` and
+  production `build` are green.
+
+### 10.6 i18n — New Keys
+
+| Key | ES | EN |
+|-----|----|----|
+| `DETAIL_OPEN_LABEL` | "Ver detalles de {title}" | "View details for {title}" |
+| `DETAIL_PACKAGE_EYEBROW` | "Paquete" | "Package" |
+| `DETAIL_PACKAGE_COUNT` | "{count} habitaciones en este paquete" | "{count} rooms in this package" |
+| `DETAIL_ROOM_POSITION` | "Habitación {current} de {total}" | "Room {current} of {total}" |
+| `DETAIL_CAROUSEL_LABEL` | "Galería en carrusel" | "Image carousel" |
+| `DETAIL_PREV_IMAGE` / `DETAIL_NEXT_IMAGE` | "Imagen anterior" / "Imagen siguiente" | "Previous image" / "Next image" |
+| `DETAIL_IMAGE_POSITION` | "Imagen {current} de {total}" | "Image {current} of {total}" |
+| `DETAIL_CAPACITY_VALUE` | "Hasta {count} huéspedes" | "Up to {count} guests" |
+| `DETAIL_BEDS_LABEL` | "Camas" | "Beds" |
+| `DETAIL_ABOUT_TITLE` | "Sobre el hospedaje" | "About this stay" |
+| `DETAIL_PRICE_PLACEHOLDER` | "Selecciona fechas para ver el precio" | "Select dates to see the price" |
+
+Reused: `CLOSE_DETAILS`, `GALLERY_IMAGES_LABEL`, `AMENITIES_TITLE`, `PRICE_LABEL`,
+`PACKAGE_TOTAL_LABEL`, `RESERVE_ACTION`, `PACKAGE_RESERVE`, `CHECK_DATES_ACTION`,
+`SEE_FREE_DATES`, `UNAVAILABLE_LABEL`, `VERIFYING`, `LOADING_RESERVE`, `CURRENCY`,
+`SQFT_LABEL`, `LAST_ROOM`.
+
+### 10.7 Handoff & Status Notes
+
+* **Current State:** Panel implemented and wired; `type-check` and production
+  `build` pass. Selection state lives above `RoomList` so the availability
+  re-search keeps the panel open.
+* **Next Step:** Wire the reserve CTA to the real reservation flow (US-DM action
+  page) and swap `AMENITY_CATALOG` for the live `public.amenities` data.
