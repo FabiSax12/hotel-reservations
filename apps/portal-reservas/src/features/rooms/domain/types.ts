@@ -304,8 +304,8 @@ export interface RoomPosition {
 
 export interface RoomDetailPanelProps {
   selection: RoomDetailSelection;
-  /** True during the exit animation, before unmount. */
-  isClosing: boolean;
+  /** Whether the panel is open; drives the slide-in / slide-out transition. */
+  isOpen: boolean;
   onClose: () => void;
 }
 
@@ -366,6 +366,13 @@ export interface RoomDetailFooterProps {
   /** Amount to display: the room price, or the package total per night. */
   price: number;
   /** Whether this footer represents a package (changes label + CTA copy). */
+  isPackage: boolean;
+}
+
+export interface RoomDetailCtaProps {
+  /** Room whose availability drives the CTA (the primary room for packages). */
+  room: Room;
+  /** Whether this CTA reserves a package (changes the reserve copy). */
   isPackage: boolean;
 }
 

@@ -17,11 +17,12 @@
 
 import { useState, useRef } from "react";
 import type { PackageCardProps } from "../domain/types";
-import { PACKAGE_CARD_STYLES } from "../../../theme/rooms.theme";
+import { PACKAGE_CARD_STYLES, ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { usePackageCardState } from "../hooks/usePackageCardState";
 import { RoomCard } from "./RoomCard";
+import { useRoomDetail } from "./room-detail-panel";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
 import { PackageCardSummary } from "./sub-components/PackageCardSummary";
@@ -30,6 +31,12 @@ import { PackageCardCTA } from "./sub-components/PackageCardCTA";
 export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
   const primaryRoom = pkg.rooms[0];
+  const { selection, isOpen, openPackage, close } = useRoomDetail();
+  const isActive = isOpen && selection?.kind === "package" && selection.pkg.id === pkg.id;
+  const handleOpenDetail = () => {
+    if (isActive) close();
+    else openPackage(pkg);
+  };
   const [isExpanded, setIsExpanded] = useState(false);
   const ctaRef = useRef<HTMLDivElement>(null);
   const {
@@ -49,13 +56,25 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   return (
     <div ref={wrapperRef}>
       <article
-        className={PACKAGE_CARD_STYLES.card(isUnavailable)}
+        className={`${PACKAGE_CARD_STYLES.card(isUnavailable)} ${isActive ? PACKAGE_CARD_STYLES.cardActive : ""}`}
         style={{
           animationDelay: `${index * ROOM_ANIMATION.CASCADE_DELAY_MS}ms`,
           animationDuration: `${ROOM_ANIMATION.ENTRANCE_DURATION_MS}ms`,
         }}
         aria-label={t.ROOMS.PACKAGE_LABEL.replace("{count}", String(pkg.rooms.length))}
       >
+        {/* Whole-card trigger — opens the package detail panel */}
+        <button
+          type="button"
+          className={ROOM_CARD_STYLES.triggerOverlay}
+          onClick={handleOpenDetail}
+          aria-expanded={isActive}
+          aria-label={t.ROOMS.DETAIL_OPEN_LABEL.replace(
+            "{title}",
+            t.ROOMS.PACKAGE_LABEL.replace("{count}", String(pkg.rooms.length)),
+          )}
+        />
+
         {/* Hover glow overlay */}
         <div className={PACKAGE_CARD_STYLES.cardHoverGlow} aria-hidden="true" />
 
@@ -69,7 +88,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
           totalPricePerNight={pkg.totalPricePerNight}
         >
           {/* CTA slot — inline with price */}
-          <div ref={ctaRef} className={PACKAGE_CARD_STYLES.ctaWrapperRelative}>
+          <div ref={ctaRef} className={`${PACKAGE_CARD_STYLES.ctaWrapperRelative} ${ROOM_CARD_STYLES.triggerRaised}`}>
             {/* Calendar portal — rendered at document.body to escape overflow-hidden */}
             {isCalendarOpen && (
               <RoomRangeCalendar

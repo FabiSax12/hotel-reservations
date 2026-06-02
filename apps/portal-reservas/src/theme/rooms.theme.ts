@@ -24,6 +24,15 @@ export const ROOM_CARD_STYLES = {
     }`,
   cardHoverGlow:
     "pointer-events-none absolute inset-0 rounded-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
+  // ─── Detail Trigger (US-DM-05) ──────────────────────────────────────────────
+  // Transparent button covering the card; sits above passive content (title,
+  // image, chips) but below the raised CTA so the CTA stays clickable.
+  triggerOverlay:
+    "absolute inset-0 z-[1] cursor-pointer rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold-500/60",
+  // Applied to interactive regions (CTA / calendar) so they stay above the overlay.
+  triggerRaised: "relative z-[2]",
+  // Highlight on the card whose detail panel is currently open.
+  cardActive: "ring-2 ring-gold-500/50 ring-offset-2 ring-offset-forest-950",
   skeletonCard:
     "relative flex flex-col lg:flex-row bg-forest-900 rounded-[2rem] border border-forest-800 shadow-[0_10px_30px_rgba(0,0,0,0.2)] animate-in fade-in duration-500",
   skeletonImagePanel: "bg-forest-800/80 animate-pulse",
@@ -195,6 +204,8 @@ export const PACKAGE_CARD_STYLES = {
     }`,
   cardHoverGlow:
     "pointer-events-none absolute inset-0 rounded-t-[2rem] border border-transparent shadow-none transition-[border-color,box-shadow] duration-500 group-hover:border-gold-500/30 group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]",
+  // Highlight on the package card whose detail panel is currently open (US-DM-05).
+  cardActive: "ring-2 ring-gold-500/50 ring-offset-2 ring-offset-forest-950",
 
   // ─── Image Panel ────────────────────────────────────────────────────────────
   // Same dimensions as RoomCard image panel, fills parent height

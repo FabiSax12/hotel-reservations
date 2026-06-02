@@ -10,14 +10,6 @@
 const EASE = "ease-[cubic-bezier(0.16,1,0.3,1)]";
 
 export const ROOM_DETAIL_STYLES = {
-  // ─── Trigger (whole card opens the panel) ─────────────────────────────────
-  // Transparent overlay button covering the card surface. Sits above the
-  // passive content (title, image, chips) but below the raised CTA region.
-  triggerOverlay:
-    "absolute inset-0 z-[1] cursor-pointer rounded-[2rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gold-500/60",
-  // Applied to interactive card regions (CTA / calendar) so they stay clickable.
-  triggerRaised: "relative z-[2]",
-
   // ─── Scrim (mobile only) ──────────────────────────────────────────────────
   scrim: (isShown: boolean) =>
     `fixed inset-0 z-[55] bg-forest-950/70 backdrop-blur-sm lg:hidden transition-opacity duration-300 ${EASE} motion-reduce:transition-none ${
@@ -66,6 +58,7 @@ export const ROOM_DETAIL_STYLES = {
   section: "flex flex-col gap-6",
   // Divider before each room beyond the first inside a package.
   sectionDivided: "flex flex-col gap-6 border-t border-forest-800/50 pt-7",
+  sectionHeading: "flex flex-col gap-1.5",
   sectionIndex:
     "flex items-center gap-2 text-gold-500/90 font-bold uppercase tracking-widest text-[11px]",
   sectionIndexDot: "w-1 h-1 rounded-full bg-gold-500/70",

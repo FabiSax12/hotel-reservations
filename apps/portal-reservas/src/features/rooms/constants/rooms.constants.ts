@@ -28,6 +28,14 @@ export const ROOM_ANIMATION = Object.freeze({
   CHEVRON_ROTATE_DURATION_MS: 300,
 } as const);
 
+export const ROOM_DETAIL = Object.freeze({
+  /**
+   * Duration (ms) of the side panel slide-out before it unmounts.
+   * Must match the panel's CSS transition (`duration-300` in room-detail.theme).
+   */
+  EXIT_MS: 300,
+} as const);
+
 export const ROOM_MOCK = Object.freeze({
   /**
    * Simulated delay (ms) for the availability check hook.

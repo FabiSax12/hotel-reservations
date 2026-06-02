@@ -1,8 +1,10 @@
 /**
- * @file RoomsInnerPage.tsx — Inner page that owns expandedRoomId state.
+ * @file RoomsInnerPage.tsx — Inner page that wires the rooms providers.
  *
- * Separated from the root page to keep the RoomsProvider state colocated
- * with the components that consume it, avoiding prop drilling.
+ * Separated from the root page to keep the RoomsProvider + RoomDetailProvider
+ * state colocated with the components that consume it, avoiding prop drilling.
+ * The detail panel (US-DM-05) mounts here, above the room list, so a re-search
+ * never unmounts an open panel.
  */
 
 "use client";
@@ -11,6 +13,11 @@ import { useEffect, useState } from "react";
 import { Background } from "../features/layout/components/Background";
 import { Header } from "../features/layout/components/Header";
 import { RoomList } from "../features/rooms/components/RoomList";
+import {
+  RoomDetailMount,
+  RoomDetailProvider,
+  RoomDetailPush,
+} from "../features/rooms/components/room-detail-panel";
 import { RoomsProvider } from "../features/rooms/context/RoomsContext";
 import { HeroSearch } from "../features/search/components/HeroSearch";
 import { PAGE_STYLES as S } from "../theme/layout.theme";
@@ -61,37 +68,44 @@ export function RoomsInnerPage({
 
   return (
     <RoomsProvider value={roomsContextValue}>
-      <main className={S.main}>
-        <Background />
+      <RoomDetailProvider>
+        <main className={S.main}>
+          <Background />
 
-        <Header
-          hasSearched={hasSearched}
-          searchParams={searchParams}
-          onReset={onReset}
-          onSearch={onSearchTrigger}
-        />
-
-        {!hasSearched && (
-          <HeroSearch
+          <Header
+            hasSearched={hasSearched}
+            searchParams={searchParams}
+            onReset={onReset}
             onSearch={onSearchTrigger}
-            onDestinationChange={onDestinationChange}
-            heroCalendarActive={heroCalendarActive}
-            setHeroCalendarActive={setHeroCalendarActive}
-            hasLocation={!!selectedLocation}
           />
-        )}
 
-        {selectedLocation && !roomsHidden && (
-          <div className={S.roomsWrapper(hasSearched, heroCalendarActive)}>
-            <RoomList
-              rooms={filteredRooms}
-              selectedDest={selectedLocation}
-              searchKey={searchKey}
-              isLoading={isSearchingData}
+          {!hasSearched && (
+            <HeroSearch
+              onSearch={onSearchTrigger}
+              onDestinationChange={onDestinationChange}
+              heroCalendarActive={heroCalendarActive}
+              setHeroCalendarActive={setHeroCalendarActive}
+              hasLocation={!!selectedLocation}
             />
-          </div>
-        )}
-      </main>
+          )}
+
+          {selectedLocation && !roomsHidden && (
+            <RoomDetailPush>
+              <div className={S.roomsWrapper(hasSearched, heroCalendarActive)}>
+                <RoomList
+                  rooms={filteredRooms}
+                  selectedDest={selectedLocation}
+                  searchKey={searchKey}
+                  isLoading={isSearchingData}
+                />
+              </div>
+            </RoomDetailPush>
+          )}
+
+          {/* Detail panel — mounted above the list so a re-search keeps it open. */}
+          <RoomDetailMount />
+        </main>
+      </RoomDetailProvider>
     </RoomsProvider>
   );
 }

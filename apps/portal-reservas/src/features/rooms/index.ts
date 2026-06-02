@@ -18,6 +18,13 @@
  */
 
 export { PackageCard } from "./components/PackageCard";
+// Room detail side panel sub-feature (US-DM-05).
+export {
+  RoomDetailMount,
+  RoomDetailProvider,
+  RoomDetailPush,
+  useRoomDetail,
+} from "./components/room-detail-panel";
 export { RoomCard } from "./components/RoomCard";
 export { RoomFiltersBar } from "./components/RoomFiltersBar";
 // Components — the visual layer. No business logic.
