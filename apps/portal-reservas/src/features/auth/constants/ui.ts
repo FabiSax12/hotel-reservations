@@ -35,3 +35,8 @@ export const ARIA_ROLES = Object.freeze({
 export const OAUTH_PROVIDERS = Object.freeze({
   GOOGLE: "google",
 } as const);
+
+export const FALLBACK_TEXTS = Object.freeze({
+  REGISTER_SUBTITLE: "Create your account",
+} as const);
+
