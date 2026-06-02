@@ -71,4 +71,17 @@ export type RoomsTexts = {
   FILTERS_PRICE_MAX_LABEL: string;
   FILTERS_ACTIVE_BADGE: string;
   FEATURED_BADGE: string;
+  // US-DM-05 — Room detail side panel
+  DETAIL_OPEN_LABEL: string;
+  DETAIL_PACKAGE_EYEBROW: string;
+  DETAIL_PACKAGE_COUNT: string;
+  DETAIL_ROOM_POSITION: string;
+  DETAIL_CAROUSEL_LABEL: string;
+  DETAIL_PREV_IMAGE: string;
+  DETAIL_NEXT_IMAGE: string;
+  DETAIL_IMAGE_POSITION: string;
+  DETAIL_CAPACITY_VALUE: string;
+  DETAIL_BEDS_LABEL: string;
+  DETAIL_ABOUT_TITLE: string;
+  DETAIL_PRICE_PLACEHOLDER: string;
 };
