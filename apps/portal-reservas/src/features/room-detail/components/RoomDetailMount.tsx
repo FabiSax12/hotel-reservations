@@ -7,8 +7,8 @@
 
 "use client";
 
-import { useRoomDetail } from "./context/RoomDetailContext";
-import { RoomDetailPanel } from "./sub-components/RoomDetailPanel";
+import { useRoomDetail } from "../context/RoomDetailContext";
+import { RoomDetailPanel } from "./RoomDetailPanel";
 
 export function RoomDetailMount() {
   const { selection, isOpen, close } = useRoomDetail();

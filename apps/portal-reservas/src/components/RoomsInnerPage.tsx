@@ -9,7 +9,7 @@
 
 "use client";
 
-import { RoomDetailProvider } from "../features/rooms/components/room-detail-panel";
+import { RoomDetailProvider } from "../features/room-detail";
 import { RoomsProvider } from "../features/rooms/context/RoomsContext";
 import { RoomsViewport } from "./RoomsViewport";
 import type { RoomsInnerPageProps } from "./RoomsInnerPage.types";

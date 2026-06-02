@@ -1,32 +1,31 @@
 /**
  * @file RoomDetailPanel.tsx — Right-docked detail panel orchestrator (US-DM-05).
  *
- * Three zones: sticky header, scrollable body (room or stacked package rooms),
- * pinned price + CTA footer. Slides in on the right (full-screen sheet + scrim
- * on mobile). Closes on the X button, Escape, and (mobile) scrim tap; scroll is
+ * Three zones: header, scrollable body (room or stacked package rooms), pinned
+ * price + CTA footer. Slides in on the right (full-screen sheet + scrim on
+ * mobile). Closes on the X button, Escape, and (mobile) scrim tap; scroll is
  * locked on mobile only, where the panel is modal.
  */
 
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
-import { useI18n } from "@/locales";
-import { useScrollLock } from "@/hooks/useScrollLock";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import type { RoomDetailPanelProps } from "../../../domain/types";
-import { RoomDetailHeader } from "./RoomDetailHeader";
-import { RoomDetailRoomSection } from "./RoomDetailRoomSection";
+import { useScrollLock } from "@/hooks/useScrollLock";
+import { useI18n } from "@/locales";
+import { ROOM_DETAIL_MOBILE_QUERY } from "../constants/room-detail.constants";
+import type { RoomDetailPanelProps } from "../domain/types";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 import { PackageRoomsView } from "./PackageRoomsView";
 import { RoomDetailFooter } from "./RoomDetailFooter";
-
-const MOBILE_QUERY = "(max-width: 1023px)";
+import { RoomDetailHeader } from "./RoomDetailHeader";
+import { RoomDetailRoomSection } from "./RoomDetailRoomSection";
 
 export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelProps) {
   const { t } = useI18n();
   const [entered, setEntered] = useState(false);
   const asideRef = useRef<HTMLElement>(null);
-  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const isMobile = useMediaQuery(ROOM_DETAIL_MOBILE_QUERY);
 
   // Lock body scroll only on mobile, where the panel is a modal sheet.
   useScrollLock(isOpen && isMobile);

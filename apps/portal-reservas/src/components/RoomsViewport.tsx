@@ -13,11 +13,7 @@ import { useEffect, useState } from "react";
 import { Background } from "../features/layout/components/Background";
 import { Header } from "../features/layout/components/Header";
 import { RoomList } from "../features/rooms/components/RoomList";
-import {
-  RoomDetailMount,
-  RoomDetailPush,
-  useRoomDetail,
-} from "../features/rooms/components/room-detail-panel";
+import { RoomDetailMount, RoomDetailPush, useRoomDetail } from "../features/room-detail";
 import { HeroSearch } from "../features/search/components/HeroSearch";
 import { PAGE_STYLES as S } from "../theme/layout.theme";
 import type { RoomsViewportProps } from "./RoomsViewport.types";

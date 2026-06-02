@@ -7,9 +7,9 @@
 
 "use client";
 
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
-import type { RoomDetailPushProps } from "../../domain/types";
-import { useRoomDetail } from "./context/RoomDetailContext";
+import type { RoomDetailPushProps } from "../domain/types";
+import { useRoomDetail } from "../context/RoomDetailContext";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 
 export function RoomDetailPush({ children }: RoomDetailPushProps) {
   const { isOpen } = useRoomDetail();

@@ -20,8 +20,8 @@ import { useRoomsContext } from "../context/RoomsContext";
 import type { RoomCardProps } from "../domain/types";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { RoomImagePanel } from "./RoomImagePanel";
+import { useRoomDetail } from "@/features/room-detail";
 import { RoomPriceTier } from "./RoomPriceTier";
-import { useRoomDetail } from "./room-detail-panel";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
 
@@ -59,7 +59,7 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
         className={S.triggerOverlay}
         onClick={handleOpenDetail}
         aria-expanded={isActive}
-        aria-label={t.ROOMS.DETAIL_OPEN_LABEL.replace("{title}", room.title)}
+        aria-label={t.ROOM_DETAIL.OPEN_LABEL.replace("{title}", room.title)}
       />
 
       {/* Hover glow overlay */}

@@ -8,10 +8,10 @@
 
 "use client";
 
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
+import { useRoomsContext } from "@/features/rooms";
 import { useI18n } from "@/locales";
-import { useRoomsContext } from "../../../context/RoomsContext";
-import type { RoomDetailFooterProps } from "../../../domain/types";
+import type { RoomDetailFooterProps } from "../domain/types";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 import { RoomDetailCta } from "./RoomDetailCta";
 
 export function RoomDetailFooter({ room, price, isPackage }: RoomDetailFooterProps) {
@@ -28,7 +28,7 @@ export function RoomDetailFooter({ room, price, isPackage }: RoomDetailFooterPro
             <span className={S.priceCurrency}>{t.ROOMS.CURRENCY}</span>
           </span>
         ) : (
-          <span className={S.pricePlaceholder}>{t.ROOMS.DETAIL_PRICE_PLACEHOLDER}</span>
+          <span className={S.pricePlaceholder}>{t.ROOM_DETAIL.PRICE_PLACEHOLDER}</span>
         )}
       </div>
 

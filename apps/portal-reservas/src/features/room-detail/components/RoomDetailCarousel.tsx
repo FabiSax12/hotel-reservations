@@ -9,14 +9,11 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
 import { useI18n } from "@/locales";
-import type { RoomDetailCarouselProps } from "../../../domain/types";
-
-const ARROW_VIEW_BOX = "0 0 24 24";
-const PREV_ICON_PATH = "M15 19l-7-7 7-7";
-const NEXT_ICON_PATH = "M9 5l7 7-7 7";
-const SWIPE_THRESHOLD_PX = 40;
+import { ROOM_DETAIL } from "../constants/room-detail.constants";
+import { ICON_PATHS, ICON_VIEW_BOX } from "../constants/room-detail-icons.const";
+import type { RoomDetailCarouselProps } from "../domain/types";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 
 export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSelect }: RoomDetailCarouselProps) {
   const { t } = useI18n();
@@ -24,7 +21,7 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
   const startX = useRef<number | null>(null);
 
   const positionLabel = (i: number) =>
-    t.ROOMS.DETAIL_IMAGE_POSITION.replace("{current}", String(i + 1)).replace("{total}", String(count));
+    t.ROOM_DETAIL.IMAGE_POSITION.replace("{current}", String(i + 1)).replace("{total}", String(count));
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowLeft") {
@@ -39,8 +36,8 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
   const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
     if (startX.current === null) return;
     const delta = event.clientX - startX.current;
-    if (delta > SWIPE_THRESHOLD_PX) onPrev();
-    else if (delta < -SWIPE_THRESHOLD_PX) onNext();
+    if (delta > ROOM_DETAIL.SWIPE_THRESHOLD_PX) onPrev();
+    else if (delta < -ROOM_DETAIL.SWIPE_THRESHOLD_PX) onNext();
     startX.current = null;
   };
 
@@ -48,8 +45,8 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
     <div
       className={S.carouselViewport}
       role="group"
-      aria-roledescription={t.ROOMS.DETAIL_CAROUSEL_ROLE}
-      aria-label={t.ROOMS.DETAIL_CAROUSEL_LABEL}
+      aria-roledescription={t.ROOM_DETAIL.CAROUSEL_ROLE}
+      aria-label={t.ROOM_DETAIL.CAROUSEL_LABEL}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onPointerDown={(event) => { startX.current = event.clientX; }}
@@ -73,18 +70,18 @@ export function RoomDetailCarousel({ images, index, title, onPrev, onNext, onSel
 
       {count > 1 && (
         <>
-          <button type="button" className={S.carouselArrow("left")} onClick={onPrev} disabled={index === 0} aria-label={t.ROOMS.DETAIL_PREV_IMAGE}>
-            <svg className={S.carouselArrowIcon} fill="none" viewBox={ARROW_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d={PREV_ICON_PATH} />
+          <button type="button" className={S.carouselArrow("left")} onClick={onPrev} disabled={index === 0} aria-label={t.ROOM_DETAIL.PREV_IMAGE}>
+            <svg className={S.carouselArrowIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronLeft} />
             </svg>
           </button>
-          <button type="button" className={S.carouselArrow("right")} onClick={onNext} disabled={index === count - 1} aria-label={t.ROOMS.DETAIL_NEXT_IMAGE}>
-            <svg className={S.carouselArrowIcon} fill="none" viewBox={ARROW_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d={NEXT_ICON_PATH} />
+          <button type="button" className={S.carouselArrow("right")} onClick={onNext} disabled={index === count - 1} aria-label={t.ROOM_DETAIL.NEXT_IMAGE}>
+            <svg className={S.carouselArrowIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronRight} />
             </svg>
           </button>
           <span className={S.carouselCounter} aria-hidden="true">{index + 1}/{count}</span>
-          <div className={S.carouselDots} role="tablist" aria-label={t.ROOMS.DETAIL_CAROUSEL_LABEL}>
+          <div className={S.carouselDots} role="tablist" aria-label={t.ROOM_DETAIL.CAROUSEL_LABEL}>
             {images.map((src, i) => (
               <button
                 key={src}

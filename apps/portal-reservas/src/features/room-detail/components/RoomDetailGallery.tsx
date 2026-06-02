@@ -7,15 +7,15 @@
 "use client";
 
 import Image from "next/image";
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
 import { useI18n } from "@/locales";
-import type { RoomDetailGalleryProps } from "../../../domain/types";
+import type { RoomDetailGalleryProps } from "../domain/types";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 
 export function RoomDetailGallery({ images, index, title, onSelect }: RoomDetailGalleryProps) {
   const { t } = useI18n();
 
   return (
-    <div className={S.gallery} role="group" aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}>
+    <div className={S.gallery} role="group" aria-label={t.ROOM_DETAIL.GALLERY_LABEL}>
       {images.map((src, i) => (
         <button
           key={src}
@@ -23,7 +23,7 @@ export function RoomDetailGallery({ images, index, title, onSelect }: RoomDetail
           className={S.galleryThumb(i === index)}
           onClick={() => onSelect(i)}
           aria-current={i === index}
-          aria-label={t.ROOMS.DETAIL_IMAGE_POSITION.replace("{current}", String(i + 1)).replace("{total}", String(images.length))}
+          aria-label={t.ROOM_DETAIL.IMAGE_POSITION.replace("{current}", String(i + 1)).replace("{total}", String(images.length))}
         >
           <Image src={src} alt={`${title} ${i + 1}`} fill sizes="6rem" className={S.galleryThumbImg} unoptimized />
         </button>

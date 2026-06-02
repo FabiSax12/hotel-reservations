@@ -21,8 +21,8 @@ import { PACKAGE_CARD_STYLES, ROOM_CARD_STYLES } from "../../../theme/rooms.them
 import { useI18n } from "@/locales";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { usePackageCardState } from "../hooks/usePackageCardState";
+import { useRoomDetail } from "@/features/room-detail";
 import { RoomCard } from "./RoomCard";
-import { useRoomDetail } from "./room-detail-panel";
 import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
 import { PackageCardSummary } from "./sub-components/PackageCardSummary";
@@ -69,7 +69,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
           className={ROOM_CARD_STYLES.triggerOverlay}
           onClick={handleOpenDetail}
           aria-expanded={isActive}
-          aria-label={t.ROOMS.DETAIL_OPEN_LABEL.replace(
+          aria-label={t.ROOM_DETAIL.OPEN_LABEL.replace(
             "{title}",
             t.ROOMS.PACKAGE_LABEL.replace("{count}", String(pkg.rooms.length)),
           )}

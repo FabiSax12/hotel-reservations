@@ -2,23 +2,19 @@
  * @file RoomDetailCta.tsx — Availability-aware reserve CTA for the panel footer.
  *
  * Mirrors the room card CTA states (no dates / loading / available / unavailable)
- * but at panel scale. Reuses the shared room CTA-state hook and the inline
- * availability calendar; picking dates re-runs the search while the panel stays
- * open (the selection lives above the room list), so the CTA simply updates.
+ * but at panel scale. Reuses the rooms feature's CTA-state hook and the inline
+ * availability calendar (via the rooms barrel); picking dates re-runs the search
+ * while the panel stays open (the selection lives above the room list), so the
+ * CTA simply updates.
  */
 
 "use client";
 
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
+import { CTASpinner, RoomRangeCalendar, usePackageCardState } from "@/features/rooms";
 import { useI18n } from "@/locales";
-import { usePackageCardState } from "../../../hooks/usePackageCardState";
-import type { RoomDetailCtaProps } from "../../../domain/types";
-import { RoomRangeCalendar } from "../../sub-components/RoomRangeCalendar";
-import { CTASpinner } from "../../sub-components/CTASpinner";
-
-const SVG_VIEW_BOX = "0 0 24 24";
-const CALENDAR_PATH = "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z";
-const ARROW_PATH = "M9 5l7 7-7 7";
+import { ICON_PATHS, ICON_VIEW_BOX } from "../constants/room-detail-icons.const";
+import type { RoomDetailCtaProps } from "../domain/types";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 
 export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
   const { t } = useI18n();
@@ -52,8 +48,8 @@ export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
 
       {!hasDates && (
         <button type="button" className={S.checkDatesBtn} onClick={toggleCalendar} aria-expanded={isCalendarOpen}>
-          <svg className={S.ctaIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d={CALENDAR_PATH} />
+          <svg className={S.ctaIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.calendar} />
           </svg>
           {t.ROOMS.CHECK_DATES_ACTION}
         </button>
@@ -72,8 +68,8 @@ export function RoomDetailCta({ room, isPackage }: RoomDetailCtaProps) {
           ) : (
             <>
               {reserveLabel}
-              <svg className={S.ctaIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d={ARROW_PATH} />
+              <svg className={S.ctaIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.chevronRight} />
               </svg>
             </>
           )}

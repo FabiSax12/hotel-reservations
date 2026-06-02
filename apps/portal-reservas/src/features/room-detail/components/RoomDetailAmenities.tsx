@@ -7,13 +7,11 @@
 
 "use client";
 
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
+import { getAmenityDetail, getAmenityIcon } from "@/features/rooms";
 import { useI18n } from "@/locales";
-import { getAmenityIcon } from "../../../constants/amenity-icons.const";
-import { getAmenityDetail } from "../../../mock-data/amenities";
-import type { RoomDetailAmenitiesProps } from "../../../domain/types";
-
-const AMENITY_VIEW_BOX = "0 0 20 20";
+import { AMENITY_VIEW_BOX } from "../constants/room-detail-icons.const";
+import type { RoomDetailAmenitiesProps } from "../domain/types";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 
 export function RoomDetailAmenities({ amenities }: RoomDetailAmenitiesProps) {
   const { t } = useI18n();

@@ -12,13 +12,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useRef, useState } from "react";
-import { ROOM_DETAIL } from "../../../constants/rooms.constants";
-import type {
-  Room,
-  RoomDetailContextValue,
-  RoomDetailSelection,
-  RoomPackage,
-} from "../../../domain/types";
+import type { Room, RoomPackage } from "@/features/rooms";
+import { ROOM_DETAIL } from "../constants/room-detail.constants";
+import type { RoomDetailContextValue, RoomDetailSelection } from "../domain/types";
 
 const RoomDetailContext = createContext<RoomDetailContextValue | null>(null);
 

@@ -6,9 +6,9 @@
 
 "use client";
 
-import { ROOM_DETAIL_STYLES as S } from "@/theme/room-detail.theme";
-import type { RoomDetailMediaProps } from "../../../domain/types";
-import { useImageCarousel } from "../../../hooks/useImageCarousel";
+import type { RoomDetailMediaProps } from "../domain/types";
+import { useImageCarousel } from "../hooks/useImageCarousel";
+import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
 import { RoomDetailCarousel } from "./RoomDetailCarousel";
 import { RoomDetailGallery } from "./RoomDetailGallery";
 
