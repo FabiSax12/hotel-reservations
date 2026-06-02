@@ -12,9 +12,13 @@
 
 "use client";
 
-import { ROOM_CARD_STYLES as S } from "../../../../theme/rooms.theme";
+import { ROOM_CARD_STYLES } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
 import type { AvailabilityCalendarDialogProps } from "../../domain/types";
+
+const MAX_AVAILABLE_DATES_PREVIEW = 12;
+const SVG_VIEW_BOX = "0 0 24 24";
+const CLOSE_ICON_PATH = "M6 18L18 6M6 6l12 12";
 
 /** Formats an ISO date string into a readable short date (e.g. "15 oct"). */
 function formatDate(iso: string, locale: string): string {
@@ -38,41 +42,41 @@ export function AvailabilityCalendarDialog({
   onClose,
 }: AvailabilityCalendarDialogProps) {
   const { t, locale } = useI18n();
-  const groups = groupByMonth(availableDates.slice(0, 12), locale); // Show first 12 slots
+  const groups = groupByMonth(availableDates.slice(0, MAX_AVAILABLE_DATES_PREVIEW), locale);
 
   return (
     <div
-      className={`${S.dialogGrid} ${isOpen ? S.dialogGridOpen : S.dialogGridClosed}`}
+      className={`${ROOM_CARD_STYLES.dialogGrid} ${isOpen ? ROOM_CARD_STYLES.dialogGridOpen : ROOM_CARD_STYLES.dialogGridClosed}`}
       aria-hidden={!isOpen}
     >
-      <div className={S.dialogInner}>
-        <div className={S.dialogContent}>
-          <div className={S.dialogHeader}>
-            <p className={S.dialogTitle}>{t.ROOMS.AVAIL_CALENDAR_TITLE}</p>
+      <div className={ROOM_CARD_STYLES.dialogInner}>
+        <div className={ROOM_CARD_STYLES.dialogContent}>
+          <div className={ROOM_CARD_STYLES.dialogHeader}>
+            <p className={ROOM_CARD_STYLES.dialogTitle}>{t.ROOMS.AVAIL_CALENDAR_TITLE}</p>
             <button
               type="button"
               onClick={onClose}
-              className={S.dialogCloseBtn}
+              className={ROOM_CARD_STYLES.dialogCloseBtn}
               aria-label={t.ROOMS.AVAIL_DIALOG_CLOSE}
             >
-              <svg className={S.dialogCloseBtnIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <svg className={ROOM_CARD_STYLES.dialogCloseBtnIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d={CLOSE_ICON_PATH} />
               </svg>
             </button>
           </div>
 
           {availableDates.length === 0 ? (
-            <p className={S.dialogEmptyMsg}>
+            <p className={ROOM_CARD_STYLES.dialogEmptyMsg}>
               {t.ROOMS.AVAIL_DIALOG_EMPTY}
             </p>
           ) : (
-            <div className={S.dialogMonthList}>
+            <div className={ROOM_CARD_STYLES.dialogMonthList}>
               {Object.entries(groups).map(([month, dates]) => (
                 <div key={month}>
-                  <p className={S.dialogMonthLabel}>{month}</p>
-                  <div className={S.dialogDatesWrapper}>
+                  <p className={ROOM_CARD_STYLES.dialogMonthLabel}>{month}</p>
+                  <div className={ROOM_CARD_STYLES.dialogDatesWrapper}>
                     {dates.map((iso) => (
-                      <span key={iso} className={S.dialogDateBadge}>
+                      <span key={iso} className={ROOM_CARD_STYLES.dialogDateBadge}>
                         {formatDate(iso, locale)}
                       </span>
                     ))}
@@ -82,8 +86,8 @@ export function AvailabilityCalendarDialog({
             </div>
           )}
 
-          <div className={S.dialogActions}>
-            <button type="button" className={S.dialogCancelBtn} onClick={onClose}>
+          <div className={ROOM_CARD_STYLES.dialogActions}>
+            <button type="button" className={ROOM_CARD_STYLES.dialogCancelBtn} onClick={onClose}>
               {t.ROOMS.AVAIL_DIALOG_CLOSE}
             </button>
           </div>

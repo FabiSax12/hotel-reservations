@@ -4,8 +4,8 @@ import { useAmenityAdding } from "../hooks/useAmenityAdding";
 import { useDeleteAmenityDialog } from "../hooks/useAmenityDelete";
 import { useAmenityEditing } from "../hooks/useAmenityEditing";
 import { useAmenityToggle } from "../hooks/useAmenityToggle";
-import { AmenitiesGridContext } from "./AmenitiesGridContext";
 import type { AmenitiesGridContextValue } from "./AmenitiesGridContext";
+import { AmenitiesGridContext } from "./AmenitiesGridContext";
 
 export const AmenitiesGridProvider = ({
   children,

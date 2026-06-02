@@ -5,6 +5,7 @@
  */
 
 import type { Session, User as SupabaseUser } from "@supabase/supabase-js";
+import { AUTH_ROLES } from "../config/constants";
 import type { AdminProfile, AuthError, ClientProfile } from "./types";
 
 /**
@@ -39,14 +40,19 @@ export function isSessionValid(session: Session | null): session is Session {
  * }
  * ```
  */
-export function isAdminUser(profile: AdminProfile | ClientProfile | null): boolean {
+export function hasRole(
+  profile: { role?: string | null } | null,
+  allowedRoles: readonly string[],
+): boolean {
+  if (!profile?.role) return false;
+  return allowedRoles.includes(profile.role);
+}
+
+export function isAdminUser(
+  profile: { role?: string | null; is_active?: boolean; [key: string]: unknown } | null,
+): boolean {
   if (!profile) return false;
-  return (
-    "role" in profile &&
-    profile.role === "admin" &&
-    "is_active" in profile &&
-    profile.is_active === true
-  );
+  return hasRole(profile, [AUTH_ROLES.ADMIN, AUTH_ROLES.OWNER]) && profile.is_active === true;
 }
 
 /**

@@ -1,34 +1,27 @@
 /**
  * @file RoomCard.tsx — Individual room result card orchestrator.
  *
- * Refactored in US-DM-02 to:
- *  - Consume `RoomsContext` for expansion state and unavailability styling.
- *  - Delegate image panel to `RoomImagePanel` with a dedicated detail-view trigger.
- *  - Delegate header/meta to new sub-components `RoomCardHeader` and `RoomCardMeta`.
- *  - Render room details in a smooth fixed popover instead of inline card expansion.
- *  - Apply opacity reduction when dates are set but the room is unavailable.
- *
- * Expansion state is managed via `useRoomExpansion` which reads from the shared
- * `RoomsContext`, enforcing the "only one card open at a time" rule.
+ * Shows:
+ * - Image panel with last room badge and capacity badge
+ * - Room title and amenity chips
+ * - Admin tip quote and description
+ * - Price tier with conditional CTA
  */
 
 "use client";
 
-import type { RoomCardProps } from "../domain/types";
 import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
-import { useRoomExpansion } from "../hooks/useRoomExpansion";
+import type { RoomCardProps } from "../domain/types";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
 import { RoomImagePanel } from "./RoomImagePanel";
+import { RoomPriceTier } from "./RoomPriceTier";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
-import { RoomDetailsPopover } from "./sub-components/RoomDetailsPopover";
-import { RoomPriceTier } from "./RoomPriceTier";
-import { ROOM_ANIMATION } from "../constants/rooms.constants";
 
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   const { hasDates, searchDates } = useRoomsContext();
-  const { isExpanded, handleToggle, handleCollapse } = useRoomExpansion(room.id);
   const { isAvailable, isLoading } = useRoomAvailability(
     room.id,
     searchDates?.checkIn,
@@ -36,9 +29,7 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
     room.availableDates,
   );
 
-  // A room is visually unavailable when dates are set, loading is done, and it's not free.
-  // We keep it fully opaque while expanded so the user can still read the details panel.
-  const isUnavailable = hasDates && !isLoading && !isAvailable && !isExpanded;
+  const isUnavailable = hasDates && !isLoading && !isAvailable;
 
   return (
     <article
@@ -49,11 +40,11 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
       }}
       aria-label={room.title}
     >
-      {/* Hover glow overlay — separate element so transitions never interfere with entry animation */}
+      {/* Hover glow overlay */}
       <div className={S.cardHoverGlow} aria-hidden="true" />
 
-      {/* Left: image panel with urgency badge, admin tip, and expand toggle */}
-      <RoomImagePanel room={room} isExpanded={isExpanded} onToggleExpand={handleToggle} />
+      {/* Left: image panel with badges */}
+      <RoomImagePanel room={room} />
 
       {/* Right: card body */}
       <div className={S.body}>
@@ -66,8 +57,6 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
         {/* Price tier + conditional CTA */}
         <RoomPriceTier room={room} />
       </div>
-
-      <RoomDetailsPopover room={room} isOpen={isExpanded} onClose={handleCollapse} />
     </article>
   );
 }

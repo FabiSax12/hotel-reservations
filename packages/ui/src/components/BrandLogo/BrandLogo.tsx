@@ -4,15 +4,8 @@
 
 "use client";
 
+import type { BrandLogoProps } from "../../types/brand-logo.types";
 import { BRAND_LOGO_STYLES as S } from "./BrandLogo.theme";
-
-interface BrandLogoProps {
-  name: string;
-  highlight: string;
-  onClick?: () => void;
-  className?: string;
-  highlightClassName?: string;
-}
 
 export function BrandLogo({
   name,

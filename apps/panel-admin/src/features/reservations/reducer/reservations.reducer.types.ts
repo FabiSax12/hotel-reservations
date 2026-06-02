@@ -1,5 +1,5 @@
 import type { ReservationStatus } from "../domain/reservation";
-import { RESERVATION_STATUS_ACTIONS as A } from "./reservations.reducer.constants";
+import type { RESERVATION_STATUS_ACTIONS as A } from "./reservations.reducer.constants";
 
 export interface ReservationStatusState {
   pendingStatus: ReservationStatus | null;

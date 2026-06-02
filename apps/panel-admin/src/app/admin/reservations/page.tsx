@@ -1,5 +1,8 @@
-import { getAllReservations, getRoomNames } from "@/features/reservations/services/reservationService";
 import { ReservationsView } from "@/features/reservations/components/list/ReservationsView/ReservationsView";
+import {
+  getAllReservations,
+  getRoomNames,
+} from "@/features/reservations/services/reservationService";
 
 interface PageProps {
   searchParams: Promise<{ page?: string }>;

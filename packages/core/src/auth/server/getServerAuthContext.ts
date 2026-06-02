@@ -90,7 +90,7 @@ export async function getServerAuthContext(cookieStore?: CookieStore): Promise<S
   if (user) {
     const adminProfile = await verifyAdminRole(user.id);
     if (adminProfile) {
-      profile = adminProfile as AdminProfile;
+      profile = adminProfile as unknown as AdminProfile;
       isAdmin = adminProfile !== null;
     }
   }

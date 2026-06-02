@@ -5,7 +5,7 @@
 "use client";
 
 import { Stepper } from "@hotel/ui";
-import { GUESTS_POPOVER_STYLES as S } from "../theme/guests.theme";
+import { GUESTS_POPOVER_STYLES } from "../theme/guests.theme";
 import { SEARCH_VARIANTS } from "../constants/search.constants";
 import { useI18n } from "@/locales";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
@@ -27,7 +27,7 @@ export function GuestsPopover() {
   const C = t.SEARCH.SEARCH_BAR.GUESTS;
 
   return (
-    <div className={S.panel(isHero, !!hasHeroCalendarOpened)} onClick={(e) => e.stopPropagation()}>
+    <div className={GUESTS_POPOVER_STYLES.panel(isHero, !!hasHeroCalendarOpened)} onClick={(e) => e.stopPropagation()}>
       <Stepper
         title={C.ADULTS_TITLE}
         subtitle={C.ADULTS_SUBTITLE}

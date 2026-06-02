@@ -1,5 +1,17 @@
 "use server";
 
+/**
+ * @file signUp-action.ts — Server Action for user registration.
+ *
+ * Called by RegisterForm via React 19's useActionState. Handles:
+ * 1. Zod validation: name >= 2 chars, valid email, password >= 8 chars + criteria, passwords match.
+ * 2. On validation failure: returns structured fieldErrors for per-field display.
+ * 3. On success: delegates to @hotel/core's signUp() which creates the Supabase auth user.
+ * 4. On auth error: maps EMAIL_ALREADY_REGISTERED to an i18n key.
+ *
+ * On success, redirects to the verify-email page.
+ */
+
 import type { AuthError } from "@hotel/core/auth";
 import { signUp } from "@hotel/core/auth";
 import { createSupabaseServerClient } from "@hotel/db";
@@ -14,6 +26,10 @@ import { REGISTER_FORM_FIELDS } from "../constants/registerFormFields";
 import { checkPasswordCriteria } from "../utils/checkPasswordCriteria";
 import { isPasswordValid } from "../utils/isPasswordValid";
 
+/**
+ * Zod schema for registration form validation.
+ * Each validation message is a typed i18n key (ValidationKey) for compile-time safety.
+ */
 const RegisterSchema = z
   .object({
     fullName: z.string().min(2, "FULL_NAME_TOO_SHORT" satisfies ValidationKey),
@@ -26,11 +42,17 @@ const RegisterSchema = z
       }),
     confirmPassword: z.string(),
   })
+  // Cross-field validation: passwords must match.
   .refine((d) => d.password === d.confirmPassword, {
     message: "PASSWORDS_DO_NOT_MATCH" satisfies ValidationKey,
     path: [REGISTER_FORM_FIELDS.CONFIRM_PASSWORD],
   });
 
+/**
+ * Return type for the register action.
+ * - fieldErrors: per-field validation errors (Zod)
+ * - error: global auth-level error (e.g., EMAIL_ALREADY_REGISTERED)
+ */
 export type ActionResult =
   | { success: false; fieldErrors: Partial<Record<string, ValidationKey[]>> }
   | { success: false; error: AuthErrorKey }
@@ -40,21 +62,13 @@ export async function registerAction(
   _prevState: ActionResult,
   formData: FormData,
 ): Promise<ActionResult> {
-  console.log("Register action called with:", {
-    fullName: formData.get(REGISTER_FORM_FIELDS.FULL_NAME),
-    email: formData.get(REGISTER_FORM_FIELDS.EMAIL),
-    password: formData.get(REGISTER_FORM_FIELDS.PASSWORD) ? "******" : null,
-    confirmPassword: formData.get(REGISTER_FORM_FIELDS.CONFIRM_PASSWORD) ? "******" : null,
-  });
-
+  // Validate form data against the Zod schema.
   const result = RegisterSchema.safeParse({
     fullName: formData.get(REGISTER_FORM_FIELDS.FULL_NAME),
     email: formData.get(REGISTER_FORM_FIELDS.EMAIL),
     password: formData.get(REGISTER_FORM_FIELDS.PASSWORD),
     confirmPassword: formData.get(REGISTER_FORM_FIELDS.CONFIRM_PASSWORD),
   });
-
-  console.log("Validation result:", result);
 
   if (!result.success) {
     return {
@@ -71,6 +85,7 @@ export async function registerAction(
   const redirectUrl = `${origin}${ROUTES.AUTH.CALLBACK}`;
 
   try {
+    // Delegate to @hotel/core's signUp — creates the Supabase auth user.
     await signUp({ full_name: fullName, email, password }, supabase, redirectUrl);
   } catch (err) {
     const authErr = err as AuthError;
@@ -80,5 +95,6 @@ export async function registerAction(
     return { success: false, error: ERROR_KEYS[AUTH_ERRORS.UNKNOWN_ERROR] };
   }
 
+  // Success: redirect to verify-email page.
   redirect(ROUTES.AUTH.VERIFY_EMAIL);
 }

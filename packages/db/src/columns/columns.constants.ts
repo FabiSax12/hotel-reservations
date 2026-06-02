@@ -2,6 +2,13 @@ import type { Database } from "../database.types";
 import type { DBTablesWithColumns } from "./columns.types";
 
 export const DB_COLUMNS: DBTablesWithColumns = {
+  cms_content: {
+    id: "id",
+    locale: "locale",
+    section: "section",
+    content: "content",
+    updated_at: "updated_at",
+  },
   pending_invitations: {
     accepted_at: "accepted_at",
     created_at: "created_at",
@@ -54,6 +61,12 @@ export const DB_COLUMNS: DBTablesWithColumns = {
     regular_fee: "regular_fee",
     updated_at: "updated_at",
   },
+  user_permissions: {
+    user_id: "user_id",
+    permission: "permission",
+    granted_by: "granted_by",
+    created_at: "created_at",
+  },
   user_roles: {
     role: "role",
     user_id: "user_id",
@@ -67,9 +80,11 @@ type _AssertAllColumnsCovered = {
 };
 
 const _assertAllColumnsCovered: _AssertAllColumnsCovered = {
+  cms_content: true,
   pending_invitations: true,
   profiles: true,
   reservations: true,
   rooms: true,
+  user_permissions: true,
   user_roles: true,
 };

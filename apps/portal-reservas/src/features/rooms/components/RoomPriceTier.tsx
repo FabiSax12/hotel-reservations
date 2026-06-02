@@ -7,7 +7,7 @@
  *  - CTA is now delegated to RoomCardCTA which handles the three states.
  */
 
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useI18n } from "@/locales";
 import { RoomCardCTA } from "./sub-components/RoomCardCTA";
@@ -18,18 +18,18 @@ export function RoomPriceTier({ room }: RoomPriceTierProps) {
   const { hasDates } = useRoomsContext();
 
   return (
-    <div className={`${S.priceTier} relative`}>
+    <div className={`${ROOM_CARD_STYLES.priceTier} relative`}>
       {/* Price block — only shown when dates are selected */}
       {hasDates && (
-        <div className={S.priceBlock}>
-          <div className={S.priceLabel}>{t.ROOMS.PRICE_LABEL}</div>
-          <div className={S.priceRow}>
-            <span className={S.priceAmount}>${room.price}</span>
-            <span className={S.priceCurrency}>{t.ROOMS.CURRENCY}</span>
+        <div className={ROOM_CARD_STYLES.priceBlock}>
+          <div className={ROOM_CARD_STYLES.priceLabel}>{t.ROOMS.PRICE_LABEL}</div>
+          <div className={ROOM_CARD_STYLES.priceRow}>
+            <span className={ROOM_CARD_STYLES.priceAmount}>${room.price}</span>
+            <span className={ROOM_CARD_STYLES.priceCurrency}>{t.ROOMS.CURRENCY}</span>
           </div>
           {room.inventory > 2 && (
-            <div className={S.availRow}>
-              <span className={S.availDot} />
+            <div className={ROOM_CARD_STYLES.availRow}>
+              <span className={ROOM_CARD_STYLES.availDot} />
               {room.inventory} {t.ROOMS.AVAILABLE_DATES}
             </div>
           )}

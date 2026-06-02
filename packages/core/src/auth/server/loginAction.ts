@@ -130,7 +130,7 @@ export async function loginAction(
     return {
       session,
       user,
-      profile: admin as AdminProfile,
+      profile: admin as unknown as AdminProfile,
       isAdmin: true,
       error: null,
     };

@@ -1,15 +1,30 @@
 /**
  * @file ModernSearchBar.tsx — Top-level search bar orchestrator.
  *
- * This component acts as the high-level manager, connecting custom hooks
- * (logic blocks) and the presentation layer via a Context Provider.
- * It contains zero business logic — all logic is delegated to hooks.
+ * This is the architectural centerpiece of the search feature. It contains
+ * ZERO business logic — purely a wiring layer that:
+ *
+ * 1. Instantiates 7 custom hooks, each owning a distinct concern:
+ *    - useSearchBarState: UI state (active section, hero flags, refs)
+ *    - useSearchValidation: validation errors, shake animation
+ *    - useDestinationState: destination string, auto-selection
+ *    - useDateSelection: check-in/check-out state
+ *    - useGuestsSelection: adults/children/pets counts
+ *    - useSearchTrigger: submission + section activation interception
+ *    - useSearchBarContextValue: assembles all above into a single context value
+ *
+ * 2. Wraps everything in a SearchBarProvider (React Context) so sub-components
+ *    can consume state without prop drilling.
+ *
+ * 3. Renders conditionally: HeroCalendarFloat (hero mode only), then SearchBarFrame.
+ *
+ * The orchestrator pattern: hooks own logic, context distributes it, sub-components render it.
  */
 
 "use client";
 
 import type { SearchBarProps } from "../domain/types";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_BAR_STYLES } from "../theme/search-bar.theme";
 import { SEARCH_VARIANTS } from "../constants/search.constants";
 
 import { useSearchBarState } from "../hooks/useSearchBarState";
@@ -35,13 +50,21 @@ export function ModernSearchBar({
 }: SearchBarProps) {
   const { t } = useI18n();
 
+  // ── Hook instantiation (each owns a distinct concern) ──
+
+  // UI state: which section is active, hero animation flags, container ref.
   const barState = useSearchBarState(size, onHeroCalendarOpen);
+
+  // Validation: error messages, shake animation, field-level error detection.
   const validation = useSearchValidation();
+
+  // Destination: the selected region name, auto-select if only one region exists.
   const destState = useDestinationState({
     initialDestination: initialState?.destination,
     onDestinationChange,
   });
 
+  // Dates: check-in/check-out state, delegates resolution to pure domain function.
   const dateState = useDateSelection(
     initialState?.checkIn || "",
     initialState?.checkOut || "",
@@ -50,12 +73,15 @@ export function ModernSearchBar({
     barState.lastUserActivatedSection,
   );
 
+  // Guests: adult/children/pets counts via useState.
   const guestState = useGuestsSelection(
     initialState?.adults,
     initialState?.children,
     initialState?.pets,
   );
 
+  // Search trigger: validates, delays, fires onSearch. Also intercepts section
+  // activation to block date access when no destination is selected.
   const { handleSearchTrigger, activateSectionIntercepted } = useSearchTrigger({
     destination: destState.destination,
     checkIn: dateState.checkIn,
@@ -74,6 +100,7 @@ export function ModernSearchBar({
     missingSedeMessage: t.SEARCH.SEARCH_BAR.VALIDATION.MISSING_SEDE,
   });
 
+  // Assembly: combines all hook outputs into a single memoized context value.
   const contextValue = useSearchBarContextValue({
     size,
     barState,
@@ -88,8 +115,10 @@ export function ModernSearchBar({
 
   return (
     <SearchBarProvider value={contextValue}>
-      <div ref={barState.containerRef} className={`${S.container} ${className}`}>
+      <div ref={barState.containerRef} className={`${SEARCH_BAR_STYLES.container} ${className}`}>
+        {/* Hero-only: full-screen calendar overlay behind the search bar. */}
         {barState.isHero && <HeroCalendarFloat />}
+        {/* The visual frame: sections, fields, search button. */}
         <SearchBarFrame />
       </div>
     </SearchBarProvider>

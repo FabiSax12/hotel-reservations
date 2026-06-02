@@ -5,7 +5,7 @@
 
 "use client";
 
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
+import { SEARCH_BAR_STYLES } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS } from "../constants/search.constants";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
 
@@ -29,15 +29,15 @@ export function HeroExpandTab() {
   return (
     <button
       type="button"
-      style={S.transitions.expandTab(hasHeroCalendarOpened)}
+      style={SEARCH_BAR_STYLES.transitions.expandTab(hasHeroCalendarOpened)}
       onClick={(e) => {
         e.stopPropagation();
         handleExpand();
       }}
-      className={S.expandTab}
+      className={SEARCH_BAR_STYLES.expandTab}
     >
       <svg
-        className={S.expandTabIcon}
+        className={SEARCH_BAR_STYLES.expandTabIcon}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

@@ -8,8 +8,8 @@
 
 "use client";
 
-import { useHomePageState } from "../hooks/useHomePageState";
 import { RoomsInnerPage } from "../components/RoomsInnerPage";
+import { useHomePageState } from "../hooks/useHomePageState";
 
 export default function HomePage() {
   const state = useHomePageState();
@@ -25,6 +25,7 @@ export default function HomePage() {
       hasDates={state.hasDates}
       isSearchingData={state.isSearchingData}
       filteredRooms={state.filteredRooms}
+      prioritizedRoomId={state.prioritizedRoomId}
       onSearchTrigger={state.handleSearchTrigger}
       onDestinationChange={state.handleDestinationChange}
       onReset={state.handleReset}

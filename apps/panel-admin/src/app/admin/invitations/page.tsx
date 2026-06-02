@@ -3,7 +3,9 @@ import { createInvitationAction } from "@/features/invitations/services/createIn
 import { getPendingInvitations } from "@/features/invitations/services/getPendingInvitations";
 
 export default async function Page() {
-    const invitations = await getPendingInvitations();
+  const invitations = await getPendingInvitations();
 
-    return <InvitationsView invitations={invitations} createInvitationAction={createInvitationAction} />
+  return (
+    <InvitationsView invitations={invitations} createInvitationAction={createInvitationAction} />
+  );
 }

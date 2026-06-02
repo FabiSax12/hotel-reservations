@@ -1,5 +1,6 @@
 export const AUTH_ROLES = Object.freeze({
   ADMIN: "admin",
+  OWNER: "owner",
   CLIENT: "client",
 } as const);
 

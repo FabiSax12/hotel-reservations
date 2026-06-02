@@ -40,8 +40,10 @@ import {
   DB_ENUMS,
   DB_TABLES,
 } from "@hotel/db";
+import { getUserPermissions } from "../permissions";
 import type { ActivationErrorCode } from "./config/constants";
 import { ACTIVATION_ERROR_CODES, AUTH_COLUMNS, AUTH_ROLES, AUTH_TABLE } from "./config/constants";
+import { hasRole } from "./shared/utils";
 
 // ============================================================================
 // Re-exported types from shared/
@@ -98,6 +100,7 @@ export {
   createAuthError,
   getRedirectUrl,
   getUserId,
+  hasRole,
   isAdminUser,
   isSessionValid,
   validateProfile,
@@ -323,8 +326,20 @@ export async function verifyAdminRole(userId: string): Promise<AdminUser | null>
   if (profileError) throw new Error(profileError.message);
   if (roleError) throw new Error(roleError.message);
 
-  if (roleData.role === AUTH_ROLES.ADMIN && profileData.is_active) {
-    return { ...profileData, role: AUTH_ROLES.ADMIN } as AdminUser;
+  if (hasRole(roleData, [AUTH_ROLES.ADMIN, AUTH_ROLES.OWNER]) && profileData.is_active) {
+    let permissions: string[] | undefined;
+    try {
+      if (roleData.role === AUTH_ROLES.OWNER) {
+        permissions = Object.values(DB_ENUMS.user_permission);
+      } else {
+        permissions = await getUserPermissions(userId);
+      }
+    } catch {
+      // If permissions can't be fetched, don't break backward compatibility
+      permissions = undefined;
+    }
+
+    return { ...profileData, role: roleData.role, permissions } as AdminUser;
   }
 
   return null;

@@ -1,8 +1,10 @@
+"use client";
+
 /**
  * @file useDestinationPreview.ts — Hook for managing destination hover previews.
  */
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { REGIONS_CONFIG } from "../constants/regionsConfig";
 import { TIMEOUTS } from "../constants/search.constants";
 
