@@ -6,7 +6,7 @@ import { useRef, useState } from "react";
 import { CMS_IMAGE_ACCEPT, CMS_IMAGE_SIZES } from "@/features/cms/constants/cms-fields";
 import { uploadCmsImageAction } from "@/features/cms/services/saveCmsContentAction";
 import type { ImageUploadSlotProps } from "./ImageUploadSlot.interface";
-import { IMAGE_UPLOAD_SLOT_STYLES as s } from "./ImageUploadSlot.styles";
+import { IMAGE_UPLOAD_SLOT_STYLES as STYLES } from "./ImageUploadSlot.styles";
 
 export function ImageUploadSlot({ slot, currentUrl, onUrlChange, texts }: ImageUploadSlotProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -40,15 +40,15 @@ export function ImageUploadSlot({ slot, currentUrl, onUrlChange, texts }: ImageU
   const hasImage = !!currentUrl;
 
   return (
-    <div className={s.wrapper}>
-      <span className={s.label}>
+    <div className={STYLES.wrapper}>
+      <span className={STYLES.label}>
         {texts.ABOUT.IMAGE_SLOT_LABEL} {slot + 1}
       </span>
 
       <div
         role="button"
         tabIndex={0}
-        className={`${s.dropzone}${hasImage ? ` ${s.dropzoneHasImage}` : ""}`}
+        className={`${STYLES.dropzone}${hasImage ? ` ${STYLES.dropzoneHasImage}` : ""}`}
         onClick={() => inputRef.current?.click()}
         onKeyDown={(e) =>
           e.key === "Enter" || e.key === " " ? inputRef.current?.click() : undefined
@@ -60,36 +60,36 @@ export function ImageUploadSlot({ slot, currentUrl, onUrlChange, texts }: ImageU
             src={currentUrl}
             alt={`${texts.ABOUT.IMAGE_SLOT_LABEL} ${slot + 1}`}
             fill
-            className={s.image}
+            className={STYLES.image}
             sizes={CMS_IMAGE_SIZES}
           />
         )}
 
         {!hasImage && !isUploading && (
-          <div className={s.placeholder}>
-            <UploadCloud className={s.placeholderIcon} />
-            <span className={s.placeholderHint}>{texts.ABOUT.UPLOAD_HINT}</span>
+          <div className={STYLES.placeholder}>
+            <UploadCloud className={STYLES.placeholderIcon} />
+            <span className={STYLES.placeholderHint}>{texts.ABOUT.UPLOAD_HINT}</span>
           </div>
         )}
 
         {hasImage && !isUploading && (
-          <div className={s.overlay}>
-            <span className={s.overlayBtn}>{texts.ABOUT.CHANGE}</span>
-            <button type="button" className={s.overlayBtnRemove} onClick={handleRemove}>
+          <div className={STYLES.overlay}>
+            <span className={STYLES.overlayBtn}>{texts.ABOUT.CHANGE}</span>
+            <button type="button" className={STYLES.overlayBtnRemove} onClick={handleRemove}>
               {texts.ABOUT.REMOVE}
             </button>
           </div>
         )}
 
         {isUploading && (
-          <div className={s.uploading}>
-            <div className={s.spinner} />
+          <div className={STYLES.uploading}>
+            <div className={STYLES.spinner} />
           </div>
         )}
       </div>
 
       {error && (
-        <p className={s.error} role="alert">
+        <p className={STYLES.error} role="alert">
           {error}
         </p>
       )}
@@ -98,7 +98,7 @@ export function ImageUploadSlot({ slot, currentUrl, onUrlChange, texts }: ImageU
         ref={inputRef}
         type="file"
         accept={CMS_IMAGE_ACCEPT}
-        className={s.hiddenInput}
+        className={STYLES.hiddenInput}
         onChange={handleFileChange}
         aria-hidden="true"
       />

@@ -1,10 +1,26 @@
 export interface CmsTexts {
   PAGE_TITLE: string;
-  SECTION_HERO: string;
-  SECTION_ABOUT: string;
   LOCALE_ES: string;
   LOCALE_EN: string;
+  SECTION_HERO: string;
+  SECTION_ABOUT: string;
+  SECTION_ABOUT_TEXT: string;
+  SECTION_SERVICES: string;
+  SECTION_PROPERTIES: string;
+  SECTION_GALLERY: string;
+  SECTION_TESTIMONIALS: string;
   HERO: {
+    EYEBROW_LABEL: string;
+    HOTEL_NAME_LABEL: string;
+    HEADLINE_LINE1_LABEL: string;
+    HEADLINE_LINE2_LABEL: string;
+    SUBHEADLINE_LABEL: string;
+    CTA_PRIMARY_LABEL: string;
+    CTA_SECONDARY_LABEL: string;
+    SCROLL_CUE_LABEL: string;
+    LOCATIONS_LABEL: string;
+    FEATURED_LABEL_LABEL: string;
+    FEATURED_PROPERTY_LABEL: string;
     TITLE_LABEL: string;
     SUBTITLE_LABEL: string;
     CTA_LABEL: string;
@@ -12,12 +28,105 @@ export interface CmsTexts {
     SUBTITLE_PLACEHOLDER: string;
     CTA_PLACEHOLDER: string;
   };
+  ABOUT_TEXT: {
+    EYEBROW_LABEL: string;
+    HEADLINE_LABEL: string;
+    BODY_LABEL: string;
+    QUOTE_LABEL: string;
+    QUOTE_ATTRIBUTION_LABEL: string;
+    MOSAIC_ALT_LABEL: string;
+    STATS_VALUE_LABEL: string;
+    STATS_LABEL_LABEL: string;
+    GROUP_STATS_SUITES: string;
+    GROUP_STATS_YEARS: string;
+    GROUP_STATS_GUESTS: string;
+    GROUP_STATS_RATING: string;
+    GROUP_MOSAIC_1: string;
+    GROUP_MOSAIC_2: string;
+    GROUP_MOSAIC_3: string;
+  };
   ABOUT: {
     IMAGES_LABEL: string;
     IMAGE_SLOT_LABEL: string;
     UPLOAD_HINT: string;
     CHANGE: string;
     REMOVE: string;
+  };
+  SERVICES: {
+    EYEBROW_LABEL: string;
+    HEADLINE_LABEL: string;
+    SUBHEADLINE_LABEL: string;
+    CTA_LABEL: string;
+    ITEM_TITLE_LABEL: string;
+    ITEM_DESC_LABEL: string;
+    GROUP_HEADER: string;
+    ITEMS: {
+      THERMAL: string;
+      RESTAURANT: string;
+      EXPEDITIONS: string;
+      YOGA: string;
+      PHOTOGRAPHY: string;
+      TRANSFERS: string;
+      SANCTUARY: string;
+      BUTLER: string;
+    };
+  };
+  PROPERTIES: {
+    EYEBROW_LABEL: string;
+    HEADLINE_LABEL: string;
+    SUBHEADLINE_LABEL: string;
+    DRAG_HINT_LABEL: string;
+    NAV_PREV_LABEL: string;
+    NAV_NEXT_LABEL: string;
+    NAME_LABEL: string;
+    LOCATION_LABEL: string;
+    TAGLINE_LABEL: string;
+    DESCRIPTION_LABEL: string;
+    FEATURE_1_LABEL: string;
+    FEATURE_2_LABEL: string;
+    FEATURE_3_LABEL: string;
+    PRICE_LABEL_LABEL: string;
+    PRICE_LABEL: string;
+    CTA_LABEL: string;
+    GROUP_HEADER: string;
+    ITEMS: {
+      ARENAL: string;
+      MONTEVERDE: string;
+    };
+  };
+  GALLERY: {
+    EYEBROW_LABEL: string;
+    HEADLINE_LABEL: string;
+    SUBHEADLINE_LABEL: string;
+    ITEM_TITLE_LABEL: string;
+    ITEM_SUBTITLE_LABEL: string;
+    GROUP_HEADER: string;
+    ITEMS: {
+      THERMAL: string;
+      CANOPY: string;
+      SPA: string;
+      VOLCANO: string;
+      DINING: string;
+      MIST: string;
+      SUITE: string;
+    };
+  };
+  TESTIMONIALS: {
+    EYEBROW_LABEL: string;
+    HEADLINE_LABEL: string;
+    SUBHEADLINE_LABEL: string;
+    NAME_LABEL: string;
+    ORIGIN_LABEL: string;
+    BODY_LABEL: string;
+    GROUP_HEADER: string;
+    ITEMS: {
+      T1: string;
+      T2: string;
+      T3: string;
+      T4: string;
+      T5: string;
+      T6: string;
+    };
   };
   ACTIONS: {
     SAVE: string;

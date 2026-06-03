@@ -1,18 +1,11 @@
-export const CMS_HERO_FIELDS = Object.freeze({
-  HEADLINE_LINE1: "HEADLINE_LINE1",
-  SUBHEADLINE: "SUBHEADLINE",
-  CTA_PRIMARY: "CTA_PRIMARY",
-} as const);
-
-export const CMS_ABOUT_FIELDS = Object.freeze({
-  MOSAIC_URL_1: "MOSAIC_URL_1",
-  MOSAIC_URL_2: "MOSAIC_URL_2",
-  MOSAIC_URL_3: "MOSAIC_URL_3",
-} as const);
-
 export const CMS_SECTIONS = Object.freeze({
   HERO: "hero",
   ABOUT: "about",
+  ABOUT_TEXT: "about-text",
+  SERVICES: "services",
+  PROPERTIES: "properties",
+  GALLERY: "gallery",
+  TESTIMONIALS: "testimonials",
 } as const);
 
 export const CMS_LOCALES = Object.freeze({

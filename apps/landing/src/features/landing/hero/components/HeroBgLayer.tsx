@@ -2,16 +2,26 @@
 
 import type { MotionValue } from "framer-motion";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { BG_GRADIENT } from "@/features/landing/hero/constants/gradients";
 import { HERO_ORBS } from "@/features/landing/hero/constants/orbs";
 import { HERO } from "@/features/landing/hero/constants/styles";
+
+const GRID_PATTERN_ID = "grid";
+const GRID_CELL_SIZE = 60;
+const GRID_PATH = "M 60 0 L 0 0 0 60";
+const GRID_STROKE = "white";
+const GRID_STROKE_WIDTH = 0.5;
 
 interface HeroBgLayerProps {
   bgTransform: MotionValue<string>;
 }
 
 export function HeroBgLayer({ bgTransform }: HeroBgLayerProps) {
-  const prefersReducedMotion = useReducedMotion() ?? false;
+  const reducedMotion = useReducedMotion() ?? false;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const prefersReducedMotion = mounted && reducedMotion;
 
   return (
     <motion.div
@@ -21,11 +31,21 @@ export function HeroBgLayer({ bgTransform }: HeroBgLayerProps) {
       <div className={HERO.BG_INNER} style={{ background: BG_GRADIENT }} />
       <svg className={HERO.BG_SVG} xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-            <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="0.5" />
+          <pattern
+            id={GRID_PATTERN_ID}
+            width={GRID_CELL_SIZE}
+            height={GRID_CELL_SIZE}
+            patternUnits="userSpaceOnUse"
+          >
+            <path
+              d={GRID_PATH}
+              fill="none"
+              stroke={GRID_STROKE}
+              strokeWidth={GRID_STROKE_WIDTH}
+            />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill={`url(#${GRID_PATTERN_ID})`} />
       </svg>
 
       {!prefersReducedMotion && (
