@@ -1,9 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { useAdminsFiltering } from "../../hooks/useAdminsFiltering";
-import { useToggleAdminStatus } from "../../hooks/useToggleAdminStatus";
-import type { AdminWithPermissions } from "../../services/permissions";
+import { useAdminsTable } from "../../hooks/useAdminsTable";
 import { AdminsPageHeader } from "../AdminsPageHeader/AdminsPageHeader";
 import { AdminsTable } from "../AdminsTable/AdminsTable";
 import { PermissionDrawer } from "../PermissionDrawer/PermissionDrawer";
@@ -11,32 +8,17 @@ import type { AdminsTableViewProps } from "./AdminsTableView.interface";
 import { ADMINS_PAGE_STYLES } from "./AdminsTableView.styles";
 
 export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps) => {
-  const [admins, setAdmins] = useState(initialAdmins);
-  const [selectedAdmin, setSelectedAdmin] = useState<AdminWithPermissions | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { statusCounts } = useAdminsFiltering(admins);
-
-  const refreshAdmins = useCallback(async () => {
-    const { getAdmins } = await import("../../services/getAdmins");
-    const data = await getAdmins();
-    setAdmins(data);
-  }, []);
-
-  const { handleToggle, togglingId } = useToggleAdminStatus(refreshAdmins);
-
-  const handleManagePermissions = useCallback((admin: AdminWithPermissions) => {
-    setSelectedAdmin(admin);
-    setIsDrawerOpen(true);
-  }, []);
-
-  const handleCloseDrawer = useCallback(() => {
-    setIsDrawerOpen(false);
-    setSelectedAdmin(null);
-  }, []);
-
-  const handlePermissionUpdateSuccess = useCallback(() => {
-    refreshAdmins();
-  }, [refreshAdmins]);
+  const {
+    admins,
+    statusCounts,
+    togglingId,
+    selectedAdmin,
+    isDrawerOpen,
+    handleToggle,
+    openPermissionDrawer,
+    closePermissionDrawer,
+    onPermissionUpdateSuccess,
+  } = useAdminsTable({ initialAdmins });
 
   return (
     <main className={ADMINS_PAGE_STYLES.wrapper}>
@@ -46,14 +28,14 @@ export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps)
         admins={admins}
         onToggle={handleToggle}
         togglingId={togglingId}
-        onManagePermissions={handleManagePermissions}
+        onManagePermissions={openPermissionDrawer}
       />
 
       <PermissionDrawer
         isOpen={isDrawerOpen}
-        onClose={handleCloseDrawer}
+        onClose={closePermissionDrawer}
         admin={selectedAdmin}
-        onSuccess={handlePermissionUpdateSuccess}
+        onSuccess={onPermissionUpdateSuccess}
       />
     </main>
   );
