@@ -1,4 +1,4 @@
-import type { SupportedLocale } from "@hotel/i18n";
+﻿import type { SupportedLocale } from "@hotel/i18n";
 import { useI18n as _useI18n, LOCALES } from "@hotel/i18n";
 import { ADMINS_TEXTS } from "@/features/admins-table/i18n/admins.texts";
 import type { AdminsTexts } from "@/features/admins-table/i18n/adminsTexts.type";
@@ -14,6 +14,8 @@ import { SIDEBAR_TEXTS } from "@/features/sidebar/i18n/sidebar.texts";
 import type { SidebarTexts } from "@/features/sidebar/i18n/sidebar.type";
 import { COMMON_TEXTS } from "@/shared/i18n/commonTexts";
 import type { CommonTexts } from "@/shared/i18n/commonTexts.type";
+import { METRICS_TEXTS } from "@/features/metrics/i18n/metricsTexts";
+import type { MetricsTexts } from "@/features/metrics/i18n/metricsTextsType";
 
 export type AppTranslations = {
   COMMON: CommonTexts;
@@ -23,6 +25,7 @@ export type AppTranslations = {
   ROOMS: RoomsTexts;
   CMS: CmsTexts;
   ADMINS: AdminsTexts;
+  METRICS: MetricsTexts;
 };
 
 export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
@@ -34,6 +37,7 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
     ROOMS: ROOMS_TEXTS.es,
     CMS: CMS_TEXTS.es,
     ADMINS: ADMINS_TEXTS.es,
+    METRICS: METRICS_TEXTS.es,
   },
   [LOCALES.EN]: {
     COMMON: COMMON_TEXTS.en,
@@ -43,6 +47,7 @@ export const TRANSLATIONS: Record<SupportedLocale, AppTranslations> = {
     ROOMS: ROOMS_TEXTS.en,
     CMS: CMS_TEXTS.en,
     ADMINS: ADMINS_TEXTS.en,
+    METRICS: METRICS_TEXTS.en,
   },
 };
 
