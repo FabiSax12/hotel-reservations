@@ -4,22 +4,25 @@ import { Button } from "@heroui/react";
 import { ShieldX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
+import { useI18n } from "@/locales";
+import { FORBIDDEN_PAGE_STYLES } from "./ForbiddenPage.styles";
 
 export default function ForbiddenPage() {
   const router = useRouter();
+  const { t } = useI18n();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-      <ShieldX className="size-16 text-danger" />
-      <h1 className="text-4xl font-bold text-default-900">403</h1>
-      <h2 className="text-xl font-semibold text-default-700">Acceso Restringido</h2>
-      <p className="text-center text-default-500">No tienes permiso para acceder a esta sección.</p>
+    <main className={FORBIDDEN_PAGE_STYLES.main}>
+      <ShieldX className={FORBIDDEN_PAGE_STYLES.icon} />
+      <h1 className={FORBIDDEN_PAGE_STYLES.code}>{t.COMMON.STATUS.FORBIDDEN_TITLE}</h1>
+      <h2 className={FORBIDDEN_PAGE_STYLES.subtitle}>{t.COMMON.STATUS.FORBIDDEN_SUBTITLE}</h2>
+      <p className={FORBIDDEN_PAGE_STYLES.message}>{t.COMMON.STATUS.FORBIDDEN_MESSAGE}</p>
       <Button
         variant="danger-soft"
         onPress={() => router.push(ROUTES.ADMIN.DASHBOARD)}
-        className="mt-4"
+        className={FORBIDDEN_PAGE_STYLES.button}
       >
-        Volver al Dashboard
+        {t.COMMON.STATUS.FORBIDDEN_BACK_BUTTON}
       </Button>
     </main>
   );
