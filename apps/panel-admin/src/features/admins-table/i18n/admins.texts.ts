@@ -31,6 +31,18 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
       TITLE: "Sin administradores",
       DESCRIPTION: "No hay administradores registrados por el momento.",
     },
+    FILTERS: {
+      ACTIVE: "Activo",
+      INACTIVE: "Inactivo",
+      CLEAR: "Limpiar filtros",
+    },
+    PAGINATION: {
+      SHOWING: "Mostrando",
+      OF: "de",
+      ITEMS_LABEL: "administradores",
+      PREVIOUS: "Anterior",
+      NEXT: "Siguiente",
+    },
     INVITATIONS: {
       SECTION_TITLE: "Invitaciones pendientes",
       TAB_PENDING: "Pendientes",
@@ -127,6 +139,18 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
     EMPTY: {
       TITLE: "No administrators",
       DESCRIPTION: "There are no administrators registered at this time.",
+    },
+    FILTERS: {
+      ACTIVE: "Active",
+      INACTIVE: "Inactive",
+      CLEAR: "Clear filters",
+    },
+    PAGINATION: {
+      SHOWING: "Showing",
+      OF: "of",
+      ITEMS_LABEL: "administrators",
+      PREVIOUS: "Previous",
+      NEXT: "Next",
     },
     INVITATIONS: {
       SECTION_TITLE: "Pending invitations",
