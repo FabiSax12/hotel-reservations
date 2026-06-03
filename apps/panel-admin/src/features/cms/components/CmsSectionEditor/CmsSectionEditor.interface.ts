@@ -1,4 +1,4 @@
-import type { CmsSectionConfig, CmsLocale } from "@/features/cms/domain/cms.interface";
+import type { CmsLocale, CmsSectionConfig } from "@/features/cms/domain/cms.interface";
 import type { CmsTexts } from "@/features/cms/i18n/cmsTexts.type";
 
 export interface CmsSectionEditorProps {

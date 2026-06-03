@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getReservationById } from "@/features/reservations/services/reservationService";
 import { ReservationDetailPage } from "@/features/reservations/components/detail/ReservationDetailPage/ReservationDetailPage";
+import { getReservationById } from "@/features/reservations/services/reservationService";
 import type { PageProps } from "./page.interface";
 
 export default async function ReservationDetailRoute({ params }: PageProps) {

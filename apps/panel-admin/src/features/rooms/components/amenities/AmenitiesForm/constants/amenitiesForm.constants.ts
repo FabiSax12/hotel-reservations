@@ -9,4 +9,9 @@ export const AMENITIES_FORM_CONSTANTS = {
     UPDATE_CUSTOM: "Error updating custom amenity:",
     DELETE_CUSTOM: "Error deleting custom amenity:",
   } as const,
+  FALLBACK_ERRORS: {
+    ADD_FAILED: "Failed to add amenity",
+    UPDATE_FAILED: "Failed to update amenity",
+    DELETE_FAILED: "Failed to delete amenity",
+  } as const,
 } as const;

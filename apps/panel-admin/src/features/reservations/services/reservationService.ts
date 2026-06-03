@@ -17,9 +17,7 @@ export async function getAllReservations(): Promise<Reservation[]> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await supabase
     .from(DB_TABLES.RESERVATIONS)
-    .select(
-      `*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`,
-    ) //"*, rooms(name, category)")
+    .select(`*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`) //"*, rooms(name, category)")
     .order(DB_COLUMNS.reservations.code, { ascending: false });
 
   if (error) throw new Error(`${ERRORS.FETCH_RESERVATIONS}: ${error.message}`);
@@ -50,9 +48,7 @@ export async function updateReservationStatus(
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
 }
 
-export async function getReservationById(
-  id: string,
-): Promise<Reservation | null> {
+export async function getReservationById(id: string): Promise<Reservation | null> {
   const supabase = createSupabaseServiceClient();
 
   const { data, error } = await (supabase as any)

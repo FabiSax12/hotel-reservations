@@ -4,8 +4,8 @@ import { Button, Spinner } from "@heroui/react";
 import * as LucideIcons from "lucide-react";
 import type { CheckInCheckOutFormProps } from "./CheckInCheckOut.interface";
 import { CHECK_IN_CHECK_OUT_STYLES as STYLES } from "./CheckInCheckOut.styles";
-import { useCheckInCheckOut } from "./hooks/useCheckInCheckOut";
 import { TimeSlotSelector } from "./components/TimeSlotSelector";
+import { useCheckInCheckOut } from "./hooks/useCheckInCheckOut";
 
 export const CheckInCheckOutForm = ({ roomId, onSuccess }: CheckInCheckOutFormProps) => {
   const {

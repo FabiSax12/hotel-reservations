@@ -1,18 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useI18n } from "@/locales";
-import { useNavigationGuard } from "../../../hooks/useNavigationGuard";
-import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
-import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
-import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
-import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
 import { updateReservationStatusAction } from "../../../actions/updateStatus";
-import { RESERVATION_DETAIL_PAGE_STYLES as STYLES } from "./ReservationDetailPage.styles";
-import type { ReservationStatus } from "../../../domain/reservation";
 import { RESERVATIONS_LIST_PATH } from "../../../constants/routes";
+import type { ReservationStatus } from "../../../domain/reservation";
+import { useNavigationGuard } from "../../../hooks/useNavigationGuard";
+import { ReservationStatusFooter } from "../../status/ReservationStatusFooter/ReservationStatusFooter";
+import { ReservationGuestCard } from "../ReservationGuestCard/ReservationGuestCard";
+import { ReservationPaymentCard } from "../ReservationPaymentCard/ReservationPaymentCard";
+import { ReservationRoomCard } from "../ReservationRoomCard/ReservationRoomCard";
 import type { ReservationDetailPageProps } from "./ReservationDetailPage.interface";
+import { RESERVATION_DETAIL_PAGE_STYLES as STYLES } from "./ReservationDetailPage.styles";
 
 export const ReservationDetailPage = ({ reservation: r }: ReservationDetailPageProps) => {
   const router = useRouter();

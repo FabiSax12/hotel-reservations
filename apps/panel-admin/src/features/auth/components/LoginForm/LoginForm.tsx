@@ -10,7 +10,7 @@ import type { LoginFormProps } from "./LoginForm.interface";
 import { LOGIN_FORM_STYLES as STYLES } from "./LoginForm.styles";
 
 export const LoginForm = ({ action }: LoginFormProps) => {
-  const { activeError, formAction, isPending } = useAdminLogin(action)
+  const { activeError, formAction, isPending } = useAdminLogin(action);
   const { t } = useI18n();
 
   const emailInputId = useId();

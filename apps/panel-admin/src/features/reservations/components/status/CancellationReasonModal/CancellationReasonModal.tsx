@@ -1,10 +1,10 @@
 "use client";
 
-import { TextField, TextArea, Label } from "@heroui/react";
+import { Label, TextArea, TextField } from "@heroui/react";
 import { useI18n } from "@/locales";
 import { CANCELLATION_REASON_MAX_LENGTH } from "../../../constants/status-management";
-import { CANCELLATION_REASON_FIELD_STYLES as STYLES } from "./CancellationReasonModal.styles";
 import type { CancellationReasonFieldProps } from "./CancellationReasonModal.interface";
+import { CANCELLATION_REASON_FIELD_STYLES as STYLES } from "./CancellationReasonModal.styles";
 
 export const CancellationReasonField = ({
   reason,

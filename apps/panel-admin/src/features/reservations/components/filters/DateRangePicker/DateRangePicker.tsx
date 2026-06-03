@@ -3,8 +3,8 @@
 import { DateField, DateRangePicker as HeroDateRangePicker, RangeCalendar } from "@heroui/react";
 import { parseDate } from "@internationalized/date";
 import { useI18n } from "@/locales";
-import { DATE_RANGE_PICKER_STYLES as STYLES } from "./DateRangePicker.styles";
 import type { DateRange, DateRangePickerProps } from "./DateRangePicker.interface";
+import { DATE_RANGE_PICKER_STYLES as STYLES } from "./DateRangePicker.styles";
 
 export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePickerProps) {
   const { t } = useI18n();
@@ -17,7 +17,11 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
   };
 
   return (
-    <HeroDateRangePicker value={value} onChange={handleChange} aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_DATE_RANGE}>
+    <HeroDateRangePicker
+      value={value}
+      onChange={handleChange}
+      aria-label={t.RESERVATIONS.FILTERS.ARIA_LABEL_DATE_RANGE}
+    >
       <DateField.Group fullWidth className={STYLES.group}>
         <DateField.Input slot="start">
           {(segment) => <DateField.Segment segment={segment} className={STYLES.segment} />}
@@ -37,7 +41,9 @@ export function DateRangePicker({ checkIn, checkOut, onChange }: DateRangePicker
           <RangeCalendar.Header>
             <RangeCalendar.YearPickerTrigger className={STYLES.yearPickerTrigger}>
               <RangeCalendar.YearPickerTriggerHeading className={STYLES.yearPickerTriggerHeading} />
-              <RangeCalendar.YearPickerTriggerIndicator className={STYLES.yearPickerTriggerIndicator} />
+              <RangeCalendar.YearPickerTriggerIndicator
+                className={STYLES.yearPickerTriggerIndicator}
+              />
             </RangeCalendar.YearPickerTrigger>
             <RangeCalendar.NavButton slot="previous" className={STYLES.navButton} />
             <RangeCalendar.NavButton slot="next" className={STYLES.navButton} />

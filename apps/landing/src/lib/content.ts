@@ -1,8 +1,8 @@
 import "server-only";
+import { createSupabaseServiceClient } from "@hotel/db";
 import type { SupportedLocale } from "@hotel/i18n";
 import type { AppTranslations } from "@/locales";
-import { translations, defaultLocale } from "@/locales";
-import { createSupabaseServiceClient } from "@hotel/db";
+import { defaultLocale, translations } from "@/locales";
 
 const SECTION_HERO = "hero" as const;
 const SECTION_ABOUT = "about" as const;
