@@ -1,6 +1,6 @@
 import type { CmsFieldConfig, CmsSectionConfig } from "@/features/cms/domain/cms.interface";
 import type { CmsTexts } from "@/features/cms/i18n/cmsTexts.type";
-import { CMS_SECTIONS, CMS_LOCALES } from "./cms-fields";
+import { CMS_LOCALES, CMS_SECTIONS } from "./cms-fields";
 
 export const CMS_LOCALE_LABELS: Record<string, (texts: CmsTexts) => string> = Object.freeze({
   [CMS_LOCALES.ES]: (t: CmsTexts) => t.LOCALE_ES,

@@ -1,7 +1,14 @@
-import { CMS_SAVE_FOOTER_STYLES as STYLES } from "./CmsSaveFooter.styles";
 import type { CmsSaveFooterProps } from "./CmsSaveFooter.interface";
+import { CMS_SAVE_FOOTER_STYLES as STYLES } from "./CmsSaveFooter.styles";
 
-export function CmsSaveFooter({ isSaving, isSuccess, isError, texts, type = "button", onSave }: CmsSaveFooterProps) {
+export function CmsSaveFooter({
+  isSaving,
+  isSuccess,
+  isError,
+  texts,
+  type = "button",
+  onSave,
+}: CmsSaveFooterProps) {
   return (
     <div className={STYLES.footer}>
       <button type={type} className={STYLES.saveBtn} disabled={isSaving} onClick={onSave}>

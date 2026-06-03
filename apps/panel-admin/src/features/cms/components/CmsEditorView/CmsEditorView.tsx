@@ -1,10 +1,10 @@
 "use client";
 
-import { useCmsEditor } from "@/features/cms/hooks/useCmsEditor";
 import { CmsSectionEditor } from "@/features/cms/components/CmsSectionEditor/CmsSectionEditor";
 import { CMS_SECTION_CONFIGS } from "@/features/cms/constants/sectionConfigs";
-import { CMS_EDITOR_VIEW_STYLES as STYLES } from "./CmsEditorView.styles";
+import { useCmsEditor } from "@/features/cms/hooks/useCmsEditor";
 import type { CmsEditorViewProps } from "./CmsEditorView.interface";
+import { CMS_EDITOR_VIEW_STYLES as STYLES } from "./CmsEditorView.styles";
 
 export function CmsEditorView({ initialValues }: CmsEditorViewProps) {
   const {

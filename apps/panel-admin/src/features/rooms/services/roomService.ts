@@ -1,6 +1,6 @@
 import { createSupabaseClient, DB_COLUMNS, DB_TABLES } from "@hotel/db";
-import type { CreateRoomDTO, Room, UpdateRoomDTO } from "@/features/rooms/domain/room.interface";
 import { ROOM_NOT_FOUND_ERROR } from "@/features/rooms/constants/info.constants";
+import type { CreateRoomDTO, Room, UpdateRoomDTO } from "@/features/rooms/domain/room.interface";
 
 export const roomService = {
   getAllRooms: async (supabase = createSupabaseClient()): Promise<Room[]> => {
@@ -38,7 +38,11 @@ export const roomService = {
     return newRoom as Room;
   },
 
-  updateRoom: async (id: string, data: UpdateRoomDTO, supabase = createSupabaseClient()): Promise<Room> => {
+  updateRoom: async (
+    id: string,
+    data: UpdateRoomDTO,
+    supabase = createSupabaseClient(),
+  ): Promise<Room> => {
     const { data: updatedRoom, error } = await supabase
       .from(DB_TABLES.ROOMS)
       .update(data)

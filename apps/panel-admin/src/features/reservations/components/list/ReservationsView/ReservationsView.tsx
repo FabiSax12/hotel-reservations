@@ -1,17 +1,31 @@
 "use client";
 
-import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
 import { useReservationsView } from "../../../hooks/useReservationsView";
-import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
+import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
-import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
+import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import type { ReservationsViewProps } from "./ReservationsView.interface";
+import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles";
 
-export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: ReservationsViewProps) => {
-  const { filters, setFilters, statusCounts, filtered, paginated, page, totalPages, pageSize, hasResults, handlePageChange } =
-    useReservationsView(reservations, initialPage);
+export const ReservationsView = ({
+  reservations,
+  rooms,
+  initialPage = 1,
+}: ReservationsViewProps) => {
+  const {
+    filters,
+    setFilters,
+    statusCounts,
+    filtered,
+    paginated,
+    page,
+    totalPages,
+    pageSize,
+    hasResults,
+    handlePageChange,
+  } = useReservationsView(reservations, initialPage);
 
   return (
     <main className={RESERVATIONS_PAGE_STYLES.wrapper}>
@@ -29,11 +43,7 @@ export const ReservationsView = ({ reservations, rooms, initialPage = 1 }: Reser
       </div>
 
       <div className={CARD_STYLES.bodyWithOverflow}>
-        {hasResults ? (
-          <ReservationsTable reservations={paginated} />
-        ) : (
-          <EmptyState />
-        )}
+        {hasResults ? <ReservationsTable reservations={paginated} /> : <EmptyState />}
         {hasResults && totalPages > 1 && (
           <ReservationsPagination
             page={page}

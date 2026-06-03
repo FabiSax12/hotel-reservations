@@ -1,7 +1,7 @@
 # Feature Specification: Rooms — Dynamic Listing, Detail Expansion & Smart Grouping
 
-**Status:** in-progress (Phase 3 / US-DM-04)
-**Version:** 3.0
+**Status:** in-progress (Phase 4 / US-DM-05)
+**Version:** 4.0
 **Depends on:** `search` feature (destination + guest count), `@hotel/ui` (Calendar, Button), `@hotel/i18n`
 
 ---
@@ -370,3 +370,16 @@ room's price (`totalPricePerNight`) and from any featured constituent room.
 | `FILTERS_NO_RESULTS_HINT` | "Ajusta o limpia los filtros…" | "Adjust or clear the filters…" |
 | `FILTERS_ACTIVE_BADGE` | "filtros activos" | "active filters" |
 | `FEATURED_BADGE` | "Destacado" | "Featured" |
+
+---
+
+## 10. US-DM-05 — Room Detail Side Panel
+
+US-DM-05 graduated into its own top-level feature. See
+`features/room-detail/room-detail.spec.md`.
+
+The rooms feature exposes the building blocks the panel reuses via its barrel:
+`usePackageCardState`, `RoomRangeCalendar`, `CTASpinner`, `getAmenityIcon`,
+`formatBedConfig`, `getAmenityDetail` (plus `Room` / `RoomPackage` /
+`useRoomsContext`). The cards open the panel through `useRoomDetail` from
+`features/room-detail`.

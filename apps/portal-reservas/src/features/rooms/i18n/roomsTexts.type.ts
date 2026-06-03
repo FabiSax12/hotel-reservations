@@ -17,9 +17,6 @@ export type RoomsTexts = {
   MORE_AMENITIES: string;
   MORE_ROOMS: string;
   ADMIN_TIP_LABEL: string;
-  EXPAND_DETAILS: string;
-  COLLAPSE_DETAILS: string;
-  CLOSE_DETAILS: string;
   RESERVE_ACTION: string;
   LOADING_RESERVE: string;
   CHECK_DATES_ACTION: string;
@@ -45,7 +42,6 @@ export type RoomsTexts = {
   INCREASE_ADULTS: string;
   DECREASE_CHILDREN: string;
   INCREASE_CHILDREN: string;
-  GALLERY_IMAGES_LABEL: string;
   PACKAGE_LABEL: string;
   PACKAGE_CAPACITY: string;
   PACKAGE_INCLUDES: string;

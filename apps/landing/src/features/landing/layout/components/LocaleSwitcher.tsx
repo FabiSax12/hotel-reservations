@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { cookieAdapter, LOCALES } from "@hotel/i18n";
-import { useI18n } from "@/locales";
+import { useRouter } from "next/navigation";
 import { LAYOUT } from "@/features/landing/layout/constants/styles";
+import { useI18n } from "@/locales";
 
 const storage = cookieAdapter();
 
@@ -27,7 +27,9 @@ export function LocaleSwitcher() {
       >
         ES
       </button>
-      <span className={LAYOUT.LOCALE_SEP} aria-hidden="true">|</span>
+      <span className={LAYOUT.LOCALE_SEP} aria-hidden="true">
+        |
+      </span>
       <button
         type="button"
         className={locale === LOCALES.EN ? LAYOUT.LOCALE_ACTIVE : LAYOUT.LOCALE_INACTIVE}

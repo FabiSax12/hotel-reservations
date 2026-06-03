@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { Amenity } from "@/features/rooms/domain/amenity.interface";
-import { mockAmenitiesService } from "@/features/rooms/services/mockAmenitiesService";
+import { saveRoomAmenitiesAction } from "@/features/rooms/services/amenityActions";
+import { amenityService } from "@/features/rooms/services/amenityService";
 import { useI18n } from "@/locales";
 import type { AmenitiesFormValues } from "../AmenitiesForm.interface";
 import { AMENITIES_FORM_CONSTANTS } from "../constants/amenitiesForm.constants";
@@ -33,8 +34,8 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
     const loadData = async () => {
       try {
         const [predefined, roomSelected] = await Promise.all([
-          mockAmenitiesService.getPredefinedAmenities(),
-          mockAmenitiesService.getRoomAmenities(roomId),
+          amenityService.getPredefinedAmenities(),
+          amenityService.getRoomAmenities(roomId),
         ]);
         setAmenities(predefined);
         setValue(FORM_FIELD, roomSelected);
@@ -60,7 +61,8 @@ export const useAmenitiesForm = (roomId: string, onSuccess?: () => void) => {
   const onSubmit = async (data: AmenitiesFormValues) => {
     setIsSubmitting(true);
     try {
-      await mockAmenitiesService.saveRoomAmenities(roomId, data.amenityIds);
+      const { error } = await saveRoomAmenitiesAction(roomId, data.amenityIds);
+      if (error) throw new Error(error);
       onSuccess?.();
     } catch (error) {
       console.error(LOG_MESSAGES.SAVE_ERROR, error);

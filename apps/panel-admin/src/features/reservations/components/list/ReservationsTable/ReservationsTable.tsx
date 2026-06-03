@@ -2,8 +2,8 @@
 
 import { useI18n } from "@/locales";
 import { ReservationRow } from "../ReservationRow/ReservationRow";
-import { RESERVATIONS_TABLE_STYLES as T } from "./ReservationsTable.styles";
 import type { ReservationsTableProps } from "./ReservationsTable.interface";
+import { RESERVATIONS_TABLE_STYLES as T } from "./ReservationsTable.styles";
 
 export const ReservationsTable = ({ reservations }: ReservationsTableProps) => {
   const { t } = useI18n();

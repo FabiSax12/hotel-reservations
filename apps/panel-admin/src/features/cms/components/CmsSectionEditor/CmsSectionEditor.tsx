@@ -1,11 +1,11 @@
 "use client";
 
-import { CMS_LOCALES, CMS_LOCALE_LIST } from "@/features/cms/constants/cms-fields";
-import { CMS_LOCALE_LABELS } from "@/features/cms/constants/sectionConfigs";
 import { CmsSaveFooter } from "@/features/cms/components/CmsSaveFooter/CmsSaveFooter";
+import { CMS_LOCALE_LIST, CMS_LOCALES } from "@/features/cms/constants/cms-fields";
+import { CMS_LOCALE_LABELS } from "@/features/cms/constants/sectionConfigs";
+import type { CmsSectionEditorProps } from "./CmsSectionEditor.interface";
 import { CMS_SECTION_EDITOR_STYLES as STYLES } from "./CmsSectionEditor.styles";
 import { CmsSectionFields } from "./CmsSectionFields";
-import type { CmsSectionEditorProps } from "./CmsSectionEditor.interface";
 
 export function CmsSectionEditor({
   config,
@@ -63,12 +63,24 @@ export function CmsSectionEditor({
       {hasTextFields ? (
         <form onSubmit={handleSubmit} className={STYLES.formBody}>
           {body}
-          <CmsSaveFooter type="submit" isSaving={isSaving} isSuccess={isSuccess} isError={isError} texts={texts} />
+          <CmsSaveFooter
+            type="submit"
+            isSaving={isSaving}
+            isSuccess={isSuccess}
+            isError={isError}
+            texts={texts}
+          />
         </form>
       ) : (
         <div className={STYLES.formBody}>
           {body}
-          <CmsSaveFooter isSaving={isSaving} isSuccess={isSuccess} isError={isError} texts={texts} onSave={onSave} />
+          <CmsSaveFooter
+            isSaving={isSaving}
+            isSuccess={isSuccess}
+            isError={isError}
+            texts={texts}
+            onSave={onSave}
+          />
         </div>
       )}
     </div>

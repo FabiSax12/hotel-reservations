@@ -2,6 +2,14 @@ import type { Database } from "../database.types";
 import type { DBTablesWithColumns } from "./columns.types";
 
 export const DB_COLUMNS: DBTablesWithColumns = {
+  amenities: {
+    created_at: "created_at",
+    description: "description",
+    icon: "icon",
+    id: "id",
+    name: "name",
+    updated_at: "updated_at",
+  },
   cms_content: {
     id: "id",
     locale: "locale",
@@ -47,6 +55,11 @@ export const DB_COLUMNS: DBTablesWithColumns = {
     created_at: "created_at",
     updated_at: "updated_at",
   },
+  room_amenities: {
+    amenity_id: "amenity_id",
+    created_at: "created_at",
+    room_id: "room_id",
+  },
   rooms: {
     capacity_adults: "capacity_adults",
     capacity_kids: "capacity_kids",
@@ -80,10 +93,12 @@ type _AssertAllColumnsCovered = {
 };
 
 const _assertAllColumnsCovered: _AssertAllColumnsCovered = {
+  amenities: true,
   cms_content: true,
   pending_invitations: true,
   profiles: true,
   reservations: true,
+  room_amenities: true,
   rooms: true,
   user_permissions: true,
   user_roles: true,

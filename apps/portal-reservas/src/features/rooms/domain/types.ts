@@ -93,10 +93,6 @@ export interface RoomCardCTAProps {
   room: Room;
 }
 
-export interface RoomCardGalleryProps {
-  room: Room;
-}
-
 export interface RoomCardHeaderProps {
   room: Room;
   selectedDest?: string | null;
@@ -128,12 +124,6 @@ export interface RoomListProps {
 
 export interface RoomPriceTierProps {
   room: Room;
-}
-
-export interface RoomDetailsPopoverProps {
-  room: Room;
-  isOpen: boolean;
-  onClose: () => void;
 }
 
 export interface RoomRangeCalendarProps {
@@ -172,6 +162,11 @@ export interface PackageCardProps {
 export interface PackageCardHeaderProps {
   rooms: Room[];
   isHomogeneous: boolean;
+}
+
+export interface PackageCardExpansionProps {
+  pkg: RoomPackage;
+  selectedDest?: string | null;
 }
 
 export interface PackageCardSummaryProps {
