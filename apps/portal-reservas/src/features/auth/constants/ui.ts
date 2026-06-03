@@ -1,30 +1,42 @@
 /**
  * @file ui.ts — UI-related constants for the auth feature.
+ *
+ * All magic strings for HTML input types, autocomplete values, button variants,
+ * ARIA roles, and other UI attributes are centralized here.
+ * Zero magic strings in component files.
  */
 
-export const INPUT_TYPES = {
+export const INPUT_TYPES = Object.freeze({
   TEXT: "text",
   PASSWORD: "password",
   EMAIL: "email",
   HIDDEN: "hidden",
   BUTTON: "button",
   SUBMIT: "submit",
-} as const;
+} as const);
 
-export const AUTOCOMPLETE = {
+export const AUTOCOMPLETE = Object.freeze({
   EMAIL: "email",
   CURRENT_PASSWORD: "current-password",
-} as const;
+  NEW_PASSWORD: "new-password",
+  NAME: "name",
+} as const);
 
-export const BUTTON_UI = {
+export const BUTTON_UI = Object.freeze({
   VARIANT_GHOST: "ghost",
+  VARIANT_PRIMARY: "primary",
   SIZE_SM: "sm",
-} as const;
+} as const);
 
-export const ARIA_ROLES = {
+export const ARIA_ROLES = Object.freeze({
   ALERT: "alert",
-} as const;
+} as const);
 
-export const OAUTH_PROVIDERS = {
+export const OAUTH_PROVIDERS = Object.freeze({
   GOOGLE: "google",
-} as const;
+} as const);
+
+export const FALLBACK_TEXTS = Object.freeze({
+  REGISTER_SUBTITLE: "Create your account",
+} as const);
+

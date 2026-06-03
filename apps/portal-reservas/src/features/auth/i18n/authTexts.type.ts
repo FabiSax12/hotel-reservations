@@ -1,6 +1,7 @@
 export type AuthTexts = {
   REGISTER: {
     TITLE: string;
+    SUBTITLE: string;
     FULL_NAME_LABEL: string;
     FULL_NAME_PLACEHOLDER: string;
     EMAIL_LABEL: string;
@@ -15,6 +16,7 @@ export type AuthTexts = {
     HIDE_CONFIRM_PASSWORD: string;
     SUBMIT_BUTTON: string;
     SUBMITTING_BUTTON: string;
+    LOGIN_LINK: string;
     PASSWORD_CHECKLIST: {
       MIN_LENGTH: string;
       HAS_UPPERCASE: string;

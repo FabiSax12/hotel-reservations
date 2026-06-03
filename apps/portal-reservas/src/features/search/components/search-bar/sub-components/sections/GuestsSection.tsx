@@ -4,10 +4,10 @@
 
 "use client";
 
+import { SEARCH_BAR_STYLES } from "../../theme/search-bar.theme";
+import { GuestsPopover } from "../GuestsPopover";
 import { useI18n } from "@/locales";
 import type { GuestsSectionProps } from "../../domain/types";
-import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
-import { GuestsPopover } from "../GuestsPopover";
 
 export function GuestsSection({
   isActive,
@@ -21,9 +21,11 @@ export function GuestsSection({
 
   return (
     <div onClick={onActivate} className={sectionClass}>
-      <div className={`${sizing.label} ${S.fieldLabel}`}>{C.LABEL}</div>
-      <div className={`${S.fieldValueGuests} ${sizing.value}`}>{guestsText}</div>
-      {isActive && <GuestsPopover />}
+      <div className={`${sizing.label} ${SEARCH_BAR_STYLES.fieldLabel}`}>{C.LABEL}</div>
+      <div className={`${SEARCH_BAR_STYLES.fieldValueGuests} ${sizing.value}`}>{guestsText}</div>
+      {isActive && (
+        <GuestsPopover />
+      )}
     </div>
   );
 }

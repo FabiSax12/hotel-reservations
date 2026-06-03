@@ -4,8 +4,8 @@ import { useI18n } from "@/locales";
 import { formatAmount } from "../../../utils/format-currency";
 import { Divider } from "../../shared/Divider/Divider";
 import { ReservationDetailCard } from "../ReservationDetailCard/ReservationDetailCard";
-import { RESERVATION_PAYMENT_CARD_STYLES as STYLES } from "./ReservationPaymentCard.styles";
 import type { ReservationPaymentCardProps } from "./ReservationPaymentCard.interface";
+import { RESERVATION_PAYMENT_CARD_STYLES as STYLES } from "./ReservationPaymentCard.styles";
 
 export const ReservationPaymentCard = ({
   pricePerNight,

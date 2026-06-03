@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useDestinationState.ts — Hook for managing destination selection state.
  *

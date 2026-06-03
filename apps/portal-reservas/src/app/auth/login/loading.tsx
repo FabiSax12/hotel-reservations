@@ -1,22 +1,29 @@
 "use client";
 
 import { Spinner } from "@heroui/react";
-import { AUTH_BACKGROUND_IMAGE, AUTH_STYLES as S } from "@/features/auth/theme/auth.theme";
+import { AUTH_STYLES, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
+import { LOGIN_LOADING_STYLES } from "./loading.styles";
 import { useI18n } from "@/locales";
-import { LOGIN_LOADING_STYLES as LS } from "./loading.styles";
 
 export default function LoginLoading() {
   const { t } = useI18n();
 
   return (
-    <main className={S.main}>
-      <div className={S.background}>
-        <div className={S.bgImage} style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }} />
-        <div className={S.bgOverlay} />
-        <div className={S.bgGradient} />
+    <main className={AUTH_STYLES.main}>
+      <div className={AUTH_STYLES.background}>
+        <div
+          className={AUTH_STYLES.bgImage}
+          style={{ backgroundImage: AUTH_BACKGROUND_IMAGE }}
+        />
+        <div className={AUTH_STYLES.bgOverlay} />
+        <div className={AUTH_STYLES.bgGradient} />
       </div>
-      <div className={LS.spinnerWrapper}>
-        <Spinner size="lg" className={LS.spinner} aria-label={t.AUTH.LOGIN.LOADING} />
+      <div className={LOGIN_LOADING_STYLES.spinnerWrapper}>
+        <Spinner
+          size="lg"
+          className={LOGIN_LOADING_STYLES.spinner}
+          aria-label={t.AUTH.LOGIN.LOADING}
+        />
       </div>
     </main>
   );

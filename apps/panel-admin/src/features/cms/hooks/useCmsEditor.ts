@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { useI18n } from "@/locales";
-import { saveCmsTextAction } from "@/features/cms/services/saveCmsContentAction";
-import { CMS_LOCALES, CMS_LOCALE_LIST, CMS_SECTIONS, CMS_SAVE_SUCCESS_RESET_MS } from "@/features/cms/constants/cms-fields";
+import {
+  CMS_LOCALE_LIST,
+  CMS_LOCALES,
+  CMS_SAVE_SUCCESS_RESET_MS,
+  CMS_SECTIONS,
+} from "@/features/cms/constants/cms-fields";
 import { CMS_SECTION_CONFIGS } from "@/features/cms/constants/sectionConfigs";
 import type { CmsLocale, CmsSection } from "@/features/cms/domain/cms.interface";
+import { saveCmsTextAction } from "@/features/cms/services/saveCmsContentAction";
+import { useI18n } from "@/locales";
 import type { SaveStatus, UseCmsEditorOptions } from "./useCmsEditor.interface";
 
 function buildInitialState(
@@ -46,7 +51,11 @@ export function useCmsEditor({ initialValues }: UseCmsEditorOptions = {}) {
     let success: boolean;
 
     if (config.localized) {
-      const result = await saveCmsTextAction(activeLocale, config.section, values[config.section][activeLocale]);
+      const result = await saveCmsTextAction(
+        activeLocale,
+        config.section,
+        values[config.section][activeLocale],
+      );
       success = result.success;
     } else {
       const content = values[config.section][CMS_LOCALES.ES];

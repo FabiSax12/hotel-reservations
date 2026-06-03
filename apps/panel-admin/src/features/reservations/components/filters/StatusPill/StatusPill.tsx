@@ -2,9 +2,9 @@
 
 import { Button } from "@heroui/react";
 import { useI18n } from "@/locales";
-import { STATUS_PILL_STYLES as STYLES, STATUS_DOT_COLOR } from "./StatusPill.styles";
 import { STATUS_I18N_KEY } from "../../../constants/status-i18n";
 import type { StatusPillProps } from "./StatusPill.interface";
+import { STATUS_DOT_COLOR, STATUS_PILL_STYLES as STYLES } from "./StatusPill.styles";
 
 export const StatusPill = ({ status, isOn, count, onStatusToggle }: StatusPillProps) => {
   const { t } = useI18n();

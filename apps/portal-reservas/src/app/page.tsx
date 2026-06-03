@@ -25,6 +25,7 @@ export default function HomePage() {
       hasDates={state.hasDates}
       isSearchingData={state.isSearchingData}
       filteredRooms={state.filteredRooms}
+      prioritizedRoomId={state.prioritizedRoomId}
       onSearchTrigger={state.handleSearchTrigger}
       onDestinationChange={state.handleDestinationChange}
       onReset={state.handleReset}

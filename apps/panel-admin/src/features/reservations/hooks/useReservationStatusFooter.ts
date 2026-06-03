@@ -2,12 +2,12 @@
 
 import { useState } from "react";
 import { useI18n } from "@/locales";
-import { useReservationStatusReducer } from "../reducer/reservations.reducer";
-import { useGuardedClose } from "./useGuardedClose";
-import { RESERVATION_STATUS_ACTIONS as ACTIONS } from "../reducer/reservations.reducer.constants";
+import type { ReservationStatusFooterProps } from "../components/status/ReservationStatusFooter/ReservationStatusFooter.interface";
 import { RESERVATION_STATUS as CONSTANTS } from "../constants/reservation-statuses";
 import type { ReservationStatus } from "../domain/reservation";
-import type { ReservationStatusFooterProps } from "../components/status/ReservationStatusFooter/ReservationStatusFooter.interface";
+import { useReservationStatusReducer } from "../reducer/reservations.reducer";
+import { RESERVATION_STATUS_ACTIONS as ACTIONS } from "../reducer/reservations.reducer.constants";
+import { useGuardedClose } from "./useGuardedClose";
 
 export function useReservationStatusFooter({
   reservationId,
@@ -75,9 +75,7 @@ export function useReservationStatusFooter({
     if (statusToSave !== null) {
       // TODO: implementar comunicacion con la pasarela de pagos
       if (currentSavedStatus === CONSTANTS.PENDING && statusToSave === CONSTANTS.APPROVED) {
-        console.log(
-          `${t.RESERVATIONS.STATUS_MANAGEMENT.LOG_PAYMENT_PROCESSED} ${reservationId}.`,
-        );
+        console.log(`${t.RESERVATIONS.STATUS_MANAGEMENT.LOG_PAYMENT_PROCESSED} ${reservationId}.`);
       }
       const cancellationReason = statusToSave === CONSTANTS.CANCELLED ? reasonToSave : undefined;
       onSave?.(statusToSave, cancellationReason);

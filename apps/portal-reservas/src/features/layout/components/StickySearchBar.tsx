@@ -7,16 +7,16 @@
  * re-triggers the results with updated filters.
  */
 
-import { HEADER_STYLES as S } from "../../../theme/layout.theme";
 import { ModernSearchBar } from "../../search/components/search-bar";
 import type { StickySearchBarProps } from "../domain/types";
+import { HEADER_STYLES } from "../../../theme/layout.theme";
 
 export function StickySearchBar({ searchParams, onSearch }: StickySearchBarProps) {
   return (
-    <div className={S.stickySearchBar}>
+    <div className={HEADER_STYLES.stickySearchBar}>
       <ModernSearchBar
         size="compact"
-        className={S.compactSearchContainer}
+        className={HEADER_STYLES.compactSearchContainer}
         onSearch={onSearch}
         initialState={searchParams}
       />

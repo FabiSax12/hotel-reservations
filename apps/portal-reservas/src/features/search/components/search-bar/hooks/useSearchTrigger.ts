@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useSearchTrigger.ts — Hook for search submission and section interception.
  *
