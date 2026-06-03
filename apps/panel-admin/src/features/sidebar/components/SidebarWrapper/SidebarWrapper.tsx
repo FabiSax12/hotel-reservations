@@ -1,7 +1,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
-import { SIDEBAR_SECTIONS } from "../../constants/sidebarSections";
+import { useFilteredSidebarSections } from "../../hooks/useFilteredSidebarSections";
 import { useSidebarCollapsed } from "../../hooks/useSidebarCollapsed";
 import { SidebarFooter } from "../SidebarFooter/SidebarFooter";
 import { SidebarHeader } from "../SidebarHeader/SidebarHeader";
@@ -11,6 +11,7 @@ import { SIDEBAR_STYLES as STYLES } from "./SidebarWrapper.styles";
 export const SidebarWrapper = () => {
   const { isCollapsed, toggleCollapsed } = useSidebarCollapsed();
   const { t } = useI18n();
+  const sections = useFilteredSidebarSections();
 
   return (
     <aside
@@ -20,7 +21,7 @@ export const SidebarWrapper = () => {
       <SidebarHeader isCollapsed={isCollapsed} toggleCollapsed={toggleCollapsed} />
 
       <div className={STYLES.body}>
-        {SIDEBAR_SECTIONS.map((section) => (
+        {sections.map((section) => (
           <SidebarRoutesSection
             key={section.sectionKey}
             section={section}

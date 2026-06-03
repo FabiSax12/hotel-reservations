@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { DEFAULT_ROOM_ID } from "@/features/rooms/constants/amenities.constants";
-import { CheckInCheckOutForm } from "./CheckInCheckOut";
 import { AMENITIES_VIEW_STYLES as STYLES } from "../amenities/AmenitiesView/AmenitiesView.styles";
+import { CheckInCheckOutForm } from "./CheckInCheckOut";
 
 export const CheckInCheckOutView = () => {
   const router = useRouter();

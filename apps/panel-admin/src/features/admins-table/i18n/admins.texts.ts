@@ -1,4 +1,5 @@
 import type { SupportedLocale } from "@hotel/i18n";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import type { AdminsTexts } from "./adminsTexts.type";
 
 export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
@@ -73,6 +74,43 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
         UNKNOWN_ERROR: "Error al enviar la invitación",
       },
     },
+    PERMISSIONS: {
+      TITLE: "Gestionar Permisos",
+      COL_PERMISSIONS: "Permisos",
+      MANAGE_BUTTON: "Gestionar Permisos",
+      CATEGORIES: {
+        DASHBOARD: "Dashboard",
+        RESERVATIONS: "Reservas",
+        ADMINS: "Administradores",
+        PERMISSIONS: "Permisos",
+        CMS: "CMS",
+        ROOMS: "Habitaciones",
+        CLIENTS: "Clientes",
+        INVOICES: "Facturas",
+      },
+      PERMISSION_LABELS: {
+        [PERMISSIONS.DASHBOARD.VIEW]: "Ver Dashboard",
+        [PERMISSIONS.RESERVATIONS.VIEW]: "Ver Reservas",
+        [PERMISSIONS.RESERVATIONS.EDIT]: "Editar Reservas",
+        [PERMISSIONS.RESERVATIONS.DELETE]: "Eliminar Reservas",
+        [PERMISSIONS.ADMINS.VIEW]: "Ver Administradores",
+        [PERMISSIONS.ADMINS.INVITE]: "Invitar Administradores",
+        [PERMISSIONS.ADMINS.DISABLE]: "Desactivar Administradores",
+        [PERMISSIONS.ADMINS.REVOKE]: "Revocar Invitaciones",
+        [PERMISSIONS.CMS.MANAGE]: "Gestionar CMS",
+        [PERMISSIONS.PERMISSIONS.MANAGE]: "Gestionar Permisos",
+        [PERMISSIONS.ROOMS.MANAGE]: "Gestionar Habitaciones",
+        [PERMISSIONS.INVOICES.VIEW]: "Ver Facturas",
+        [PERMISSIONS.CLIENTS.VIEW]: "Ver Clientes",
+      },
+      ERRORS: {
+        SELF_MODIFY: "No puedes modificar tus propios permisos",
+        OWNER_MODIFY: "No se pueden modificar los permisos del owner",
+        INVALID_PERMISSION: "Permiso inválido",
+        UNKNOWN_ERROR: "Error desconocido",
+      },
+      SUCCESS: "Permisos actualizados correctamente",
+    },
   },
   en: {
     PAGE: {
@@ -144,6 +182,43 @@ export const ADMINS_TEXTS: Record<SupportedLocale, AdminsTexts> = {
         USER_ALREADY_EXISTS: "This user already exists in the system",
         UNKNOWN_ERROR: "Failed to send invitation",
       },
+    },
+    PERMISSIONS: {
+      TITLE: "Manage Permissions",
+      COL_PERMISSIONS: "Permissions",
+      MANAGE_BUTTON: "Manage Permissions",
+      CATEGORIES: {
+        DASHBOARD: "Dashboard",
+        RESERVATIONS: "Reservations",
+        ADMINS: "Administrators",
+        PERMISSIONS: "Permissions",
+        CMS: "CMS",
+        ROOMS: "Rooms",
+        CLIENTS: "Clients",
+        INVOICES: "Invoices",
+      },
+      PERMISSION_LABELS: {
+        [PERMISSIONS.DASHBOARD.VIEW]: "View Dashboard",
+        [PERMISSIONS.RESERVATIONS.VIEW]: "View Reservations",
+        [PERMISSIONS.RESERVATIONS.EDIT]: "Edit Reservations",
+        [PERMISSIONS.RESERVATIONS.DELETE]: "Delete Reservations",
+        [PERMISSIONS.ADMINS.VIEW]: "View Administrators",
+        [PERMISSIONS.ADMINS.INVITE]: "Invite Administrators",
+        [PERMISSIONS.ADMINS.DISABLE]: "Disable Administrators",
+        [PERMISSIONS.ADMINS.REVOKE]: "Revoke Invitations",
+        [PERMISSIONS.CMS.MANAGE]: "Manage CMS",
+        [PERMISSIONS.PERMISSIONS.MANAGE]: "Manage Permissions",
+        [PERMISSIONS.ROOMS.MANAGE]: "Manage Rooms",
+        [PERMISSIONS.INVOICES.VIEW]: "View Invoices",
+        [PERMISSIONS.CLIENTS.VIEW]: "View Clients",
+      },
+      ERRORS: {
+        SELF_MODIFY: "You cannot modify your own permissions",
+        OWNER_MODIFY: "Owner permissions cannot be modified",
+        INVALID_PERMISSION: "Invalid permission",
+        UNKNOWN_ERROR: "Unknown error",
+      },
+      SUCCESS: "Permissions updated successfully",
     },
   },
 } as const;

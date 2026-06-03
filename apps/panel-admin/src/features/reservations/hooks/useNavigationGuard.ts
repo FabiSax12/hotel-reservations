@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef } from "react";
 
 interface UseNavigationGuardProps {
   listPath: string;
@@ -12,12 +12,15 @@ export function useNavigationGuard({ listPath }: UseNavigationGuardProps) {
   const guardedBackRef = useRef<() => void>(() => router.push(listPath));
   const hasPendingRef = useRef(false);
 
-  const onRegisterClose = useCallback((_id: string, handler: () => void) => {
-    guardedBackRef.current = handler;
-    return () => {
-      guardedBackRef.current = () => router.push(listPath);
-    };
-  }, [listPath, router]);
+  const onRegisterClose = useCallback(
+    (_id: string, handler: () => void) => {
+      guardedBackRef.current = handler;
+      return () => {
+        guardedBackRef.current = () => router.push(listPath);
+      };
+    },
+    [listPath, router],
+  );
 
   const onRequestClose = useCallback(() => {
     router.push(listPath);

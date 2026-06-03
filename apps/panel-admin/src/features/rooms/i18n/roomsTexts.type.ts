@@ -66,6 +66,9 @@ export interface RoomsTexts {
     DELETE_WARNING_DESCRIPTION: string;
     DELETE_WARNING_CONFIRM: string;
     DELETE_WARNING_CANCEL: string;
+    ERROR_ADD: string;
+    ERROR_UPDATE: string;
+    ERROR_DELETE: string;
   };
   SCHEDULES: {
     TITLE: string;

@@ -53,9 +53,60 @@ Each feature may contain these sub-modules (not all are required):
 
 The `search` feature contains a deeply nested `search-bar/` sub-feature at `features/search/components/search-bar/` with its own `context/`, `hooks/`, `constants/`, `domain/`, `theme/`, `utils/`, `sub-components/`, and `sub-components/sections/`. This pattern is used when a component is complex enough to be a self-contained orchestrator with its own internal architecture. The sub-feature has its own barrel export (`index.ts`).
 
+### 2.2.1 Room Grouping Pattern (US-DM-04)
+
+When guest count exceeds a single room's capacity, the `rooms` feature uses a **domain-level grouping algorithm** to create room packages:
+
+* **Pure function** in `domain/grouping.ts` — no hooks, no JSX, no side effects.
+* **Input:** `Room[]` + `guestCount` → **Output:** `(Room | RoomPackage)[]`.
+* **Algorithm:** Greedy bin-packing with constraints (MAX_WASTE, MAX_ROOMS).
+* **Rendering:** `PackageCard` wraps a primary `RoomCard` + decorative shadow cards + a package indicator badge.
+* **Data flow:** `search.guestCount` → `page.tsx` → `RoomsContext.guestCount` → `useRoomPackages` hook → `groupRoomsIntoPackages()`.
+
+The grouping algorithm is deterministic and pure — same inputs always produce the same output. Unit tests live in `domain/grouping.test.ts`.
+
 ### 2.3 Global Shared Code
 
 Global shared code lives outside features (`app/`, `components/`, `hooks/`, `lib/`, `config/`, `locales/`, `shared/`, `theme/`). App pages only import and compose feature components — no inline logic.
+
+### 2.4 Atomic File Organization Pattern (enforced since PR #24)
+
+Every component must follow the **atomic separation** — one file for interfaces, one for styles, one for TSX:
+
+* **Component Props interfaces** MUST be defined in `domain/types.ts` (or a dedicated `.types.ts` file for global components), NEVER inline in `.tsx` files.
+* **Hook dependency/option interfaces** (`Use*Deps`, `Use*Options`) MUST also live in `domain/types.ts`.
+* **Styles** MUST be in `.theme.ts` files, never inline Tailwind in JSX.
+* **Component markup** lives in the `.tsx` file, importing its Props from the types file and styles from the theme file.
+
+```
+features/rooms/
+├── domain/
+│   └── types.ts          ← ALL component Props + domain types here
+├── theme/
+│   └── rooms.theme.ts    ← ALL style dictionaries here
+└── components/
+    └── RoomCard.tsx      ← Imports Props from domain/types, styles from theme
+```
+
+**Exception:** `packages/ui/` component Props go in `packages/ui/src/types/*.types.ts`.
+
+### 2.5 App-Level Route Pages (`error.tsx`, `loading.tsx`)
+
+Next.js route-level pages (`error.tsx`, `loading.tsx`) render **outside** the I18nProvider boundary. Therefore:
+
+* Hardcoded user-visible strings MUST be extracted to a `constants/app-pages.constants.ts` file (not inline).
+* Styles MUST be extracted to a `theme/app-pages.theme.ts` file (not inline Tailwind).
+* These pages are the ONLY exception to the i18n rule — all other components MUST use `useI18n()`.
+
+### 2.6 Hardcoded String Audit Rules
+
+Every `aria-label`, `title`, `placeholder`, and visible text node MUST use i18n (`t.FEATURE.KEY`). Common violations caught in PR #24:
+
+* `aria-label="Imágenes adicionales"` → `aria-label={t.ROOMS.GALLERY_IMAGES_LABEL}`
+* `<div>Explorar Habitaciones</div>` → `<div>{t.ROOMS.BROWSE_ROOMS}</div>`
+* `<h2>Algo salió mal</h2>` → `<h2>{APP_PAGE_STRINGS.ERROR_TITLE}</h2>` (app-level exception)
+
+**Zero tolerance:** If a reviewer can find a hardcoded Spanish string in JSX, it's a bug.
 
 ---
 
@@ -78,6 +129,15 @@ Tailwind CSS classes are **strictly forbidden** from cluttering JSX.
 
 * **Theme Files:** Styles are decoupled into `.theme.ts` files (e.g., `search-bar.theme.ts`, `layout.theme.ts`).
 * **Style Dictionaries:** Exported as `const` objects with `as const` (e.g., `SEARCH_BAR_STYLES`).
+* **Import by Real Name — No Single-Letter / Generic Aliases:** Components MUST import a style dictionary under its exported name (`ROOM_DETAIL_STYLES`, `HEADER_STYLES`, `ROOM_CARD_STYLES`) and reference it as such (`ROOM_DETAIL_STYLES.panel`). Renaming the import to a short initial or a generic label — `import { ROOM_DETAIL_STYLES as S }`, `as STYLES`, `as SM` — is **forbidden**. Single letters carry no meaning, and a generic `STYLES` collides the moment a file needs a second dictionary. A file that consumes two dictionaries (e.g. `PACKAGE_CARD_STYLES` + `ROOM_CARD_STYLES`) imports and uses both under their real names. Concrete violation to reject in review:
+  ```tsx
+  // Reject — alias hides which dictionary is in use and cannot scale to two:
+  import { ROOM_DETAIL_STYLES as S } from "../theme/room-detail.theme";
+  <aside className={S.panel(isShown)} />
+  // Correct:
+  import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
+  <aside className={ROOM_DETAIL_STYLES.panel(isShown)} />
+  ```
 * **Dynamic Styles via Functions:** State-dependent styles use functions returning template literals (e.g., `fieldValue: (hasValue: boolean) => "..."`).
 * **CSS Variables & Tokens:** Components consume CSS tokens via Tailwind classes. Custom tokens defined in `@hotel/ui/theme.css` (OKLCH).
 * **Allowed Inline `style={}`:** Only for truly dynamic values that cannot be expressed in Tailwind: `animationDelay` (stagger), `backgroundImage` URLs from data, `transform`/`opacity` transitions driven by state. Static values must be in theme files.
@@ -90,7 +150,7 @@ Tailwind CSS classes are **strictly forbidden** from cluttering JSX.
 Each file does ONE thing. Each component does ONE thing.
 
 * **The Orchestrator Pattern:** Top-level feature components (e.g., `ModernSearchBar.tsx`, `RoomCard.tsx`) render almost zero native HTML. They consume custom hooks and pass aggregated state into a Context Provider.
-* **Logic Extraction:** Complex logic never lives in components — it lives in `hooks/` or `domain/`.
+* **Logic Extraction (mandatory, not aspirational):** Complex logic never lives in components — it lives in `hooks/` or `domain/`. Any effect-backed behaviour MUST be extracted into a named custom hook: `window`/`document` event listeners, `setTimeout`/`setInterval`, `requestAnimationFrame`, scroll/focus side effects, and pointer/keyboard gesture handling all belong in a hook, never inline in a `.tsx`. A component that registers listeners, owns timers, or coordinates two or more `useEffect`s is a logic-heavy file and fails review. The hook owns the behaviour and returns exactly what the JSX needs (flags, refs, handlers); the component keeps render + derived values only. Hook option interfaces live in `domain/types.ts` (`Use*Options`), per §2.4.
 * **Presentation Slices:** UI is split into hyper-focused sub-components that independently consume Context.
 * **Component Length:** Max **120 lines** per file. Exceptions: `.theme.ts`, `auth/`, `mock-data/`, `.css`, `.spec.md`, `.texts.ts`, `.texts.type.ts`. A component > 60 lines of JSX needs splitting. A hook > 40 lines likely has multiple responsibilities.
 
@@ -121,6 +181,13 @@ Each file does ONE thing. Each component does ONE thing.
 Zero tolerance for inline raw strings and numbers in logic.
 
 * **Constants Files:** All functional strings and numbers centralized in `constants/` files.
+* **No Data Constants in Component Files:** Component files (`.tsx`) MUST NOT declare standalone data constants — SVG `path` data, `viewBox` strings, icon maps, query strings, magic numbers, thresholds, delays. These belong in a dedicated `constants/` file (e.g. `<feature>-icons.const.ts` for SVG path/viewBox data, `<feature>.constants.ts` for thresholds/queries) and are imported by name. The ONLY module-level `const` permitted in a `.tsx` is a framework singleton that must live at module scope (e.g. `const Ctx = createContext(...)`). Concrete violation to reject in review:
+  ```tsx
+  // Reject in review — declared at the top of a .tsx component file:
+  const ICON_VIEW_BOX = "0 0 24 24";
+  const PACKAGE_PATH = "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5";
+  ```
+  Move these to `constants/<feature>-icons.const.ts` (e.g. `export const ICON_VIEW_BOX = "0 0 24 24"` and an `ICON_PATHS` map) and reference `ICON_VIEW_BOX` / `ICON_PATHS.package` in the JSX.
 * **Immutability:** ALL constant objects MUST use `Object.freeze()` AND `as const` (e.g., `export const X = Object.freeze({ ... } as const)`). This catches typos at compile-time.
 * **Routes & Queries:** Zero hardcoded route strings outside `config/routes.ts`. Zero raw query key strings outside `config/queryKeys.ts`.
 * **Environment Variables:** All env vars accessed through `config/env.ts`, never via `process.env` inline.
@@ -149,6 +216,7 @@ Domain functions have zero side effects and are deterministic.
 * No JSX, no hooks, no `fetch`, no `localStorage`, no `document` access.
 * Higher-order functions for configurable predicates.
 * Located in `domain/` directories within features.
+* **Grouping algorithms** (e.g., `domain/grouping.ts`) are pure functions that take data + constraints and return transformed data. They MUST have unit tests.
 
 ---
 
@@ -213,17 +281,27 @@ Before considering a PR complete, verify:
 - [ ] No cross-feature coupling except through explicit shared interfaces or `index.ts` barrel files.
 - [ ] `'use client'` minimized — only where strictly necessary. Every client component has the directive.
 
+### Atomic File Separation (PR #24 enforcement)
+- [ ] ALL component Props interfaces in `domain/types.ts`, NEVER inline in `.tsx`.
+- [ ] ALL hook dependency/option interfaces in `domain/types.ts`.
+- [ ] ALL styles in `.theme.ts` files, NEVER inline Tailwind in JSX.
+- [ ] App-level pages (`error.tsx`, `loading.tsx`) have constants in `constants/app-pages.constants.ts` and styles in `theme/app-pages.theme.ts`.
+- [ ] No hardcoded Spanish strings in `aria-label`, `title`, `placeholder`, or visible text — all use i18n.
+
 ### Constants, Configuration & Theming
 - [ ] No hardcoded route strings, query keys, or API URLs.
+- [ ] No standalone data constants (SVG `path`/`viewBox` data, icon maps, query strings, magic numbers/thresholds) declared in `.tsx` component files — they live in `constants/` files and are imported by name.
 - [ ] ALL constant objects use `Object.freeze()` AND `as const`.
 - [ ] All env vars accessed through `config/env.ts`.
 - [ ] All CSS values are CSS variables or Tailwind tokens consumed via isolated `.theme.ts` files.
 - [ ] Zero inline Tailwind classes in JSX. Zero inline `style={}` except for truly dynamic values.
+- [ ] Style dictionaries imported by their real exported name — no single-letter or generic aliases (`as S`, `as STYLES`, `as SM`).
 
 ### SRP & Orchestration
 - [ ] Top-level orchestrator components consume hooks and provide context.
 - [ ] Components render — they do not fetch or contain business logic.
 - [ ] Hooks orchestrate — they do not render.
+- [ ] No effect-backed logic inline in `.tsx` — event listeners, timers, `requestAnimationFrame`, scroll/focus effects, and gesture handlers are extracted into named custom hooks.
 - [ ] Domain functions are pure — no hooks, JSX, fetch, or DOM.
 - [ ] No file exceeds 120 lines (except exempted types).
 

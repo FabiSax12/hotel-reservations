@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useDateSelection.ts — Hook for managing date selection state.
  *

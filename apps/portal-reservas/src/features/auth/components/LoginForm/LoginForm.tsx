@@ -7,7 +7,11 @@ import { useActionState } from "react";
 import { ROUTES } from "@/config/routes";
 import { GoogleIcon } from "@/features/auth/components/icons/GoogleIcon";
 import type { LoginFormProps } from "@/features/auth/components/LoginForm/LoginForm.interface";
-import { LOGIN_FORM_STYLES as LS } from "@/features/auth/components/LoginForm/LoginForm.styles";
+import {
+  LOGIN_THEME_STYLES as AS,
+  AUTH_BACKGROUND_IMAGE,
+  LOGIN_FORM_STYLES as LS,
+} from "@/features/auth/components/LoginForm/LoginForm.styles";
 import { LOGIN_FORM_FIELDS } from "@/features/auth/constants/loginFormFields";
 import {
   AUTOCOMPLETE as AC,
@@ -17,7 +21,6 @@ import {
 } from "@/features/auth/constants/ui";
 import type { LoginActionState } from "@/features/auth/domain/credentials";
 import { useLoginForm } from "@/features/auth/hooks/useLoginForm";
-import { AUTH_STYLES as AS, AUTH_BACKGROUND_IMAGE } from "@/features/auth/theme/auth.theme";
 import { useI18n } from "@/locales";
 
 export const LoginForm = ({ action }: LoginFormProps) => {

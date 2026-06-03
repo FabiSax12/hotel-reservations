@@ -5,7 +5,7 @@ import { useI18n } from "@/locales";
 
 const RESERVATIONS_LOADING_STYLES = {
   wrapper: "flex flex-col items-center justify-center min-h-96",
-  label: "text-neutral-600 font-medium"
+  label: "text-neutral-600 font-medium",
 } as const;
 
 export default function Loading() {

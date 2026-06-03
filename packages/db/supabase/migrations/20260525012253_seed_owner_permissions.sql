@@ -1,44 +1,44 @@
 -- Seed: assign all permissions to the owner user
 -- This migration finds the user with role='owner' and inserts all permission enum values
 
-CREATE OR REPLACE FUNCTION set_owner_permissions(owner_id uuid) RETURNS void AS $$
-DECLARE
-    perm user_permission;
-    all_permissions user_permission[] := ARRAY[
-        'view:dashboard',
-        'reservations:view',
-        'reservations:edit',
-        'reservations:delete',
-        'admins:view',
-        'admins:invite',
-        'admins:disable',
-        'admins:revoke',
-        'cms:manage',
-        'permissions:manage',
-        'rooms:manage',
-        'invoices:view',
-        'clients:view'
-    ];
+CREATE OR REPLACE FUNCTION public.set_owner_permissions(owner_id uuid)
+RETURNS void
+language plpgsql
+security definer
+set search_path = ''
+as $$
 BEGIN
-    -- Insert all permissions for the owner, skipping duplicates
-    FOREACH perm IN ARRAY all_permissions
-    LOOP
-        INSERT INTO public.user_permissions (user_id, permission, granted_by)
-        VALUES (owner_id, perm, null)
-        ON CONFLICT (user_id, permission) DO NOTHING;
-    END LOOP;
-END $$ LANGUAGE plpgsql;
+    INSERT INTO public.user_permissions (user_id, permission, granted_by)
+    VALUES
+        (owner_id, 'view:dashboard', null),
+        (owner_id, 'reservations:view', null),
+        (owner_id, 'reservations:edit', null),
+        (owner_id, 'reservations:delete', null),
+        (owner_id, 'admins:view', null),
+        (owner_id, 'admins:invite', null),
+        (owner_id, 'admins:disable', null),
+        (owner_id, 'admins:revoke', null),
+        (owner_id, 'cms:manage', null),
+        (owner_id, 'permissions:manage', null),
+        (owner_id, 'rooms:manage', null),
+        (owner_id, 'invoices:view', null),
+        (owner_id, 'clients:view', null)
+    ON CONFLICT (user_id, permission) DO NOTHING;
+END $$;
 
-CREATE OR REPLACE FUNCTION trg_assign_owner_permissions()
-RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION public.trg_assign_owner_permissions()
+RETURNS trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
 BEGIN
     IF NEW.role = 'owner' THEN
-        PERFORM set_owner_permissions(NEW.user_id);
+        PERFORM public.set_owner_permissions(NEW.user_id);
     END IF;
 
     RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+END $$;
 
 DROP TRIGGER IF EXISTS assign_owner_permissions ON public.user_roles;
 

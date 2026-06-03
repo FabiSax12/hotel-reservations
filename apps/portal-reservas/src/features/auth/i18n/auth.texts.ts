@@ -5,6 +5,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
   es: {
     REGISTER: {
       TITLE: "Crear cuenta",
+      SUBTITLE: "Creá tu cuenta para gestionar tus reservas",
       FULL_NAME_LABEL: "Nombre completo",
       FULL_NAME_PLACEHOLDER: "Juan Pérez",
       EMAIL_LABEL: "Correo electrónico",
@@ -19,6 +20,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       HIDE_CONFIRM_PASSWORD: "Ocultar confirmación de contraseña",
       SUBMIT_BUTTON: "Crear cuenta",
       SUBMITTING_BUTTON: "Creando cuenta...",
+      LOGIN_LINK: "¿Ya tenés cuenta? Iniciá sesión aquí",
       PASSWORD_CHECKLIST: {
         MIN_LENGTH: "Mínimo 8 caracteres",
         HAS_UPPERCASE: "Al menos una mayúscula",
@@ -76,6 +78,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
   en: {
     REGISTER: {
       TITLE: "Create account",
+      SUBTITLE: "Create your account to manage your reservations",
       FULL_NAME_LABEL: "Full name",
       FULL_NAME_PLACEHOLDER: "John Doe",
       EMAIL_LABEL: "Email address",
@@ -90,6 +93,7 @@ export const AUTH_TEXTS: Record<SupportedLocale, AuthTexts> = {
       HIDE_CONFIRM_PASSWORD: "Hide confirm password",
       SUBMIT_BUTTON: "Create account",
       SUBMITTING_BUTTON: "Creating account...",
+      LOGIN_LINK: "Already have an account? Sign in here",
       PASSWORD_CHECKLIST: {
         MIN_LENGTH: "At least 8 characters",
         HAS_UPPERCASE: "At least one uppercase letter",

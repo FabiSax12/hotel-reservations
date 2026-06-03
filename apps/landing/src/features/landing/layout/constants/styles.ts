@@ -50,6 +50,7 @@ export const LAYOUT = Object.freeze({
   SCROLL_PROGRESS: "fixed top-0 left-0 right-0 h-[2px] bg-gold-500 origin-left z-[100]",
   LOCALE_SWITCHER: "hidden lg:flex items-center gap-1.5 text-xs tracking-[0.2em] uppercase",
   LOCALE_ACTIVE: "text-gold-400",
-  LOCALE_INACTIVE: "text-stone-500 hover:text-stone-300 transition-colors duration-300 cursor-pointer",
+  LOCALE_INACTIVE:
+    "text-stone-500 hover:text-stone-300 transition-colors duration-300 cursor-pointer",
   LOCALE_SEP: "text-stone-700",
 } as const);

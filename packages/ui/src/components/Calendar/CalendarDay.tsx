@@ -48,12 +48,8 @@ export function CalendarDay({
       {!isSelected && !isStart && !isEnd && !isPast && <div className={S.hoverRing}></div>}
 
       {/* 2. Start / end selection circles — rendered for every day but only visible when active */}
-      <div
-        className={`${S.selectedStart} ${isStart && !isEnd ? "bg-gold-500 ring-gold-500 ring-offset-forest-900" : "bg-transparent ring-transparent ring-offset-transparent"}`}
-      ></div>
-      <div
-        className={`${S.selectedEnd} ${isEnd && !isStart ? "bg-gold-500 ring-gold-500 ring-offset-forest-900" : "bg-transparent ring-transparent ring-offset-transparent"}`}
-      ></div>
+      <div className={S.selectedStart(isStart && !isEnd)}></div>
+      <div className={S.selectedEnd(isEnd && !isStart)}></div>
 
       {/* 3. Invalid indicator — red dot with shake animation when the user picks a blocked date */}
       {isInvalid && (

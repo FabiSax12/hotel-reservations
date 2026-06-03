@@ -8,6 +8,7 @@ export type CommonTexts = {
   };
   ACTIONS: {
     SAVE: string;
+    SAVING: string;
     CANCEL: string;
     DELETE: string;
     EDIT: string;
@@ -24,5 +25,9 @@ export type CommonTexts = {
     NOT_FOUND_TITLE: string;
     NOT_FOUND_MESSAGE: string;
     RETURN_HOME: string;
+    FORBIDDEN_TITLE: string;
+    FORBIDDEN_SUBTITLE: string;
+    FORBIDDEN_MESSAGE: string;
+    FORBIDDEN_BACK_BUTTON: string;
   };
 };

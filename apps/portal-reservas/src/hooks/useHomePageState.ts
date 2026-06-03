@@ -41,6 +41,7 @@ export function useHomePageState() {
     children: 0,
     pets: 0,
   });
+  const [prioritizedRoomId, setPrioritizedRoomId] = useState<string | null>(null);
 
   const hasDates = !!(searchParams.checkIn && searchParams.checkOut);
 
@@ -60,6 +61,9 @@ export function useHomePageState() {
     if (params.destination && params.destination !== SEARCH_VALS.DESTINATION_ALL) {
       setSelectedLocation(params.destination);
     }
+    // When the search originates from a room calendar, prioritize that room.
+    // When it originates from the search bar (no prioritizedRoomId), clear any previous priority.
+    setPrioritizedRoomId(params.prioritizedRoomId ?? null);
     setHasSearched(true);
     setHeroCalendarActive(false);
     // Simulate async data fetching so skeleton loaders and transitions feel realistic
@@ -90,6 +94,7 @@ export function useHomePageState() {
     hasDates,
     isSearchingData,
     filteredRooms,
+    prioritizedRoomId,
     handleSearchTrigger,
     handleDestinationChange,
     handleReset,

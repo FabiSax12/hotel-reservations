@@ -1,21 +1,21 @@
-# Feature Specification: Add amenities to the room while creating it.
+# Feature Specification: Amenities Stage
 
-**Status:** in-progress
-**Version:** 1.5
+**Status:** completed
+**Version:** 2.0
 
 ## 1. Objective 
 As an administrator, after I added info of a room, I need a new page that let me add amenities to this rooms, before creating the room, but also to be a separated page, I want the workflow to feel like stages/phases of a creation, in order to avoid scrolling, instead, feel like each stage refers to something in specific and I can concentrate on each step.
 
 ## 2. Scope & Boundaries
 **In Scope:**
-* Create a sql file with the neccesary structure for needed table(s) inside packages/db/supabase/migrations.
-* Create a mock-service to mimic how the service would be with a real DB and API implementation.
-* After adding the Room Info, and before creating it, let me assign amenities to the room.
+* Create a real `amenityService.ts` using Supabase for DB interaction.
+* Implement Server Actions for all mutations (saving selection, custom amenities).
+* Define shared RLS policies for `amenities` and `room_amenities` tables.
 
 **Out of Scope (Do Not Modify):**
 * Do not modify any other feature outside the rooms feature, neither the other folders (info, schedule).
-* Let me assign amenities to the room.
-* Do not create real database implementation.
+* Do not use mock services for amenities.
+
 
 ## 3. Architecture & Context
 **Core Folders Involved:**

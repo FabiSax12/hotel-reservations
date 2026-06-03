@@ -5,7 +5,6 @@
  *  - `selectedLocation`: The currently selected destination (null = none selected).
  *  - `hasDates`: Whether both checkIn and checkOut dates are set.
  *  - `searchDates`: The actual date strings from the search bar.
- *  - `expandedRoomId`: Which room card is currently expanded (only one at a time).
  *  - `onSearch`: The page-level search callback for QuickSearchDialog.
  *
  * Usage:
@@ -26,19 +25,32 @@ export interface SearchDates {
 export interface RoomsContextValue {
   /** Currently selected destination name, or null if none selected. */
   selectedLocation: string | null;
+  /**
+   * Whether the user has submitted at least one search (full search interface active).
+   * Gates the US-DM-03 sort + filter bar — it renders only post-search.
+   */
+  hasSearched: boolean;
   /** Whether both checkIn and checkOut are set. Prices + availability only shown when true. */
   hasDates: boolean;
   /** The actual date strings; null when no search has been triggered yet. */
   searchDates: SearchDates | null;
-  /** Room ID of the currently expanded card; null if all are collapsed. */
-  expandedRoomId: string | null;
-  /** Sets which room is expanded (null to collapse all). */
-  setExpandedRoomId: (id: string | null) => void;
   /**
    * Page-level search callback. Passed to QuickSearchDialog so it can trigger
    * a full search from within a room card without prop drilling.
    */
   onSearch: (params: SearchParams) => void;
+  /**
+   * Total guest count (adults + children) from search params.
+   * Used by the room grouping algorithm to create packages.
+   * When 0 or undefined, rooms are shown individually (no grouping).
+   */
+  guestCount: number;
+  /**
+   * Room ID to show first in the list.
+   * Set when the user checks availability from a specific room card's calendar.
+   * Cleared when a new search is triggered from the search bar.
+   */
+  prioritizedRoomId: string | null;
 }
 
 const RoomsContext = createContext<RoomsContextValue | null>(null);

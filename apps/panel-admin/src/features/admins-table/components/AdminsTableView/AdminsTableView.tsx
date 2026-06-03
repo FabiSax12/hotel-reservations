@@ -1,13 +1,14 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { useAdminsTable } from "../../hooks/useAdminsTable";
 import { useAdminsFiltering } from "../../hooks/useAdminsFiltering";
 import { useAdminsPagination } from "../../hooks/useAdminsPagination";
-import { useToggleAdminStatus } from "../../hooks/useToggleAdminStatus";
 import { AdminsPageHeader } from "../AdminsPageHeader/AdminsPageHeader";
 import { AdminsPagination } from "../AdminsPagination/AdminsPagination";
 import { AdminsTable } from "../AdminsTable/AdminsTable";
 import { AdminsFilters } from "../Filters/AdminsFilters";
+import { PermissionDrawer } from "../PermissionDrawer/PermissionDrawer";
 import type { AdminsTableViewProps } from "./AdminsTableView.interface";
 import { ADMINS_PAGE_STYLES, CARD_STYLES } from "./AdminsTableView.styles";
 import type { AdminStatusFilter } from "../Filters/AdminsFilters.interface";
@@ -15,18 +16,21 @@ import { FILTERS_STATUS } from "../../constants/filters-status";
 import { ADMINS_PAGE_SIZE } from "../../constants/pagination";
 
 export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps) => {
-  const [admins, setAdmins] = useState(initialAdmins);
   const [activeFilter, setActiveFilter] = useState<AdminStatusFilter>(FILTERS_STATUS.ALL);
+
+  const {
+    admins,
+    togglingId,
+    selectedAdmin,
+    isDrawerOpen,
+    handleToggle,
+    openPermissionDrawer,
+    closePermissionDrawer,
+    onPermissionUpdateSuccess,
+  } = useAdminsTable({ initialAdmins });
+
   const { statusCounts, filtered } = useAdminsFiltering(admins, activeFilter);
   const { page, setPage, paginated, totalPages, totalItems } = useAdminsPagination(filtered);
-
-  const refreshAdmins = useCallback(async () => {
-    const { getAdmins } = await import("../../services/getAdmins");
-    const data = await getAdmins();
-    setAdmins(data);
-  }, []);
-
-  const { handleToggle, togglingId } = useToggleAdminStatus(refreshAdmins);
 
   return (
     <main className={ADMINS_PAGE_STYLES.wrapper}>
@@ -42,7 +46,12 @@ export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps)
         />
       </div>
 
-      <AdminsTable admins={paginated} onToggle={handleToggle} togglingId={togglingId} />
+      <AdminsTable
+        admins={paginated}
+        onToggle={handleToggle}
+        togglingId={togglingId}
+        onManagePermissions={openPermissionDrawer}
+      />
 
       <AdminsPagination
         page={page}
@@ -50,6 +59,13 @@ export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps)
         totalItems={totalItems}
         pageSize={ADMINS_PAGE_SIZE}
         onPageChange={setPage}
+      />
+
+      <PermissionDrawer
+        isOpen={isDrawerOpen}
+        onClose={closePermissionDrawer}
+        admin={selectedAdmin}
+        onSuccess={onPermissionUpdateSuccess}
       />
     </main>
   );

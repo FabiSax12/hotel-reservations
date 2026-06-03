@@ -1,34 +1,34 @@
 /**
  * @file RoomCard.tsx — Individual room result card orchestrator.
  *
- * Refactored in US-DM-02 to:
- *  - Consume `RoomsContext` for expansion state and unavailability styling.
- *  - Delegate image panel to `RoomImagePanel` with a dedicated detail-view trigger.
- *  - Delegate header/meta to new sub-components `RoomCardHeader` and `RoomCardMeta`.
- *  - Render room details in a smooth fixed popover instead of inline card expansion.
- *  - Apply opacity reduction when dates are set but the room is unavailable.
+ * Shows:
+ * - Image panel with last room badge and capacity badge
+ * - Room title and amenity chips
+ * - Admin tip quote and description
+ * - Price tier with conditional CTA
  *
- * Expansion state is managed via `useRoomExpansion` which reads from the shared
- * `RoomsContext`, enforcing the "only one card open at a time" rule.
+ * The whole card is a trigger that opens the room detail panel (US-DM-05);
+ * the CTA region is raised above the trigger so it stays independently clickable.
  */
 
 "use client";
 
-import { ROOM_CARD_STYLES as S } from "../../../theme/rooms.theme";
+import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
+import { useI18n } from "@/locales";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
 import type { RoomCardProps } from "../domain/types";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
-import { useRoomExpansion } from "../hooks/useRoomExpansion";
 import { RoomImagePanel } from "./RoomImagePanel";
+import { SELECTION_KIND, useRoomDetail } from "@/features/room-detail";
 import { RoomPriceTier } from "./RoomPriceTier";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
-import { RoomDetailsPopover } from "./sub-components/RoomDetailsPopover";
 
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
+  const { t } = useI18n();
   const { hasDates, searchDates } = useRoomsContext();
-  const { isExpanded, handleToggle, handleCollapse } = useRoomExpansion(room.id);
+  const { selection, isOpen, openRoom, close } = useRoomDetail();
   const { isAvailable, isLoading } = useRoomAvailability(
     room.id,
     searchDates?.checkIn,
@@ -36,28 +36,41 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
     room.availableDates,
   );
 
-  // A room is visually unavailable when dates are set, loading is done, and it's not free.
-  // We keep it fully opaque while expanded so the user can still read the details panel.
-  const isUnavailable = hasDates && !isLoading && !isAvailable && !isExpanded;
+  const isUnavailable = hasDates && !isLoading && !isAvailable;
+  const isActive = isOpen && selection?.kind === SELECTION_KIND.ROOM && selection.room.id === room.id;
+
+  const handleOpenDetail = () => {
+    if (isActive) close();
+    else openRoom(room);
+  };
 
   return (
     <article
-      className={S.card(isUnavailable)}
+      className={`${ROOM_CARD_STYLES.card(isUnavailable)} ${isActive ? ROOM_CARD_STYLES.cardActive : ""}`}
       style={{
         animationDelay: `${index * ROOM_ANIMATION.CASCADE_DELAY_MS}ms`,
         animationDuration: `${ROOM_ANIMATION.ENTRANCE_DURATION_MS}ms`,
       }}
       aria-label={room.title}
     >
-      {/* Hover glow overlay — separate element so transitions never interfere with entry animation */}
-      <div className={S.cardHoverGlow} aria-hidden="true" />
+      {/* Whole-card trigger — opens the detail panel (CTA is raised above it) */}
+      <button
+        type="button"
+        className={ROOM_CARD_STYLES.triggerOverlay}
+        onClick={handleOpenDetail}
+        aria-expanded={isActive}
+        aria-label={t.ROOM_DETAIL.OPEN_LABEL.replace("{title}", room.title)}
+      />
 
-      {/* Left: image panel with urgency badge, admin tip, and expand toggle */}
-      <RoomImagePanel room={room} isExpanded={isExpanded} onToggleExpand={handleToggle} />
+      {/* Hover glow overlay */}
+      <div className={ROOM_CARD_STYLES.cardHoverGlow} aria-hidden="true" />
+
+      {/* Left: image panel with badges */}
+      <RoomImagePanel room={room} />
 
       {/* Right: card body */}
-      <div className={S.body}>
-        <div className={S.bodyHeader}>
+      <div className={ROOM_CARD_STYLES.body}>
+        <div className={ROOM_CARD_STYLES.bodyHeader}>
           <RoomCardHeader room={room} selectedDest={selectedDest} />
         </div>
 
@@ -66,8 +79,6 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
         {/* Price tier + conditional CTA */}
         <RoomPriceTier room={room} />
       </div>
-
-      <RoomDetailsPopover room={room} isOpen={isExpanded} onClose={handleCollapse} />
     </article>
   );
 }

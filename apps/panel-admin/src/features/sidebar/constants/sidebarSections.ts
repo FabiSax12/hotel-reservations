@@ -5,11 +5,11 @@ import {
   LayoutDashboard,
   LayoutPanelTop,
   Receipt,
-  UserKey,
   UserPlus,
   UserRound,
 } from "lucide-react";
 import { ROUTES } from "@/config/routes";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import type { SidebarSection } from "../types/sidebarSection";
 import { LABEL_KEYS } from "./labelKeys";
 import { SECTION_KEYS } from "./sectionKeys";
@@ -23,18 +23,21 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         route: ROUTES.ADMIN.DASHBOARD,
         icon: LayoutDashboard,
         isPrimary: true,
+        requiredPermission: PERMISSIONS.DASHBOARD.VIEW,
       },
       {
         labelKey: LABEL_KEYS.ADMINS,
         route: ROUTES.ADMIN.ADMINS,
         icon: KeyRound,
         isPrimary: true,
+        requiredPermission: PERMISSIONS.ADMINS.VIEW,
       },
       {
         labelKey: LABEL_KEYS.INVITATIONS,
         route: ROUTES.ADMIN.INVITATIONS,
         icon: UserPlus,
         isPrimary: true,
+        requiredPermission: PERMISSIONS.ADMINS.INVITE,
       },
     ],
   },
@@ -43,16 +46,17 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
     items: [
       {
         labelKey: LABEL_KEYS.RESERVATIONS,
-        // TODO: Change when this route is created
-        route: "/admin/reservations",
+        route: ROUTES.ADMIN.RESERVATIONS,
         icon: ClipboardList,
         isPrimary: true,
+        requiredPermission: PERMISSIONS.RESERVATIONS.VIEW,
       },
       {
         labelKey: LABEL_KEYS.CLIENTS,
         // TODO: Change when this route is created
         route: "/admin/clients",
         icon: UserRound,
+        requiredPermission: PERMISSIONS.CLIENTS.VIEW,
       },
     ],
   },
@@ -64,6 +68,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         // TODO: Change when this route is created
         route: "/admin/rooms",
         icon: BedDouble,
+        requiredPermission: PERMISSIONS.ROOMS.MANAGE,
       },
     ],
   },
@@ -75,6 +80,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         // TODO: Change when this route is created
         route: "/admin/invoices",
         icon: Receipt,
+        requiredPermission: PERMISSIONS.INVOICES.VIEW,
       },
     ],
   },
@@ -85,6 +91,7 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         labelKey: LABEL_KEYS.CMS_LANDING,
         route: ROUTES.ADMIN.CMS,
         icon: LayoutPanelTop,
+        requiredPermission: PERMISSIONS.CMS.MANAGE,
       },
     ],
   },

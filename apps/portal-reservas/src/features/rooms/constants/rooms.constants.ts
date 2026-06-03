@@ -10,6 +10,13 @@ export const ROOM_THRESHOLDS = Object.freeze({
   SCARCE: 2,
 } as const);
 
+export const ROOM_GROUPING = Object.freeze({
+  /** A room's capacity must not exceed remaining guests by more than this value. */
+  MAX_WASTE: 2,
+  /** No package may contain more than this many rooms. */
+  MAX_ROOMS: 4,
+} as const);
+
 export const ROOM_ANIMATION = Object.freeze({
   /** Stagger delay between each card entrance (ms). */
   CASCADE_DELAY_MS: 120,

@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * @file useDestinationPreview.ts — Hook for managing destination hover previews.
  */

@@ -2,8 +2,8 @@
 
 import { ListBox, Select } from "@heroui/react";
 import * as LucideIcons from "lucide-react";
-import { CHECK_IN_CHECK_OUT_STYLES as STYLES } from "../CheckInCheckOut.styles";
 import type { TimeSlotSelectorProps } from "../CheckInCheckOut.interface";
+import { CHECK_IN_CHECK_OUT_STYLES as STYLES } from "../CheckInCheckOut.styles";
 
 export const TimeSlotSelector = ({
   label,

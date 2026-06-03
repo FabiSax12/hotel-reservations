@@ -1,13 +1,21 @@
-import { notFound } from "next/navigation";
-import { getReservationById } from "@/features/reservations/services/reservationService";
+import { forbidden, notFound } from "next/navigation";
 import { ReservationDetailPage } from "@/features/reservations/components/detail/ReservationDetailPage/ReservationDetailPage";
+import { getReservationById } from "@/features/reservations/services/reservationService";
+import { AuthenticationRequiredError, PermissionDeniedError } from "@/shared/auth/errors";
 import type { PageProps } from "./page.interface";
 
 export default async function ReservationDetailRoute({ params }: PageProps) {
-  const { id } = await params;
-  const reservation = await getReservationById(id);
+  try {
+    const { id } = await params;
+    const reservation = await getReservationById(id);
 
-  if (!reservation) notFound();
+    if (!reservation) notFound();
 
-  return <ReservationDetailPage reservation={reservation} />;
+    return <ReservationDetailPage reservation={reservation} />;
+  } catch (error) {
+    if (error instanceof AuthenticationRequiredError || error instanceof PermissionDeniedError) {
+      forbidden();
+    }
+    throw error;
+  }
 }

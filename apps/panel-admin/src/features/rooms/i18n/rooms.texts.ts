@@ -113,6 +113,9 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
         'Esta acción eliminará de forma permanente el servicio "{name}". ¿Estás seguro de que deseas continuar?',
       DELETE_WARNING_CONFIRM: "Aceptar",
       DELETE_WARNING_CANCEL: "Cancelar",
+      ERROR_ADD: "No se pudo agregar el servicio",
+      ERROR_UPDATE: "No se pudo actualizar el servicio",
+      ERROR_DELETE: "No se pudo eliminar el servicio",
     },
     SCHEDULES: {
       TITLE: "Horarios de Check-in y Check-out",
@@ -234,6 +237,9 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
         'This action will permanently delete the amenity "{name}". Are you sure you want to proceed?',
       DELETE_WARNING_CONFIRM: "Accept",
       DELETE_WARNING_CANCEL: "Cancel",
+      ERROR_ADD: "Failed to add amenity",
+      ERROR_UPDATE: "Failed to update amenity",
+      ERROR_DELETE: "Failed to delete amenity",
     },
     SCHEDULES: {
       TITLE: "Check-in & Check-out Schedules",
