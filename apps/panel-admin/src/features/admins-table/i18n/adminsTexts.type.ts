@@ -1,3 +1,4 @@
+import type { UpdatePermissionError } from "@/features/admins-table/constants/permissionErrors";
 import type { PERMISSION_CATEGORY_KEYS } from "@/shared/constants/permissions";
 import type { DB_ENUMS } from "../../../../../../packages/db/src/enums/enums.constants";
 
@@ -71,10 +72,7 @@ export type AdminsTexts = {
       [key in (typeof DB_ENUMS.user_permission)[keyof typeof DB_ENUMS.user_permission]]: string;
     };
     ERRORS: {
-      SELF_MODIFY: string;
-      OWNER_MODIFY: string;
-      INVALID_PERMISSION: string;
-      UNKNOWN_ERROR: string;
+      [key in UpdatePermissionError]: string;
     };
     SUCCESS: string;
   };
