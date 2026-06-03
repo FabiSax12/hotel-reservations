@@ -1,3 +1,7 @@
+import type { UpdatePermissionError } from "@/features/admins-table/constants/permissionErrors";
+import type { PERMISSION_CATEGORY_KEYS } from "@/shared/constants/permissions";
+import type { DB_ENUMS } from "../../../../../../packages/db/src/enums/enums.constants";
+
 export type AdminsTexts = {
   PAGE: {
     TITLE_PREFIX: string;
@@ -56,5 +60,20 @@ export type AdminsTexts = {
       USER_ALREADY_EXISTS: string;
       UNKNOWN_ERROR: string;
     };
+  };
+  PERMISSIONS: {
+    TITLE: string;
+    COL_PERMISSIONS: string;
+    MANAGE_BUTTON: string;
+    CATEGORIES: {
+      [key in Uppercase<keyof typeof PERMISSION_CATEGORY_KEYS>]: string;
+    };
+    PERMISSION_LABELS: {
+      [key in (typeof DB_ENUMS.user_permission)[keyof typeof DB_ENUMS.user_permission]]: string;
+    };
+    ERRORS: {
+      [key in UpdatePermissionError]: string;
+    };
+    SUCCESS: string;
   };
 };

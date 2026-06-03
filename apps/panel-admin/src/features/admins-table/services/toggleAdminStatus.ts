@@ -1,6 +1,8 @@
 "use server";
 
 import { createSupabaseServiceClient, DB_COLUMNS, DB_TABLES } from "@hotel/db";
+import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 
 export type ToggleAdminStatusResult = { success: true } | { error: "NOT_FOUND" | "UNKNOWN_ERROR" };
 
@@ -8,6 +10,7 @@ export const toggleAdminStatus = async (
   adminId: string,
   isActive: boolean,
 ): Promise<ToggleAdminStatusResult> => {
+  await requirePermission(PERMISSIONS.ADMINS.DISABLE);
   const supabase = createSupabaseServiceClient();
 
   const { error } = await supabase

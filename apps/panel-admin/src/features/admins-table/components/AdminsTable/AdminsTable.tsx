@@ -1,15 +1,29 @@
 "use client";
 
 import { Button, ButtonGroup, Chip, EmptyState, Table } from "@heroui/react";
-import { Check, Inbox, X } from "lucide-react";
+import { DB_ENUMS } from "@hotel/db";
+import { Check, Inbox, Settings, X } from "lucide-react";
 import { useI18n } from "@/locales";
+import { PermissionGuard } from "@/shared/components/PermissionGuard/PermissionGuard";
+import { APP_ROLES } from "@/shared/constants/roles";
+import { useAdminActions } from "../../hooks/useAdminActions";
 import type { AdminsTableProps } from "./AdminsTable.interface";
 import { TABLE_STYLES } from "./AdminsTable.styles";
 
-export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) => {
+export const AdminsTable = ({
+  admins,
+  onToggle,
+  togglingId,
+  onManagePermissions,
+}: AdminsTableProps) => {
   const { t } = useI18n();
 
   const TABLE_TEXTS = t.ADMINS.TABLE;
+
+  const { handleToggle: onActionToggle, handleManagePermissions } = useAdminActions({
+    onToggle,
+    onManagePermissions,
+  });
 
   return (
     <Table>
@@ -49,26 +63,39 @@ export const AdminsTable = ({ admins, onToggle, togglingId }: AdminsTableProps) 
                 <Table.Cell>{user.role}</Table.Cell>
                 {/* <Table.Cell>{user.created_at}</Table.Cell> */}
                 <Table.Cell>
-                  {user.role !== "owner" && (
-                    <ButtonGroup isDisabled={togglingId === user.id}>
-                      <Button
-                        variant="danger"
-                        isIconOnly
-                        isDisabled={!user.is_active}
-                        onPress={() => onToggle(user.id, user.is_active)}
-                      >
-                        <X />
-                      </Button>
-                      <Button
-                        variant="primary"
-                        isIconOnly
-                        isDisabled={user.is_active}
-                        onPress={() => onToggle(user.id, user.is_active)}
-                      >
-                        <Check />
-                      </Button>
-                    </ButtonGroup>
-                  )}
+                  <ButtonGroup isDisabled={togglingId === user.id}>
+                    {user.role !== APP_ROLES.OWNER && (
+                      <>
+                        <Button
+                          variant="danger"
+                          isIconOnly
+                          isDisabled={!user.is_active}
+                          onPress={() => onActionToggle(user.id, user.is_active)}
+                        >
+                          <X />
+                        </Button>
+                        <Button
+                          variant="primary"
+                          isIconOnly
+                          isDisabled={user.is_active}
+                          onPress={() => onActionToggle(user.id, user.is_active)}
+                        >
+                          <Check />
+                        </Button>
+                      </>
+                    )}
+                    <PermissionGuard permissions={[DB_ENUMS.user_permission.permissions_manage]}>
+                      {user.role !== APP_ROLES.OWNER && (
+                        <Button
+                          variant="tertiary"
+                          isIconOnly
+                          onPress={() => handleManagePermissions(user)}
+                        >
+                          <Settings />
+                        </Button>
+                      )}
+                    </PermissionGuard>
+                  </ButtonGroup>
                 </Table.Cell>
               </Table.Row>
             ))}

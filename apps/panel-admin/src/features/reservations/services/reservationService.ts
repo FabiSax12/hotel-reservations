@@ -1,5 +1,7 @@
 import { DB_COLUMNS, DB_TABLES } from "@hotel/db";
 import { createSupabaseServiceClient } from "@hotel/db/client";
+import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import { RESERVATION_STATUS } from "../constants/reservation-statuses";
 import type { Reservation, ReservationStatus } from "../domain/reservation";
 import { RESERVATIONS_TEXTS } from "../i18n/reservations.texts";
@@ -12,6 +14,8 @@ import {
 const ERRORS = RESERVATIONS_TEXTS.es.ERRORS;
 
 export async function getAllReservations(): Promise<Reservation[]> {
+  await requirePermission(PERMISSIONS.RESERVATIONS.VIEW);
+
   const supabase = createSupabaseServiceClient();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +34,8 @@ export async function updateReservationStatus(
   status: ReservationStatus,
   cancellationReason?: string,
 ): Promise<void> {
+  await requirePermission(PERMISSIONS.RESERVATIONS.EDIT);
+
   const supabase = createSupabaseServiceClient();
 
   const updateData: ReservationStatusUpdate = {
@@ -49,6 +55,8 @@ export async function updateReservationStatus(
 }
 
 export async function getReservationById(id: string): Promise<Reservation | null> {
+  await requirePermission(PERMISSIONS.RESERVATIONS.VIEW);
+
   const supabase = createSupabaseServiceClient();
 
   const { data, error } = await (supabase as any)

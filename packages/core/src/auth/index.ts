@@ -96,6 +96,8 @@ export { useAuthSession } from "./client/useAuthSession";
 // Re-export utils
 // ============================================================================
 
+// Re-export constants
+export { AUTH_ROLES } from "./config/constants";
 export {
   createAuthError,
   getRedirectUrl,

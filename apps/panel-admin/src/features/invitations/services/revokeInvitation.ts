@@ -1,8 +1,12 @@
 "use server";
 import { createSupabaseServiceClient, DB_COLUMNS, DB_ENUMS, DB_TABLES } from "@hotel/db";
+import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import type { RevokeInvitationResult } from "../domain/invitation.types";
 
 export const revokeInvitation = async (invitationId: string): Promise<RevokeInvitationResult> => {
+  await requirePermission(PERMISSIONS.ADMINS.REVOKE);
+
   const supabase = createSupabaseServiceClient();
 
   const { data: invitation, error: fetchError } = await supabase

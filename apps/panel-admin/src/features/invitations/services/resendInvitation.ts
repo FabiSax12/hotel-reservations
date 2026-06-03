@@ -3,9 +3,12 @@ import { inviteAdminByEmail } from "@hotel/core/auth";
 import { createSupabaseServiceClient, DB_COLUMNS, DB_TABLES } from "@hotel/db";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
+import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
 import type { ResendInvitationResult } from "../domain/invitation.types";
 
 export const resendInvitation = async (invitationId: string): Promise<ResendInvitationResult> => {
+  await requirePermission(PERMISSIONS.ADMINS.INVITE);
   const supabase = createSupabaseServiceClient();
 
   const { data: invitation, error: fetchError } = await supabase
