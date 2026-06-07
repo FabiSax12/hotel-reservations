@@ -7,7 +7,11 @@ import {
   sendReservationCompletedEmail,
 } from "@hotel/core/email";
 import type { ReservationStatus } from "../domain/reservation";
+import { RESERVATION_STATUS } from "../constants/reservation-statuses";
+import { RESERVATIONS_TEXTS } from "../i18n/reservations.texts";
 import { updateReservationStatus } from "../services/reservationService";
+
+const ERRORS = RESERVATIONS_TEXTS.es.ERRORS;
 
 export async function updateReservationStatusAction(
   id: string,
@@ -17,7 +21,7 @@ export async function updateReservationStatusAction(
   const reservation = await updateReservationStatus(id, status, cancellationReason);
 
   try {
-    if (status === "approved") {
+    if (status === RESERVATION_STATUS.APPROVED) {
       await sendReservationApprovedEmail(
         reservation.guest.email,
         reservation.guest.name,
@@ -27,14 +31,14 @@ export async function updateReservationStatusAction(
         reservation.room.name,
         reservation.totalUSD,
       );
-    } else if (status === "cancelled" && cancellationReason) {
+    } else if (status === RESERVATION_STATUS.CANCELLED && cancellationReason) {
       await sendReservationCancelledEmail(
         reservation.guest.email,
         reservation.guest.name,
         reservation.code,
         cancellationReason,
       );
-    } else if (status === "completed") {
+    } else if (status === RESERVATION_STATUS.COMPLETED) {
       await sendReservationCompletedEmail(
         reservation.guest.email,
         reservation.guest.name,
@@ -46,7 +50,7 @@ export async function updateReservationStatusAction(
       );
     }
   } catch (emailError) {
-    console.error("Email notification failed:", emailError);
+    console.error(ERRORS.EMAIL_NOTIFICATION_FAILED, emailError);
   }
 
   revalidatePath("/admin/reservations");

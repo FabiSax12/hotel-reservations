@@ -120,6 +120,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       FETCH_RESERVATIONS: "Error al obtener reservaciones",
       FETCH_ROOMS: "Error al obtener habitaciones",
       UPDATE_STATUS: "Error al actualizar el estado de la reservación",
+      EMAIL_NOTIFICATION_FAILED: "Error al enviar la notificación por correo:",
     },
   },
   en: {
@@ -240,6 +241,7 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       FETCH_RESERVATIONS: "Error fetching reservations",
       FETCH_ROOMS: "Error fetching rooms",
       UPDATE_STATUS: "Error updating reservation status",
+      EMAIL_NOTIFICATION_FAILED: "Failed to send email notification:",
     },
   },
 } as const;
