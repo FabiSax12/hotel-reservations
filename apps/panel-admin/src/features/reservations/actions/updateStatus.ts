@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import {
   sendReservationApprovedEmail,
   sendReservationCancelledEmail,
+  sendReservationCompletedEmail,
 } from "@hotel/core/email";
 import type { ReservationStatus } from "../domain/reservation";
 import { updateReservationStatus } from "../services/reservationService";
@@ -32,6 +33,16 @@ export async function updateReservationStatusAction(
         reservation.guest.name,
         reservation.code,
         cancellationReason,
+      );
+    } else if (status === "completed") {
+      await sendReservationCompletedEmail(
+        reservation.guest.email,
+        reservation.guest.name,
+        reservation.code,
+        reservation.checkIn,
+        reservation.checkOut,
+        reservation.room.name,
+        reservation.totalUSD,
       );
     }
   } catch (emailError) {
