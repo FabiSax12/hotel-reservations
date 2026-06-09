@@ -5,4 +5,5 @@ export interface ReservationsPageHeaderProps {
   statusCounts: Record<ReservationStatus, number>;
   bookingMode: BookingMode;
   onBookingModeChange: (mode: BookingMode) => void;
+  isBookingModeLoading?: boolean;
 }

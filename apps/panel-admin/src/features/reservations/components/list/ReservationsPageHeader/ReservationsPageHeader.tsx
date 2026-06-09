@@ -11,6 +11,7 @@ export const ReservationsPageHeader = ({
   statusCounts,
   bookingMode,
   onBookingModeChange,
+  isBookingModeLoading,
 }: ReservationsPageHeaderProps) => {
   const { t } = useI18n();
 
@@ -28,7 +29,7 @@ export const ReservationsPageHeader = ({
             {t.RESERVATIONS.PAGE.DESCRIPTION}{" "}
             <span className={PAGE_HEADER_STYLES.subtitleHighlight}>{totalCount}</span>
           </p>
-          <BookingModeToggle mode={bookingMode} onChange={onBookingModeChange} />
+          <BookingModeToggle mode={bookingMode} onChange={onBookingModeChange} isLoading={isBookingModeLoading} />
         </div>
 
         <div className={STAT_CARD_STYLES.row}>

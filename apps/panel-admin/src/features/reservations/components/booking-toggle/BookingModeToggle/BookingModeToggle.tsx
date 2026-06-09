@@ -6,7 +6,7 @@ import { BOOKING_MODE } from "../../../constants/booking-mode";
 import type { BookingModeToggleProps } from "./BookingModeToggle.interface";
 import { BOOKING_MODE_TOGGLE_STYLES } from "./BookingModeToggle.styles";
 
-export const BookingModeToggle = ({ mode, onChange }: BookingModeToggleProps) => {
+export const BookingModeToggle = ({ mode, onChange, isLoading }: BookingModeToggleProps) => {
   const { t } = useI18n();
   const isAutomatic = mode === BOOKING_MODE.AUTOMATIC;
 
@@ -22,6 +22,7 @@ export const BookingModeToggle = ({ mode, onChange }: BookingModeToggleProps) =>
       <ToggleButton
         isSelected={isAutomatic}
         onChange={handleChange}
+        isDisabled={isLoading}
         aria-label={t.RESERVATIONS.BOOKING_MODE.LABEL}
         className={`${BOOKING_MODE_TOGGLE_STYLES.pillBase} ${isAutomatic ? BOOKING_MODE_TOGGLE_STYLES.pillActive : BOOKING_MODE_TOGGLE_STYLES.pillInactive}`}
       >

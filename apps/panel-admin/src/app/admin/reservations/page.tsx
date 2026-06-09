@@ -1,5 +1,6 @@
 import { forbidden } from "next/navigation";
 import { ReservationsView } from "@/features/reservations/components/list/ReservationsView/ReservationsView";
+import { getBookingMode } from "@/features/reservations/services/bookingModeService";
 import {
   getAllReservations,
   getRoomNames,
@@ -14,8 +15,19 @@ export default async function ReservationsPage({ searchParams }: PageProps) {
   try {
     const { page } = await searchParams;
     const initialPage = Math.max(1, Number(page) || 1);
-    const [reservations, rooms] = await Promise.all([getAllReservations(), getRoomNames()]);
-    return <ReservationsView reservations={reservations} rooms={rooms} initialPage={initialPage} />;
+    const [reservations, rooms, initialBookingMode] = await Promise.all([
+      getAllReservations(),
+      getRoomNames(),
+      getBookingMode(),
+    ]);
+    return (
+      <ReservationsView
+        reservations={reservations}
+        rooms={rooms}
+        initialBookingMode={initialBookingMode}
+        initialPage={initialPage}
+      />
+    );
   } catch (error) {
     if (error instanceof AuthenticationRequiredError || error instanceof PermissionDeniedError) {
       forbidden();
