@@ -20,17 +20,17 @@ declare
   v_room_suite      uuid := gen_random_uuid();
   v_room_standard   uuid := gen_random_uuid();
 
-  -- Amenity IDs from PREDEFINED_AMENITY_IDS
-  v_wifi               text := 'WIFI';
-  v_air_conditioning   text := 'AIR_CONDITIONING';
-  v_tv                 text := 'TV';
-  v_mini_bar           text := 'MINI_BAR';
-  v_safe_box           text := 'SAFE_BOX';
-  v_desk               text := 'DESK';
-  v_hair_dryer         text := 'HAIR_DRYER';
-  v_balcony            text := 'BALCONY';
-  v_pool               text := 'POOL';
-  v_gym                text := 'GYM';
+  -- Amenity IDs (generate UUIDs)
+  v_wifi               uuid := gen_random_uuid();
+  v_air_conditioning   uuid := gen_random_uuid();
+  v_tv                 uuid := gen_random_uuid();
+  v_mini_bar           uuid := gen_random_uuid();
+  v_safe_box           uuid := gen_random_uuid();
+  v_desk               uuid := gen_random_uuid();
+  v_hair_dryer         uuid := gen_random_uuid();
+  v_balcony            uuid := gen_random_uuid();
+  v_pool               uuid := gen_random_uuid();
+  v_gym                uuid := gen_random_uuid();
 
 begin
   ------------------------------------------------------------------
