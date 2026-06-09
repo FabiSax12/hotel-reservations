@@ -6,3 +6,9 @@ export interface RoomImage {
   position: number;
   created_at?: string;
 }
+
+export type LocalImage = {
+  id: string;
+  url: string;
+  isUploading: boolean;
+};

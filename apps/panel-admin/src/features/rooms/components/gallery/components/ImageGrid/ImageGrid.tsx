@@ -1,6 +1,6 @@
-import type { ImageGridProps } from "../GalleryStage.interface";
-import { GALLERY_STYLES as S } from "../GalleryStage.styles";
-import { ImageCard } from "./ImageCard";
+import { ImageCard } from "../ImageCard";
+import type { ImageGridProps } from "./ImageGrid.interface";
+import { IMAGE_GRID_STYLES as S } from "./ImageGrid.styles";
 
 export const ImageGrid = ({
   images,

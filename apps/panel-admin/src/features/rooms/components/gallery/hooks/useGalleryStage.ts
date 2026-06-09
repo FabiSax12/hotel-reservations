@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GALLERY_CONFIG } from "@/features/rooms/constants/gallery.constants";
+import type { LocalImage } from "@/features/rooms/domain/roomImage.interface";
 import { useI18n } from "@/locales";
-import type { LocalImage } from "../GalleryStage.interface";
 import * as galleryService from "../../../services/galleryActions";
 
 export const useGalleryStage = (roomId: string, onSuccess?: () => void) => {

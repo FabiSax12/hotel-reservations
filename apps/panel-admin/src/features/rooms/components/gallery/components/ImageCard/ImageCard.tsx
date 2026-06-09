@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { GALLERY_CONFIG } from "@/features/rooms/constants/gallery.constants";
-import type { ImageCardProps } from "../GalleryStage.interface";
-import { CARD_STYLES as S } from "../GalleryStage.styles";
+import type { ImageCardProps } from "./ImageCard.interface";
+import { IMAGE_CARD_STYLES as S } from "./ImageCard.styles";
 
 export const ImageCard = ({
   image,

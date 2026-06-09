@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { GALLERY_CONFIG, GALLERY_KEYBOARD } from "@/features/rooms/constants/gallery.constants";
-import type { UploadDropzoneProps } from "../GalleryStage.interface";
-import { DROPZONE_STYLES as S } from "../GalleryStage.styles";
+import type { UploadDropzoneProps } from "./UploadDropzone.interface";
+import { UPLOAD_DROPZONE_STYLES as S } from "./UploadDropzone.styles";
 
 export const UploadDropzone = ({ isDisabled, label, hint, onFilesAdded }: UploadDropzoneProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -17,7 +17,9 @@ export const UploadDropzone = ({ isDisabled, label, hint, onFilesAdded }: Upload
         aria-label={label}
         className={S.zone(isDisabled)}
         onClick={trigger}
-        onKeyDown={(e) => (e.key === GALLERY_KEYBOARD.ENTER || e.key === GALLERY_KEYBOARD.SPACE) && trigger()}
+        onKeyDown={(e) =>
+          (e.key === GALLERY_KEYBOARD.ENTER || e.key === GALLERY_KEYBOARD.SPACE) && trigger()
+        }
         onDragOver={(e) => { if (!isDisabled) e.preventDefault(); }}
         onDrop={(e) => {
           if (isDisabled) return;
