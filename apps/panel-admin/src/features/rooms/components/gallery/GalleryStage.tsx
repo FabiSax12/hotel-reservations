@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@heroui/react";
+import { Info, X } from "lucide-react";
 import { ImageGrid } from "./components/ImageGrid";
 import { UploadDropzone } from "./components/UploadDropzone";
 import type { GalleryStageProps } from "./GalleryStage.interface";
@@ -32,7 +34,7 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
 
       <div className={S.formCard}>
         <div className={S.hintBox}>
-          <span className={S.hintIcon}>ℹ️</span>
+          <Info className={S.hintIcon} />
           <p>{texts.HINT}</p>
         </div>
 
@@ -61,17 +63,19 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
         )}
 
         <div className={S.actions}>
-          <button type="button" className={S.cancelBtn} onClick={handleCancel}>
+          <Button
+            className={S.cancelBtn}
+            onPress={handleCancel}
+          >
             {texts.CANCEL}
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
             className={S.submitBtn}
-            disabled={isSubmitDisabled}
-            onClick={handleSubmit}
+            isDisabled={isSubmitDisabled}
+            onPress={handleSubmit}
           >
             {texts.SUBMIT}
-          </button>
+          </Button>
         </div>
       </div>
     </main>

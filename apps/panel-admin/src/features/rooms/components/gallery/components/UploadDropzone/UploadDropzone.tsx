@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { CloudUpload } from "lucide-react";
 import { GALLERY_CONFIG, GALLERY_KEYBOARD } from "@/features/rooms/constants/gallery.constants";
 import type { UploadDropzoneProps } from "./UploadDropzone.interface";
 import { UPLOAD_DROPZONE_STYLES as S } from "./UploadDropzone.styles";
@@ -27,7 +28,7 @@ export const UploadDropzone = ({ isDisabled, label, hint, onFilesAdded }: Upload
           if (e.dataTransfer.files.length > 0) onFilesAdded(e.dataTransfer.files);
         }}
       >
-        <span className={S.icon}>⬆</span>
+        <CloudUpload className={S.icon} />
         <span className={S.label}>{label}</span>
         <span className={S.hint}>{hint}</span>
       </div>

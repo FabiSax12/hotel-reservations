@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Button, Spinner } from "@heroui/react";
+import { X } from "lucide-react";
 import { GALLERY_CONFIG } from "@/features/rooms/constants/gallery.constants";
 import type { ImageCardProps } from "./ImageCard.interface";
 import { IMAGE_CARD_STYLES as S } from "./ImageCard.styles";
@@ -33,19 +35,19 @@ export const ImageCard = ({
 
     {image.isUploading && (
       <div className={S.spinner}>
-        <div className={S.spinnerInner} />
+        <Spinner color="current" size="lg" />
       </div>
     )}
 
     {!image.isUploading && (
-      <button
-        type="button"
+      <Button
+        isIconOnly
         className={S.removeBtn}
         aria-label={removeLabel}
-        onClick={(e) => { e.stopPropagation(); onRemove(); }}
+        onPress={() => onRemove()}
       >
-        ✕
-      </button>
+        <X className="w-5 h-5" />
+      </Button>
     )}
 
     {index === 0 && <span className={S.principalBadge}>{principalLabel}</span>}
