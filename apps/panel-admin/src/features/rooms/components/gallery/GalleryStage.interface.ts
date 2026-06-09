@@ -1,3 +1,8 @@
+export interface GalleryStageProps {
+  roomId: string;
+  onSuccess?: () => void;
+}
+
 export type LocalImage = {
   id: string;
   url: string;

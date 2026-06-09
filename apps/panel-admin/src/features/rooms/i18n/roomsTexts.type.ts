@@ -88,4 +88,15 @@ export interface RoomsTexts {
     ERROR_LOAD: string;
     ERROR_SAVE: string;
   };
+  GALLERY: {
+    TITLE: string;
+    SUBTITLE: string;
+    HINT: string;
+    SUBMIT: string;
+    CANCEL: string;
+    ERROR_MAX_IMAGES: string;
+    ERROR_FILE_SIZE: string;
+    ERROR_FILE_TYPE: string;
+    ERROR_UPLOAD: string;
+  };
 }

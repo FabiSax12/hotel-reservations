@@ -2,35 +2,35 @@
 
 import { ImageGrid } from "./components/ImageGrid";
 import { UploadDropzone } from "./components/UploadDropzone";
+import type { GalleryStageProps } from "./GalleryStage.interface";
 import { GALLERY_STYLES as S } from "./GalleryStage.styles";
 import { useGalleryStage } from "./hooks/useGalleryStage";
 
-export const GalleryStage = () => {
+export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
   const {
     images,
     dragIndex,
     error,
+    texts,
     isMaxReached,
     handleFilesAdded,
     handleRemove,
     handleDragStart,
     handleDragEnd,
     handleDrop,
-  } = useGalleryStage();
+    handleSubmit,
+  } = useGalleryStage(roomId, onSuccess);
 
   return (
     <div className={S.container}>
       <header className={S.header}>
-        <h1 className={S.title}>Galería de Imágenes</h1>
-        <p className={S.subtitle}>Subí entre 1 y 10 imágenes. Arrastrá para reordenar.</p>
+        <h1 className={S.title}>{texts.TITLE}</h1>
+        <p className={S.subtitle}>{texts.SUBTITLE}</p>
       </header>
 
       <div className={S.hintBox}>
         <span className={S.hintIcon}>ℹ️</span>
-        <p>
-          La primera imagen se asigna como Principal. Formatos: JPG, PNG, WebP. Máximo 5 MB por
-          imagen.
-        </p>
+        <p>{texts.HINT}</p>
       </div>
 
       <UploadDropzone isDisabled={isMaxReached} onFilesAdded={handleFilesAdded} />
@@ -56,15 +56,15 @@ export const GalleryStage = () => {
           className={S.cancelBtn}
           onClick={() => window.history.back()}
         >
-          Cancelar
+          {texts.CANCEL}
         </button>
         <button
           type="button"
           className={S.submitBtn}
           disabled={images.length === 0 || images.some((img) => img.isUploading)}
-          onClick={() => alert("Galería guardada (mock)")}
+          onClick={handleSubmit}
         >
-          Guardar Galería
+          {texts.SUBMIT}
         </button>
       </div>
     </div>

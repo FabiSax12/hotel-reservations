@@ -1,10 +1,12 @@
 import { useState } from "react";
 import type { LocalImage } from "../GalleryStage.interface";
-import * as galleryService from "../services/galleryMockService";
+import * as galleryService from "../../../services/galleryActions";
+import { useI18n } from "@/locales";
 
-const ROOM_ID = "new-room-id";
+export const useGalleryStage = (roomId: string, onSuccess?: () => void) => {
+  const { t } = useI18n();
+  const texts = t.ROOMS.GALLERY;
 
-export const useGalleryStage = () => {
   const [images, setImages] = useState<LocalImage[]>([]);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -14,17 +16,17 @@ export const useGalleryStage = () => {
     const incoming = Array.from(files);
 
     if (images.length + incoming.length > 10) {
-      setError("Solo podés subir hasta 10 imágenes.");
+      setError(texts.ERROR_MAX_IMAGES);
       return;
     }
 
     for (const file of incoming) {
       if (file.size > 5 * 1024 * 1024) {
-        setError(`"${file.name}" supera el límite de 5 MB.`);
+        setError(`"${file.name}" ${texts.ERROR_FILE_SIZE}`);
         return;
       }
       if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-        setError(`"${file.name}" tiene un formato no permitido. Usá JPG, PNG o WebP.`);
+        setError(`"${file.name}" ${texts.ERROR_FILE_TYPE}`);
         return;
       }
     }
@@ -34,12 +36,12 @@ export const useGalleryStage = () => {
       const previewUrl = URL.createObjectURL(file);
       setImages((prev) => [...prev, { id: tempId, url: previewUrl, isUploading: true }]);
 
-      const result = await galleryService.uploadImage(ROOM_ID, file);
+      const result = await galleryService.uploadImage(roomId, file);
 
       if (!result) {
         setImages((prev) => prev.filter((img) => img.id !== tempId));
         URL.revokeObjectURL(previewUrl);
-        setError("No se pudo subir la imagen. Intentá de nuevo.");
+        setError(texts.ERROR_UPLOAD);
         continue;
       }
 
@@ -72,15 +74,21 @@ export const useGalleryStage = () => {
     await galleryService.reorderImages(reordered.map((img) => img.id));
   };
 
+  const handleSubmit = () => {
+    onSuccess?.();
+  };
+
   return {
     images,
     dragIndex,
     error,
+    texts,
     isMaxReached: images.length >= 10,
     handleFilesAdded,
     handleRemove,
     handleDragStart,
     handleDragEnd,
     handleDrop,
+    handleSubmit,
   };
 };
