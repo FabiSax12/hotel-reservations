@@ -120,6 +120,8 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       FETCH_RESERVATIONS: "Error al obtener reservaciones",
       FETCH_ROOMS: "Error al obtener habitaciones",
       UPDATE_STATUS: "Error al actualizar el estado de la reservación",
+      FETCH_BOOKING_MODE: "Error al obtener el modo de confirmación de reservas",
+      UPDATE_BOOKING_MODE: "Error al actualizar el modo de confirmación de reservas",
     },
   },
   en: {
@@ -240,6 +242,8 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       FETCH_RESERVATIONS: "Error fetching reservations",
       FETCH_ROOMS: "Error fetching rooms",
       UPDATE_STATUS: "Error updating reservation status",
+      FETCH_BOOKING_MODE: "Error fetching booking confirmation mode",
+      UPDATE_BOOKING_MODE: "Error updating booking confirmation mode",
     },
   },
 } as const;

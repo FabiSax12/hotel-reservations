@@ -9,6 +9,7 @@ const _DB_TABLES = {
   RESERVATIONS: "reservations",
   ROOM_AMENITIES: "room_amenities",
   ROOMS: "rooms",
+  SYSTEM_SETTINGS: "system_settings",
   USER_PERMISSIONS: "user_permissions",
   USER_ROLES: "user_roles",
 } as const;
@@ -29,6 +30,7 @@ const _assertAllTablesCovered: _AssertAllTablesCovered = {
   reservations: true,
   room_amenities: true,
   rooms: true,
+  system_settings: true,
   user_permissions: true,
   user_roles: true,
 };
