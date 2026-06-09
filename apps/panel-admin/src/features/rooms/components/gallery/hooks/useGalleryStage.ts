@@ -1,11 +1,6 @@
 import { useState } from "react";
+import type { LocalImage } from "../GalleryStage.interface";
 import * as galleryService from "../services/galleryMockService";
-
-export type LocalImage = {
-  id: string;
-  url: string;
-  isUploading: boolean;
-};
 
 const ROOM_ID = "new-room-id";
 
