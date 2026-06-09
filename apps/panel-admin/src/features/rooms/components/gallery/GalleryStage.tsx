@@ -1,100 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
-
-type LocalImage = {
-  id: string;
-  url: string;
-  isUploading: boolean;
-};
-
-// ─── Mock service ────────────────────────────────────────────────────────────
-
-async function mockUpload(file: File): Promise<{ id: string; url: string } | null> {
-  await new Promise((res) => setTimeout(res, 800));
-  const fakeUrl = URL.createObjectURL(file);
-  return { id: crypto.randomUUID(), url: fakeUrl };
-}
-
-async function mockDelete(_id: string): Promise<boolean> {
-  await new Promise((res) => setTimeout(res, 300));
-  return true;
-}
-
-async function mockReorder(_orderedIds: string[]): Promise<boolean> {
-  await new Promise((res) => setTimeout(res, 200));
-  return true;
-}
-
-// ─── Component ───────────────────────────────────────────────────────────────
+import { useRef } from "react";
+import { useGalleryStage } from "./hooks/useGalleryStage";
 
 export const GalleryStage = () => {
-  const [images, setImages] = useState<LocalImage[]>([]);
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    images,
+    dragIndex,
+    error,
+    isMaxReached,
+    handleFilesAdded,
+    handleRemove,
+    handleDragStart,
+    handleDragEnd,
+    handleDrop,
+  } = useGalleryStage();
+
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleFilesAdded = async (files: FileList) => {
-    setError(null);
-    const incoming = Array.from(files);
-
-    if (images.length + incoming.length > 10) {
-      setError("Solo podés subir hasta 10 imágenes.");
-      return;
-    }
-
-    for (const file of incoming) {
-      if (file.size > 5 * 1024 * 1024) {
-        setError(`"${file.name}" supera el límite de 5 MB.`);
-        return;
-      }
-      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-        setError(`"${file.name}" tiene un formato no permitido. Usá JPG, PNG o WebP.`);
-        return;
-      }
-    }
-
-    for (const file of incoming) {
-      const tempId = crypto.randomUUID();
-      const previewUrl = URL.createObjectURL(file);
-      setImages((prev) => [...prev, { id: tempId, url: previewUrl, isUploading: true }]);
-
-      const result = await mockUpload(file);
-
-      if (!result) {
-        setImages((prev) => prev.filter((img) => img.id !== tempId));
-        URL.revokeObjectURL(previewUrl);
-        setError("No se pudo subir la imagen. Intentá de nuevo.");
-        continue;
-      }
-
-      URL.revokeObjectURL(previewUrl);
-      setImages((prev) =>
-        prev.map((img) =>
-          img.id === tempId ? { id: result.id, url: result.url, isUploading: false } : img,
-        ),
-      );
-    }
-  };
-
-  const handleRemove = async (id: string) => {
-    setError(null);
-    setImages((prev) => prev.filter((img) => img.id !== id));
-    await mockDelete(id);
-  };
-
-  const handleDrop = async (toIndex: number) => {
-    if (dragIndex === null || dragIndex === toIndex) return;
-    const reordered = [...images];
-    const [moved] = reordered.splice(dragIndex, 1);
-    reordered.splice(toIndex, 0, moved);
-    setImages(reordered);
-    setDragIndex(null);
-    await mockReorder(reordered.map((img) => img.id));
-  };
-
-  const isMaxReached = images.length >= 10;
 
   return (
     <div className="w-full max-w-3xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-2xl">
@@ -173,10 +96,10 @@ export const GalleryStage = () => {
                     ? "border-emerald-400 opacity-50 scale-95 cursor-grabbing"
                     : "border-white/20 hover:border-white/40 cursor-grab"
               }`}
-              onDragStart={() => setDragIndex(index)}
+              onDragStart={() => handleDragStart(index)}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDrop(index)}
-              onDragEnd={() => setDragIndex(null)}
+              onDragEnd={handleDragEnd}
             >
               <Image
                 src={image.url}
