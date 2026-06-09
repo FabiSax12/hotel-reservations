@@ -116,6 +116,11 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       PAGE_TITLE: "Información sobre la reservación",
       STAT_STATUS_LABEL: "Estado",
     },
+    BOOKING_MODE: {
+      LABEL: "Modo de Confirmación",
+      AUTOMATIC: "Automático",
+      MANUAL: "Manual",
+    },
     ERRORS: {
       FETCH_RESERVATIONS: "Error al obtener reservaciones",
       FETCH_ROOMS: "Error al obtener habitaciones",
@@ -237,6 +242,11 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       BACK_TO_LIST: "Reservations",
       PAGE_TITLE: "Reservation details",
       STAT_STATUS_LABEL: "Status",
+    },
+    BOOKING_MODE: {
+      LABEL: "Confirmation Mode",
+      AUTOMATIC: "Automatic",
+      MANUAL: "Manual",
     },
     ERRORS: {
       FETCH_RESERVATIONS: "Error fetching reservations",

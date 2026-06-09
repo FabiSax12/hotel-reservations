@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { useReservationsView } from "../../../hooks/useReservationsView";
+import { BOOKING_MODE } from "../../../constants/booking-mode";
+import type { BookingMode } from "../../../domain/reservation";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
 import { EmptyState } from "../EmptyState/EmptyState";
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
@@ -14,6 +17,8 @@ export const ReservationsView = ({
   rooms,
   initialPage = 1,
 }: ReservationsViewProps) => {
+  const [bookingMode, setBookingMode] = useState<BookingMode>(BOOKING_MODE.MANUAL);
+
   const {
     filters,
     setFilters,
@@ -29,7 +34,12 @@ export const ReservationsView = ({
 
   return (
     <main className={RESERVATIONS_PAGE_STYLES.wrapper}>
-      <ReservationsPageHeader totalCount={reservations.length} statusCounts={statusCounts} />
+      <ReservationsPageHeader
+        totalCount={reservations.length}
+        statusCounts={statusCounts}
+        bookingMode={bookingMode}
+        onBookingModeChange={setBookingMode}
+      />
 
       <div className={CARD_STYLES.bodySmall}>
         <ReservationsFilters

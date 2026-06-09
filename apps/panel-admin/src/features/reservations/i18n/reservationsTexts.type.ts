@@ -111,6 +111,11 @@ export type ReservationsTexts = {
     PAGE_TITLE: string;
     STAT_STATUS_LABEL: string;
   };
+  BOOKING_MODE: {
+    LABEL: string;
+    AUTOMATIC: string;
+    MANUAL: string;
+  };
   ERRORS: {
     FETCH_RESERVATIONS: string;
     FETCH_ROOMS: string;

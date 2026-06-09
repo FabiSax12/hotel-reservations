@@ -1,6 +1,7 @@
 "use client";
 
 import { useI18n } from "@/locales";
+import { BookingModeToggle } from "../../booking-toggle/BookingModeToggle/BookingModeToggle";
 import { CARD_STYLES } from "../ReservationsView/ReservationsView.styles";
 import type { ReservationsPageHeaderProps } from "./ReservationsPageHeader.interface";
 import { PAGE_HEADER_STYLES, STAT_CARD_STYLES } from "./ReservationsPageHeader.styles";
@@ -8,6 +9,8 @@ import { PAGE_HEADER_STYLES, STAT_CARD_STYLES } from "./ReservationsPageHeader.s
 export const ReservationsPageHeader = ({
   totalCount,
   statusCounts,
+  bookingMode,
+  onBookingModeChange,
 }: ReservationsPageHeaderProps) => {
   const { t } = useI18n();
 
@@ -25,6 +28,7 @@ export const ReservationsPageHeader = ({
             {t.RESERVATIONS.PAGE.DESCRIPTION}{" "}
             <span className={PAGE_HEADER_STYLES.subtitleHighlight}>{totalCount}</span>
           </p>
+          <BookingModeToggle mode={bookingMode} onChange={onBookingModeChange} />
         </div>
 
         <div className={STAT_CARD_STYLES.row}>
