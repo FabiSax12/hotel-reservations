@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { GALLERY_CONFIG } from "@/features/rooms/constants/gallery.constants";
 import type { ImageCardProps } from "../GalleryStage.interface";
 import { CARD_STYLES as S } from "../GalleryStage.styles";
 
@@ -6,6 +7,8 @@ export const ImageCard = ({
   image,
   index,
   isDragging,
+  removeLabel,
+  principalLabel,
   onRemove,
   onDragStart,
   onDragEnd,
@@ -24,7 +27,7 @@ export const ImageCard = ({
       alt=""
       fill
       className={S.image}
-      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+      sizes={GALLERY_CONFIG.IMAGE_SIZES}
       unoptimized
     />
 
@@ -38,13 +41,13 @@ export const ImageCard = ({
       <button
         type="button"
         className={S.removeBtn}
-        aria-label="Eliminar imagen"
+        aria-label={removeLabel}
         onClick={(e) => { e.stopPropagation(); onRemove(); }}
       >
         ✕
       </button>
     )}
 
-    {index === 0 && <span className={S.principalBadge}>Principal</span>}
+    {index === 0 && <span className={S.principalBadge}>{principalLabel}</span>}
   </div>
 );

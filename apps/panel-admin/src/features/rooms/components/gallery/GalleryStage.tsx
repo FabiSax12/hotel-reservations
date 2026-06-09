@@ -13,12 +13,14 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
     error,
     texts,
     isMaxReached,
+    isSubmitDisabled,
     handleFilesAdded,
     handleRemove,
     handleDragStart,
     handleDragEnd,
     handleDrop,
     handleSubmit,
+    handleCancel,
   } = useGalleryStage(roomId, onSuccess);
 
   return (
@@ -33,11 +35,18 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
         <p>{texts.HINT}</p>
       </div>
 
-      <UploadDropzone isDisabled={isMaxReached} onFilesAdded={handleFilesAdded} />
+      <UploadDropzone
+        isDisabled={isMaxReached}
+        label={texts.DROPZONE_LABEL}
+        hint={texts.DROPZONE_HINT}
+        onFilesAdded={handleFilesAdded}
+      />
 
       <ImageGrid
         images={images}
         dragIndex={dragIndex}
+        removeLabel={texts.REMOVE_IMAGE}
+        principalLabel={texts.PRINCIPAL_BADGE}
         onRemove={handleRemove}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
@@ -51,17 +60,13 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
       )}
 
       <div className={S.actions}>
-        <button
-          type="button"
-          className={S.cancelBtn}
-          onClick={() => window.history.back()}
-        >
+        <button type="button" className={S.cancelBtn} onClick={handleCancel}>
           {texts.CANCEL}
         </button>
         <button
           type="button"
           className={S.submitBtn}
-          disabled={images.length === 0 || images.some((img) => img.isUploading)}
+          disabled={isSubmitDisabled}
           onClick={handleSubmit}
         >
           {texts.SUBMIT}

@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { GALLERY_CONFIG } from "@/features/rooms/constants/gallery.constants";
+import { useI18n } from "@/locales";
 import type { LocalImage } from "../GalleryStage.interface";
 import * as galleryService from "../../../services/galleryActions";
-import { useI18n } from "@/locales";
 
 export const useGalleryStage = (roomId: string, onSuccess?: () => void) => {
   const { t } = useI18n();
@@ -15,17 +16,17 @@ export const useGalleryStage = (roomId: string, onSuccess?: () => void) => {
     setError(null);
     const incoming = Array.from(files);
 
-    if (images.length + incoming.length > 10) {
+    if (images.length + incoming.length > GALLERY_CONFIG.MAX_IMAGES) {
       setError(texts.ERROR_MAX_IMAGES);
       return;
     }
 
     for (const file of incoming) {
-      if (file.size > 5 * 1024 * 1024) {
+      if (file.size > GALLERY_CONFIG.MAX_SIZE_BYTES) {
         setError(`"${file.name}" ${texts.ERROR_FILE_SIZE}`);
         return;
       }
-      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      if (!(GALLERY_CONFIG.ACCEPTED_TYPES as readonly string[]).includes(file.type)) {
         setError(`"${file.name}" ${texts.ERROR_FILE_TYPE}`);
         return;
       }
@@ -74,21 +75,23 @@ export const useGalleryStage = (roomId: string, onSuccess?: () => void) => {
     await galleryService.reorderImages(reordered.map((img) => img.id));
   };
 
-  const handleSubmit = () => {
-    onSuccess?.();
-  };
+  const handleSubmit = () => onSuccess?.();
+
+  const handleCancel = () => window.history.back();
 
   return {
     images,
     dragIndex,
     error,
     texts,
-    isMaxReached: images.length >= 10,
+    isMaxReached: images.length >= GALLERY_CONFIG.MAX_IMAGES,
+    isSubmitDisabled: images.length === 0 || images.some((img) => img.isUploading),
     handleFilesAdded,
     handleRemove,
     handleDragStart,
     handleDragEnd,
     handleDrop,
     handleSubmit,
+    handleCancel,
   };
 };

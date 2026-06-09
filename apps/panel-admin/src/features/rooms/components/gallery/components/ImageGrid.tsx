@@ -5,6 +5,8 @@ import { ImageCard } from "./ImageCard";
 export const ImageGrid = ({
   images,
   dragIndex,
+  removeLabel,
+  principalLabel,
   onRemove,
   onDragStart,
   onDragEnd,
@@ -20,6 +22,8 @@ export const ImageGrid = ({
           image={image}
           index={index}
           isDragging={dragIndex === index}
+          removeLabel={removeLabel}
+          principalLabel={principalLabel}
           onRemove={() => onRemove(image.id)}
           onDragStart={() => onDragStart(index)}
           onDragEnd={onDragEnd}

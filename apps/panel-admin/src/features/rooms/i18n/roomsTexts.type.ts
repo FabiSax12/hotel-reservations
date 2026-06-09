@@ -94,6 +94,10 @@ export interface RoomsTexts {
     HINT: string;
     SUBMIT: string;
     CANCEL: string;
+    DROPZONE_LABEL: string;
+    DROPZONE_HINT: string;
+    PRINCIPAL_BADGE: string;
+    REMOVE_IMAGE: string;
     ERROR_MAX_IMAGES: string;
     ERROR_FILE_SIZE: string;
     ERROR_FILE_TYPE: string;

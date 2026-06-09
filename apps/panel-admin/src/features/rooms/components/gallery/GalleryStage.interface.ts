@@ -11,12 +11,16 @@ export type LocalImage = {
 
 export interface UploadDropzoneProps {
   isDisabled: boolean;
+  label: string;
+  hint: string;
   onFilesAdded: (files: FileList) => void;
 }
 
 export interface ImageGridProps {
   images: LocalImage[];
   dragIndex: number | null;
+  removeLabel: string;
+  principalLabel: string;
   onRemove: (id: string) => void;
   onDragStart: (index: number) => void;
   onDragEnd: () => void;
@@ -27,6 +31,8 @@ export interface ImageCardProps {
   image: LocalImage;
   index: number;
   isDragging: boolean;
+  removeLabel: string;
+  principalLabel: string;
   onRemove: () => void;
   onDragStart: () => void;
   onDragEnd: () => void;
