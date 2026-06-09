@@ -39,12 +39,6 @@ export const EMAIL_TEXTS = {
       FOOTER_NOTE:
         "Si tienes alguna pregunta o crees que esto fue un error, no dudes en contactarnos.",
     },
-    COMPLETED: {
-      BADGE: "Reservación completada",
-      PREVIEW: "Tu estadía ha concluido",
-      GREETING: "Hola",
-      BODY: "Esperamos que hayas disfrutado tu estadía en Altaverde Hotel. Fue un placer tenerte como huésped. ¡Esperamos verte de nuevo pronto!",
-    },
   },
   en: {
     HOTEL_NAME: "ALTAVERDE HOTEL",
@@ -83,12 +77,6 @@ export const EMAIL_TEXTS = {
       LABEL_REASON: "Reason:",
       FOOTER_NOTE:
         "If you have any questions or believe this was an error, please don't hesitate to contact us.",
-    },
-    COMPLETED: {
-      BADGE: "Stay Completed",
-      PREVIEW: "Your stay has concluded",
-      GREETING: "Hello",
-      BODY: "We hope you enjoyed your stay at Altaverde Hotel. It was a pleasure having you as our guest. We hope to see you again soon!",
     },
   },
 } as const;
