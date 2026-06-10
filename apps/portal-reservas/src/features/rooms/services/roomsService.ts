@@ -61,23 +61,34 @@ function toAmenityNames(row: RoomQueryRow): string[] {
     .filter((name): name is string => Boolean(name));
 }
 
-/** Reads each room's images (ordered by position), grouped by room id. */
+/**
+ * Reads each room's images (ordered by position), grouped by room id.
+ *
+ * Images are an optional enhancement — `room_images` stays empty until an admin
+ * uploads via US-KA-06 — so a read failure here is deliberately NON-fatal: the
+ * listing keeps rendering with gradient placeholders rather than failing the
+ * whole page over a secondary, currently-empty table.
+ */
 async function loadImagesByRoom(roomIds: string[]): Promise<Map<string, string[]>> {
-  const supabase = createSupabaseServerActionClient();
-  const { data, error } = await supabase
-    .from(DB_TABLES.ROOM_IMAGES)
-    .select(IMAGES_SELECT)
-    .in(DB_COLUMNS.room_images.room_id, roomIds)
-    .order(DB_COLUMNS.room_images.position)
-    .returns<{ room_id: string; url: string; position: number }[]>();
-
-  if (error) throw new Error(`${ROOM_SERVICE_ERROR.FETCH_ROOMS}: ${error.message}`);
-
   const byRoom = new Map<string, string[]>();
-  for (const row of data ?? []) {
-    const urls = byRoom.get(row.room_id) ?? [];
-    urls.push(row.url);
-    byRoom.set(row.room_id, urls);
+  try {
+    const supabase = createSupabaseServerActionClient();
+    const { data, error } = await supabase
+      .from(DB_TABLES.ROOM_IMAGES)
+      .select(IMAGES_SELECT)
+      .in(DB_COLUMNS.room_images.room_id, roomIds)
+      .order(DB_COLUMNS.room_images.position)
+      .returns<{ room_id: string; url: string; position: number }[]>();
+
+    if (error) throw new Error(error.message);
+
+    for (const row of data ?? []) {
+      const urls = byRoom.get(row.room_id) ?? [];
+      urls.push(row.url);
+      byRoom.set(row.room_id, urls);
+    }
+  } catch (cause) {
+    console.error(`${ROOM_SERVICE_ERROR.FETCH_ROOMS} (images, non-fatal):`, cause);
   }
   return byRoom;
 }
