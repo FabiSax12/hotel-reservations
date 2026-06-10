@@ -1,6 +1,7 @@
 "use client";
 
 import { Input, Label, TextField } from "@heroui/react";
+import { ROOM_FILTER_INPUTS } from "@/features/rooms/constants/room-filter-inputs";
 import { useI18n } from "@/locales";
 import type { PriceMinFilterProps } from "./PriceMinFilter.interface";
 import { PRICE_MIN_FILTER_STYLES as STYLES } from "./PriceMinFilter.styles";
@@ -15,7 +16,7 @@ export function PriceMinFilter({ defaultValue, onChange }: PriceMinFilterProps) 
         <Label className={STYLES.label}>{texts.PRICE_MIN_LABEL}</Label>
         <Input
           type="number"
-          min={1}
+          min={ROOM_FILTER_INPUTS.PRICE_MIN}
           placeholder={texts.PRICE_MIN_PLACEHOLDER}
           defaultValue={defaultValue}
           onChange={onChange}
