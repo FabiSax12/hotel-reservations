@@ -18,7 +18,8 @@ export function RoomCardHeader({ room, selectedDest }: RoomCardHeaderProps) {
 
   return (
     <div>
-      {(!selectedDest || selectedDest === SEARCH_VALS.DESTINATION_ALL) && (
+      {/* Location label hidden until the rooms table gains a location column (US-DM-07). */}
+      {room.location && (!selectedDest || selectedDest === SEARCH_VALS.DESTINATION_ALL) && (
         <p className={S.locationLabel}>{room.location}</p>
       )}
       <h3 className={S.title}>{room.title}</h3>

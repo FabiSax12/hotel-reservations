@@ -88,13 +88,16 @@ export function SummaryRoomCard({ room, position, total }: SummaryRoomCardProps)
         <header className={CHECKOUT_STYLES.roomHead}>
           <span className={CHECKOUT_STYLES.roomType}>{room.type}</span>
           <h3 className={CHECKOUT_STYLES.roomTitle}>{room.title}</h3>
-          <p className={CHECKOUT_STYLES.roomLocation}>
-            <CheckoutIcon
-              path={CHECKOUT_ICON_PATHS.location}
-              className={CHECKOUT_STYLES.roomLocationIcon}
-            />
-            {room.location}
-          </p>
+          {/* Location hidden until the rooms table gains a location column (US-DM-07). */}
+          {room.location && (
+            <p className={CHECKOUT_STYLES.roomLocation}>
+              <CheckoutIcon
+                path={CHECKOUT_ICON_PATHS.location}
+                className={CHECKOUT_STYLES.roomLocationIcon}
+              />
+              {room.location}
+            </p>
+          )}
         </header>
 
         <div className={CHECKOUT_STYLES.factGrid}>

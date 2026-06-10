@@ -50,8 +50,8 @@ export interface RoomDetailPanelProps {
 }
 
 export interface RoomDetailHeaderProps {
-  /** Gold uppercase eyebrow (room location). */
-  eyebrow: string;
+  /** Gold uppercase eyebrow (room location). Hidden when absent (US-DM-07). */
+  eyebrow?: string;
   /** Main serif title. */
   title: string;
   /** Optional secondary line under the title. */
