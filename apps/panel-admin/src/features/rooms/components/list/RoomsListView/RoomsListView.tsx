@@ -1,7 +1,8 @@
 "use client";
 
-import { use, useMemo } from "react";
+import { use } from "react";
 import { RoomsFilterProvider } from "@/features/rooms/context/roomsFilter/RoomsFilterProvider";
+import { countRoomsByStatus } from "@/features/rooms/domain/countRoomsByStatus";
 import { useI18n } from "@/locales";
 import { PageHeader } from "@/shared/components/PageHeader";
 import { RoomsContent } from "../RoomsContent/RoomsContent";
@@ -11,18 +12,7 @@ import { ROOMS_LIST_VIEW_STYLES as STYLES } from "./RoomsListView.styles";
 export const RoomsListView = ({ rooms }: RoomsListViewProps) => {
   const { t } = useI18n();
   const resolvedRooms = use(rooms);
-
-  const statusCounts = useMemo(() => {
-    let available = 0;
-    let unavailable = 0;
-
-    // Heavy operation O(n)
-    for (const room of resolvedRooms) {
-      if (room.is_active) available++;
-      else unavailable++;
-    }
-    return { available, unavailable, total: resolvedRooms.length };
-  }, [resolvedRooms]);
+  const statusCounts = countRoomsByStatus(resolvedRooms);
 
   return (
     <main className={STYLES.wrapper}>
