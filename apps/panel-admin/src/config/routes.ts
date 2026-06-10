@@ -6,6 +6,7 @@ export const ROUTES = Object.freeze({
     ADMINS: "/admin/admins",
     ACTIVATE: "/admin/activate",
     CMS: "/admin/cms",
+    GALLERY: "/admin/cms/gallery",
     INVITATIONS: "/admin/invitations",
     METRICS_DASHBOARD: "/admin/metrics-dashboard",
   } as const),
