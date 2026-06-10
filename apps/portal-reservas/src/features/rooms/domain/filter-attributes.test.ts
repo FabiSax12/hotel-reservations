@@ -16,7 +16,6 @@ const room = (overrides: Partial<Room>): Room =>
     price: 100,
     capacity: 2,
     inventory: 1,
-    sqft: 0,
     beds: [],
     description: "",
     adminTip: "",
@@ -24,7 +23,6 @@ const room = (overrides: Partial<Room>): Room =>
     images: [],
     amenities: [],
     availableDates: [],
-    isFeatured: false,
     ...overrides,
   }) as Room;
 
