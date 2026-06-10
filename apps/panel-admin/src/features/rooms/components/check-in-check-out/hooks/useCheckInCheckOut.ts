@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   CHECK_IN_TIME_SLOTS,
   CHECK_OUT_TIME_SLOTS,
-} from "@/features/rooms/constants/check-in-check-out.constants";
+} from "@/features/rooms/constants/checkInCheckOut.constants";
 import { scheduleService } from "@/features/rooms/services/scheduleService";
 import { useI18n } from "@/locales";
 
@@ -40,7 +40,7 @@ export const useCheckInCheckOut = (roomId: string, onSuccess?: () => void) => {
     };
 
     loadData();
-  }, [roomId, texts.MESSAGES.ERROR_GENERIC]);
+  }, [roomId, texts.SCHEDULES.ERROR_LOAD]);
 
   const handleSubmit = async () => {
     if (selectedCheckIn.length === 0 && selectedCheckOut.length === 0) {

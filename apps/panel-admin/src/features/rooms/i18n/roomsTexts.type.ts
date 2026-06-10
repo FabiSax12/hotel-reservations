@@ -1,4 +1,7 @@
+import type { RoomsListTexts } from "./roomsListTexts.type";
+
 export interface RoomsTexts {
+  LIST: RoomsListTexts;
   FORM: {
     TITLE_CREATE: string;
     TITLE_EDIT: string;

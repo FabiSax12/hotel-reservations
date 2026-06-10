@@ -1,6 +1,10 @@
-export const ROOM_CATEGORIES = ["Standard", "Deluxe", "Suite"] as const;
+export const ROOM_CATEGORIES = {
+  STANDARD: "Standard",
+  DELUXE: "Deluxe",
+  SUITE: "Suite",
+} as const;
 
-export type RoomCategory = (typeof ROOM_CATEGORIES)[number];
+export type RoomCategory = (typeof ROOM_CATEGORIES)[keyof typeof ROOM_CATEGORIES];
 
 export const DEFAULT_ROOM_STATE = true;
 
