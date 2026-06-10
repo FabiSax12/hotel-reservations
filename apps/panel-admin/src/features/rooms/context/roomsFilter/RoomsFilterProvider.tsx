@@ -1,7 +1,6 @@
 "use client";
 
-import { type ReactNode, useCallback, useMemo, useReducer } from "react";
-import type { Room } from "@/features/rooms/domain/room.interface";
+import { useCallback, useMemo, useReducer } from "react";
 import { ROOMS_FILTER_ACTIONS } from "@/features/rooms/reducers/roomsFilter/actions";
 import {
   INITIAL_FILTER_STATE,
@@ -9,13 +8,8 @@ import {
 } from "@/features/rooms/reducers/roomsFilter/initial-state";
 import { roomsFilterReducer } from "@/features/rooms/reducers/roomsFilter/reducer";
 import { filterRooms } from "../../domain/filterRooms";
+import type { RoomsFilterProviderProps } from "./RoomsFilterProvider.interface";
 import { RoomsFilterContext } from "./roomsFilterContext";
-
-interface RoomsFilterProviderProps {
-  rooms: Room[];
-  initialFilters?: Partial<RoomsFilterState>;
-  children: ReactNode;
-}
 
 export const RoomsFilterProvider = ({
   rooms,
