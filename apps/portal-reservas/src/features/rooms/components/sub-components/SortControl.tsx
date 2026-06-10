@@ -20,11 +20,8 @@ export function SortControl({ value, onChange }: SortControlProps) {
     onChange(event.target.value as RoomSortOption);
   };
 
-  const optionLabel = (option: RoomSortOption): string => {
-    if (option === "PRICE_ASC") return t.ROOMS.SORT_PRICE_ASC;
-    if (option === "PRICE_DESC") return t.ROOMS.SORT_PRICE_DESC;
-    return t.ROOMS.SORT_FEATURED;
-  };
+  const optionLabel = (option: RoomSortOption): string =>
+    option === "PRICE_DESC" ? t.ROOMS.SORT_PRICE_DESC : t.ROOMS.SORT_PRICE_ASC;
 
   return (
     <div className={S.sortWrapper}>

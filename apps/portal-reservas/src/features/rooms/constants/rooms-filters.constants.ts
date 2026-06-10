@@ -5,10 +5,11 @@
 
 import type { RoomFilters, RoomSortOption } from "../domain/types";
 
-/** All sort options supported by the room listing (US-DM-03 AC #1). */
+/**
+ * All sort options supported by the room listing (US-DM-03 AC #1).
+ * FEATURED was removed in US-DM-07 — the `rooms` table has no featured flag.
+ */
 export const ROOM_SORT_OPTIONS = Object.freeze({
-  /** Admin-defined featured ordering (default). */
-  FEATURED: "FEATURED",
   /** Price ascending (cheapest first). */
   PRICE_ASC: "PRICE_ASC",
   /** Price descending (most expensive first). */
@@ -17,13 +18,12 @@ export const ROOM_SORT_OPTIONS = Object.freeze({
 
 /** Ordered list of sort options for rendering the dropdown UI. */
 export const ROOM_SORT_OPTIONS_ORDER = Object.freeze([
-  ROOM_SORT_OPTIONS.FEATURED,
   ROOM_SORT_OPTIONS.PRICE_ASC,
   ROOM_SORT_OPTIONS.PRICE_DESC,
 ] as const);
 
 /** Default sort applied on first render and after reset. */
-export const DEFAULT_ROOM_SORT: RoomSortOption = ROOM_SORT_OPTIONS.FEATURED;
+export const DEFAULT_ROOM_SORT: RoomSortOption = ROOM_SORT_OPTIONS.PRICE_ASC;
 
 /** Step (USD) used by the price-range slider UI. */
 export const PRICE_RANGE_STEP = 10;
