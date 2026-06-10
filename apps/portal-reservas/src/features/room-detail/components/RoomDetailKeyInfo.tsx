@@ -28,12 +28,6 @@ export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
         </span>
         <span className={ROOM_DETAIL_STYLES.chip}>
           <svg className={ROOM_DETAIL_STYLES.chipIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.area} />
-          </svg>
-          {room.sqft} {t.ROOMS.SQFT_LABEL}
-        </span>
-        <span className={ROOM_DETAIL_STYLES.chip}>
-          <svg className={ROOM_DETAIL_STYLES.chipIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.type} />
           </svg>
           {room.type}

@@ -18,41 +18,49 @@ import type { SummaryRoomCardProps } from "../domain/types";
 import { CHECKOUT_STYLES } from "../theme/checkout.theme";
 import { CheckoutIcon } from "./CheckoutIcon";
 
+interface RoomFact {
+  key: string;
+  icon: string;
+  label: string;
+  value: string;
+}
+
 export function SummaryRoomCard({ room, position, total }: SummaryRoomCardProps) {
   const { t } = useI18n();
 
-  const facts = [
-    {
+  // Only DB-backed facts are shown. sqft was removed (US-DM-07); check-in/out
+  // times (room_schedules, untyped in @hotel/db) and beds (no column) stay
+  // hidden until their sources land — the guards reveal them automatically then.
+  const facts: RoomFact[] = [{
+    key: ROOM_FACT_KEY.CAPACITY,
+    icon: CHECKOUT_ICON_PATHS.guests,
+    label: t.CHECKOUT.CAPACITY_LABEL,
+    value: String(room.capacity),
+  }];
+  if (room.checkInTime) {
+    facts.unshift({
       key: ROOM_FACT_KEY.CHECK_IN,
       icon: CHECKOUT_ICON_PATHS.calendar,
       label: t.CHECKOUT.CHECK_IN_LABEL,
       value: room.checkInTime,
-    },
-    {
+    });
+  }
+  if (room.checkOutTime) {
+    facts.push({
       key: ROOM_FACT_KEY.CHECK_OUT,
       icon: CHECKOUT_ICON_PATHS.calendar,
       label: t.CHECKOUT.CHECK_OUT_LABEL,
       value: room.checkOutTime,
-    },
-    {
-      key: ROOM_FACT_KEY.CAPACITY,
-      icon: CHECKOUT_ICON_PATHS.guests,
-      label: t.CHECKOUT.CAPACITY_LABEL,
-      value: String(room.capacity),
-    },
-    {
-      key: ROOM_FACT_KEY.AREA,
-      icon: CHECKOUT_ICON_PATHS.area,
-      label: t.CHECKOUT.AREA_LABEL,
-      value: t.CHECKOUT.AREA_VALUE.replace("{value}", String(room.sqft)),
-    },
-    {
+    });
+  }
+  if (room.beds) {
+    facts.push({
       key: ROOM_FACT_KEY.BEDS,
       icon: CHECKOUT_ICON_PATHS.bed,
       label: t.CHECKOUT.BEDS_LABEL,
       value: formatBedConfig(room.beds),
-    },
-  ];
+    });
+  }
 
   return (
     <article className={CHECKOUT_STYLES.roomCard}>
