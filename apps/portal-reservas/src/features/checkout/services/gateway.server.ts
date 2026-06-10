@@ -10,7 +10,7 @@
 
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
-import { findRoomsByIds } from "@/features/rooms";
+import { getRoomsByIds } from "@/features/rooms/services/roomsService";
 import {
   CHECKOUT_API_ERROR,
   CHECKOUT_HTTP,
@@ -30,7 +30,7 @@ export interface GatewayResult {
 }
 
 export async function openGatewaySession(payload: CheckoutSessionPayload): Promise<GatewayResult> {
-  const rooms = findRoomsByIds(payload.roomIds ?? []);
+  const rooms = await getRoomsByIds(payload.roomIds ?? []);
   if (rooms.length === 0 || !payload.checkIn || !payload.checkOut) {
     return {
       status: CHECKOUT_HTTP_STATUS.BAD_REQUEST,
