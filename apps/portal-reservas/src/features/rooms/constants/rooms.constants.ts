@@ -63,25 +63,12 @@ export const ROOM_ANIMATION = Object.freeze({
   CHEVRON_ROTATE_DURATION_MS: 300,
 } as const);
 
+/**
+ * Timing/UX constants for the quick-search and calendar interactions. The
+ * mock-availability fields were removed in US-DM-07 (availability is now derived
+ * from real reservations).
+ */
 export const ROOM_MOCK = Object.freeze({
-  /**
-   * Simulated delay (ms) for the availability check hook before a room resolves
-   * as reservable. Mimics a real DB fetch while the feature is in mock mode.
-   */
-  AVAILABILITY_DELAY_MS: 3000,
-  /**
-   * Number of available-date slots generated per room in mock data.
-   */
-  AVAILABLE_DATE_COUNT: 18,
-  /**
-   * Offset in days from today before first available slot.
-   */
-  FIRST_AVAILABLE_OFFSET: 3,
-  /**
-   * Stable i18n key returned by `useRoomAvailability` on error.
-   * Resolved to a locale string by the consuming component via `t.ROOMS`.
-   */
-  AVAILABILITY_ERROR_KEY: "AVAILABILITY_ERROR",
   /**
    * Default days offset from today for quick search check-in.
    */
