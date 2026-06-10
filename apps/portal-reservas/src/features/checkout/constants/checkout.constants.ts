@@ -81,7 +81,6 @@ export const ROOM_FACT_KEY = Object.freeze({
   CHECK_IN: "check-in",
   CHECK_OUT: "check-out",
   CAPACITY: "capacity",
-  AREA: "area",
   BEDS: "beds",
 } as const);
 

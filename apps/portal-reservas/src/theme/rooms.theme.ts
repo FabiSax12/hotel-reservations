@@ -354,10 +354,3 @@ export const ROOM_FILTERS_BAR_STYLES = {
   emptyTitle: "text-lg font-semibold text-stone-100",
   emptyHint: "mt-2 text-sm text-stone-400",
 } as const;
-
-// ─── Room Card Featured Badge (US-DM-03) ────────────────────────────────────
-export const ROOM_CARD_FEATURED_BADGE_STYLES = {
-  badge:
-    "inline-flex items-center gap-1.5 h-6 px-2.5 rounded-lg bg-gold-500/20 border border-gold-500/40 text-[10px] font-bold uppercase tracking-wider text-gold-300",
-  dot: "w-1.5 h-1.5 rounded-full bg-gold-400",
-} as const;
