@@ -1,13 +1,14 @@
 /**
  * @file roomsService.ts — DB-backed room reads for the portal (US-DM-07).
  *
- * Replaces the former mock dataset. Public room data (rooms + amenities +
- * images) is read with the anon server client since those tables are
- * world-readable via RLS. Reservation rows — needed to derive availability —
- * are RLS-protected, so they are read with the service-role client. That client
- * never reaches the browser (only imported by Server Components / server files)
- * and no reservation row is returned to the client: only the computed
- * available-date list leaves here.
+ * Replaces the former mock dataset. Public room data (rooms + amenities) is read
+ * with the anon server client since those tables are world-readable via RLS.
+ * Images are read from room_images in a separate query (avoids relying on a
+ * PostgREST embed relationship) and reservations — needed to derive availability
+ * — are RLS-protected, so they are read with the service-role client. That
+ * client never reaches the browser (this module is only imported by Server
+ * Components / server files) and no reservation row is returned to the client:
+ * only the computed available-date list leaves here.
  */
 
 import { DB_COLUMNS, DB_TABLES } from "@hotel/db";
@@ -17,13 +18,12 @@ import { computeAvailableDates, type ReservedRange } from "../domain/availabilit
 import type { Room } from "../domain/types";
 import { mapRoom, type RoomRow } from "./room.mapper";
 
-/** Shape of the embedded rooms query result (PostgREST relational select). */
+/** Shape of the embedded rooms query result (rooms + amenities relation). */
 interface RoomQueryRow extends RoomRow {
   room_amenities: { amenities: { name: string } | null }[];
-  room_images: { url: string; position: number }[];
 }
 
-/** Comma-joined relational select, built from typed column/table constants. */
+/** Rooms + amenities select, built from typed column/table constants. */
 const ROOMS_SELECT = [
   DB_COLUMNS.rooms.id,
   DB_COLUMNS.rooms.name,
@@ -33,10 +33,14 @@ const ROOMS_SELECT = [
   DB_COLUMNS.rooms.description,
   DB_COLUMNS.rooms.regular_fee,
   `${DB_TABLES.ROOM_AMENITIES}(${DB_TABLES.AMENITIES}(${DB_COLUMNS.amenities.name}))`,
-  `${DB_TABLES.ROOM_IMAGES}(${DB_COLUMNS.room_images.url},${DB_COLUMNS.room_images.position})`,
 ].join(",");
 
-/** Reservation columns needed to block availability. */
+const IMAGES_SELECT = [
+  DB_COLUMNS.room_images.room_id,
+  DB_COLUMNS.room_images.url,
+  DB_COLUMNS.room_images.position,
+].join(",");
+
 const RESERVATIONS_SELECT = [
   DB_COLUMNS.reservations.room_id,
   DB_COLUMNS.reservations.check_in,
@@ -53,8 +57,25 @@ function toAmenityNames(row: RoomQueryRow): string[] {
     .filter((name): name is string => Boolean(name));
 }
 
-function toImageUrls(row: RoomQueryRow): string[] {
-  return [...row.room_images].sort((a, b) => a.position - b.position).map((image) => image.url);
+/** Reads each room's images (ordered by position), grouped by room id. */
+async function loadImagesByRoom(roomIds: string[]): Promise<Map<string, string[]>> {
+  const supabase = createSupabaseServerActionClient();
+  const { data, error } = await supabase
+    .from(DB_TABLES.ROOM_IMAGES)
+    .select(IMAGES_SELECT)
+    .in(DB_COLUMNS.room_images.room_id, roomIds)
+    .order(DB_COLUMNS.room_images.position)
+    .returns<{ room_id: string; url: string; position: number }[]>();
+
+  if (error) throw new Error(`${ROOM_SERVICE_ERROR.FETCH_ROOMS}: ${error.message}`);
+
+  const byRoom = new Map<string, string[]>();
+  for (const row of data ?? []) {
+    const urls = byRoom.get(row.room_id) ?? [];
+    urls.push(row.url);
+    byRoom.set(row.room_id, urls);
+  }
+  return byRoom;
 }
 
 /** Reads each room's non-cancelled reservations, grouped by room id. */
@@ -92,14 +113,18 @@ async function loadRooms(ids?: string[]): Promise<Room[]> {
   const rows = data ?? [];
   if (rows.length === 0) return [];
 
-  const reservedByRoom = await loadReservedRanges(rows.map((row) => row.id));
+  const roomIds = rows.map((row) => row.id);
+  const [imagesByRoom, reservedByRoom] = await Promise.all([
+    loadImagesByRoom(roomIds),
+    loadReservedRanges(roomIds),
+  ]);
   const start = todayIso();
 
   return rows.map((row) =>
     mapRoom({
       row,
       amenities: toAmenityNames(row),
-      images: toImageUrls(row),
+      images: imagesByRoom.get(row.id) ?? [],
       availableDates: computeAvailableDates(
         reservedByRoom.get(row.id) ?? [],
         start,
