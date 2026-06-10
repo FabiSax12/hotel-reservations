@@ -44,12 +44,18 @@ export interface ReservationDraft {
   total: number;
 }
 
-/** Payload sent to the checkout API to open a payment session. */
+/** Payload sent to the checkout API to open a payment session and persist it. */
 export interface CheckoutSessionPayload {
   roomIds: string[];
   checkIn: string;
   checkOut: string;
   email: string;
+  /** Guest full name, stored on the reservation row (US-DM-07). */
+  guestName: string;
+  /** Guest phone, stored on the reservation row. */
+  guestPhone: string;
+  /** Total guest count, stored as the reservation's adult count. */
+  guests: number;
 }
 
 /** Response from the checkout API: the URL to redirect the browser to. */
