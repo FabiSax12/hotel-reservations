@@ -33,10 +33,18 @@ export async function updateReservationStatus(
   id: string,
   status: ReservationStatus,
   cancellationReason?: string,
-): Promise<void> {
+): Promise<Reservation> {
   await requirePermission(PERMISSIONS.RESERVATIONS.EDIT);
 
   const supabase = createSupabaseServiceClient();
+
+  const { data: existing, error: fetchError } = await supabase
+    .from(DB_TABLES.RESERVATIONS)
+    .select(`*, ${DB_TABLES.ROOMS}(${DB_COLUMNS.rooms.name}, ${DB_COLUMNS.rooms.category})`)
+    .eq(DB_COLUMNS.reservations.id, id)
+    .single();
+
+  if (fetchError) throw new Error(`${ERRORS.UPDATE_STATUS}: ${fetchError.message}`);
 
   const updateData: ReservationStatusUpdate = {
     status,
@@ -52,6 +60,8 @@ export async function updateReservationStatus(
     .eq(DB_COLUMNS.reservations.id, id);
 
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
+
+  return mapToReservation(existing as DbReservation);
 }
 
 export async function getReservationById(id: string): Promise<Reservation | null> {

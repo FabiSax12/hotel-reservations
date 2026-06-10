@@ -115,5 +115,6 @@ export type ReservationsTexts = {
     FETCH_RESERVATIONS: string;
     FETCH_ROOMS: string;
     UPDATE_STATUS: string;
+    EMAIL_NOTIFICATION_FAILED: string;
   };
 };
