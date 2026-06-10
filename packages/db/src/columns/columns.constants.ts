@@ -60,6 +60,14 @@ export const DB_COLUMNS: DBTablesWithColumns = {
     created_at: "created_at",
     room_id: "room_id",
   },
+  room_images: {
+    created_at: "created_at",
+    id: "id",
+    position: "position",
+    room_id: "room_id",
+    storage_path: "storage_path",
+    url: "url",
+  },
   rooms: {
     capacity_adults: "capacity_adults",
     capacity_kids: "capacity_kids",
@@ -99,6 +107,7 @@ const _assertAllColumnsCovered: _AssertAllColumnsCovered = {
   profiles: true,
   reservations: true,
   room_amenities: true,
+  room_images: true,
   rooms: true,
   user_permissions: true,
   user_roles: true,
