@@ -3,7 +3,7 @@ import { Button, Spinner } from "@heroui/react";
 import { X } from "lucide-react";
 import { GALLERY_CONFIG } from "@/features/rooms/constants/gallery.constants";
 import type { ImageCardProps } from "./ImageCard.interface";
-import { IMAGE_CARD_STYLES as S } from "./ImageCard.styles";
+import { IMAGE_CARD_STYLES as STYLES } from "./ImageCard.styles";
 
 export const ImageCard = ({
   image,
@@ -18,7 +18,7 @@ export const ImageCard = ({
 }: ImageCardProps) => (
   <div
     draggable={!image.isUploading}
-    className={S.wrapper(image.isUploading, isDragging)}
+    className={STYLES.wrapper(image.isUploading, isDragging)}
     onDragStart={onDragStart}
     onDragOver={(e) => e.preventDefault()}
     onDrop={onDrop}
@@ -28,13 +28,13 @@ export const ImageCard = ({
       src={image.url}
       alt=""
       fill
-      className={S.image}
+      className={STYLES.image}
       sizes={GALLERY_CONFIG.IMAGE_SIZES}
       unoptimized
     />
 
     {image.isUploading && (
-      <div className={S.spinner}>
+      <div className={STYLES.spinner}>
         <Spinner color="current" size="lg" />
       </div>
     )}
@@ -42,7 +42,7 @@ export const ImageCard = ({
     {!image.isUploading && (
       <Button
         isIconOnly
-        className={S.removeBtn}
+        className={STYLES.removeBtn}
         aria-label={removeLabel}
         onPress={() => onRemove()}
       >
@@ -50,6 +50,6 @@ export const ImageCard = ({
       </Button>
     )}
 
-    {index === 0 && <span className={S.principalBadge}>{principalLabel}</span>}
+    {index === 0 && <span className={STYLES.principalBadge}>{principalLabel}</span>}
   </div>
 );

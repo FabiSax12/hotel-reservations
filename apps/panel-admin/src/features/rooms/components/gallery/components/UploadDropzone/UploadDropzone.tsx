@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { CloudUpload } from "lucide-react";
 import { GALLERY_CONFIG, GALLERY_KEYBOARD } from "@/features/rooms/constants/gallery.constants";
 import type { UploadDropzoneProps } from "./UploadDropzone.interface";
-import { UPLOAD_DROPZONE_STYLES as S } from "./UploadDropzone.styles";
+import { UPLOAD_DROPZONE_STYLES as STYLES } from "./UploadDropzone.styles";
 
 export const UploadDropzone = ({ isDisabled, label, hint, onFilesAdded }: UploadDropzoneProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -16,7 +16,7 @@ export const UploadDropzone = ({ isDisabled, label, hint, onFilesAdded }: Upload
         tabIndex={isDisabled ? -1 : 0}
         aria-disabled={isDisabled}
         aria-label={label}
-        className={S.zone(isDisabled)}
+        className={STYLES.zone(isDisabled)}
         onClick={trigger}
         onKeyDown={(e) =>
           (e.key === GALLERY_KEYBOARD.ENTER || e.key === GALLERY_KEYBOARD.SPACE) && trigger()
@@ -28,17 +28,17 @@ export const UploadDropzone = ({ isDisabled, label, hint, onFilesAdded }: Upload
           if (e.dataTransfer.files.length > 0) onFilesAdded(e.dataTransfer.files);
         }}
       >
-        <CloudUpload className={S.icon} />
-        <span className={S.label}>{label}</span>
-        <span className={S.hint}>{hint}</span>
+        <CloudUpload className={STYLES.icon} />
+        <span className={STYLES.label}>{label}</span>
+        <span className={STYLES.hint}>{hint}</span>
       </div>
 
       <input
         ref={inputRef}
         type="file"
-        accept={GALLERY_CONFIG.ACCEPTED_TYPES.join(",")}
+        accept={GALLERY_CONFIG.ACCEPTED_TYPESTYLES.join(",")}
         multiple
-        className={S.input}
+        className={STYLES.input}
         aria-hidden="true"
         onChange={(e) => {
           if (e.target.files && e.target.files.length > 0) {

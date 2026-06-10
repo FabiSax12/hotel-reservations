@@ -1,6 +1,6 @@
 import { ImageCard } from "../ImageCard";
 import type { ImageGridProps } from "./ImageGrid.interface";
-import { IMAGE_GRID_STYLES as S } from "./ImageGrid.styles";
+import { IMAGE_GRID_STYLES as STYLES } from "./ImageGrid.styles";
 
 export const ImageGrid = ({
   images,
@@ -15,7 +15,7 @@ export const ImageGrid = ({
   if (images.length === 0) return null;
 
   return (
-    <div className={S.grid}>
+    <div className={STYLES.grid}>
       {images.map((image, index) => (
         <ImageCard
           key={image.id}

@@ -5,7 +5,7 @@ import { Info, X } from "lucide-react";
 import { ImageGrid } from "./components/ImageGrid";
 import { UploadDropzone } from "./components/UploadDropzone";
 import type { GalleryStageProps } from "./GalleryStage.interface";
-import { GALLERY_STYLES as S } from "./GalleryStage.styles";
+import { GALLERY_STYLES as STYLES } from "./GalleryStage.styles";
 import { useGalleryStage } from "./hooks/useGalleryStage";
 
 export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
@@ -26,15 +26,15 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
   } = useGalleryStage(roomId, onSuccess);
 
   return (
-    <main className={S.container}>
-      <header className={S.header}>
-        <h1 className={S.title}>{texts.TITLE}</h1>
-        <p className={S.subtitle}>{texts.SUBTITLE}</p>
+    <main className={STYLES.container}>
+      <header className={STYLES.header}>
+        <h1 className={STYLES.title}>{texts.TITLE}</h1>
+        <p className={STYLES.subtitle}>{texts.SUBTITLE}</p>
       </header>
 
-      <div className={S.formCard}>
-        <div className={S.hintBox}>
-          <Info className={S.hintIcon} />
+      <div className={STYLES.formCard}>
+        <div className={STYLES.hintBox}>
+          <Info className={STYLES.hintIcon} />
           <p>{texts.HINT}</p>
         </div>
 
@@ -57,20 +57,20 @@ export const GalleryStage = ({ roomId, onSuccess }: GalleryStageProps) => {
         />
 
         {error && (
-          <p className={S.error} role="alert">
+          <p className={STYLES.error} role="alert">
             {error}
           </p>
         )}
 
-        <div className={S.actions}>
+        <div className={STYLES.actions}>
           <Button
-            className={S.cancelBtn}
+            className={STYLES.cancelBtn}
             onPress={handleCancel}
           >
             {texts.CANCEL}
           </Button>
           <Button
-            className={S.submitBtn}
+            className={STYLES.submitBtn}
             isDisabled={isSubmitDisabled}
             onPress={handleSubmit}
           >
