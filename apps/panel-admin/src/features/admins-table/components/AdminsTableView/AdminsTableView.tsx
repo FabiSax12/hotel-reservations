@@ -1,38 +1,23 @@
 "use client";
 
+import { useState } from "react";
 import { useI18n } from "@/locales";
 import { PageHeader } from "@/shared/components/PageHeader";
-import { useAdminsFiltering } from "../../hooks/useAdminsFiltering";
-import { usePermissionDrawerHandlers } from "../../hooks/usePermissionDrawerHandlers";
-import { useToggleAdminStatus } from "../../hooks/useToggleAdminStatus";
-import { useState } from "react";
-import { useAdminsTable } from "../../hooks/useAdminsTable";
+import { FILTERS_STATUS } from "../../constants/filters-status";
+import { ADMINS_PAGE_SIZE } from "../../constants/pagination";
 import { useAdminsFiltering } from "../../hooks/useAdminsFiltering";
 import { useAdminsPagination } from "../../hooks/useAdminsPagination";
-import { AdminsPageHeader } from "../AdminsPageHeader/AdminsPageHeader";
+import { useAdminsTable } from "../../hooks/useAdminsTable";
 import { AdminsPagination } from "../AdminsPagination/AdminsPagination";
 import { AdminsTable } from "../AdminsTable/AdminsTable";
 import { AdminsFilters } from "../Filters/AdminsFilters";
+import type { AdminStatusFilter } from "../Filters/AdminsFilters.interface";
 import { PermissionDrawer } from "../PermissionDrawer/PermissionDrawer";
 import type { AdminsTableViewProps } from "./AdminsTableView.interface";
 import { ADMINS_PAGE_STYLES, CARD_STYLES } from "./AdminsTableView.styles";
-import type { AdminStatusFilter } from "../Filters/AdminsFilters.interface";
-import { FILTERS_STATUS } from "../../constants/filters-status";
-import { ADMINS_PAGE_SIZE } from "../../constants/pagination";
 
 export const AdminsTableView = ({ admins: initialAdmins }: AdminsTableViewProps) => {
   const { t } = useI18n();
-  const {
-    admins,
-    selectedAdmin,
-    isDrawerOpen,
-    refreshAdmins,
-    handleManagePermissions,
-    handleCloseDrawer,
-    handlePermissionUpdateSuccess,
-  } = usePermissionDrawerHandlers(initialAdmins);
-
-  const { handleToggle, togglingId } = useToggleAdminStatus(refreshAdmins);
   const [activeFilter, setActiveFilter] = useState<AdminStatusFilter>(FILTERS_STATUS.ALL);
 
   const {
