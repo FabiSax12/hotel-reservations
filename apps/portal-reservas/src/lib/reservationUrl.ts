@@ -1,5 +1,5 @@
 /**
- * @file reservationUrl.ts — Build and parse the /reservar query string.
+ * @file reservationUrl.ts — Build and parse the /reserve query string.
  *
  * Pure functions shared across features: the rooms reserve CTA builds the href,
  * the checkout route reads it back. No React, no side effects.
@@ -19,7 +19,7 @@ export interface ReservationLinkInput {
   guests: number;
 }
 
-/** Builds the `/reservar?...` href for a reservation selection. */
+/** Builds the `/reserve?...` href for a reservation selection. */
 export function buildReservationHref(input: ReservationLinkInput): string {
   const params = new URLSearchParams({
     [RESERVATION_PARAMS.ROOMS]: input.roomIds.join(RESERVATION_ROOMS_SEPARATOR),

@@ -1,5 +1,5 @@
 /**
- * @file page.tsx — Post-payment success route (/reservar/exito).
+ * @file page.tsx — Post-payment success route (/reserve/success).
  *
  * Server component: reads the gateway session ID from the URL and renders the
  * confirmation screen. A visit without a session ID falls back to the home page.

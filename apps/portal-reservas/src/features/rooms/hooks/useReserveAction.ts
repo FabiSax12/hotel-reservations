@@ -1,5 +1,5 @@
 /**
- * @file useReserveAction.ts — Navigates from a reserve CTA to the /reservar flow.
+ * @file useReserveAction.ts — Navigates from a reserve CTA to the /reserve flow.
  *
  * Replaces the former mock "reserving" delay: clicking reserve now builds the
  * reservation link from the current search dates + guests and routes to the

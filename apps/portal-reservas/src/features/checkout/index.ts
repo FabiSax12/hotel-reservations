@@ -2,8 +2,8 @@
  * @file index.ts — Public API barrel for the checkout feature (US-DM-06).
  *
  * The reservation confirmation + payment flow:
- * - ConfirmationView: the /reservar page (review + guest form + pay).
- * - SuccessView: the /reservar/exito post-payment screen.
+ * - ConfirmationView: the /reserve page (review + guest form + pay).
+ * - SuccessView: the /reserve/success post-payment screen.
  * - buildReservationDraft: rebuild a reservation from resolved rooms + params.
  * - openGatewaySession: server-side payment-session creation (used by the API route).
  */

@@ -1,5 +1,5 @@
 /**
- * @file page.tsx — Reservation confirmation route (/reservar).
+ * @file page.tsx — Reservation confirmation route (/reserve).
  *
  * Server component: reads the reservation from the URL, resolves the rooms, and
  * composes the confirmation view. Invalid or unknown selections fall back to

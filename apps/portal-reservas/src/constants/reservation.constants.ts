@@ -1,7 +1,7 @@
 /**
  * @file reservation.constants.ts — URL parameter keys for the reservation flow.
  *
- * Shared between the rooms reserve CTA (which builds the /reservar link) and the
+ * Shared between the rooms reserve CTA (which builds the /reserve link) and the
  * checkout feature (which parses it). Kept global so neither feature depends on
  * the other just to agree on the query-string contract.
  */

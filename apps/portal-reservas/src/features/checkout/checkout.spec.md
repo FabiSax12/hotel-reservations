@@ -16,13 +16,13 @@ gateway's hosted page.
 
 ### In scope
 
-- A confirmation page (`/reservar`) showing the same information as the US-DM-05 detail
+- A confirmation page (`/reserve`) showing the same information as the US-DM-05 detail
   panel, but expanded: larger type, more space, per-room check-in/out times and location.
 - Efficient rendering of both single rooms and room packages.
 - A guest details form (name, email, phone, optional special requests, accept terms).
 - Payment hand-off to Stripe Checkout (hosted redirect) via REST, with a mock-gateway
   fallback when no key is configured.
-- A post-payment success screen (`/reservar/exito`) with a confirmation code.
+- A post-payment success screen (`/reserve/success`) with a confirmation code.
 
 ### Out of scope (Do Not Modify)
 
@@ -36,11 +36,11 @@ gateway's hosted page.
 ### Data flow
 
 `Reserve CTA` (rooms / room-detail) → `buildReservationHref` (global `lib/reservationUrl`)
-→ `/reservar?rooms=…&checkIn=…&checkOut=…&guests=…` → `page.tsx` parses params
+→ `/reserve?rooms=…&checkIn=…&checkOut=…&guests=…` → `page.tsx` parses params
 (`parseReservationParams`), resolves rooms (`findRoomsByIds`), builds a `ReservationDraft`
 → `ConfirmationView`. On submit: `useCheckoutSubmit` → `POST /api/checkout` →
 `openGatewaySession` (server) → Stripe Checkout Session → browser redirect to the hosted
-page → `success_url` → `/reservar/exito` → `SuccessView`.
+page → `success_url` → `/reserve/success` → `SuccessView`.
 
 ### Core files
 
@@ -51,7 +51,7 @@ page → `success_url` → `/reservar/exito` → `SuccessView`.
 - `services/` — `checkout.service` (client → API), `gateway.server` (server → Stripe).
 - `domain/` — `reservation` (nights/total/code), `guestValidation`, `format`, `stripe`, `types`.
 - `constants/`, `i18n/`, `theme/`.
-- App routes: `app/reservar/{page,loading,error}`, `app/reservar/exito/page`, `app/api/checkout/route`.
+- App routes: `app/reserve/{page,loading,error}`, `app/reserve/success/page`, `app/api/checkout/route`.
 
 ### System constraints & known pitfalls
 

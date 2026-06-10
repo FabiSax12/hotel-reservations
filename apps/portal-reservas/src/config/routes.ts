@@ -13,9 +13,9 @@
 export const ROUTES = Object.freeze({
   HOME: "/",
   /** Reservation confirmation + guest details + payment hand-off (US-DM-06). */
-  RESERVE: "/reservar",
+  RESERVE: "/reserve",
   /** Post-payment success screen (US-DM-06). */
-  RESERVE_SUCCESS: "/reservar/exito",
+  RESERVE_SUCCESS: "/reserve/success",
   AUTH: Object.freeze({
     LOGIN: "/auth/login",
     REGISTER: "/auth/register",
