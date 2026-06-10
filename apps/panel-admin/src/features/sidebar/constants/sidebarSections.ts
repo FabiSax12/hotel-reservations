@@ -100,6 +100,12 @@ export const SIDEBAR_SECTIONS: SidebarSection[] = [
         icon: LayoutPanelTop,
         requiredPermission: PERMISSIONS.CMS.MANAGE,
       },
+      {
+        labelKey: LABEL_KEYS.CMS_GALLERY,
+        route: ROUTES.ADMIN.GALLERY,
+        icon: LayoutPanelTop,
+        requiredPermission: PERMISSIONS.CMS.MANAGE,
+      },
     ],
   },
 ];
