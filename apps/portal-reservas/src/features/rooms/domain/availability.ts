@@ -47,3 +47,20 @@ export function computeAvailableDates(
   }
   return available;
 }
+
+/**
+ * Whether every night of `[checkIn, checkOut)` is in the room's available days.
+ * Used by the reserve CTA to decide if the selected stay can be booked.
+ */
+export function isStayAvailable(
+  availableDates: readonly string[],
+  checkIn: string,
+  checkOut: string,
+): boolean {
+  if (!checkIn || !checkOut || checkIn >= checkOut) return false;
+  const free = new Set(availableDates);
+  for (let day = checkIn; day < checkOut; day = addIsoDays(day, 1)) {
+    if (!free.has(day)) return false;
+  }
+  return true;
+}

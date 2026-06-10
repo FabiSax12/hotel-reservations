@@ -42,7 +42,7 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
     isCalendarOpen,
     toggleCalendar,
     closeCalendar,
-  } = usePackageCardState();
+  } = usePackageCardState(primaryRoom.availableDates);
   const { reserve, isReserving } = useReserveAction();
 
   return (

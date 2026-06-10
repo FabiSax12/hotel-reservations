@@ -36,6 +36,7 @@ export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   const { isAvailable, isLoading } = useRoomAvailability(
     searchDates?.checkIn,
     searchDates?.checkOut,
+    room.availableDates,
   );
 
   const isUnavailable = hasDates && !isLoading && !isAvailable;
