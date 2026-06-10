@@ -26,6 +26,7 @@ export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelP
   const isShown = entered && isOpen;
   const isPackage = selection.kind === SELECTION_KIND.PACKAGE;
   const primaryRoom = isPackage ? selection.pkg.rooms[0] : selection.room;
+  const reserveRooms = isPackage ? selection.pkg.rooms : [selection.room];
   const price = isPackage ? selection.pkg.totalPricePerNight : selection.room.price;
   const eyebrow = primaryRoom.location;
   const title = isPackage
@@ -55,7 +56,12 @@ export function RoomDetailPanel({ selection, isOpen, onClose }: RoomDetailPanelP
           )}
         </div>
 
-        <RoomDetailFooter room={primaryRoom} price={price} isPackage={isPackage} />
+        <RoomDetailFooter
+          room={primaryRoom}
+          reserveRooms={reserveRooms}
+          price={price}
+          isPackage={isPackage}
+        />
       </aside>
     </>
   );

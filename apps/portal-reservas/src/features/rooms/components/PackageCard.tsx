@@ -10,27 +10,27 @@
 "use client";
 
 import { useRef } from "react";
-import type { PackageCardProps } from "../domain/types";
-import { PACKAGE_CARD_STYLES, ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
+import { SELECTION_KIND } from "@/features/room-detail";
 import { useI18n } from "@/locales";
+import { PACKAGE_CARD_STYLES, ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
+import type { PackageCardProps } from "../domain/types";
 import { usePackageCardState } from "../hooks/usePackageCardState";
-import { SELECTION_KIND, useRoomDetail } from "@/features/room-detail";
-import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
-import { PackageCardHeader } from "./sub-components/PackageCardHeader";
-import { PackageCardSummary } from "./sub-components/PackageCardSummary";
+import { useReserveAction } from "../hooks/useReserveAction";
+import { useRoomDetailToggle } from "../hooks/useRoomDetailToggle";
 import { PackageCardCTA } from "./sub-components/PackageCardCTA";
 import { PackageCardExpansion } from "./sub-components/PackageCardExpansion";
+import { PackageCardHeader } from "./sub-components/PackageCardHeader";
+import { PackageCardSummary } from "./sub-components/PackageCardSummary";
+import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 
 export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
   const primaryRoom = pkg.rooms[0];
-  const { selection, isOpen, openPackage, close } = useRoomDetail();
-  const isActive = isOpen && selection?.kind === SELECTION_KIND.PACKAGE && selection.pkg.id === pkg.id;
-  const handleOpenDetail = () => {
-    if (isActive) close();
-    else openPackage(pkg);
-  };
+  const { isActive, handleOpenDetail } = useRoomDetailToggle({
+    kind: SELECTION_KIND.PACKAGE,
+    pkg,
+  });
   const ctaRef = useRef<HTMLDivElement>(null);
   const {
     wrapperRef,
@@ -38,13 +38,12 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
     hasDates,
     isAvailable,
     isLoading,
-    isReserving,
     isUnavailable,
     isCalendarOpen,
-    handleReserve,
     toggleCalendar,
     closeCalendar,
-  } = usePackageCardState(primaryRoom);
+  } = usePackageCardState();
+  const { reserve, isReserving } = useReserveAction();
 
   return (
     <div ref={wrapperRef}>
@@ -81,7 +80,10 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
           totalPricePerNight={pkg.totalPricePerNight}
         >
           {/* CTA slot — inline with price */}
-          <div ref={ctaRef} className={`${PACKAGE_CARD_STYLES.ctaWrapperRelative} ${ROOM_CARD_STYLES.triggerRaised}`}>
+          <div
+            ref={ctaRef}
+            className={`${PACKAGE_CARD_STYLES.ctaWrapperRelative} ${ROOM_CARD_STYLES.triggerRaised}`}
+          >
             {/* Calendar portal — rendered at document.body to escape overflow-hidden */}
             {isCalendarOpen && (
               <RoomRangeCalendar
@@ -90,19 +92,20 @@ export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
                 roomId={primaryRoom.id}
                 onClose={closeCalendar}
                 anchorRef={ctaRef}
-                onPortalRef={(el) => { calendarRef.current = el; }}
+                onPortalRef={(el) => {
+                  calendarRef.current = el;
+                }}
               />
             )}
 
             <PackageCardCTA
-              primaryRoom={primaryRoom}
               hasDates={hasDates}
               isAvailable={isAvailable}
               isLoading={isLoading}
               isReserving={isReserving}
               isCalendarOpen={isCalendarOpen}
               onToggleCalendar={toggleCalendar}
-              onReserve={handleReserve}
+              onReserve={() => reserve(pkg.rooms)}
             />
           </div>
         </PackageCardSummary>

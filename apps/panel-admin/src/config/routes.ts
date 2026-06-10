@@ -7,7 +7,9 @@ export const ROUTES = Object.freeze({
     ACTIVATE: "/admin/activate",
     CMS: "/admin/cms",
     INVITATIONS: "/admin/invitations",
+    ROOMS: "/admin/rooms",
     METRICS_DASHBOARD: "/admin/metrics-dashboard",
+    GALLERY: (roomId: string) => `/admin/rooms/gallery?roomId=${roomId}`,
   } as const),
   AUTH: Object.freeze({
     LOGIN: "/auth/login",

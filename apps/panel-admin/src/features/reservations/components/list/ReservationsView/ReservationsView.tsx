@@ -1,9 +1,14 @@
 "use client";
 
+        
+import { useI18n } from "@/locales";
+import { PageHeader } from "@/shared/components/PageHeader";
+        
 import { useReservationsView } from "../../../hooks/useReservationsView";
 import { useBookingMode } from "../../../hooks/useBookingMode";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
 import { EmptyState } from "../EmptyState/EmptyState";
+        
 import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
 import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
 import { ReservationsTable } from "../ReservationsTable/ReservationsTable";

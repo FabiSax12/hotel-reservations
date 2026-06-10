@@ -26,6 +26,8 @@ const room = (id: string, price: number, isFeatured: boolean): Room =>
     amenities: [],
     availableDates: [],
     isFeatured,
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
   }) as Room;
 
 describe("sortRooms", () => {

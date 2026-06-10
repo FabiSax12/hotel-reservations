@@ -13,14 +13,15 @@
 
 "use client";
 
-import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
+import { SELECTION_KIND } from "@/features/room-detail";
 import { useI18n } from "@/locales";
+import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
 import type { RoomCardProps } from "../domain/types";
 import { useRoomAvailability } from "../hooks/useRoomAvailability";
+import { useRoomDetailToggle } from "../hooks/useRoomDetailToggle";
 import { RoomImagePanel } from "./RoomImagePanel";
-import { SELECTION_KIND, useRoomDetail } from "@/features/room-detail";
 import { RoomPriceTier } from "./RoomPriceTier";
 import { RoomCardHeader } from "./sub-components/RoomCardHeader";
 import { RoomCardMeta } from "./sub-components/RoomCardMeta";
@@ -28,21 +29,16 @@ import { RoomCardMeta } from "./sub-components/RoomCardMeta";
 export function RoomCard({ room, index, selectedDest }: RoomCardProps) {
   const { t } = useI18n();
   const { hasDates, searchDates } = useRoomsContext();
-  const { selection, isOpen, openRoom, close } = useRoomDetail();
+  const { isActive, handleOpenDetail } = useRoomDetailToggle({
+    kind: SELECTION_KIND.ROOM,
+    room,
+  });
   const { isAvailable, isLoading } = useRoomAvailability(
-    room.id,
     searchDates?.checkIn,
     searchDates?.checkOut,
-    room.availableDates,
   );
 
   const isUnavailable = hasDates && !isLoading && !isAvailable;
-  const isActive = isOpen && selection?.kind === SELECTION_KIND.ROOM && selection.room.id === room.id;
-
-  const handleOpenDetail = () => {
-    if (isActive) close();
-    else openRoom(room);
-  };
 
   return (
     <article

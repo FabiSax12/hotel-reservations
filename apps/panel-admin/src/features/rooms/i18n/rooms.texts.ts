@@ -1,9 +1,11 @@
 import type { SupportedLocale } from "@hotel/i18n";
 import { PREDEFINED_AMENITY_IDS } from "../constants/amenities.constants";
+import { ROOMS_LIST_TEXTS } from "./roomsList.texts";
 import type { RoomsTexts } from "./roomsTexts.type";
 
 export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
   es: {
+    LIST: ROOMS_LIST_TEXTS.es,
     FORM: {
       TITLE_CREATE: "Registrar Nueva Habitación",
       TITLE_EDIT: "Editar Habitación",
@@ -135,8 +137,24 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       ERROR_LOAD: "Error al cargar los horarios de la habitación",
       ERROR_SAVE: "Error al guardar los horarios de la habitación",
     },
+    GALLERY: {
+      TITLE: "Galería de Imágenes",
+      SUBTITLE: "Subí entre 1 y 10 imágenes. Arrastrá para reordenar.",
+      HINT: "La primera imagen se asigna como Principal. Formatos: JPG, PNG, WebP. Máximo 5 MB por imagen.",
+      SUBMIT: "Guardar Galería",
+      CANCEL: "Cancelar",
+      DROPZONE_LABEL: "Subir imágenes",
+      DROPZONE_HINT: "Hacé clic o arrastrá imágenes aquí",
+      PRINCIPAL_BADGE: "Principal",
+      REMOVE_IMAGE: "Eliminar imagen",
+      ERROR_MAX_IMAGES: "Solo podés subir hasta 10 imágenes.",
+      ERROR_FILE_SIZE: "supera el límite de 5 MB.",
+      ERROR_FILE_TYPE: "tiene un formato no permitido. Usá JPG, PNG o WebP.",
+      ERROR_UPLOAD: "No se pudo subir la imagen. Intentá de nuevo.",
+    },
   },
   en: {
+    LIST: ROOMS_LIST_TEXTS.en,
     FORM: {
       TITLE_CREATE: "Register New Room",
       TITLE_EDIT: "Edit Room",
@@ -258,6 +276,21 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
       CANCEL: "Cancel",
       ERROR_LOAD: "Error loading room schedules",
       ERROR_SAVE: "Error saving room schedules",
+    },
+    GALLERY: {
+      TITLE: "Image Gallery",
+      SUBTITLE: "Upload between 1 and 10 images. Drag to reorder.",
+      HINT: "The first image is set as Principal. Formats: JPG, PNG, WebP. Maximum 5 MB per image.",
+      SUBMIT: "Save Gallery",
+      CANCEL: "Cancel",
+      DROPZONE_LABEL: "Upload images",
+      DROPZONE_HINT: "Click or drag images here",
+      PRINCIPAL_BADGE: "Principal",
+      REMOVE_IMAGE: "Remove image",
+      ERROR_MAX_IMAGES: "You can upload up to 10 images.",
+      ERROR_FILE_SIZE: "exceeds the 5 MB limit.",
+      ERROR_FILE_TYPE: "has an unsupported format. Use JPG, PNG, or WebP.",
+      ERROR_UPLOAD: "Could not upload image. Please try again.",
     },
   },
 } as const;

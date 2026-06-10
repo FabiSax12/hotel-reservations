@@ -103,6 +103,8 @@ export interface RoomDetailAmenitiesProps {
 export interface RoomDetailFooterProps {
   /** Room whose availability drives the CTA (the primary room for packages). */
   room: Room;
+  /** Rooms to reserve: one for a single room, all of them for a package. */
+  reserveRooms: Room[];
   /** Amount to display: the room price, or the package total per night. */
   price: number;
   /** Whether this footer represents a package (changes label + CTA copy). */
@@ -112,6 +114,8 @@ export interface RoomDetailFooterProps {
 export interface RoomDetailCtaProps {
   /** Room whose availability drives the CTA (the primary room for packages). */
   room: Room;
+  /** Rooms to reserve: one for a single room, all of them for a package. */
+  reserveRooms: Room[];
   /** Whether this CTA reserves a package (changes the reserve copy). */
   isPackage: boolean;
 }

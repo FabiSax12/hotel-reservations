@@ -1,0 +1,77 @@
+/**
+ * @file gateway.server.ts — Server-side creation of a payment-gateway session.
+ *
+ * Resolves the reservation from its room IDs, then opens a Stripe Checkout
+ * Session via the REST API (no SDK) and returns the hosted URL to redirect to.
+ * Card data is collected by Stripe's hosted page, never by this app. When no
+ * STRIPE_SECRET_KEY is configured, a mock session URL stands in so the flow
+ * stays demoable without credentials.
+ */
+
+import { ENV } from "@/config/env";
+import { ROUTES } from "@/config/routes";
+import { findRoomsByIds } from "@/features/rooms";
+import {
+  CHECKOUT_API_ERROR,
+  CHECKOUT_HTTP,
+  CHECKOUT_HTTP_STATUS,
+  MOCK_SESSION_PREFIX,
+  SESSION_ID_PARAM,
+  STRIPE,
+  STRIPE_SESSION_PLACEHOLDER,
+} from "../constants/checkout.constants";
+import { computeNights } from "../domain/reservation";
+import { buildStripeCheckoutParams } from "../domain/stripe";
+import type { CheckoutSessionPayload } from "../domain/types";
+
+export interface GatewayResult {
+  status: number;
+  body: { url: string } | { error: string };
+}
+
+export async function openGatewaySession(payload: CheckoutSessionPayload): Promise<GatewayResult> {
+  const rooms = findRoomsByIds(payload.roomIds ?? []);
+  if (rooms.length === 0 || !payload.checkIn || !payload.checkOut) {
+    return {
+      status: CHECKOUT_HTTP_STATUS.BAD_REQUEST,
+      body: { error: CHECKOUT_API_ERROR.INVALID_REQUEST },
+    };
+  }
+
+  const nights = computeNights(payload.checkIn, payload.checkOut);
+  const successUrl = `${ENV.APP_URL}${ROUTES.RESERVE_SUCCESS}?${SESSION_ID_PARAM}=${STRIPE_SESSION_PLACEHOLDER}`;
+  const cancelUrl = `${ENV.APP_URL}${ROUTES.RESERVE}`;
+
+  // No key configured → mock gateway: jump straight to the success screen.
+  if (!ENV.STRIPE_SECRET_KEY) {
+    const mockUrl = `${ENV.APP_URL}${ROUTES.RESERVE_SUCCESS}?${SESSION_ID_PARAM}=${MOCK_SESSION_PREFIX}${Date.now()}`;
+    return { status: CHECKOUT_HTTP_STATUS.OK, body: { url: mockUrl } };
+  }
+
+  const params = buildStripeCheckoutParams({
+    rooms,
+    nights,
+    email: payload.email,
+    successUrl,
+    cancelUrl,
+  });
+
+  const response = await fetch(STRIPE.SESSIONS_URL, {
+    method: CHECKOUT_HTTP.METHOD_POST,
+    headers: {
+      Authorization: `${STRIPE.AUTH_SCHEME} ${ENV.STRIPE_SECRET_KEY}`,
+      [CHECKOUT_HTTP.CONTENT_TYPE_HEADER]: STRIPE.CONTENT_TYPE,
+    },
+    body: params.toString(),
+  });
+
+  if (!response.ok) {
+    return {
+      status: CHECKOUT_HTTP_STATUS.BAD_GATEWAY,
+      body: { error: CHECKOUT_API_ERROR.GATEWAY },
+    };
+  }
+
+  const session = (await response.json()) as { url: string };
+  return { status: CHECKOUT_HTTP_STATUS.OK, body: { url: session.url } };
+}

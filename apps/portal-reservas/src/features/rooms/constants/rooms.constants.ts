@@ -30,14 +30,10 @@ export const ROOM_ANIMATION = Object.freeze({
 
 export const ROOM_MOCK = Object.freeze({
   /**
-   * Simulated delay (ms) for the availability check hook.
-   * Mimics a real DB fetch while the feature is in mock mode.
+   * Simulated delay (ms) for the availability check hook before a room resolves
+   * as reservable. Mimics a real DB fetch while the feature is in mock mode.
    */
-  AVAILABILITY_DELAY_MS: 600,
-  /**
-   * Simulated delay (ms) for the reservation action.
-   */
-  RESERVE_DELAY_MS: 1200,
+  AVAILABILITY_DELAY_MS: 3000,
   /**
    * Number of available-date slots generated per room in mock data.
    */

@@ -30,6 +30,8 @@ function makeRoom(
     amenities: [],
     availableDates: [],
     isFeatured: false,
+    checkInTime: "15:00",
+    checkOutTime: "11:00",
   };
 }
 

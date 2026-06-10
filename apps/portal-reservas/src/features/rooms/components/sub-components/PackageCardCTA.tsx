@@ -10,18 +10,14 @@
 
 "use client";
 
-import type { PackageCardCTAProps } from "../../domain/types";
-import { PACKAGE_CARD_STYLES } from "../../../../theme/rooms.theme";
 import { useI18n } from "@/locales";
+import { PACKAGE_CARD_STYLES } from "../../../../theme/rooms.theme";
+import { CTA_ICON_PATHS } from "../../constants/cta-icons.const";
+import type { PackageCardCTAProps } from "../../domain/types";
 import { CTASpinner } from "./CTASpinner";
-
-const SVG_VIEW_BOX = "0 0 24 24";
-const CALENDAR_ICON_PATH =
-  "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z";
-const CHEVRON_RIGHT_ICON_PATH = "M9 5l7 7-7 7";
+import { CtaIcon } from "./CtaIcon";
 
 export function PackageCardCTA({
-  primaryRoom,
   hasDates,
   isAvailable,
   isLoading,
@@ -43,9 +39,11 @@ export function PackageCardCTA({
           aria-expanded={isCalendarOpen}
           aria-label={t.ROOMS.CHECK_DATES_ACTION}
         >
-          <svg className={PACKAGE_CARD_STYLES.ctaBtnCalendarIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d={CALENDAR_ICON_PATH} />
-          </svg>
+          <CtaIcon
+            path={CTA_ICON_PATHS.calendar}
+            className={PACKAGE_CARD_STYLES.ctaBtnCalendarIcon}
+            strokeWidth={2}
+          />
           {t.ROOMS.CHECK_DATES_ACTION}
         </button>
       )}
@@ -67,12 +65,16 @@ export function PackageCardCTA({
           aria-busy={isReserving}
         >
           {isReserving ? (
-            <><CTASpinner /> {t.ROOMS.LOADING_RESERVE}</>
+            <>
+              <CTASpinner /> {t.ROOMS.LOADING_RESERVE}
+            </>
           ) : (
             <>
-              <svg className={PACKAGE_CARD_STYLES.ctaBtnArrowIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d={CHEVRON_RIGHT_ICON_PATH} />
-              </svg>
+              <CtaIcon
+                path={CTA_ICON_PATHS.chevronRight}
+                className={PACKAGE_CARD_STYLES.ctaBtnArrowIcon}
+                strokeWidth={2.5}
+              />
               {t.ROOMS.PACKAGE_RESERVE}
             </>
           )}
