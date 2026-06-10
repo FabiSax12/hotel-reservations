@@ -52,6 +52,7 @@ export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
         </div>
       )}
 
+      {/* Admin tip hidden until a rooms.admin_tip column exists (US-DM-07). */}
       {room.adminTip && (
         <figure className={ROOM_DETAIL_STYLES.adminTip}>
           <svg className={ROOM_DETAIL_STYLES.adminTipIcon} viewBox={QUOTE_VIEW_BOX} fill="currentColor" aria-hidden="true">
