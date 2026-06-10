@@ -84,6 +84,21 @@ export const DB_COLUMNS: DBTablesWithColumns = {
     role: "role",
     user_id: "user_id",
   },
+  gallery_items: {
+    created_at: "created_at",
+    id: "id",
+    image_url: "image_url",
+    is_active: "is_active",
+    updated_at: "updated_at",
+  },
+  gallery_content: {
+    description: "description",
+    gallery_item_id: "gallery_item_id",
+    id: "id",
+    locale: "locale",
+    title: "title",
+    updated_at: "updated_at",
+  },
 } as const;
 
 type _AssertAllColumnsCovered = {
@@ -95,6 +110,8 @@ type _AssertAllColumnsCovered = {
 const _assertAllColumnsCovered: _AssertAllColumnsCovered = {
   amenities: true,
   cms_content: true,
+  gallery_content: true,
+  gallery_items: true,
   pending_invitations: true,
   profiles: true,
   reservations: true,

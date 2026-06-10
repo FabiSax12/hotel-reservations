@@ -332,6 +332,65 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_items: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          is_active: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery_content: {
+        Row: {
+          description: string
+          gallery_item_id: string
+          id: string
+          locale: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          description?: string
+          gallery_item_id: string
+          id?: string
+          locale: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          description?: string
+          gallery_item_id?: string
+          id?: string
+          locale?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gallery_content_gallery_item_id_fkey"
+            columns: ["gallery_item_id"]
+            isOneToOne: false
+            referencedRelation: "gallery_items"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
