@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PAGE_SIZE } from "../constants/pagination";
 import { FILTERED_RESULTS } from "../constants/filtered-results";
-import { useReservationsFiltering } from "./useReservationsFiltering";
+import { PAGE_SIZE } from "../constants/pagination";
 import type { Reservation } from "../domain/reservation";
+import { useReservationsFiltering } from "./useReservationsFiltering";
 
 function updateUrlPage(p: number) {
   const url = new URL(window.location.href);
@@ -37,5 +37,16 @@ export function useReservationsView(reservations: readonly Reservation[], initia
     updateUrlPage(newPage);
   };
 
-  return { filters, setFilters, statusCounts, filtered, paginated, page: safePage, totalPages, pageSize: PAGE_SIZE, hasResults, handlePageChange };
+  return {
+    filters,
+    setFilters,
+    statusCounts,
+    filtered,
+    paginated,
+    page: safePage,
+    totalPages,
+    pageSize: PAGE_SIZE,
+    hasResults,
+    handlePageChange,
+  };
 }

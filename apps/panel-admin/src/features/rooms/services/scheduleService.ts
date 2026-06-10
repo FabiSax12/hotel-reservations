@@ -4,10 +4,7 @@ import type { RoomSchedule } from "@/features/rooms/domain/schedule.interface";
 export const scheduleService = {
   getRoomSchedules: async (roomId: string): Promise<RoomSchedule[]> => {
     const supabase = createSupabaseClient() as any;
-    const { data, error } = await supabase
-      .from("room_schedules")
-      .select("*")
-      .eq("room_id", roomId);
+    const { data, error } = await supabase.from("room_schedules").select("*").eq("room_id", roomId);
 
     if (error) throw new Error(error.message);
     return data as RoomSchedule[];

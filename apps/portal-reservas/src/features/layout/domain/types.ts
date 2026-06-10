@@ -9,6 +9,8 @@ export interface HeaderProps {
   searchParams: SearchParams;
   onReset: () => void;
   onSearch: (params: SearchParams) => void;
+  /** When true, the header is pushed left to make room for the detail side panel. */
+  isDetailOpen?: boolean;
 }
 
 export interface HeaderBrandProps {

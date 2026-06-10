@@ -1,10 +1,13 @@
 "use client";
 
+        
 import { useI18n } from "@/locales";
 import { PageHeader } from "@/shared/components/PageHeader";
+        
 import { useReservationsView } from "../../../hooks/useReservationsView";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
 import { EmptyState } from "../EmptyState/EmptyState";
+        
 import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
 import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import type { ReservationsViewProps } from "./ReservationsView.interface";

@@ -1,19 +1,17 @@
 /**
- * @file RoomsInnerPage.tsx — Inner page that owns expandedRoomId state.
+ * @file RoomsInnerPage.tsx — Wires the rooms providers around the viewport.
  *
- * Separated from the root page to keep the RoomsProvider state colocated
- * with the components that consume it, avoiding prop drilling.
+ * Builds the RoomsContext value and nests the RoomDetailProvider so the detail
+ * panel state is colocated with the components that consume it. The actual page
+ * chrome lives in RoomsViewport, which consumes RoomDetailContext to reflow when
+ * the panel opens.
  */
 
 "use client";
 
-import { useEffect, useState } from "react";
-import { Background } from "../features/layout/components/Background";
-import { Header } from "../features/layout/components/Header";
-import { RoomList } from "../features/rooms/components/RoomList";
+import { RoomDetailProvider } from "../features/room-detail";
 import { RoomsProvider } from "../features/rooms/context/RoomsContext";
-import { HeroSearch } from "../features/search/components/HeroSearch";
-import { PAGE_STYLES as S } from "../theme/layout.theme";
+import { RoomsViewport } from "./RoomsViewport";
 import type { RoomsInnerPageProps } from "./RoomsInnerPage.types";
 
 export function RoomsInnerPage({
@@ -26,71 +24,40 @@ export function RoomsInnerPage({
   hasDates,
   isSearchingData,
   filteredRooms,
+  prioritizedRoomId,
   onSearchTrigger,
   onDestinationChange,
   onReset,
 }: RoomsInnerPageProps) {
-  const [expandedRoomId, setExpandedRoomId] = useState<string | null>(null);
-  const [roomsHidden, setRoomsHidden] = useState(false);
-
-  useEffect(() => {
-    if (heroCalendarActive || isSearchingData) {
-      // Scroll to top immediately so the user sees the calendar / loading state
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      // Hide rooms after the calendar finishes its entrance animation.
-      // This prevents the room list from flashing underneath while the hero
-      // calendar slides in; the 500 ms must match the CSS transition duration.
-      const timer = setTimeout(() => setRoomsHidden(true), 500);
-      return () => clearTimeout(timer);
-    }
-    // When calendar closes or search finishes, show rooms again immediately
-    setRoomsHidden(false);
-  }, [heroCalendarActive, isSearchingData]);
-
   const roomsContextValue = {
     selectedLocation,
+    hasSearched,
     hasDates,
     searchDates: hasDates
       ? { checkIn: searchParams.checkIn, checkOut: searchParams.checkOut }
       : null,
-    expandedRoomId,
-    setExpandedRoomId,
     onSearch: onSearchTrigger,
+    guestCount: (searchParams.adults ?? 0) + (searchParams.children ?? 0),
+    prioritizedRoomId,
   };
 
   return (
     <RoomsProvider value={roomsContextValue}>
-      <main className={S.main}>
-        <Background />
-
-        <Header
+      <RoomDetailProvider>
+        <RoomsViewport
           hasSearched={hasSearched}
+          selectedLocation={selectedLocation}
+          heroCalendarActive={heroCalendarActive}
+          setHeroCalendarActive={setHeroCalendarActive}
           searchParams={searchParams}
+          searchKey={searchKey}
+          isSearchingData={isSearchingData}
+          filteredRooms={filteredRooms}
+          onSearchTrigger={onSearchTrigger}
+          onDestinationChange={onDestinationChange}
           onReset={onReset}
-          onSearch={onSearchTrigger}
         />
-
-        {!hasSearched && (
-          <HeroSearch
-            onSearch={onSearchTrigger}
-            onDestinationChange={onDestinationChange}
-            heroCalendarActive={heroCalendarActive}
-            setHeroCalendarActive={setHeroCalendarActive}
-            hasLocation={!!selectedLocation}
-          />
-        )}
-
-        {selectedLocation && !roomsHidden && (
-          <div className={S.roomsWrapper(hasSearched, heroCalendarActive)}>
-            <RoomList
-              rooms={filteredRooms}
-              selectedDest={selectedLocation}
-              searchKey={searchKey}
-              isLoading={isSearchingData}
-            />
-          </div>
-        )}
-      </main>
+      </RoomDetailProvider>
     </RoomsProvider>
   );
 }

@@ -6,6 +6,7 @@ import { Check, Inbox, Settings, X } from "lucide-react";
 import { useI18n } from "@/locales";
 import { PermissionGuard } from "@/shared/components/PermissionGuard/PermissionGuard";
 import { APP_ROLES } from "@/shared/constants/roles";
+import { useAdminActions } from "../../hooks/useAdminActions";
 import type { AdminsTableProps } from "./AdminsTable.interface";
 import { TABLE_STYLES } from "./AdminsTable.styles";
 
@@ -19,18 +20,10 @@ export const AdminsTable = ({
 
   const TABLE_TEXTS = t.ADMINS.TABLE;
 
-  const handleManagePermissions = (admin: AdminsTableProps["admins"][number]) => {
-    if (onManagePermissions) {
-      onManagePermissions({
-        id: admin.id,
-        full_name: admin.full_name,
-        email: admin.email,
-        role: admin.role as "admin" | "owner",
-        permissions: [], // Will be fetched when drawer opens
-        is_active: admin.is_active,
-      });
-    }
-  };
+  const { handleToggle: onActionToggle, handleManagePermissions } = useAdminActions({
+    onToggle,
+    onManagePermissions,
+  });
 
   return (
     <Table>
@@ -77,7 +70,7 @@ export const AdminsTable = ({
                           variant="danger"
                           isIconOnly
                           isDisabled={!user.is_active}
-                          onPress={() => onToggle(user.id, user.is_active)}
+                          onPress={() => onActionToggle(user.id, user.is_active)}
                         >
                           <X />
                         </Button>
@@ -85,7 +78,7 @@ export const AdminsTable = ({
                           variant="primary"
                           isIconOnly
                           isDisabled={user.is_active}
-                          onPress={() => onToggle(user.id, user.is_active)}
+                          onPress={() => onActionToggle(user.id, user.is_active)}
                         >
                           <Check />
                         </Button>

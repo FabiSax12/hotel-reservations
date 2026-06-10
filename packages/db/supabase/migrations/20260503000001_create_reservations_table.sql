@@ -6,7 +6,7 @@ CREATE TABLE public.reservations (
                                 DEFAULT 'RES-' || LPAD(nextval('public.reservation_code_seq')::text, 3, '0'),
 
   -- Huésped: usuario registrado (cliente) o walk-in
-  user_id         uuid          REFERENCES auth.users(id) ON DELETE SET NULL,
+  user_id         uuid          REFERENCES public.users(id) ON DELETE SET NULL,
   guest_name      text          NOT NULL,
   guest_email     text          NOT NULL,
   guest_phone     text          NOT NULL,

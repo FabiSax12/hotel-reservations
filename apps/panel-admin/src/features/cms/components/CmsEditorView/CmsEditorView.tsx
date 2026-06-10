@@ -1,10 +1,10 @@
 "use client";
 
-import { useCmsEditor } from "@/features/cms/hooks/useCmsEditor";
 import { CmsSectionEditor } from "@/features/cms/components/CmsSectionEditor/CmsSectionEditor";
 import { CMS_SECTION_CONFIGS } from "@/features/cms/constants/sectionConfigs";
-import { CMS_EDITOR_VIEW_STYLES as s } from "./CmsEditorView.styles";
+import { useCmsEditor } from "@/features/cms/hooks/useCmsEditor";
 import type { CmsEditorViewProps } from "./CmsEditorView.interface";
+import { CMS_EDITOR_VIEW_STYLES as STYLES } from "./CmsEditorView.styles";
 
 export function CmsEditorView({ initialValues }: CmsEditorViewProps) {
   const {
@@ -23,17 +23,17 @@ export function CmsEditorView({ initialValues }: CmsEditorViewProps) {
   } = useCmsEditor({ initialValues });
 
   return (
-    <main className={s.wrapper}>
-      <div className={s.inner}>
-        <h1 className={s.title}>{texts.PAGE_TITLE}</h1>
+    <main className={STYLES.wrapper}>
+      <div className={STYLES.inner}>
+        <h1 className={STYLES.title}>{texts.PAGE_TITLE}</h1>
 
-        <div className={s.card}>
-          <div className={s.sectionTabs}>
+        <div className={STYLES.card}>
+          <div className={STYLES.sectionTabs}>
             {CMS_SECTION_CONFIGS.map((config) => (
               <button
                 key={config.section}
                 type="button"
-                className={`${s.sectionTab}${activeSection === config.section ? ` ${s.sectionTabActive}` : ""}`}
+                className={`${STYLES.sectionTab}${activeSection === config.section ? ` ${STYLES.sectionTabActive}` : ""}`}
                 onClick={() => setActiveSection(config.section)}
               >
                 {config.getLabel(texts)}
@@ -41,7 +41,7 @@ export function CmsEditorView({ initialValues }: CmsEditorViewProps) {
             ))}
           </div>
 
-          <div className={s.body}>
+          <div className={STYLES.body}>
             <CmsSectionEditor
               config={activeSectionConfig}
               localeValues={values[activeSection] ?? {}}

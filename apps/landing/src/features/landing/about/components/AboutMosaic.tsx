@@ -4,9 +4,6 @@ import { motion, useInView, useMotionTemplate, useScroll, useTransform } from "f
 import { useRef } from "react";
 import { STAGGER } from "@/features/landing/about/constants/animations";
 import {
-  MOSAIC_IMAGE_1,
-  MOSAIC_IMAGE_2,
-  MOSAIC_IMAGE_3,
   MOSAIC_OVERLAYS_1,
   MOSAIC_OVERLAYS_2,
   MOSAIC_OVERLAYS_3,

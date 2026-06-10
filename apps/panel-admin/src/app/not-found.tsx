@@ -11,7 +11,7 @@ const NOT_FOUND_PAGE_STYLES = {
   card: "flex flex-col items-center rounded-xl bg-gray-50 p-12 text-center shadow-sm border border-gray-100",
   title: "text-2xl",
   content: "w-full",
-} as const
+} as const;
 
 export default function NotFound() {
   const { t } = useI18n();
@@ -24,15 +24,12 @@ export default function NotFound() {
             {t.COMMON.STATUS.NOT_FOUND_TITLE}
           </Card.Title>
         </Card.Header>
-        <Card.Description>
-          {t.COMMON.STATUS.NOT_FOUND_MESSAGE}
-        </Card.Description>
+        <Card.Description>{t.COMMON.STATUS.NOT_FOUND_MESSAGE}</Card.Description>
         <Card.Content className={NOT_FOUND_PAGE_STYLES.content}>
           <Link
             href={ROUTES.ADMIN.DASHBOARD}
             className={buttonVariants({ variant: "primary", fullWidth: true })}
           >
-
             {t.COMMON.STATUS.RETURN_HOME}
           </Link>
         </Card.Content>

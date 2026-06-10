@@ -5,7 +5,7 @@ import { useI18n } from "@/locales";
 import { PERMISSION_CATEGORIES } from "../../constants/permissionCategories";
 import { usePermissionDrawer } from "../../hooks/usePermissionDrawer";
 import type { PermissionDrawerProps } from "./PermissionDrawer.interface";
-import { PERMISSION_DRAWER_STYLES as STYLES } from "./PermissionDrawer.styles";
+import { PERMISSION_DRAWER_STYLES } from "./PermissionDrawer.styles";
 
 export function PermissionDrawer({ isOpen, onClose, admin, onSuccess }: PermissionDrawerProps) {
   const { t } = useI18n();
@@ -43,26 +43,30 @@ export function PermissionDrawer({ isOpen, onClose, admin, onSuccess }: Permissi
           </Drawer.Header>
 
           <Drawer.Body>
-            {error && <div className={STYLES.error}>{TEXTS.ERRORS[error]}</div>}
+            {error && (
+              <div className={PERMISSION_DRAWER_STYLES.errorAlert}>{TEXTS.ERRORS[error]}</div>
+            )}
 
-            {isLoading && <div className={STYLES.loading}>{t.COMMON.STATUS.LOADING}</div>}
+            {isLoading && (
+              <div className={PERMISSION_DRAWER_STYLES.loadingAlert}>{t.COMMON.STATUS.LOADING}</div>
+            )}
 
-            <div className={STYLES.categories}>
+            <div className={PERMISSION_DRAWER_STYLES.categoriesWrapper}>
               {PERMISSION_CATEGORIES.map((category) => (
-                <div key={category.labelKey}>
-                  <h3 className={STYLES.categoryHeading}>
+                <div key={category.labelKey} className={PERMISSION_DRAWER_STYLES.categoryWrapper}>
+                  <h3 className={PERMISSION_DRAWER_STYLES.categoryLabel}>
                     {TEXTS.CATEGORIES[category.labelKey] ?? category.labelKey}
                   </h3>
-                  <div className={STYLES.permissions}>
+                  <div className={PERMISSION_DRAWER_STYLES.permissionsList}>
                     {category.permissions.map((permission) => (
-                      <label key={permission} className={STYLES.permissionLabel}>
+                      <label key={permission} className={PERMISSION_DRAWER_STYLES.permissionLabel}>
                         <input
                           type="checkbox"
                           checked={selectedPermissions.has(permission)}
                           onChange={() => handleTogglePermission(permission)}
-                          className={STYLES.checkbox}
+                          className={PERMISSION_DRAWER_STYLES.checkbox}
                         />
-                        <span className={STYLES.permissionText}>
+                        <span className={PERMISSION_DRAWER_STYLES.permissionText}>
                           {TEXTS.PERMISSION_LABELS[permission] ?? permission}
                         </span>
                       </label>

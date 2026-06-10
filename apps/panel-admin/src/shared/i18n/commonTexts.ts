@@ -29,6 +29,10 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       NOT_FOUND_TITLE: "Página no encontrada",
       NOT_FOUND_MESSAGE: "La página que buscas no existe o fue movida.",
       RETURN_HOME: "Volver al inicio",
+      FORBIDDEN_TITLE: "403",
+      FORBIDDEN_SUBTITLE: "Acceso Restringido",
+      FORBIDDEN_MESSAGE: "No tienes permiso para acceder a esta sección.",
+      FORBIDDEN_BACK_BUTTON: "Volver al Dashboard",
     },
   },
   en: {
@@ -58,6 +62,10 @@ export const COMMON_TEXTS: Record<SupportedLocale, CommonTexts> = {
       NOT_FOUND_TITLE: "Page not found",
       NOT_FOUND_MESSAGE: "The page you are looking for does not exist or has been moved.",
       RETURN_HOME: "Return home",
+      FORBIDDEN_TITLE: "403",
+      FORBIDDEN_SUBTITLE: "Access Restricted",
+      FORBIDDEN_MESSAGE: "You don't have permission to access this section.",
+      FORBIDDEN_BACK_BUTTON: "Back to Dashboard",
     },
   },
 } as const;

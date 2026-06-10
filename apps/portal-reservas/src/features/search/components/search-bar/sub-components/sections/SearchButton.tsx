@@ -4,9 +4,9 @@
 
 "use client";
 
+import { SEARCH_BAR_STYLES } from "../../theme/search-bar.theme";
 import { useI18n } from "@/locales";
 import type { SearchButtonProps } from "../../domain/types";
-import { SEARCH_BAR_STYLES as S } from "../../theme/search-bar.theme";
 
 export function SearchButton({
   isSearching,
@@ -15,47 +15,47 @@ export function SearchButton({
   onTrigger,
   isShaking = false,
 }: SearchButtonProps) {
-  const shakeClass = isShaking ? S.sectionShake : "";
+  const shakeClass = isShaking ? SEARCH_BAR_STYLES.sectionShake : "";
   const { t } = useI18n();
 
   return (
-    <div className={S.searchBtnWrapper}>
+    <div className={SEARCH_BAR_STYLES.searchBtnWrapper}>
       <button
         type="button"
         onClick={(e) => {
           e.stopPropagation();
           onTrigger();
         }}
-        className={`${S.searchBtn(paddingClass)} ${shakeClass}`}
+        className={`${SEARCH_BAR_STYLES.searchBtn(paddingClass)} ${shakeClass}`}
       >
         {isSearching ? (
           <svg
-            className={`${iconClass} ${S.searchBtnSpinner}`}
+            className={`${iconClass} ${SEARCH_BAR_STYLES.searchBtnSpinner}`}
             fill="none"
-            viewBox={S.icons.spinner.viewBox}
+            viewBox={SEARCH_BAR_STYLES.icons.spinner.viewBox}
           >
             <circle
-              className={S.searchBtnSpinnerCircle}
-              cx={S.icons.spinner.circle.cx}
-              cy={S.icons.spinner.circle.cy}
-              r={S.icons.spinner.circle.r}
+              className={SEARCH_BAR_STYLES.searchBtnSpinnerCircle}
+              cx={SEARCH_BAR_STYLES.icons.spinner.circle.cx}
+              cy={SEARCH_BAR_STYLES.icons.spinner.circle.cy}
+              r={SEARCH_BAR_STYLES.icons.spinner.circle.r}
               stroke="currentColor"
-              strokeWidth={S.icons.spinner.circle.strokeWidth}
+              strokeWidth={SEARCH_BAR_STYLES.icons.spinner.circle.strokeWidth}
             />
-            <path className={S.searchBtnSpinnerPath} fill="currentColor" d={S.icons.spinner.path} />
+            <path className={SEARCH_BAR_STYLES.searchBtnSpinnerPath} fill="currentColor" d={SEARCH_BAR_STYLES.icons.spinner.path} />
           </svg>
         ) : (
           <svg
             className={iconClass}
             fill="none"
-            viewBox={S.icons.search.viewBox}
+            viewBox={SEARCH_BAR_STYLES.icons.search.viewBox}
             stroke="currentColor"
-            strokeWidth={S.icons.search.strokeWidth}
+            strokeWidth={SEARCH_BAR_STYLES.icons.search.strokeWidth}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d={S.icons.search.path} />
+            <path strokeLinecap="round" strokeLinejoin="round" d={SEARCH_BAR_STYLES.icons.search.path} />
           </svg>
         )}
-        <span className={S.searchBtnLabel}>{t.SEARCH.SEARCH_BAR.ACTION.SEARCH_BTN}</span>
+        <span className={SEARCH_BAR_STYLES.searchBtnLabel}>{t.SEARCH.SEARCH_BAR.ACTION.SEARCH_BTN}</span>
       </button>
     </div>
   );

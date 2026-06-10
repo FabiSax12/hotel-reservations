@@ -3,6 +3,7 @@
 import { getUserPermissions, setUserPermissions } from "@hotel/core/permissions";
 import {
   type AdminsList,
+  createSupabaseServerClient,
   createSupabaseServiceClient,
   DB_COLUMNS,
   DB_ENUMS,
@@ -12,19 +13,23 @@ import {
 import type { PermissionName } from "@hotel/db/types";
 import { cookies } from "next/headers";
 import { requirePermission } from "@/shared/auth/requirePermission";
+import { PERMISSIONS } from "@/shared/constants/permissions";
+import { APP_ROLES } from "@/shared/constants/roles";
+import {
+  UPDATE_PERMISSION_ERRORS,
+  type UpdatePermissionError,
+} from "../constants/permissionErrors";
 
 export type AdminWithPermissions = {
   id: string;
   full_name: string | null;
   email: string;
-  role: "admin" | "owner";
+  role: typeof APP_ROLES.ADMIN | typeof APP_ROLES.OWNER;
   permissions: PermissionName[];
   is_active: boolean;
 };
 
-export type UpdatePermissionsResult =
-  | { success: true }
-  | { error: "SELF_MODIFY" | "OWNER_MODIFY" | "INVALID_PERMISSION" | "UNKNOWN_ERROR" };
+export type UpdatePermissionsResult = { success: true } | { error: UpdatePermissionError };
 
 export async function getUserPermissionsService(userId: string): Promise<PermissionName[]> {
   return await getUserPermissions(userId);
@@ -39,24 +44,45 @@ export async function getUserPermissionsList(): Promise<AdminWithPermissions[]> 
   const { data: admins, error } = await supabase.rpc(RPC_FUNCTIONS.GET_ADMINS);
   if (error) throw new Error(error.message);
 
-  // Get permissions for each admin
-  const adminsWithPermissions = await Promise.all(
-    (admins as AdminsList).map(async (admin) => {
-      const permissions =
-        admin.role === "owner"
-          ? Object.values(DB_ENUMS.user_permission)
-          : await getUserPermissions(admin.id);
+  const adminsList = admins as AdminsList;
 
-      return {
-        id: admin.id,
-        full_name: admin.full_name,
-        email: admin.email,
-        role: admin.role as "admin" | "owner",
-        permissions,
-        is_active: admin.is_active,
-      };
-    }),
-  );
+  // Collect non-owner admin IDs
+  const nonOwnerIds = adminsList
+    .filter((admin) => admin.role !== APP_ROLES.OWNER)
+    .map((admin) => admin.id);
+
+  // Fetch all permissions in ONE query for non-owners
+  const permissionsMap = new Map<string, PermissionName[]>();
+  if (nonOwnerIds.length > 0) {
+    const { data: permissionsData, error: permError } = await supabase
+      .from(DB_TABLES.USER_PERMISSIONS)
+      .select(`${DB_COLUMNS.user_permissions.user_id}, ${DB_COLUMNS.user_permissions.permission}`)
+      .in(DB_COLUMNS.user_permissions.user_id, nonOwnerIds);
+
+    if (permError) throw new Error(permError.message);
+
+    // Group by user_id
+    for (const row of permissionsData ?? []) {
+      const userId = row[DB_COLUMNS.user_permissions.user_id] as string;
+      const permission = row[DB_COLUMNS.user_permissions.permission] as PermissionName;
+      const existing = permissionsMap.get(userId) ?? [];
+      existing.push(permission);
+      permissionsMap.set(userId, existing);
+    }
+  }
+
+  // Map admins with their permissions
+  const adminsWithPermissions = adminsList.map((admin) => ({
+    id: admin.id,
+    full_name: admin.full_name,
+    email: admin.email,
+    role: admin.role as typeof APP_ROLES.ADMIN | typeof APP_ROLES.OWNER,
+    permissions:
+      admin.role === APP_ROLES.OWNER
+        ? Object.values(DB_ENUMS.user_permission)
+        : (permissionsMap.get(admin.id) ?? []),
+    is_active: admin.is_active,
+  }));
 
   return adminsWithPermissions;
 }
@@ -75,14 +101,14 @@ export async function updateUserPermissions(
   } = await supabaseServer.auth.getSession();
 
   if (!session?.user) {
-    return { error: "UNKNOWN_ERROR" };
+    return { error: UPDATE_PERMISSION_ERRORS.UNKNOWN_ERROR };
   }
 
   const currentUserId = session.user.id;
 
   // Validation: cannot modify own permissions
   if (currentUserId === targetUserId) {
-    return { error: "SELF_MODIFY" };
+    return { error: UPDATE_PERMISSION_ERRORS.SELF_MODIFY };
   }
 
   const supabase = createSupabaseServiceClient();
@@ -95,24 +121,20 @@ export async function updateUserPermissions(
     .single();
 
   if (targetRole?.role === DB_ENUMS.user_role.owner) {
-    return { error: "OWNER_MODIFY" };
+    return { error: UPDATE_PERMISSION_ERRORS.OWNER_MODIFY };
   }
 
   // Validation: all permissions must be valid
   const validPermissions = Object.values(DB_ENUMS.user_permission);
   const invalidPermissions = permissions.filter((p) => !validPermissions.includes(p));
   if (invalidPermissions.length > 0) {
-    return { error: "INVALID_PERMISSION" };
+    return { error: UPDATE_PERMISSION_ERRORS.INVALID_PERMISSION };
   }
 
   try {
     await setUserPermissions(targetUserId, permissions, currentUserId);
     return { success: true };
   } catch {
-    return { error: "UNKNOWN_ERROR" };
+    return { error: UPDATE_PERMISSION_ERRORS.UNKNOWN_ERROR };
   }
 }
-
-// Re-export createSupabaseServerClient for use in this file
-import { createSupabaseServerClient } from "@hotel/db";
-import { PERMISSIONS } from "@/shared/constants/permissions";

@@ -8,29 +8,39 @@
 
 "use client";
 
-import { CalendarPopover } from "@hotel/ui";
 import React from "react";
-import { useI18n } from "@/locales";
+import { SEARCH_BAR_STYLES } from "../theme/search-bar.theme";
 import { SEARCH_SECTIONS, SEARCH_VARIANTS } from "../constants/search.constants";
+import { useI18n } from "@/locales";
 import { useSearchBarContext } from "../hooks/useSearchBarContext";
-import { SEARCH_BAR_STYLES as S } from "../theme/search-bar.theme";
-import { DestinationPopover } from "./DestinationPopover";
-import { ErrorTooltip } from "./ErrorTooltip";
+
 // Sub-components
 import { SearchBarFields } from "./SearchBarFields";
+import { DestinationPopover } from "./DestinationPopover";
+import { CalendarPopover } from "@hotel/ui";
+import { ErrorTooltip } from "./ErrorTooltip";
 
 export function SearchBarFrame() {
-  const { isHero, active, checkIn, checkOut, validationError, invalidState, handlePickDate } =
-    useSearchBarContext();
+  const {
+    isHero,
+    active,
+    checkIn,
+    checkOut,
+    validationError,
+    invalidState,
+    handlePickDate,
+  } = useSearchBarContext();
 
   const { t } = useI18n();
   const C = t.SEARCH.SEARCH_BAR;
 
   return (
-    <div className={S.bar(isHero)}>
+    <div className={SEARCH_BAR_STYLES.bar(isHero)}>
       <SearchBarFields />
 
-      {active === SEARCH_SECTIONS.WHERE && <DestinationPopover />}
+      {active === SEARCH_SECTIONS.WHERE && (
+        <DestinationPopover />
+      )}
 
       {(active === SEARCH_SECTIONS.CHECK_IN || active === SEARCH_SECTIONS.CHECK_OUT) && !isHero && (
         <CalendarPopover

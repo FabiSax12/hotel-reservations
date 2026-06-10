@@ -1,20 +1,27 @@
-import { CMS_SAVE_FOOTER_STYLES as s } from "./CmsSaveFooter.styles";
 import type { CmsSaveFooterProps } from "./CmsSaveFooter.interface";
+import { CMS_SAVE_FOOTER_STYLES as STYLES } from "./CmsSaveFooter.styles";
 
-export function CmsSaveFooter({ isSaving, isSuccess, isError, texts, type = "button", onSave }: CmsSaveFooterProps) {
+export function CmsSaveFooter({
+  isSaving,
+  isSuccess,
+  isError,
+  texts,
+  type = "button",
+  onSave,
+}: CmsSaveFooterProps) {
   return (
-    <div className={s.footer}>
-      <button type={type} className={s.saveBtn} disabled={isSaving} onClick={onSave}>
+    <div className={STYLES.footer}>
+      <button type={type} className={STYLES.saveBtn} disabled={isSaving} onClick={onSave}>
         {isSaving ? texts.ACTIONS.SAVING : texts.ACTIONS.SAVE}
       </button>
 
       {isSuccess && (
-        <span className={`${s.feedback} ${s.feedbackSuccess}`} role="status">
+        <span className={`${STYLES.feedback} ${STYLES.feedbackSuccess}`} role="status">
           {texts.ACTIONS.SUCCESS}
         </span>
       )}
       {isError && (
-        <span className={`${s.feedback} ${s.feedbackError}`} role="alert">
+        <span className={`${STYLES.feedback} ${STYLES.feedbackError}`} role="alert">
           {texts.ACTIONS.ERROR}
         </span>
       )}
