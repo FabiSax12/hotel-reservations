@@ -54,6 +54,8 @@ export const CHECKOUT_STYLES = {
   roomCard: "overflow-hidden rounded-3xl border border-forest-800 bg-forest-900/50",
   roomMedia: "relative aspect-[16/10] w-full sm:aspect-[2/1]",
   roomImg: "object-cover",
+  // Shown when a room has no room_images rows yet (US-DM-07 / US-KA-06 uploads).
+  roomImgPlaceholder: "absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-900",
   roomMediaScrim:
     "pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-950/80 via-transparent to-transparent",
   roomPosition:

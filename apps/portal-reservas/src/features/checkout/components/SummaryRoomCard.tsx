@@ -65,14 +65,19 @@ export function SummaryRoomCard({ room, position, total }: SummaryRoomCardProps)
   return (
     <article className={CHECKOUT_STYLES.roomCard}>
       <div className={CHECKOUT_STYLES.roomMedia}>
-        <Image
-          src={room.image}
-          alt={room.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 768px"
-          className={CHECKOUT_STYLES.roomImg}
-          unoptimized
-        />
+        {/* Falls back to a gradient until the room has room_images (US-DM-07). */}
+        {room.image ? (
+          <Image
+            src={room.image}
+            alt={room.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 768px"
+            className={CHECKOUT_STYLES.roomImg}
+            unoptimized
+          />
+        ) : (
+          <div className={CHECKOUT_STYLES.roomImgPlaceholder} aria-hidden="true" />
+        )}
         <div className={CHECKOUT_STYLES.roomMediaScrim} aria-hidden="true" />
         {position && total ? (
           <span className={CHECKOUT_STYLES.roomPosition}>

@@ -54,6 +54,8 @@ export const ROOM_CARD_STYLES = {
     "relative w-full lg:w-[380px] h-[260px] lg:h-full overflow-hidden flex-shrink-0 rounded-t-[2rem] lg:rounded-tr-none lg:rounded-l-[2rem]",
   image:
     "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
+  // Shown when a room has no room_images rows yet (US-DM-07 / US-KA-06 uploads).
+  imagePlaceholder: "absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-900",
   urgencyBadge:
     "absolute top-4 left-4 bg-red-900/90 backdrop-blur-sm text-stone-50 px-3 py-1.5 rounded-xl font-bold text-xs shadow-lg flex items-center gap-1.5 animate-in slide-in-from-top-2",
   urgencyIcon: "w-3.5 h-3.5 flex-shrink-0 text-red-400",
@@ -220,6 +222,8 @@ export const PACKAGE_CARD_STYLES = {
   imageCell: "relative overflow-hidden",
   image:
     "absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]",
+  // Shown when a room has no room_images rows yet (US-DM-07 / US-KA-06 uploads).
+  imagePlaceholder: "absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-900",
 
   /** Room count overlay badge at bottom-right of image. */
   roomCountBadge:

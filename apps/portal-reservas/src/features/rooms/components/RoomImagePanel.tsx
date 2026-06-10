@@ -28,7 +28,12 @@ export function RoomImagePanel({ room }: RoomImagePanelProps) {
 
   return (
     <div className={ROOM_CARD_STYLES.imageWrapper}>
-      <div className={ROOM_CARD_STYLES.image} style={{ backgroundImage: `url('${room.image}')` }} />
+      {/* Falls back to a gradient until the room has room_images (US-DM-07). */}
+      {room.image ? (
+        <div className={ROOM_CARD_STYLES.image} style={{ backgroundImage: `url('${room.image}')` }} />
+      ) : (
+        <div className={ROOM_CARD_STYLES.imagePlaceholder} />
+      )}
 
       {/* Last room badge — suppressed while inventory is assumed (US-DM-07). */}
       {ROOM_INVENTORY.IS_TRACKED && room.inventory === 1 && (
