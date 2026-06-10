@@ -10,13 +10,14 @@
 "use client";
 
 import { useRef } from "react";
-import { SELECTION_KIND, useRoomDetail } from "@/features/room-detail";
+import { SELECTION_KIND } from "@/features/room-detail";
 import { useI18n } from "@/locales";
 import { PACKAGE_CARD_STYLES, ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
 import { ROOM_ANIMATION } from "../constants/rooms.constants";
 import type { PackageCardProps } from "../domain/types";
 import { usePackageCardState } from "../hooks/usePackageCardState";
 import { useReserveAction } from "../hooks/useReserveAction";
+import { useRoomDetailToggle } from "../hooks/useRoomDetailToggle";
 import { PackageCardCTA } from "./sub-components/PackageCardCTA";
 import { PackageCardExpansion } from "./sub-components/PackageCardExpansion";
 import { PackageCardHeader } from "./sub-components/PackageCardHeader";
@@ -26,13 +27,10 @@ import { RoomRangeCalendar } from "./sub-components/RoomRangeCalendar";
 export function PackageCard({ pkg, index, selectedDest }: PackageCardProps) {
   const { t } = useI18n();
   const primaryRoom = pkg.rooms[0];
-  const { selection, isOpen, openPackage, close } = useRoomDetail();
-  const isActive =
-    isOpen && selection?.kind === SELECTION_KIND.PACKAGE && selection.pkg.id === pkg.id;
-  const handleOpenDetail = () => {
-    if (isActive) close();
-    else openPackage(pkg);
-  };
+  const { isActive, handleOpenDetail } = useRoomDetailToggle({
+    kind: SELECTION_KIND.PACKAGE,
+    pkg,
+  });
   const ctaRef = useRef<HTMLDivElement>(null);
   const {
     wrapperRef,
