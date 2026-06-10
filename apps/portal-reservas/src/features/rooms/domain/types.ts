@@ -153,7 +153,8 @@ export interface RoomPriceTierProps {
 
 export interface RoomRangeCalendarProps {
   availableDates: string[];
-  location: string;
+  /** Sede the re-search targets. Optional — no rooms.location column yet (US-DM-07). */
+  location?: string;
   roomId: string;
   onClose: () => void;
   /** Ref to the element the calendar should appear above (for fixed positioning). */

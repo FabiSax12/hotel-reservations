@@ -30,7 +30,7 @@ export function RoomCardCTA({ room }: RoomCardCTAProps) {
     isCalendarOpen,
     toggleCalendar,
     closeCalendar,
-  } = usePackageCardState();
+  } = usePackageCardState(room.availableDates);
   const { reserve, isReserving } = useReserveAction();
 
   return (

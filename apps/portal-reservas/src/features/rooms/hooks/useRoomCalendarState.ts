@@ -9,6 +9,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
 import { ROOM_MOCK } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
 import { getBlockedDatesBetween } from "../domain/date-range.utils";
@@ -17,7 +18,7 @@ const SUBMIT_DELAY_MS = ROOM_MOCK.CALENDAR_SUBMIT_DELAY_MS;
 
 export function useRoomCalendarState(
   availableDates: string[],
-  location: string,
+  location: string | undefined,
   roomId: string,
   onClose: () => void,
 ) {
@@ -54,7 +55,8 @@ export function useRoomCalendarState(
 
       submitTimerRef.current = setTimeout(() => {
         onSearch({
-          destination: location,
+          // No rooms.location column yet (US-DM-07): fall back to "all".
+          destination: location ?? SEARCH_VALS.DESTINATION_ALL,
           checkIn: start,
           checkOut: end,
           adults: 2,
