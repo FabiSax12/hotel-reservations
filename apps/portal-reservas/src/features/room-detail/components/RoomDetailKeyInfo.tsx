@@ -7,7 +7,7 @@
 
 "use client";
 
-import { formatBedConfig } from "@/features/rooms";
+import { formatBedConfig, ROOM_INVENTORY } from "@/features/rooms";
 import { useI18n } from "@/locales";
 import { ICON_PATHS, ICON_VIEW_BOX, QUOTE_VIEW_BOX } from "../constants/room-detail-icons.const";
 import type { RoomDetailKeyInfoProps } from "../domain/types";
@@ -15,7 +15,8 @@ import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 
 export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
   const { t } = useI18n();
-  const isLastRoom = room.inventory === 1;
+  // Scarcity chip suppressed while inventory is assumed (US-DM-07).
+  const isLastRoom = ROOM_INVENTORY.IS_TRACKED && room.inventory === 1;
 
   return (
     <div className={ROOM_DETAIL_STYLES.keyInfo}>

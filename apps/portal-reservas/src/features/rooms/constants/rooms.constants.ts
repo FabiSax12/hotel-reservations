@@ -19,6 +19,16 @@ export const ROOM_DEFAULTS = Object.freeze({
   INVENTORY: 1,
 } as const);
 
+export const ROOM_INVENTORY = Object.freeze({
+  /**
+   * Whether room inventory is backed by real DB data. False under US-DM-07
+   * (inventory is assumed to be 1), so scarcity/availability-count UI is
+   * suppressed to avoid showing every room as the "last one". Flip to true once
+   * a real inventory source lands to re-enable those badges unchanged.
+   */
+  IS_TRACKED: false,
+} as const);
+
 export const ROOM_AVAILABILITY = Object.freeze({
   /** How many days ahead the availability calendar is computed from reservations. */
   WINDOW_DAYS: 120,

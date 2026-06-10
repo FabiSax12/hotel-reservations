@@ -27,6 +27,7 @@ export { CTASpinner } from "./components/sub-components/CTASpinner";
 export { CtaIcon } from "./components/sub-components/CtaIcon";
 export { RoomRangeCalendar } from "./components/sub-components/RoomRangeCalendar";
 export { formatBedConfig, getAmenityIcon } from "./constants/amenity-icons.const";
+export { ROOM_INVENTORY } from "./constants/rooms.constants";
 export {
   createEmptyRoomFilters,
   DEFAULT_ROOM_SORT,

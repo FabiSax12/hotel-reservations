@@ -8,6 +8,7 @@
  */
 
 import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
+import { ROOM_INVENTORY } from "../constants/rooms.constants";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useI18n } from "@/locales";
 import { RoomCardCTA } from "./sub-components/RoomCardCTA";
@@ -27,7 +28,8 @@ export function RoomPriceTier({ room }: RoomPriceTierProps) {
             <span className={ROOM_CARD_STYLES.priceAmount}>${room.price}</span>
             <span className={ROOM_CARD_STYLES.priceCurrency}>{t.ROOMS.CURRENCY}</span>
           </div>
-          {room.inventory > 2 && (
+          {/* Availability count suppressed while inventory is assumed (US-DM-07). */}
+          {ROOM_INVENTORY.IS_TRACKED && room.inventory > 2 && (
             <div className={ROOM_CARD_STYLES.availRow}>
               <span className={ROOM_CARD_STYLES.availDot} />
               {room.inventory} {t.ROOMS.AVAILABLE_DATES}

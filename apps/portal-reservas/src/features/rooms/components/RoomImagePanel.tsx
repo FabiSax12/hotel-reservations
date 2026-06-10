@@ -8,6 +8,7 @@
 
 import type { Room } from "../domain/types";
 import { ROOM_CARD_STYLES } from "../../../theme/rooms.theme";
+import { ROOM_INVENTORY } from "../constants/rooms.constants";
 import { useI18n } from "@/locales";
 
 const SVG_VIEW_BOX = "0 0 24 24";
@@ -29,8 +30,8 @@ export function RoomImagePanel({ room }: RoomImagePanelProps) {
     <div className={ROOM_CARD_STYLES.imageWrapper}>
       <div className={ROOM_CARD_STYLES.image} style={{ backgroundImage: `url('${room.image}')` }} />
 
-      {/* Last room badge — top-left, only when inventory is 1 */}
-      {room.inventory === 1 && (
+      {/* Last room badge — suppressed while inventory is assumed (US-DM-07). */}
+      {ROOM_INVENTORY.IS_TRACKED && room.inventory === 1 && (
         <div className={ROOM_CARD_STYLES.urgencyBadge} role="status">
           <svg className={ROOM_CARD_STYLES.urgencyIcon} fill="none" viewBox={SVG_VIEW_BOX} stroke="currentColor" strokeWidth={3}>
             <path strokeLinecap="round" strokeLinejoin="round" d={URGENCY_CLOCK_ICON_PATH} />
