@@ -42,12 +42,15 @@ export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
         )}
       </div>
 
-      <div className={ROOM_DETAIL_STYLES.bedsRow}>
-        <svg className={ROOM_DETAIL_STYLES.bedsIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={1.6}>
-          <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.bed} />
-        </svg>
-        {formatBedConfig(room.beds)}
-      </div>
+      {/* Bed configuration hidden until a beds column/table exists (US-DM-07). */}
+      {room.beds && (
+        <div className={ROOM_DETAIL_STYLES.bedsRow}>
+          <svg className={ROOM_DETAIL_STYLES.bedsIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={1.6}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.bed} />
+          </svg>
+          {formatBedConfig(room.beds)}
+        </div>
+      )}
 
       {room.adminTip && (
         <figure className={ROOM_DETAIL_STYLES.adminTip}>
