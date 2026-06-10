@@ -3,7 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   transpilePackages: ["@hotel/ui", "@hotel/db", "@hotel/core"],
   images: {
-    remotePatterns: [{ protocol: "http", hostname: "127.0.0.1", port: "54321" }],
+    remotePatterns: [
+      { protocol: "http", hostname: "127.0.0.1", port: "54321" },
+      { protocol: "https", hostname: "vhnblyovgvpamjsqlzix.supabase.co" },
+    ],
   },
   experimental: {
     authInterrupts: true,
