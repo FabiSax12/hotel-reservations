@@ -59,6 +59,10 @@ export interface Room {
    * Drives the "Destacado" sort option (US-DM-03 AC #1).
    */
   isFeatured: boolean;
+  /** Local check-in time as 24h "HH:MM", shown on the confirmation page (US-DM-06). */
+  checkInTime: string;
+  /** Local check-out time as 24h "HH:MM", shown on the confirmation page (US-DM-06). */
+  checkOutTime: string;
 }
 
 // ─── Sub-Component Props ────────────────────────────────────────────────────
@@ -91,6 +95,14 @@ export interface QuickSearchDialogProps {
 
 export interface RoomCardCTAProps {
   room: Room;
+}
+
+/** A decorative stroke icon for the reserve/check-dates buttons. */
+export interface CtaIconProps {
+  /** SVG path data from CTA_ICON_PATHS. */
+  path: string;
+  className: string;
+  strokeWidth: number;
 }
 
 export interface RoomCardHeaderProps {
@@ -176,8 +188,6 @@ export interface PackageCardSummaryProps {
 }
 
 export interface PackageCardCTAProps {
-  /** The primary room (most expensive) used for availability checks. */
-  primaryRoom: Room;
   /** Whether dates are selected in the search bar. */
   hasDates: boolean;
   /** Whether the room is available for the selected dates. */
