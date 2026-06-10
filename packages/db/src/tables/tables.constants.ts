@@ -10,6 +10,7 @@ const _DB_TABLES = {
   ROOM_AMENITIES: "room_amenities",
   ROOM_IMAGES: "room_images",
   ROOMS: "rooms",
+  SYSTEM_SETTINGS: "system_settings",
   USER_PERMISSIONS: "user_permissions",
   USER_ROLES: "user_roles",
 } as const;
@@ -31,6 +32,7 @@ const _assertAllTablesCovered: _AssertAllTablesCovered = {
   room_amenities: true,
   room_images: true,
   rooms: true,
+  system_settings: true,
   user_permissions: true,
   user_roles: true,
 };

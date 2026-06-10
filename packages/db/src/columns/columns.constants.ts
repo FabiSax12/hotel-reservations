@@ -82,6 +82,12 @@ export const DB_COLUMNS: DBTablesWithColumns = {
     regular_fee: "regular_fee",
     updated_at: "updated_at",
   },
+  system_settings: {
+    id: "id",
+    setting_key: "setting_key",
+    setting_value: "setting_value",
+    updated_at: "updated_at",
+  },
   user_permissions: {
     user_id: "user_id",
     permission: "permission",
@@ -109,6 +115,7 @@ const _assertAllColumnsCovered: _AssertAllColumnsCovered = {
   room_amenities: true,
   room_images: true,
   rooms: true,
+  system_settings: true,
   user_permissions: true,
   user_roles: true,
 };

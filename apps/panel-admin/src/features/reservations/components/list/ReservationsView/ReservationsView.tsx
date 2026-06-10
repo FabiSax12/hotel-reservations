@@ -5,9 +5,11 @@ import { useI18n } from "@/locales";
 import { PageHeader } from "@/shared/components/PageHeader";
         
 import { useReservationsView } from "../../../hooks/useReservationsView";
+import { useBookingMode } from "../../../hooks/useBookingMode";
 import { ReservationsFilters } from "../../filters/ReservationsFilters/ReservationsFilters";
 import { EmptyState } from "../EmptyState/EmptyState";
         
+import { ReservationsPageHeader } from "../ReservationsPageHeader/ReservationsPageHeader";
 import { ReservationsPagination } from "../ReservationsPagination/ReservationsPagination";
 import { ReservationsTable } from "../ReservationsTable/ReservationsTable";
 import type { ReservationsViewProps } from "./ReservationsView.interface";
@@ -16,9 +18,11 @@ import { CARD_STYLES, RESERVATIONS_PAGE_STYLES } from "./ReservationsView.styles
 export const ReservationsView = ({
   reservations,
   rooms,
+  initialBookingMode,
   initialPage = 1,
 }: ReservationsViewProps) => {
-  const { t } = useI18n();
+  const { mode: bookingMode, handleModeChange, isPending } = useBookingMode(initialBookingMode);
+
   const {
     filters,
     setFilters,
@@ -34,37 +38,13 @@ export const ReservationsView = ({
 
   return (
     <main className={RESERVATIONS_PAGE_STYLES.wrapper}>
-      <PageHeader.Root>
-        <PageHeader.Heading>
-          <PageHeader.Title>
-            {t.RESERVATIONS.PAGE.TITLE_PREFIX}{" "}
-            <PageHeader.TitleHighlight>
-              {t.RESERVATIONS.PAGE.TITLE_ACCENT}
-            </PageHeader.TitleHighlight>
-          </PageHeader.Title>
-          <PageHeader.Description>
-            {t.RESERVATIONS.PAGE.DESCRIPTION}{" "}
-            <PageHeader.DescriptionHighlight>{reservations.length}</PageHeader.DescriptionHighlight>
-          </PageHeader.Description>
-        </PageHeader.Heading>
-        <PageHeader.Stats>
-          <PageHeader.StatCard
-            label={t.RESERVATIONS.STATS.PENDING_LABEL}
-            value={statusCounts.pending}
-            note={t.RESERVATIONS.STATS.PENDING_NOTE}
-          />
-          <PageHeader.StatCard
-            label={t.RESERVATIONS.STATS.APPROVED_LABEL}
-            value={statusCounts.approved}
-            note={t.RESERVATIONS.STATS.APPROVED_NOTE}
-          />
-          <PageHeader.StatCard
-            label={t.RESERVATIONS.STATS.TOTAL_LABEL}
-            value={reservations.length}
-            note={t.RESERVATIONS.STATS.TOTAL_NOTE}
-          />
-        </PageHeader.Stats>
-      </PageHeader.Root>
+      <ReservationsPageHeader
+        totalCount={reservations.length}
+        statusCounts={statusCounts}
+        bookingMode={bookingMode}
+        onBookingModeChange={handleModeChange}
+        isBookingModeLoading={isPending}
+      />
 
       <div className={CARD_STYLES.bodySmall}>
         <ReservationsFilters

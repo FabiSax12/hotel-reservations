@@ -1,5 +1,7 @@
 export type ReservationStatus = "pending" | "approved" | "cancelled" | "completed";
 
+export type BookingMode = "manual" | "automatic";
+
 export const CHECK_IN_TIME = "3:00 PM" as const;
 export const CHECK_OUT_TIME = "11:00 AM" as const;
 

@@ -116,10 +116,17 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       PAGE_TITLE: "Información sobre la reservación",
       STAT_STATUS_LABEL: "Estado",
     },
+    BOOKING_MODE: {
+      LABEL: "Modo de Confirmación",
+      AUTOMATIC: "Automático",
+      MANUAL: "Manual",
+    },
     ERRORS: {
       FETCH_RESERVATIONS: "Error al obtener reservaciones",
       FETCH_ROOMS: "Error al obtener habitaciones",
       UPDATE_STATUS: "Error al actualizar el estado de la reservación",
+      FETCH_BOOKING_MODE: "Error al obtener el modo de confirmación de reservas",
+      UPDATE_BOOKING_MODE: "Error al actualizar el modo de confirmación de reservas",
     },
   },
   en: {
@@ -236,10 +243,17 @@ export const RESERVATIONS_TEXTS: Record<SupportedLocale, ReservationsTexts> = {
       PAGE_TITLE: "Reservation details",
       STAT_STATUS_LABEL: "Status",
     },
+    BOOKING_MODE: {
+      LABEL: "Confirmation Mode",
+      AUTOMATIC: "Automatic",
+      MANUAL: "Manual",
+    },
     ERRORS: {
       FETCH_RESERVATIONS: "Error fetching reservations",
       FETCH_ROOMS: "Error fetching rooms",
       UPDATE_STATUS: "Error updating reservation status",
+      FETCH_BOOKING_MODE: "Error fetching booking confirmation mode",
+      UPDATE_BOOKING_MODE: "Error updating booking confirmation mode",
     },
   },
 } as const;
