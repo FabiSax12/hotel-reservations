@@ -24,6 +24,17 @@ export const ROOM_AVAILABILITY = Object.freeze({
   WINDOW_DAYS: 120,
 } as const);
 
+export const RESERVATION_STATUS = Object.freeze({
+  /** Cancelled reservations free the room, so they never block availability. */
+  CANCELLED: "cancelled",
+} as const);
+
+/** Developer-facing messages thrown by the rooms service (surfaced via error.tsx). */
+export const ROOM_SERVICE_ERROR = Object.freeze({
+  FETCH_ROOMS: "Failed to load rooms from the database",
+  FETCH_AVAILABILITY: "Failed to load reservations for availability",
+} as const);
+
 export const ROOM_GROUPING = Object.freeze({
   /** A room's capacity must not exceed remaining guests by more than this value. */
   MAX_WASTE: 2,
