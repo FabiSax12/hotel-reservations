@@ -13,7 +13,7 @@ import { APP_PAGE_STRINGS } from "../constants/app-pages.constants";
 
 export default function Loading() {
   return (
-    <main className={LOADING_PAGE_STYLES.main}>
+    <main className={LOADING_PAGE_STYLES.main} role="status" aria-busy="true">
       <div className={LOADING_PAGE_STYLES.contentWrapper}>
         {/* CSS-only spinner — no JavaScript needed. */}
         <div className={LOADING_PAGE_STYLES.spinner} />
