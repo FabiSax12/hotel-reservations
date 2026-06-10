@@ -10,6 +10,20 @@ export const ROOM_THRESHOLDS = Object.freeze({
   SCARCE: 2,
 } as const);
 
+export const ROOM_DEFAULTS = Object.freeze({
+  /**
+   * The `rooms` table has no inventory column yet (US-DM-07). The rooms service
+   * assumes a single unit per room so availability can be derived from
+   * reservations and the package grouping never double-books a physical room.
+   */
+  INVENTORY: 1,
+} as const);
+
+export const ROOM_AVAILABILITY = Object.freeze({
+  /** How many days ahead the availability calendar is computed from reservations. */
+  WINDOW_DAYS: 120,
+} as const);
+
 export const ROOM_GROUPING = Object.freeze({
   /** A room's capacity must not exceed remaining guests by more than this value. */
   MAX_WASTE: 2,
