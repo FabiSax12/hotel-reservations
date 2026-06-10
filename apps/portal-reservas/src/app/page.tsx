@@ -1,34 +1,16 @@
 /**
  * @file page.tsx — Root page of the Portal de Reservas application.
  *
- * Acts as a pure composition layer — all state is delegated to
- * `useHomePageState` and all rendering to `RoomsInnerPage`.
- * No inline logic per architecture spec: app/ pages only compose.
+ * Server Component: fetches the rooms from the DB (US-DM-07) and composes the
+ * HomeClient island, which owns all interactive state. No inline logic per
+ * architecture spec: app/ pages only compose.
  */
 
-"use client";
+import { getRooms } from "@/features/rooms/services/roomsService";
+import { HomeClient } from "../components/HomeClient";
 
-import { RoomsInnerPage } from "../components/RoomsInnerPage";
-import { useHomePageState } from "../hooks/useHomePageState";
+export default async function HomePage() {
+  const rooms = await getRooms();
 
-export default function HomePage() {
-  const state = useHomePageState();
-
-  return (
-    <RoomsInnerPage
-      hasSearched={state.hasSearched}
-      selectedLocation={state.selectedLocation}
-      heroCalendarActive={state.heroCalendarActive}
-      setHeroCalendarActive={state.setHeroCalendarActive}
-      searchParams={state.searchParams}
-      searchKey={state.searchKey}
-      hasDates={state.hasDates}
-      isSearchingData={state.isSearchingData}
-      filteredRooms={state.filteredRooms}
-      prioritizedRoomId={state.prioritizedRoomId}
-      onSearchTrigger={state.handleSearchTrigger}
-      onDestinationChange={state.handleDestinationChange}
-      onReset={state.handleReset}
-    />
-  );
+  return <HomeClient initialRooms={rooms} />;
 }

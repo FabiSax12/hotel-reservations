@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ROUTES } from "../config/routes";
 import { filterRoomsByDestination } from "../features/rooms/domain/filters";
-import { mockRooms } from "../features/rooms/mock-data/rooms";
+import type { Room } from "../features/rooms/domain/types";
 import { REGIONS_CONFIG } from "../features/search/components/search-bar/constants/regionsConfig";
 import {
   SEARCH_VALS,
@@ -26,7 +26,7 @@ import { useScrollLock } from "./useScrollLock";
 // skips the destination picker and sees rooms immediately (US-DM-02 AC #1).
 const AUTO_SELECTED_LOCATION = REGIONS_CONFIG.length === 1 ? REGIONS_CONFIG[0].name : null;
 
-export function useHomePageState() {
+export function useHomePageState(initialRooms: Room[]) {
   const router = useRouter();
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(AUTO_SELECTED_LOCATION);
@@ -80,7 +80,7 @@ export function useHomePageState() {
   };
 
   const filteredRooms = filterRoomsByDestination(
-    mockRooms,
+    initialRooms,
     selectedLocation ?? SEARCH_VALS.DESTINATION_ALL,
   );
 
