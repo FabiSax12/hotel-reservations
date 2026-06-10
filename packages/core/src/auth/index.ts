@@ -198,14 +198,17 @@ export async function signUp(
  */
 export async function inviteAdminByEmail(
   email: string,
-  full_name: string,
   redirectTo: string,
+  full_name?: string,
 ): Promise<{ id: string; email: string }> {
   const supabase = createSupabaseServiceClient();
-  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
+  const options: { redirectTo: string; data?: { role: string; full_name: string } } = {
     redirectTo,
-    data: { role: "admin", full_name: full_name },
-  });
+  };
+  if (full_name) {
+    options.data = { role: "admin", full_name };
+  }
+  const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, options);
   if (error) throw new Error(error.message);
   if (!data?.user) throw new Error("Invitation returned no user");
   return { id: data.user.id, email: data.user.email ?? email };
@@ -216,10 +219,10 @@ export async function inviteAdminByEmail(
  */
 export async function createAdminAccount(
   email: string,
-  full_name: string,
   redirectTo: string,
+  full_name?: string,
 ): Promise<void> {
-  const response = await inviteAdminByEmail(email, full_name, redirectTo);
+  const response = await inviteAdminByEmail(email, redirectTo, full_name);
 
   const supabase = createSupabaseServiceClient();
   const { error } = await supabase

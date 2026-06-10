@@ -15,8 +15,8 @@ export async function createAdminAccountAction(
   try {
     await createAdminAccount(
       email,
-      full_name,
       `${ENV.NEXT_PUBLIC_BASE_URL}${ROUTES.AUTH.ACTIVATE}`,
+      full_name,
     );
     return { success: true, email };
   } catch {

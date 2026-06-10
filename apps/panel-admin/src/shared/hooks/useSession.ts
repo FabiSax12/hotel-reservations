@@ -1,4 +1,4 @@
-import { useAuth } from "@/shared/auth/context/AuthProvider";
+import { useAuth } from "@/shared/auth/context/useAuth";
 
 /** @deprecated Use useAuth from @/shared/auth/AuthProvider instead. */
 export const useSession = () => {

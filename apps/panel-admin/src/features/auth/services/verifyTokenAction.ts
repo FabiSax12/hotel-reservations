@@ -10,7 +10,13 @@ export async function verifyTokenAction(
 ): Promise<VerifyTokenState> {
   try {
     const result = await verifyActivationToken(accessToken, refreshToken);
-    if ("error" in result) return { error: result.error };
+    if ("error" in result) {
+      const error =
+        result.error === "INVALID_OR_EXPIRED_TOKEN"
+          ? ACTIVATION_ERRORS.INVALID_TOKEN
+          : (result.error as typeof ACTIVATION_ERRORS.INVALID_TOKEN);
+      return { error };
+    }
     return { success: true, email: result.email };
   } catch {
     return { error: ACTIVATION_ERRORS.UNKNOWN_ERROR };
