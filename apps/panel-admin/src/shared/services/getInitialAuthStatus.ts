@@ -1,7 +1,7 @@
 "use server";
 
 import { verifyAdminRole } from "@hotel/core/auth";
-import type { UserProfile } from "@hotel/db";
+import type { AdminUser } from "@hotel/db";
 import { createSupabaseServerClient } from "@hotel/db";
 import type { Session } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
@@ -17,7 +17,7 @@ export const getInitialAuthStatus = async () => {
 
   const initialSession = (data.session ?? null) as Session | null;
   const initialUser = initialSession?.user ?? null;
-  const initialProfile: UserProfile | null = initialUser
+  const initialProfile: AdminUser | null = initialUser
     ? await verifyAdminRole(initialUser.id)
     : null;
 
