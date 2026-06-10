@@ -46,8 +46,6 @@ export {
 } from "./domain/filters";
 export type { GroupedRoom } from "./domain/grouping";
 export { groupRoomsByType, groupRoomsIntoPackages } from "./domain/grouping";
-// Room lookups by ID — used by the checkout flow to rebuild a reservation.
-export { findRoomById, findRoomsByIds } from "./domain/room-lookup";
 export { sortGroupedRooms, sortRooms } from "./domain/sorting";
 // Domain types and functions — pure TypeScript, no React.
 export type {
@@ -64,4 +62,3 @@ export type { ReserveAction } from "./hooks/useReserveAction";
 export { useReserveAction } from "./hooks/useReserveAction";
 export { useRoomFilters } from "./hooks/useRoomFilters";
 export { isRoomPackage, useRoomPackages } from "./hooks/useRoomPackages";
-export { getAmenityDetail } from "./mock-data/amenities";
