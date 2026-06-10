@@ -18,51 +18,64 @@ export interface BedConfig {
   count: number;
 }
 
-/** A single room listing as returned by the (future) reservation API. */
+/**
+ * A single room listing, mapped from the `rooms` table by the rooms service
+ * (US-DM-07). Fields backed by the DB today are always present; fields with no
+ * DB source yet are optional and the UI hides them until the schema catches up
+ * (see the "DB-pending" block below).
+ */
 export interface Room {
-  /** Unique identifier (e.g. "mv-1", "lf-2"). */
+  /** Unique identifier — the `rooms.id` UUID. */
   id: string;
-  /** Resort destination name (must match a value from REGIONS_CONFIG). */
-  location: string;
-  /** Human-readable room name. */
+  /** Human-readable room name — `rooms.name`. */
   title: string;
-  /** Room category (e.g. "Standard", "Suite", "Family", "Villa"). */
+  /** Room category (e.g. "Standard", "Suite", "Deluxe") — `rooms.category`. */
   type: string;
-  /** Average price per night in USD. Only shown when dates are selected. */
+  /** Nightly price in USD — `rooms.regular_fee`. Only shown when dates are selected. */
   price: number;
-  /** Maximum guest capacity (adults + children combined). */
+  /** Maximum guest capacity — `rooms.capacity_adults + capacity_kids`. */
   capacity: number;
-  /** Number of rooms currently available for the user's dates. */
+  /**
+   * Units available for the user's dates. No DB column exists yet, so the rooms
+   * service assumes a single unit per room (US-DM-07). Used by the package
+   * grouping/availability math; inventory-driven UI (scarcity badges) is hidden.
+   */
   inventory: number;
-  /** Room area in square meters. */
-  sqft: number;
-  /** Bed configuration for this room. */
-  beds: BedConfig[];
-  /** Full marketing description of the room. */
+  /** Full marketing description — `rooms.description`. */
   description: string;
-  /** Short administrator recommendation shown as a badge on the card. */
-  adminTip: string;
-  /** Unsplash URL for the hero image of this room. */
-  image: string;
-  /** Up to 3 additional image URLs shown in the expanded gallery panel. */
-  images: string[];
-  /** List of included amenity tags (e.g. "WiFi", "Jacuzzi", "Terraza"). */
+  /** Amenity names from `amenities` joined via `room_amenities`. */
   amenities: string[];
   /**
-   * ISO date strings (YYYY-MM-DD) representing available check-in days.
-   * Generated dynamically at import time from today + offsets.
-   * Used by the mock availability resolver and AvailabilityCalendarDialog.
+   * ISO date strings (YYYY-MM-DD) of available check-in days, computed from the
+   * room's reservations assuming an inventory of 1 (US-DM-07). Drives the
+   * AvailabilityCalendarDialog.
    */
   availableDates: string[];
+  /** Hero image URL — first `room_images` row by position. Undefined until uploaded (US-KA-06). */
+  image?: string;
+  /** Additional gallery image URLs — remaining `room_images` rows. Empty until uploaded. */
+  images?: string[];
+
+  // ─── DB-pending (US-DM-07): no source yet, hidden in the UI ─────────────────
+  // These fields are intentionally optional and left undefined by the mapper.
+  // The rendering code that consumes them is kept (guarded) so the feature
+  // reappears automatically once the DB gains the backing columns/typing.
   /**
-   * Whether this room is highlighted/featured by the administrator.
-   * Drives the "Destacado" sort option (US-DM-03 AC #1).
+   * Resort destination/sede name. No `rooms.location`/region column yet, so the
+   * destination filter degrades to the full pool and the location label is hidden.
    */
-  isFeatured: boolean;
-  /** Local check-in time as 24h "HH:MM", shown on the confirmation page (US-DM-06). */
-  checkInTime: string;
-  /** Local check-out time as 24h "HH:MM", shown on the confirmation page (US-DM-06). */
-  checkOutTime: string;
+  location?: string;
+  /** Bed configuration. No beds column/table yet — the bed rows are hidden. */
+  beds?: BedConfig[];
+  /** Administrator recommendation. No `rooms.admin_tip` column yet — the quote is hidden. */
+  adminTip?: string;
+  /**
+   * Local check-in time "HH:MM". The data lives in `room_schedules`, but that
+   * table is not yet in the `@hotel/db` generated types, so it is hidden.
+   */
+  checkInTime?: string;
+  /** Local check-out time "HH:MM". Hidden for the same reason as `checkInTime`. */
+  checkOutTime?: string;
 }
 
 // ─── Sub-Component Props ────────────────────────────────────────────────────
@@ -206,8 +219,8 @@ export interface PackageCardCTAProps {
 
 // ─── Sort & Filter Types (US-DM-03) ─────────────────────────────────────────
 
-/** Sort option for the room listing. */
-export type RoomSortOption = "FEATURED" | "PRICE_ASC" | "PRICE_DESC";
+/** Sort option for the room listing. (FEATURED removed in US-DM-07 — no DB flag.) */
+export type RoomSortOption = "PRICE_ASC" | "PRICE_DESC";
 
 /** Inclusive `[min, max]` numeric range used for price filters. */
 export interface NumericRange {
