@@ -2,11 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/config/routes";
-import { DEFAULT_ROOM_ID } from "@/features/rooms/constants/amenities.constants";
 import { AMENITIES_VIEW_STYLES as STYLES } from "../amenities/AmenitiesView/AmenitiesView.styles";
 import { GalleryStage } from "./GalleryStage";
 
-export const GalleryView = () => {
+interface GalleryViewProps {
+  roomId: string;
+}
+
+export const GalleryView = ({ roomId }: GalleryViewProps) => {
   const router = useRouter();
 
   const handleSuccess = () => {
@@ -23,7 +26,7 @@ export const GalleryView = () => {
       <div className={STYLES.blob} />
 
       <div className={STYLES.content}>
-        <GalleryStage roomId={DEFAULT_ROOM_ID} onSuccess={handleSuccess} />
+        <GalleryStage roomId={roomId} onSuccess={handleSuccess} />
       </div>
     </main>
   );
