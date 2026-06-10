@@ -37,10 +37,11 @@ gateway's hosted page.
 
 `Reserve CTA` (rooms / room-detail) → `buildReservationHref` (global `lib/reservationUrl`)
 → `/reserve?rooms=…&checkIn=…&checkOut=…&guests=…` → `page.tsx` parses params
-(`parseReservationParams`), resolves rooms (`findRoomsByIds`), builds a `ReservationDraft`
-→ `ConfirmationView`. On submit: `useCheckoutSubmit` → `POST /api/checkout` →
-`openGatewaySession` (server) → Stripe Checkout Session → browser redirect to the hosted
-page → `success_url` → `/reserve/success` → `SuccessView`.
+(`parseReservationParams`), resolves rooms from the DB (`getRoomsByIds`, US-DM-07), builds
+a `ReservationDraft` → `ConfirmationView`. On submit: `useCheckoutSubmit` (carrying the
+guest details) → `POST /api/checkout` → `openGatewaySession` (server) persists a pending
+reservation (`persistReservation`, one row per room) and creates the Stripe Checkout Session
+→ browser redirect to the hosted page → `success_url` → `/reserve/success` → `SuccessView`.
 
 ### Core files
 
@@ -70,7 +71,7 @@ page → `success_url` → `/reserve/success` → `SuccessView`.
 - [x] All reservation data is collected in-app; all payment/bank data is collected by the
       payment API, so the platform stores no banking information.
 - [x] Both single rooms and packages render clearly and efficiently.
-- [x] Nothing is added to "mis reservas" (no persistence; out of scope).
+- [x] On checkout a pending reservation is persisted per room to the DB (US-DM-07).
 
 ## Handoff & Status Notes
 
@@ -81,5 +82,7 @@ straight to the success screen so the branch builds and demos without credential
 
 ### Next step
 
-Swap the mock room source for the real reservation API and persist the booking once the
-"mis reservas" feature and authenticated booking exist.
+US-DM-07 wired this flow to the DB: rooms resolve via `getRoomsByIds` and each checkout
+persists one pending reservation row per room (service-role client; the `reservations`
+table is RLS-protected). Stripe stays sandbox. Remaining: advance a reservation from
+`pending` to `approved` on a payment webhook, and surface it in a "mis reservas" history.
