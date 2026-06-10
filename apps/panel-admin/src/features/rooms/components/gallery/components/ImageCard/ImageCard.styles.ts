@@ -13,4 +13,5 @@ export const IMAGE_CARD_STYLES = {
     "absolute top-2 right-2 bg-rose-600 hover:bg-rose-700 text-white z-10 transition-colors shadow-md min-w-max",
   principalBadge:
     "absolute bottom-2 left-2 bg-emerald-600 text-white text-xs font-semibold px-2 py-1 rounded-full z-10 shadow-md",
+  isUploading: "w-5 h-5",
 } as const;

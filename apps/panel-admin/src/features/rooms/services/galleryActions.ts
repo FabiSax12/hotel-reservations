@@ -1,6 +1,6 @@
 "use server";
 
-import { createSupabaseServiceClient } from "@hotel/db";
+import { createSupabaseServiceClient, DB_COLUMNS, DB_TABLES } from "@hotel/db";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { GALLERY_CONFIG } from "../constants/gallery.constants";
 import type { RoomImage } from "../domain/roomImage.interface";
@@ -32,17 +32,22 @@ export async function uploadImage(
     } = supabase.storage.from(GALLERY_CONFIG.BUCKET).getPublicUrl(storagePath);
 
     const { data: existingImages } = await supabase
-      .from("room_images")
-      .select("position")
-      .eq("room_id", roomId)
-      .order("position", { ascending: false })
+      .from(DB_TABLES.ROOM_IMAGES)
+      .select(DB_COLUMNS.room_images.position)
+      .eq(DB_COLUMNS.room_images.room_id, roomId)
+      .order(DB_COLUMNS.room_images.position, { ascending: false })
       .limit(1);
 
     const position = existingImages?.[0]?.position != null ? existingImages[0].position + 1 : 0;
 
     const { data: insertedRecord, error: insertError } = await supabase
-      .from("room_images")
-      .insert({ room_id: roomId, storage_path: storagePath, url: publicUrl, position })
+      .from(DB_TABLES.ROOM_IMAGES)
+      .insert({
+        [DB_COLUMNS.room_images.room_id]: roomId,
+        [DB_COLUMNS.room_images.storage_path]: storagePath,
+        [DB_COLUMNS.room_images.url]: publicUrl,
+        [DB_COLUMNS.room_images.position]: position,
+      })
       .select()
       .single();
 
@@ -52,7 +57,11 @@ export async function uploadImage(
       return null;
     }
 
-    return { id: insertedRecord.id, url: insertedRecord.url, storagePath: insertedRecord.storage_path };
+    return {
+      id: insertedRecord[DB_COLUMNS.room_images.id],
+      url: insertedRecord[DB_COLUMNS.room_images.url],
+      storagePath: insertedRecord[DB_COLUMNS.room_images.storage_path],
+    };
   } catch (error) {
     console.error("[galleryActions] Unexpected error:", error);
     return null;
@@ -63,17 +72,17 @@ export async function deleteImage(imageId: string): Promise<boolean> {
   const supabase = createSupabaseServiceClient() as unknown as AnyClient;
 
   const { data, error: fetchError } = await supabase
-    .from("room_images")
-    .select("storage_path")
-    .eq("id", imageId)
+    .from(DB_TABLES.ROOM_IMAGES)
+    .select(DB_COLUMNS.room_images.storage_path)
+    .eq(DB_COLUMNS.room_images.id, imageId)
     .single();
 
   if (fetchError || !data) return false;
 
   const { error: deleteError } = await supabase
-    .from("room_images")
+    .from(DB_TABLES.ROOM_IMAGES)
     .delete()
-    .eq("id", imageId);
+    .eq(DB_COLUMNS.room_images.id, imageId);
 
   if (deleteError) return false;
 
@@ -86,7 +95,10 @@ export async function reorderImages(orderedIds: string[]): Promise<boolean> {
 
   const results = await Promise.all(
     orderedIds.map((id, position) =>
-      supabase.from("room_images").update({ position }).eq("id", id),
+      supabase
+        .from(DB_TABLES.ROOM_IMAGES)
+        .update({ [DB_COLUMNS.room_images.position]: position })
+        .eq(DB_COLUMNS.room_images.id, id),
     ),
   );
 
@@ -97,10 +109,10 @@ export async function getRoomImages(roomId: string): Promise<RoomImage[]> {
   const supabase = createSupabaseServiceClient() as unknown as AnyClient;
 
   const { data, error } = await supabase
-    .from("room_images")
+    .from(DB_TABLES.ROOM_IMAGES)
     .select("*")
-    .eq("room_id", roomId)
-    .order("position", { ascending: true });
+    .eq(DB_COLUMNS.room_images.room_id, roomId)
+    .order(DB_COLUMNS.room_images.position, { ascending: true });
 
   if (error) return [];
   return data as RoomImage[];

@@ -46,7 +46,7 @@ export const ImageCard = ({
         aria-label={removeLabel}
         onPress={() => onRemove()}
       >
-        <X className="w-5 h-5" />
+        <X className={STYLES.isUploading} />
       </Button>
     )}
 
