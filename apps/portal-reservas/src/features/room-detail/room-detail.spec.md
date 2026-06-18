@@ -92,8 +92,8 @@ src/
 `room-detail` consumes the rooms feature's public barrel for the room data and
 the availability/CTA building blocks it reuses: `Room`, `RoomPackage`,
 `useRoomsContext`, `usePackageCardState`, `RoomRangeCalendar`, `CTASpinner`,
-`getAmenityIcon`, `formatBedConfig`, `getAmenityDetail`. The rooms cards open the
-panel via `useRoomDetail` from this feature's barrel.
+`getAmenityIcon`, `formatBedConfig`. The rooms cards open the panel via
+`useRoomDetail` from this feature's barrel.
 
 ---
 
@@ -101,11 +101,10 @@ panel via `useRoomDetail` from this feature's barrel.
 
 Amenity descriptions live in `public.amenities.description` (TEXT), joined to
 rooms through `public.room_amenities` (migration
-`20260505000000_create_amenities.sql`). The mock `AMENITY_CATALOG`
-(`rooms/mock-data/amenities.ts`, Spanish content like `room.description`)
-resolves `Room.amenities[]` names to descriptions; the panel reads it via
-`getAmenityDetail` from the rooms barrel. Point the lookup at
-`public.amenities.description` when the mock layer is removed.
+`20260505000000_create_amenities.sql`). US-DM-07 removed the mock amenity catalog;
+`Room.amenities[]` now carries DB amenity names and the panel renders the names
+only. Plumbing `amenities.description` through `Room.amenities` (richer objects) is
+a follow-up so the detail list can show descriptions again.
 
 ---
 

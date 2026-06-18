@@ -18,10 +18,13 @@ export function RoomDetailHeader({ eyebrow, title, subtitle, onClose }: RoomDeta
   return (
     <header className={ROOM_DETAIL_STYLES.header}>
       <div className={ROOM_DETAIL_STYLES.headerText}>
-        <p className={ROOM_DETAIL_STYLES.eyebrow}>
-          <span className={ROOM_DETAIL_STYLES.eyebrowDot} aria-hidden="true" />
-          {eyebrow}
-        </p>
+        {/* Location eyebrow hidden until the rooms table gains a location column (US-DM-07). */}
+        {eyebrow && (
+          <p className={ROOM_DETAIL_STYLES.eyebrow}>
+            <span className={ROOM_DETAIL_STYLES.eyebrowDot} aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )}
         <h2 className={ROOM_DETAIL_STYLES.title}>{title}</h2>
         {subtitle && <p className={ROOM_DETAIL_STYLES.subtitle}>{subtitle}</p>}
       </div>

@@ -16,7 +16,10 @@ import { RoomDetailMedia } from "./RoomDetailMedia";
 
 export function RoomDetailRoomSection({ room, position }: RoomDetailRoomSectionProps) {
   const { t } = useI18n();
-  const images = [room.image, ...room.images];
+  // Hero + gallery URLs; empty until the room has room_images (US-DM-07).
+  const images = [room.image, ...(room.images ?? [])].filter(
+    (url): url is string => Boolean(url),
+  );
 
   return (
     <section className={position ? ROOM_DETAIL_STYLES.sectionDivided : ROOM_DETAIL_STYLES.section}>

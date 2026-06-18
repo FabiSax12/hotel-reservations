@@ -380,6 +380,37 @@ US-DM-05 graduated into its own top-level feature. See
 
 The rooms feature exposes the building blocks the panel reuses via its barrel:
 `usePackageCardState`, `RoomRangeCalendar`, `CTASpinner`, `getAmenityIcon`,
-`formatBedConfig`, `getAmenityDetail` (plus `Room` / `RoomPackage` /
-`useRoomsContext`). The cards open the panel through `useRoomDetail` from
-`features/room-detail`.
+`formatBedConfig` (plus `Room` / `RoomPackage` / `useRoomsContext`). The cards open
+the panel through `useRoomDetail` from `features/room-detail`.
+
+---
+
+## 11. US-DM-07 — DB Integration (mock data removed)
+
+The rooms feature now reads from the DB instead of `mock-data/`. The mock dataset,
+mock room-lookup and mock amenity catalog were deleted.
+
+### Data source
+
+* **`services/roomsService.ts`** (server-only) — `getRooms()` / `getRoomsByIds()`.
+  Rooms + amenities are read with the anon client (public RLS); images come from
+  `room_images` in a dedicated query; reservations are read with the service-role
+  client (RLS-protected) only to compute availability. The home page is a Server
+  Component (`force-dynamic`) that fetches rooms and hands them to `HomeClient`.
+* **`services/room.mapper.ts`** — pure `rooms` row → `Room` mapper.
+* **`domain/availability.ts`** — `computeAvailableDates` / `isStayAvailable`, assuming
+  an inventory of 1 per room (no inventory column). Replaces the mock availability delay.
+
+### Field status (vs. the DB schema)
+
+| Field | Source |
+|-------|--------|
+| title, type, price, capacity, description | `rooms` columns |
+| amenities | `amenities` ⋈ `room_amenities` |
+| image / images | `room_images` (empty until US-KA-06 uploads → gradient placeholder) |
+| availableDates | computed from `reservations` |
+| **sqft, isFeatured** | **removed** (no DB source) |
+| location, beds, adminTip, checkInTime, checkOutTime, inventory badges | **hidden** (no DB column / not yet in `@hotel/db` types) — kept guarded in the UI, documented inline, and re-appear once the schema lands |
+
+`Room` keeps these stale fields optional so the mapper omits them and the UI hides
+them; the destination filter degrades to the full pool (no `rooms.location` column).

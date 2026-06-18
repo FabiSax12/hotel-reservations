@@ -23,7 +23,6 @@ const room = (overrides: Partial<Room>): Room =>
     price: 100,
     capacity: 2,
     inventory: 1,
-    sqft: 0,
     beds: [],
     description: "",
     adminTip: "",
@@ -31,7 +30,6 @@ const room = (overrides: Partial<Room>): Room =>
     images: [],
     amenities: [],
     availableDates: [],
-    isFeatured: false,
     ...overrides,
   }) as Room;
 
@@ -50,10 +48,10 @@ describe("filterRoomsByDestination", () => {
     expect(filterRoomsByDestination(mockRooms, SEARCH_VALS.DESTINATION_ALL).length).toBe(3);
   });
 
-  it("filters rooms by destination", () => {
+  it("returns all rooms regardless of destination (US-DM-07: no location column)", () => {
+    // Per-sede filtering is degraded until rooms gain a location column.
     const result = filterRoomsByDestination(mockRooms, "Monteverde");
-    expect(result.length).toBe(2);
-    expect(result.every((r) => r.location === "Monteverde")).toBe(true);
+    expect(result.length).toBe(3);
   });
 });
 

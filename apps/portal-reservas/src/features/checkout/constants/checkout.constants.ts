@@ -81,7 +81,6 @@ export const ROOM_FACT_KEY = Object.freeze({
   CHECK_IN: "check-in",
   CHECK_OUT: "check-out",
   CAPACITY: "capacity",
-  AREA: "area",
   BEDS: "beds",
 } as const);
 
@@ -106,6 +105,19 @@ export const STRIPE = Object.freeze({
 export const CHECKOUT_API_ERROR = Object.freeze({
   INVALID_REQUEST: "invalid_request",
   GATEWAY: "gateway_error",
+  PERSIST: "reservation_persist_error",
+} as const);
+
+/** Reservation row defaults when persisting a checkout to the DB (US-DM-07). */
+export const RESERVATION_PERSIST = Object.freeze({
+  /**
+   * Stored as pending: reaching the mock/Stripe redirect proves the guest got to
+   * payment, but with no payment webhook we don't auto-approve. An admin (or a
+   * future webhook) advances it to approved.
+   */
+  STATUS: "pending",
+  /** The reservation URL carries only a total guest count, so all go to adults. */
+  CHILDREN: 0,
 } as const);
 
 export const CHECKOUT_HTTP_STATUS = Object.freeze({

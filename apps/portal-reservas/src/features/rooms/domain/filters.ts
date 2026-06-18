@@ -5,26 +5,26 @@
  * Each function is pure (no side effects) and unit-tested in `filters.test.ts`.
  */
 
-import { SEARCH_VALS } from "../../search/components/search-bar/constants/search.constants";
 import type { GroupedRoom } from "./grouping";
 import type { Room, RoomFilters, RoomPackage } from "./types";
 
 const isPackage = (item: GroupedRoom): item is RoomPackage => "rooms" in item;
 
 /**
- * Filters a list of rooms by destination name.
+ * Returns the rooms shown for the chosen destination.
+ *
+ * US-DM-07: the `rooms` table has no location/region column, so per-sede
+ * filtering cannot run yet. The destination still drives the search UX (phase
+ * transitions, scroll lock), but every room in scope is returned regardless of
+ * the selected sede. Restore the `room.location === destination` predicate once
+ * a location column exists.
  *
  * @param rooms - The full array of rooms to filter.
- * @param destination - The destination to match against `room.location`.
- *   If `null` or the special value `SEARCH_VALS.DESTINATION_ALL`, all rooms are returned unfiltered.
- * @returns A new array containing only the rooms whose `location` matches
- *   the given destination, or the entire array if no filter is applied.
+ * @param _destination - Selected destination; currently ignored (see above).
+ * @returns A new array with all input rooms (no destination filtering yet).
  */
-export const filterRoomsByDestination = (rooms: Room[], destination: string | null): Room[] => {
-  if (!destination || destination === SEARCH_VALS.DESTINATION_ALL) {
-    return rooms;
-  }
-  return rooms.filter((r) => r.location === destination);
+export const filterRoomsByDestination = (rooms: Room[], _destination: string | null): Room[] => {
+  return [...rooms];
 };
 
 /**

@@ -7,7 +7,6 @@ export type RoomsTexts = {
   ONLY_REMAINING: string;
   ROOMS_PLURAL: string;
   TYPE_LABEL: string;
-  SQFT_LABEL: string;
   PRICE_LABEL: string;
   CURRENCY: string;
   AVAILABLE_DATES: string;
@@ -53,7 +52,6 @@ export type RoomsTexts = {
   ROOMS_OPTIONS_FOUND: string;
   // US-DM-03 — Sort & Filter UI
   SORT_LABEL: string;
-  SORT_FEATURED: string;
   SORT_PRICE_ASC: string;
   SORT_PRICE_DESC: string;
   FILTERS_TITLE: string;
@@ -68,5 +66,4 @@ export type RoomsTexts = {
   FILTERS_PRICE_MIN_LABEL: string;
   FILTERS_PRICE_MAX_LABEL: string;
   FILTERS_ACTIVE_BADGE: string;
-  FEATURED_BADGE: string;
 };

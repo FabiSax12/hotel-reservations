@@ -7,7 +7,7 @@
 
 "use client";
 
-import { getAmenityDetail, getAmenityIcon } from "@/features/rooms";
+import { getAmenityIcon } from "@/features/rooms";
 import { useI18n } from "@/locales";
 import { AMENITY_VIEW_BOX } from "../constants/room-detail-icons.const";
 import type { RoomDetailAmenitiesProps } from "../domain/types";
@@ -24,7 +24,6 @@ export function RoomDetailAmenities({ amenities }: RoomDetailAmenitiesProps) {
       <ul className={ROOM_DETAIL_STYLES.amenityList} aria-label={t.ROOMS.AMENITIES_TITLE}>
         {amenities.map((name) => {
           const icon = getAmenityIcon(name);
-          const detail = getAmenityDetail(name);
           return (
             <li key={name} className={ROOM_DETAIL_STYLES.amenityRow}>
               <span className={ROOM_DETAIL_STYLES.amenityIconWrap}>
@@ -45,8 +44,8 @@ export function RoomDetailAmenities({ amenities }: RoomDetailAmenitiesProps) {
                 )}
               </span>
               <div className={ROOM_DETAIL_STYLES.amenityBody}>
-                <p className={ROOM_DETAIL_STYLES.amenityName}>{detail?.name ?? name}</p>
-                {detail?.description && <p className={ROOM_DETAIL_STYLES.amenityDesc}>{detail.description}</p>}
+                {/* DB amenity descriptions (amenities.description) not yet plumbed (US-DM-07). */}
+                <p className={ROOM_DETAIL_STYLES.amenityName}>{name}</p>
               </div>
             </li>
           );

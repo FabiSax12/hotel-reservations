@@ -10,7 +10,7 @@
 
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
-import { findRoomsByIds } from "@/features/rooms";
+import { getRoomsByIds } from "@/features/rooms/services/roomsService";
 import {
   CHECKOUT_API_ERROR,
   CHECKOUT_HTTP,
@@ -23,6 +23,7 @@ import {
 import { computeNights } from "../domain/reservation";
 import { buildStripeCheckoutParams } from "../domain/stripe";
 import type { CheckoutSessionPayload } from "../domain/types";
+import { persistReservation } from "./reservation.server";
 
 export interface GatewayResult {
   status: number;
@@ -30,7 +31,7 @@ export interface GatewayResult {
 }
 
 export async function openGatewaySession(payload: CheckoutSessionPayload): Promise<GatewayResult> {
-  const rooms = findRoomsByIds(payload.roomIds ?? []);
+  const rooms = await getRoomsByIds(payload.roomIds ?? []);
   if (rooms.length === 0 || !payload.checkIn || !payload.checkOut) {
     return {
       status: CHECKOUT_HTTP_STATUS.BAD_REQUEST,
@@ -42,8 +43,20 @@ export async function openGatewaySession(payload: CheckoutSessionPayload): Promi
   const successUrl = `${ENV.APP_URL}${ROUTES.RESERVE_SUCCESS}?${SESSION_ID_PARAM}=${STRIPE_SESSION_PLACEHOLDER}`;
   const cancelUrl = `${ENV.APP_URL}${ROUTES.RESERVE}`;
 
-  // No key configured → mock gateway: jump straight to the success screen.
+  // Reservation details persisted (pending) once a payment session is created.
+  const reservation = {
+    rooms,
+    checkIn: payload.checkIn,
+    checkOut: payload.checkOut,
+    guests: payload.guests,
+    guestName: payload.guestName,
+    guestEmail: payload.email,
+    guestPhone: payload.guestPhone,
+  };
+
+  // No key configured → mock gateway: persist, then jump to the success screen.
   if (!ENV.STRIPE_SECRET_KEY) {
+    await persistReservation(reservation);
     const mockUrl = `${ENV.APP_URL}${ROUTES.RESERVE_SUCCESS}?${SESSION_ID_PARAM}=${MOCK_SESSION_PREFIX}${Date.now()}`;
     return { status: CHECKOUT_HTTP_STATUS.OK, body: { url: mockUrl } };
   }
@@ -72,6 +85,7 @@ export async function openGatewaySession(payload: CheckoutSessionPayload): Promi
     };
   }
 
+  await persistReservation(reservation);
   const session = (await response.json()) as { url: string };
   return { status: CHECKOUT_HTTP_STATUS.OK, body: { url: session.url } };
 }

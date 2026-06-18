@@ -10,6 +10,41 @@ export const ROOM_THRESHOLDS = Object.freeze({
   SCARCE: 2,
 } as const);
 
+export const ROOM_DEFAULTS = Object.freeze({
+  /**
+   * The `rooms` table has no inventory column yet (US-DM-07). The rooms service
+   * assumes a single unit per room so availability can be derived from
+   * reservations and the package grouping never double-books a physical room.
+   */
+  INVENTORY: 1,
+} as const);
+
+export const ROOM_INVENTORY = Object.freeze({
+  /**
+   * Whether room inventory is backed by real DB data. False under US-DM-07
+   * (inventory is assumed to be 1), so scarcity/availability-count UI is
+   * suppressed to avoid showing every room as the "last one". Flip to true once
+   * a real inventory source lands to re-enable those badges unchanged.
+   */
+  IS_TRACKED: false,
+} as const);
+
+export const ROOM_AVAILABILITY = Object.freeze({
+  /** How many days ahead the availability calendar is computed from reservations. */
+  WINDOW_DAYS: 120,
+} as const);
+
+export const RESERVATION_STATUS = Object.freeze({
+  /** Cancelled reservations free the room, so they never block availability. */
+  CANCELLED: "cancelled",
+} as const);
+
+/** Developer-facing messages thrown by the rooms service (surfaced via error.tsx). */
+export const ROOM_SERVICE_ERROR = Object.freeze({
+  FETCH_ROOMS: "Failed to load rooms from the database",
+  FETCH_AVAILABILITY: "Failed to load reservations for availability",
+} as const);
+
 export const ROOM_GROUPING = Object.freeze({
   /** A room's capacity must not exceed remaining guests by more than this value. */
   MAX_WASTE: 2,
@@ -28,25 +63,12 @@ export const ROOM_ANIMATION = Object.freeze({
   CHEVRON_ROTATE_DURATION_MS: 300,
 } as const);
 
+/**
+ * Timing/UX constants for the quick-search and calendar interactions. The
+ * mock-availability fields were removed in US-DM-07 (availability is now derived
+ * from real reservations).
+ */
 export const ROOM_MOCK = Object.freeze({
-  /**
-   * Simulated delay (ms) for the availability check hook before a room resolves
-   * as reservable. Mimics a real DB fetch while the feature is in mock mode.
-   */
-  AVAILABILITY_DELAY_MS: 3000,
-  /**
-   * Number of available-date slots generated per room in mock data.
-   */
-  AVAILABLE_DATE_COUNT: 18,
-  /**
-   * Offset in days from today before first available slot.
-   */
-  FIRST_AVAILABLE_OFFSET: 3,
-  /**
-   * Stable i18n key returned by `useRoomAvailability` on error.
-   * Resolved to a locale string by the consuming component via `t.ROOMS`.
-   */
-  AVAILABILITY_ERROR_KEY: "AVAILABILITY_ERROR",
   /**
    * Default days offset from today for quick search check-in.
    */

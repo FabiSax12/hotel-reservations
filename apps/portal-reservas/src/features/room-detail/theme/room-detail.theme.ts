@@ -69,6 +69,9 @@ export const ROOM_DETAIL_STYLES = {
 
   // ─── Media: Carousel ──────────────────────────────────────────────────────
   media: "flex flex-col gap-3",
+  // Shown when a room has no room_images rows yet (US-DM-07 / US-KA-06 uploads).
+  mediaPlaceholder:
+    "aspect-[4/3] w-full rounded-2xl border border-forest-800 bg-gradient-to-br from-forest-800 to-forest-900",
   carouselViewport:
     "relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-forest-900 border border-forest-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-forest-950",
   carouselTrack: `flex h-full w-full transition-transform duration-500 ${EASE} motion-reduce:transition-none`,

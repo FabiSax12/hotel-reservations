@@ -21,7 +21,6 @@ function makeRoom(
     price,
     capacity,
     inventory,
-    sqft: 50,
     beds: [{ type: "queen", count: 1 }],
     description: "",
     adminTip: "",
@@ -29,7 +28,6 @@ function makeRoom(
     images: [],
     amenities: [],
     availableDates: [],
-    isFeatured: false,
     checkInTime: "15:00",
     checkOutTime: "11:00",
   };

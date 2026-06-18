@@ -5,7 +5,7 @@ import { DOM_EVENTS } from "@/constants/dom-events.constants";
 import { useRoomsContext } from "../context/RoomsContext";
 import { useRoomAvailability } from "./useRoomAvailability";
 
-export function usePackageCardState() {
+export function usePackageCardState(availableDates: readonly string[]) {
   const { hasDates, searchDates } = useRoomsContext();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -14,6 +14,7 @@ export function usePackageCardState() {
   const { isAvailable, isLoading } = useRoomAvailability(
     searchDates?.checkIn,
     searchDates?.checkOut,
+    availableDates,
   );
 
   const isUnavailable = hasDates && !isLoading && !isAvailable;

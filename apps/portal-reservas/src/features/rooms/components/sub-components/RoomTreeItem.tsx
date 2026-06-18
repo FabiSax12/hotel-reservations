@@ -27,7 +27,8 @@ interface RoomTreeItemProps {
 }
 
 export function RoomTreeItem({ room, count, currency, showAmenities = true }: RoomTreeItemProps) {
-  const bedText = formatBedConfig(room.beds);
+  // Bed text hidden until a beds column/table exists (US-DM-07).
+  const bedText = room.beds ? formatBedConfig(room.beds) : null;
 
   // Show top 3 amenities (all amenities, not just those with icons)
   const topAmenities = showAmenities ? room.amenities.slice(0, MAX_TREE_AMENITIES) : [];
@@ -48,12 +49,14 @@ export function RoomTreeItem({ room, count, currency, showAmenities = true }: Ro
       </div>
 
       {/* Bed configuration */}
-      <div className={PACKAGE_CARD_STYLES.roomTreeBedRow}>
-        <svg className={PACKAGE_CARD_STYLES.roomTreeBedIcon} viewBox={BED_ICON_VIEW_BOX} fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d={BED_ICON_PATH} />
-        </svg>
-        <span>{bedText}</span>
-      </div>
+      {bedText && (
+        <div className={PACKAGE_CARD_STYLES.roomTreeBedRow}>
+          <svg className={PACKAGE_CARD_STYLES.roomTreeBedIcon} viewBox={BED_ICON_VIEW_BOX} fill="none" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={BED_ICON_PATH} />
+          </svg>
+          <span>{bedText}</span>
+        </div>
+      )}
 
       {/* Top amenities with icon + text */}
       {topAmenities.length > 0 && (

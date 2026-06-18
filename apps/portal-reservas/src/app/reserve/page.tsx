@@ -9,7 +9,7 @@
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/config/routes";
 import { buildReservationDraft, ConfirmationView } from "@/features/checkout";
-import { findRoomsByIds } from "@/features/rooms";
+import { getRoomsByIds } from "@/features/rooms/services/roomsService";
 import { parseReservationParams } from "@/lib/reservationUrl";
 import type { ReservePageProps } from "./page.interface";
 
@@ -19,7 +19,7 @@ export default async function ReservePage({ searchParams }: ReservePageProps) {
     redirect(ROUTES.HOME);
   }
 
-  const rooms = findRoomsByIds(parsed.roomIds);
+  const rooms = await getRoomsByIds(parsed.roomIds);
   if (rooms.length === 0) {
     redirect(ROUTES.HOME);
   }

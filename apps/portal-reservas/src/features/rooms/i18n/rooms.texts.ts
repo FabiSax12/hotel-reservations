@@ -11,7 +11,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     ONLY_REMAINING: "Solo quedan",
     ROOMS_PLURAL: "habitaciones",
     TYPE_LABEL: "Tipo",
-    SQFT_LABEL: "m²",
     PRICE_LABEL: "Precio por noche",
     CURRENCY: "USD",
     AVAILABLE_DATES: "disponibles para sus fechas",
@@ -57,7 +56,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     ROOMS_OPTIONS_FOUND: "opciones encontradas",
     // US-DM-03 — Sort & Filter UI
     SORT_LABEL: "Ordenar por",
-    SORT_FEATURED: "Destacados",
     SORT_PRICE_ASC: "Precio: menor a mayor",
     SORT_PRICE_DESC: "Precio: mayor a menor",
     FILTERS_TITLE: "Filtros",
@@ -72,7 +70,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     FILTERS_PRICE_MIN_LABEL: "Precio mínimo",
     FILTERS_PRICE_MAX_LABEL: "Precio máximo",
     FILTERS_ACTIVE_BADGE: "filtros activos",
-    FEATURED_BADGE: "Destacado",
   },
   en: {
     REALTIME_AVAIL: "Real-time availability",
@@ -83,7 +80,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     ONLY_REMAINING: "Only",
     ROOMS_PLURAL: "rooms left",
     TYPE_LABEL: "Type",
-    SQFT_LABEL: "sq ft",
     PRICE_LABEL: "Price per night",
     CURRENCY: "USD",
     AVAILABLE_DATES: "available for your dates",
@@ -129,7 +125,6 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     ROOMS_OPTIONS_FOUND: "options found",
     // US-DM-03 — Sort & Filter UI
     SORT_LABEL: "Sort by",
-    SORT_FEATURED: "Featured",
     SORT_PRICE_ASC: "Price: low to high",
     SORT_PRICE_DESC: "Price: high to low",
     FILTERS_TITLE: "Filters",
@@ -144,6 +139,5 @@ export const ROOMS_TEXTS: Record<SupportedLocale, RoomsTexts> = {
     FILTERS_PRICE_MIN_LABEL: "Minimum price",
     FILTERS_PRICE_MAX_LABEL: "Maximum price",
     FILTERS_ACTIVE_BADGE: "active filters",
-    FEATURED_BADGE: "Featured",
   },
 } as const;

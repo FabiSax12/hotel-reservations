@@ -19,7 +19,7 @@ const QUOTE_GLYPH_PATH =
 export function RoomCardMeta({ room }: RoomCardMetaProps) {
   return (
     <>
-      {/* Admin tip — editorial pull-quote style */}
+      {/* Admin tip — editorial pull-quote. Hidden until a rooms.admin_tip column exists (US-DM-07). */}
       {room.adminTip && (
         <figure className={ROOM_CARD_STYLES.adminTipQuote}>
           <svg

@@ -7,7 +7,7 @@
 
 "use client";
 
-import { formatBedConfig } from "@/features/rooms";
+import { formatBedConfig, ROOM_INVENTORY } from "@/features/rooms";
 import { useI18n } from "@/locales";
 import { ICON_PATHS, ICON_VIEW_BOX, QUOTE_VIEW_BOX } from "../constants/room-detail-icons.const";
 import type { RoomDetailKeyInfoProps } from "../domain/types";
@@ -15,7 +15,8 @@ import { ROOM_DETAIL_STYLES } from "../theme/room-detail.theme";
 
 export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
   const { t } = useI18n();
-  const isLastRoom = room.inventory === 1;
+  // Scarcity chip suppressed while inventory is assumed (US-DM-07).
+  const isLastRoom = ROOM_INVENTORY.IS_TRACKED && room.inventory === 1;
 
   return (
     <div className={ROOM_DETAIL_STYLES.keyInfo}>
@@ -25,12 +26,6 @@ export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
             <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.capacity} />
           </svg>
           {t.ROOM_DETAIL.CAPACITY_VALUE.replace("{count}", String(room.capacity))}
-        </span>
-        <span className={ROOM_DETAIL_STYLES.chip}>
-          <svg className={ROOM_DETAIL_STYLES.chipIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.area} />
-          </svg>
-          {room.sqft} {t.ROOMS.SQFT_LABEL}
         </span>
         <span className={ROOM_DETAIL_STYLES.chip}>
           <svg className={ROOM_DETAIL_STYLES.chipIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={2}>
@@ -48,13 +43,17 @@ export function RoomDetailKeyInfo({ room }: RoomDetailKeyInfoProps) {
         )}
       </div>
 
-      <div className={ROOM_DETAIL_STYLES.bedsRow}>
-        <svg className={ROOM_DETAIL_STYLES.bedsIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={1.6}>
-          <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.bed} />
-        </svg>
-        {formatBedConfig(room.beds)}
-      </div>
+      {/* Bed configuration hidden until a beds column/table exists (US-DM-07). */}
+      {room.beds && (
+        <div className={ROOM_DETAIL_STYLES.bedsRow}>
+          <svg className={ROOM_DETAIL_STYLES.bedsIcon} fill="none" viewBox={ICON_VIEW_BOX} stroke="currentColor" strokeWidth={1.6}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={ICON_PATHS.bed} />
+          </svg>
+          {formatBedConfig(room.beds)}
+        </div>
+      )}
 
+      {/* Admin tip hidden until a rooms.admin_tip column exists (US-DM-07). */}
       {room.adminTip && (
         <figure className={ROOM_DETAIL_STYLES.adminTip}>
           <svg className={ROOM_DETAIL_STYLES.adminTipIcon} viewBox={QUOTE_VIEW_BOX} fill="currentColor" aria-hidden="true">

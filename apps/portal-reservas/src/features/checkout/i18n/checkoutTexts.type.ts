@@ -13,8 +13,6 @@ export type CheckoutTexts = {
   NIGHTS_LABEL: string;
   GUESTS_LABEL: string;
   CAPACITY_LABEL: string;
-  AREA_LABEL: string;
-  AREA_VALUE: string;
   BEDS_LABEL: string;
   AMENITIES_TITLE: string;
   ABOUT_TITLE: string;

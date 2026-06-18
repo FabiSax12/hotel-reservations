@@ -98,6 +98,41 @@ export type Database = {
           },
         ]
       }
+      room_images: {
+        Row: {
+          created_at: string
+          id: string
+          position: number
+          room_id: string
+          storage_path: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          position?: number
+          room_id: string
+          storage_path: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          position?: number
+          room_id?: string
+          storage_path?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_images_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pending_invitations: {
         Row: {
           accepted_at: string | null
