@@ -65,13 +65,13 @@ Cuando la persona se identifique:
 
 ## 2. Tablero de estado (actualizar siempre)
 
-_Última actualización: 2026-10-31_
+_Última actualización: 2026-11-01_
 
 | Integrante | Módulo | Fase actual | Próxima tarea | Rama activa | Bloqueos |
 |---|---|---|---|---|---|
 | Paula | Autenticación | 3 — Remediación | Commit + PR de P3.5 + P3.6 (`auth/fase-3-parches.md` listo); luego P3.7 (video) y G3.1 (matriz de riesgo residual) | `security/auth/fase3-reporte-parches` (P3.5 + P3.6 commiteados, sin push ni PR; P3.1–P3.4 mergeados: PR #19, #20, #21) | P3.5 alimenta G3.1 (matriz de riesgo residual, la consolida Paula) y P3.6 alimenta G3.2 (reporte de parches, Joseph) |
 | Joseph | Gestión de Usuarios | 2 — Evaluación ofensiva | J2.1 Vector 1 — servidor (A03 + A01) | — | — |
-| Aarón | Operaciones / Transacciones | 3 — Remediación | A3.7 (video ≤ 5 min de A3.1–A3.4); luego G4 (paquete final) | `security/operations/fase3-checkout-rooms-catalog` (PR #16) | A3.4 bloqueada por la util de saneo de Fabian (F3.3/F3.4) |
+| Aarón | Operaciones / Transacciones | 3 — Remediación (A3.1–A3.6 hechas) | A3.7 (video ≤ 5 min de A3.1–A3.4); luego G4 (paquete final) | — (PR #23 mergeado) | G4 depende de G2 (Fabian), G3.1 (Paula) y G3.2 (Joseph); G3.1/G3.2 esperan la Fase 3 de Joseph |
 | Fabian | Logs / Auditoría | 3 — Remediación (F3.1–F3.6 hechas) | Revisión cruzada del PR #23 (G3.3), aplicar migraciones de auditoría al Supabase remoto, G2 (documento de PoCs consolidado) y F3.7 (video) | — (PR #18 mergeado) | Ninguno propio. G3.1/G3.2 esperan a Joseph (J3.5/J3.6) |
 
 ### Estado global del repo
@@ -382,6 +382,8 @@ CSRF en acciones de estado de reserva, integridad del webhook/pasarela de pago, 
 | 2026-10-24 | A3.4 (código) — auditoría del módulo con la API de Fabian (`@hotel/core/audit/server`, PR #18): `reservation.created` por fila en `openGatewaySession` (actor nulo, sin PII ni `guest_notes`/`code`; `persistReservation` ahora devuelve `id, room_id`) y `reservation.updated`/`reservation.cancelled` en `updateReservationStatus` (estado previo → nuevo, admin verificado con `getVerifiedSession`, solo tras `requirePermission` y `UPDATE` exitoso). Tests nuevos `gateway.server.test.ts` (4) y `tests/reservations/updateReservationStatus.test.ts` (5); suites portal 66/66 y panel 24/24; sin errores nuevos de type-check. `fase-3-parches.md` §A3.4 actualizado: OP-POC-6 pasa de Alto a **Bajo** por código y tests | `security/operations/fase3-audit-logging` (desde `develop@1e6ce17`) | Código hecho, sin commit. Pendiente: evidencia en vivo (Docker apagado en esta sesión) y PR. Límite declarado: los intentos rechazados (400/403/409, sin permiso) no se registran |
 | 2026-10-24 | A3.4 (evidencia en vivo) — Supabase local (Docker) con las 4 migraciones pendientes aplicadas en local (append-only y hash encadenado de Fabian, P3.1 de Paula). Checkout con XSS + CR/LF en nombre y notas → 200 y 2 × `reservation.created` sin PII ni payload; 403 (Origin ajeno) y 409 (solapamiento) sin evento; en el panel, aprobar → `reservation.updated` (`pending → approved`, actor `sec.owner`) y cancelar con motivo con CR/LF → `reservation.cancelled` con el motivo en una sola línea; visor muestra los 4 eventos; `verify_audit_chain()` íntegra. OP-POC-6 queda en **Bajo** con evidencia | `security/operations/fase3-audit-logging`; evidencia `A3.4-audit-logging-live.txt` | Hecho; pendiente commit y PR |
 | 2026-10-24 | A3.4 endurecimiento: quitado `"use server"` de `createReservation.server.ts` (evita exponer `persistReservation`/`areRoomsAvailable` como Server Actions públicas); tests del portal 66/66 y checkout en vivo OK (seq 10). Limpieza de un pendiente viejo de evidencias en `fase-3-parches.md` (ya cerrado en A2.4/A3.3). G3.3 cerrada (ver §6) | `security/operations/fase3-audit-logging` | Hecho |
+| 2026-10-31 | Entrega de A3.4: PR #23 aprobado por Fabian (revisión cruzada G3.3) y mergeado a `develop` (merge `dcec7f0`) | `security/operations/fase3-audit-logging`, PR #23 | Mergeado; A3.4 cerrada. Fase 3 de Operaciones completa salvo A3.7 (video) |
+| 2026-11-01 | Corrección del tablero §2: la fila de Aarón había vuelto a un texto viejo ("PR #16", "A3.4 bloqueada") al resolver el conflicto del merge de `develop` en el PR #24 | `docs/plan-sync-aaron` | Hecho |
 
 ---
 
