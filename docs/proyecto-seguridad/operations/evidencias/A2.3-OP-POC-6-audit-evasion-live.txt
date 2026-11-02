@@ -1,0 +1,63 @@
+OP-POC-6 — Evasión de los registros de auditoría (Vector 3: tracing / audit poisoning)
+=====================================================================================
+
+Fecha: 2026-11-01
+Commit vulnerable reproducido: develop@1e6ce17 (último commit antes de A3.4; PR #23 todavía sin mergear).
+  Comprobación del commit: `grep -c logAuditEvent` en
+    apps/portal-reservas/src/features/checkout/services/gateway.server.ts           → 0
+    apps/panel-admin/src/features/reservations/services/reservationService.ts       → 0
+Entorno: Supabase LOCAL (Docker), portal :3001 y panel :3002 en `pnpm dev`, ambos contra http://127.0.0.1:54321.
+Cuenta del panel: sec.owner@hotel.local (owner, de packages/db/scripts/seed-security-admins.mjs).
+
+Línea base: audit_logs con 10 filas (max seq = 10), cadena íntegra.
+
+
+1) Dos reservas creadas por el checkout público → ningún evento
+-----------------------------------------------------------------
+
+POST /api/checkout (Origin: http://localhost:3001, User-Agent: OP-POC-6-evasion/1.0)
+
+  a) roomIds ["lf-1"], 2027-01-10 → 2027-01-13, guests 2, email op-poc-6@poc.local,
+     specialRequests "reserva sin rastro\r\n2027-01-10 action=reservation.deleted actor=owner@hotel.local"
+     → 200 {"url":"http://localhost:3001/reserve/success?session_id=mock_1793595212112"}
+  b) roomIds ["mv-4"], 2027-01-10 → 2027-01-11, guests 1, email op-poc-6@poc.local
+     → 200 {"url":"http://localhost:3001/reserve/success?session_id=mock_1793595212283"}
+
+Reservas persistidas:
+  a2d857f1-e752-4d1f-b3c4-c9f622e7941d | room 0a330000-…-000000000201 (lf-1) | pending
+  4004053a-5988-46e9-898f-0be0063f4ed2 | room 0a330000-…-000000000104 (mv-4) | pending
+
+audit_logs después del checkout: 10 filas (max seq = 10)  → 0 eventos nuevos.
+
+
+2) Cancelación desde el panel por un admin → ningún evento de la acción
+------------------------------------------------------------------------
+
+Login en http://localhost:3002/auth/login como sec.owner@hotel.local; detalle de la reserva a2d857f1…;
+"Cancelar reserva" con motivo "OP-POC-6 cancelacion sin rastro" → "Guardar cambios" → "Confirmar".
+
+reservations:
+  a2d857f1-e752-4d1f-b3c4-c9f622e7941d | cancelled | OP-POC-6 cancelacion sin rastro
+  4004053a-5988-46e9-898f-0be0063f4ed2 | pending   |
+
+audit_logs (seq > 10):
+ seq | action             | entity_id | actor_email           | metadata
+-----+--------------------+-----------+-----------------------+------------------------
+  11 | auth.login.success |           | sec.owner@hotel.local | {"requireAdmin": true}
+
+→ Solo queda el login (lo registra el módulo de Autenticación). La cancelación —quién, qué reserva, de qué
+  estado a cuál, con qué motivo— no deja ningún rastro.
+
+
+Resultado
+---------
+
+✅ PoC reproducida. En el código vulnerable, todo el ciclo de una reserva (creación pública y cambio de estado
+administrativo) evade por completo los registros de auditoría:
+  - No se puede detectar el abuso del checkout (reservas basura, bloqueo de inventario).
+  - No se puede atribuir ni reconstruir un cambio de estado. Encadenado con OP-POC-3 (XSS en la sesión del
+    admin), un atacante puede cancelar o aprobar reservas sin que quede ninguna traza, lo que invalida la
+    detección de intrusos (DE.CM-09) y el no repudio.
+
+Contraste tras el parche (A3.4, PR #23): las mismas acciones generan `reservation.created` y
+`reservation.cancelled`, con el texto de los campos saneado → evidencias/A3.4-audit-logging-live.txt.

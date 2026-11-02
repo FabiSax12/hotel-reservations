@@ -1,0 +1,59 @@
+A3.1 (OP-POC-2) y A3.2 (OP-POC-3) — Re-prueba en vivo de las PoCs originales sobre el código parcheado
+=========================================================================================================
+
+Fecha: 2026-11-01
+Código: develop@5b3e5cc (incluye A3.1/A3.2 del PR #12, la CSP de Paula del PR #20 y A3.4 del PR #23).
+Entorno: Supabase LOCAL (Docker), panel-admin :3002 en `pnpm dev`.
+
+
+1) OP-POC-2 — Replay del Server Action deleteImage con una cuenta SIN rooms:manage
+-----------------------------------------------------------------------------------
+
+Cuenta: sec.admin.norooms@hotel.local (rol admin; permisos: view:dashboard, reservations:view).
+Imagen de prueba insertada en local: room_images.id = 0a3a0000-0000-4000-8000-00000000aa01
+(room 0a330000-…-000000000101).
+
+Id del Server Action (apps/panel-admin/.next/server/server-reference-manifest.json):
+  4092c2ef57aee27d275a7172b8346cf9d68e49f3be  deleteImage   ← el mismo id usado en la PoC de la Fase 2
+
+Request (fetch desde el navegador con la cookie de sesión de esa cuenta), idéntica a la de la Fase 2:
+  POST /admin/rooms/gallery?roomId=0a330000-0000-4000-8000-000000000101
+  Next-Action: 4092c2ef57aee27d275a7172b8346cf9d68e49f3be
+  Content-Type: text/plain;charset=UTF-8
+  body: ["0a3a0000-0000-4000-8000-00000000aa01"]
+
+Respuesta:
+  HTTP 500
+  1:E{"name":"PermissionDeniedError","message":"Permission denied: rooms:manage",
+      "stack":[["requirePermission", ".../src/shared/auth/requirePermission.ts", …],
+               [" deleteImage", ".../src/features/rooms/services/galleryActions.ts", …]]}
+
+BD después del intento:
+  select count(*) from room_images where id = '0a3a0000-…-00000000aa01';  → 1  (la fila sigue ahí)
+
+Fase 2 (evidencias/A2.1-A01-gallery-no-requirepermission.txt): la misma request devolvía HTTP 200 con
+`1:true` y la fila se borraba.
+
+✅ La PoC original ya no es ejecutable: `requirePermission(ROOMS.MANAGE)` corta antes de tocar la base.
+(La imagen de prueba se borró después, en local, con psql.)
+
+
+2) OP-POC-3 — Notas del huésped con XSS mostradas en el panel
+-------------------------------------------------------------
+
+Reserva 581567fd-c0a2-49ce-be97-b94d81ed5f2a, cuyas `guest_notes` en la BD contienen:
+  "<img src=x onerror=alert(document.cookie)>\r\n2026-10-24 action=reservation.deleted actor=owner@hotel.local"
+
+Detalle abierto como sec.owner@hotel.local en /admin/reservations/581567fd-…; inspección del DOM:
+
+  notesRenderedAsText : "<img src=x onerror=alert(document.cookie)>\n2026-10-24 action=reservation.deleted actor=own…"
+  img[onerror] en el DOM : 0
+  img[src="x"] en el DOM : 0
+  Content-Security-Policy (script-src):
+    script-src 'self' 'nonce-as89OXDB27kJRw27wKtdLg==' 'strict-dynamic' 'unsafe-eval'
+    ('unsafe-eval' solo aparece en desarrollo; ver P3.2 de Paula)
+
+Fase 2 (evidencias/A2.2-xss-executed-panel.png): el mismo tipo de payload se ejecutaba en la sesión del admin.
+
+✅ La PoC original ya no es ejecutable: el payload se muestra como texto literal y no se crea ningún elemento.
+   Como defensa en profundidad, la CSP con nonce bloquearía además cualquier handler inline residual.
