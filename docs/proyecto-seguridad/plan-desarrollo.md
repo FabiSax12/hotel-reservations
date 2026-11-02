@@ -65,14 +65,14 @@ Cuando la persona se identifique:
 
 ## 2. Tablero de estado (actualizar siempre)
 
-_Última actualización: 2026-10-31_
+_Última actualización: 2026-11-01_
 
 | Integrante | Módulo | Fase actual | Próxima tarea | Rama activa | Bloqueos |
 |---|---|---|---|---|---|
-| Paula | Autenticación | 3 — Remediación | Commit + PR de P3.5 + P3.6 (`auth/fase-3-parches.md` listo); luego P3.7 (video) y G3.1 (matriz de riesgo residual) | `security/auth/fase3-reporte-parches` (P3.5 + P3.6 commiteados, sin push ni PR; P3.1–P3.4 mergeados: PR #19, #20, #21) | P3.5 alimenta G3.1 (matriz de riesgo residual, la consolida Paula) y P3.6 alimenta G3.2 (reporte de parches, Joseph) |
-| Joseph | Gestión de Usuarios | 2 — Evaluación ofensiva | J2.1 Vector 1 — servidor (A03 + A01) | — | — |
-| Aarón | Operaciones / Transacciones | 3 — Remediación | A3.7 (video ≤ 5 min de A3.1–A3.4); luego G4 (paquete final) | `security/operations/fase3-checkout-rooms-catalog` (PR #16) | A3.4 bloqueada por la util de saneo de Fabian (F3.3/F3.4) |
-| Fabian | Logs / Auditoría | 3 — Remediación (F3.1–F3.6 hechas) | Revisión cruzada del PR #23 (G3.3), aplicar migraciones de auditoría al Supabase remoto, G2 (documento de PoCs consolidado) y F3.7 (video) | — (PR #18 mergeado) | Ninguno propio. G3.1/G3.2 esperan a Joseph (J3.5/J3.6) |
+| Paula | Autenticación | 3 — Remediación (P3.1–P3.6 hechas) | P3.7 (video) y G3.1 (matriz de riesgo residual) | — (P3.1–P3.6 mergeados: PR #19, #20, #21, #22) | G3.1 espera J3.5 (Fase 3 de Joseph) |
+| Joseph | Gestión de Usuarios | 3 — Remediación (sin empezar) | J3.1 Parches del vector 1 (J2-POC-1/2/3/6/9: permisos server-side + RLS) | — (Fase 2 mergeada: PR #10) | Su Fase 3 bloquea G3.1 (Paula), G3.2 (la consolida él) y G4 (Aarón) |
+| Aarón | Operaciones / Transacciones | 3 — Remediación (A3.1–A3.6 hechas) | A3.7 (video ≤ 5 min de A3.1–A3.4); luego G4 (paquete final) | — (PR #23 mergeado) | G4 depende de G2 (Fabian), G3.1 (Paula) y G3.2 (Joseph); G3.1/G3.2 esperan la Fase 3 de Joseph |
+| Fabian | Logs / Auditoría | 3 — Remediación (F3.1–F3.6 hechas) | Aplicar migraciones de auditoría al Supabase remoto, G2 (documento de PoCs consolidado, ya desbloqueado) y F3.7 (video) | — (PR #18 y #24 mergeados) | Ninguno propio. G3.1/G3.2 esperan a Joseph (J3.5/J3.6) |
 
 ### Estado global del repo
 - [x] Monorepo levantable con `.env` de Supabase/Resend (2026-09-28).
@@ -100,7 +100,7 @@ de la entrega real: **Sprint 1 — Fase 1** (29 sep–5 oct), **Sprint 2 — Fas
 | H0 — Arranque | 2026-09-28 | ~~Decisión §4.1 tomada~~ (hecho), plantillas acordadas, tablero Jira armado, cada quien leyó su sección. ✅ |
 | H1 — Fase 1 individual (Sprint 1) | 2026-10-05 | Cada módulo tiene su archivo `fase-1-diagnostico.md` completo. |
 | H1b — Matriz General de Gobernanza | 2026-10-06 | Documento consolidado revisado por los 4. ✅ (aprobado 2026-10-05) |
-| H2 — Fase 2 individual (Sprint 2) | 2026-10-12 | Cada módulo con PoC de los 3 vectores + evidencias reproducibles. |
+| H2 — Fase 2 individual (Sprint 2) | 2026-10-12 | Cada módulo con PoC de los 3 vectores + evidencias reproducibles. ✅ (cumplido con atraso: último módulo el 2026-10-21, PR #17) |
 | H2b — Documento de PoCs | 2026-10-13 | Documento estandarizado consolidado. |
 | H3 — Parches integrados (Sprint 3) | 2026-10-21 | PRs de cada módulo aprobados y mergeados a `develop`, pruebas de regresión en verde. |
 | H3b — Matriz de riesgo residual + Reporte de parches | 2026-10-23 | Ambos documentos consolidados. |
@@ -256,6 +256,7 @@ mensajes de error que permiten enumerar usuarios, reflejo de parámetros en pág
 | 2026-10-22 | Rama de P3.5 + P3.6 creada desde `develop` (`fa35c7c`); ambas en la misma rama porque el riesgo residual es la sección 5 de la plantilla de parches (§4.6) | `security/auth/fase3-reporte-parches` | Local (aún sin push) |
 | 2026-10-22 | P3.5 + P3.6 — `auth/fase-3-parches.md`: ficha con PRs #19–#21 y commits; 9 parches (AUTH-PAT-1…9) con mapeo OWASP/NIST, diff antes/después, prueba de regresión y riesgo residual; tabla con las columnas de `matriz-riesgo-residual.xlsx` lista para G3.1; riesgos de Fase 1 sin parche (R03, R05, R09, R12); tabla de tests por hallazgo; consulta de detección de cuentas auto-escaladas (verificada en local: solo `attacker-escalation@poc.local`). Mapeo de AUTH-POC-2 a AUTH-R07/R10 (ver entrada siguiente) | `security/auth/fase3-reporte-parches`, commit `docs(security): auth phase 3 patch report…` (sobre `5ab5550`) | Hecho; regresión en verde sobre `develop@fa35c7c` (core 95, portal 62, panel 19; auth+security 43 y 18). Residual: Bajo en AUTH-POC-1, 2(a), 3, 4, 5, 6, O-10, R11; Medio en AUTH-POC-2(b) y AUTH-R04; R03 Alto y R05/R09/R12 sin cambio. P3.6 se marca al mergear el PR |
 | 2026-10-22 | Corrección en `fase-2-pocs.md`: el "Riesgo asociado" de AUTH-POC-2 decía AUTH-R02 / AUTH-R03 (open redirect y fuerza bruta en la Fase 1); se cambió a AUTH-R07 / AUTH-R10, que son los riesgos de O-05 y O-11 que la PoC confirma. La numeración de la Fase 1 no cambió después del 2026-10-03, así que fue un error de transcripción al escribir la PoC (commit `1c9ad910`). Nota de corrección agregada en la ficha | `security/auth/fase3-reporte-parches`, commit `5ab5550` | Hecho; avisar a Fabian por G2 (documento de PoCs consolidado) |
+| 2026-10-23 | P3.5 + P3.6 Entrega: PR #22 mergeado a `develop` (merge `1e6ce17`); `auth/fase-3-parches.md` en `develop` _(registrado por Aarón el 2026-11-01 al verificar el repo)_ | `security/auth/fase3-reporte-parches`, PR #22 | Mergeado; Fase 3 cerrada salvo P3.7 (video) |
 
 ---
 
@@ -285,10 +286,10 @@ usuario (nombre, email) renderizados en tablas y drawers, flujo de invitaciones 
 - [x] J1.5 Entregar `docs/proyecto-seguridad/users/fase-1-diagnostico.md`.
 
 **Fase 2**
-- [ ] J2.1 Vector 1 — servidor: inyección en filtros/búsquedas (A03) y escalamiento de privilegios (A01).
-- [ ] J2.2 Vector 2 — cliente: XSS stored con datos de usuario en listados/drawers.
-- [ ] J2.3 Vector 3 — CSRF / manipulación de parámetros en cambios de permisos/estado (A08) y log injection.
-- [ ] J2.4 Entregar `users/fase-2-pocs.md` + evidencias.
+- [x] J2.1 Vector 1 — servidor: inyección en filtros/búsquedas (A03) y escalamiento de privilegios (A01).
+- [x] J2.2 Vector 2 — cliente: XSS stored con datos de usuario en listados/drawers.
+- [x] J2.3 Vector 3 — CSRF / manipulación de parámetros en cambios de permisos/estado (A08) y log injection.
+- [x] J2.4 Entregar `users/fase-2-pocs.md` + evidencias.
 
 **Fase 3**
 - [ ] J3.1 Parches del vector 1 (verificación de permisos server-side + RLS de menor privilegio).
@@ -307,6 +308,7 @@ usuario (nombre, email) renderizados en tablas y drawers, flujo de invitaciones 
 | 2026-09-28 | J1.3 Impacto: contexto GV.OC, apetito de riesgo, BIA por proceso, misma escala I×P que Operaciones y 11 escenarios de riesgo inherente | `security/users/fase1-diagnostico` | Hecho; 1 Crítico (provisional), 2 Altos, 6 Medios, 2 Bajos (§5) |
 | 2026-09-28 | J1.4 Línea base: 16 controles (13 PROTECT, 3 DETECT) con estado, brecha, tarea J3.x y coordinación; 7 filas listas para G1 | `security/users/fase1-diagnostico` | Hecho; 2 cumplen, 6 parciales, 8 no cumplen / por verificar (§6–§8) |
 | 2026-10-01 | J1.5 Entrega de la Fase 1 (revisado y mergeado por Aarón) | `security/users/fase1-diagnostico`, PR #6 (merge `9b066e8`) | Mergeado a `develop`; Fase 1 cerrada |
+| 2026-10-20 | J2.1–J2.4 Entrega de la Fase 2: `users/fase-2-pocs.md` con 9 PoCs (J2-POC-1…9) — vector 1: bypass de permisos, IDOR, delegación sin límite, `getSession()`, `get_admins()` sin sesión y RLS permisivas (todas **reales**); vector 2: XSS stored en la tabla de admins (J2-POC-8, **introducida**); vector 3: manipulación de parámetros en `toggleAdminStatus` y en invitaciones (J2-POC-5/7). A03 y log injection documentados como hallazgos negativos en el alcance; CSRF sin PoC propia (las Server Actions validan `Origin`). Evidencias en `users/evidencias/` (11) y `users/evidencias_r2/` (27) _(registrado por Aarón el 2026-11-01 al verificar el repo)_ | `security/users/fase2-pocs`, commits `d82ceb0`, `585201b`, PR #10 (merge `80294e4`) | Mergeado a `develop`; Fase 2 cerrada. Fase 3 sin empezar (no hay rama `security/users/fase3-*`) |
 
 ---
 
@@ -382,6 +384,8 @@ CSRF en acciones de estado de reserva, integridad del webhook/pasarela de pago, 
 | 2026-10-24 | A3.4 (código) — auditoría del módulo con la API de Fabian (`@hotel/core/audit/server`, PR #18): `reservation.created` por fila en `openGatewaySession` (actor nulo, sin PII ni `guest_notes`/`code`; `persistReservation` ahora devuelve `id, room_id`) y `reservation.updated`/`reservation.cancelled` en `updateReservationStatus` (estado previo → nuevo, admin verificado con `getVerifiedSession`, solo tras `requirePermission` y `UPDATE` exitoso). Tests nuevos `gateway.server.test.ts` (4) y `tests/reservations/updateReservationStatus.test.ts` (5); suites portal 66/66 y panel 24/24; sin errores nuevos de type-check. `fase-3-parches.md` §A3.4 actualizado: OP-POC-6 pasa de Alto a **Bajo** por código y tests | `security/operations/fase3-audit-logging` (desde `develop@1e6ce17`) | Código hecho, sin commit. Pendiente: evidencia en vivo (Docker apagado en esta sesión) y PR. Límite declarado: los intentos rechazados (400/403/409, sin permiso) no se registran |
 | 2026-10-24 | A3.4 (evidencia en vivo) — Supabase local (Docker) con las 4 migraciones pendientes aplicadas en local (append-only y hash encadenado de Fabian, P3.1 de Paula). Checkout con XSS + CR/LF en nombre y notas → 200 y 2 × `reservation.created` sin PII ni payload; 403 (Origin ajeno) y 409 (solapamiento) sin evento; en el panel, aprobar → `reservation.updated` (`pending → approved`, actor `sec.owner`) y cancelar con motivo con CR/LF → `reservation.cancelled` con el motivo en una sola línea; visor muestra los 4 eventos; `verify_audit_chain()` íntegra. OP-POC-6 queda en **Bajo** con evidencia | `security/operations/fase3-audit-logging`; evidencia `A3.4-audit-logging-live.txt` | Hecho; pendiente commit y PR |
 | 2026-10-24 | A3.4 endurecimiento: quitado `"use server"` de `createReservation.server.ts` (evita exponer `persistReservation`/`areRoomsAvailable` como Server Actions públicas); tests del portal 66/66 y checkout en vivo OK (seq 10). Limpieza de un pendiente viejo de evidencias en `fase-3-parches.md` (ya cerrado en A2.4/A3.3). G3.3 cerrada (ver §6) | `security/operations/fase3-audit-logging` | Hecho |
+| 2026-10-31 | Entrega de A3.4: PR #23 aprobado por Fabian (revisión cruzada G3.3) y mergeado a `develop` (merge `dcec7f0`) | `security/operations/fase3-audit-logging`, PR #23 | Mergeado; A3.4 cerrada. Fase 3 de Operaciones completa salvo A3.7 (video) |
+| 2026-11-01 | Corrección del tablero §2: la fila de Aarón había vuelto a un texto viejo ("PR #16", "A3.4 bloqueada") al resolver el conflicto del merge de `develop` en el PR #24 | `docs/plan-sync-aaron` | Hecho |
 
 ---
 
@@ -439,6 +443,7 @@ de hash) y cobertura de eventos de los otros módulos.
 | 2026-10-16 | F2.4 Revisión de `audit/fase-2-pocs.md` contra la plantilla §4.5: las 6 PoCs completas (AUD-POC-3 como hallazgo de soporte, sin repro activo por diseño); push de la rama a `origin` y PR contra `develop` | `security/audit/fase2-pocs` | Hecho |
 | 2026-10-21 | F3.1–F3.5: 7 parches (AUD-PAT-1 a 7) con 65 tests en verde, re-prueba en navegador real de las PoCs 1, 2, 4, 5 y 6 (la 3 no es observable en vivo: el tope de 100 supera las filas existentes; lo cubre un test). **Hallazgo nuevo:** `logAuditEvent` era una Server Action pública (cualquier anónimo falsificaba eventos); corregido con `@hotel/core/audit/server`. Guía de la API publicada para P3.4/J3.4/A3.4. Las migraciones append-only y hash encadenado solo se probaron en Postgres local; **sin aplicar al Supabase remoto** | `security/audit/fase3-parches-v1`, commits `56c053c`…`9404908` | Hecho en la rama; pendiente PR, F3.6 (entrega) y F3.7 (video) |
 | 2026-10-21 | F3.6 Entrega de la Fase 3: PR #18 mergeado a `develop` (merge `91b169c`); `audit/fase-3-parches.md` con ficha, diff, regresión y riesgo residual por parche | `security/audit/fase3-parches-v1`, PR #18 | Hecho; pendiente F3.7 (video), aplicar migraciones al Supabase remoto y G2 |
+| 2026-10-31 | Revisión cruzada (G3.3) y merge del PR #23 de Aarón (A3.4, uso de la API de auditoría); PR #24 de sincronización del plan mergeado (merge `80733f3`, revisado por Aarón) _(registrado por Aarón el 2026-11-01 al verificar el repo)_ | PR #23, PR #24 | Hecho |
 
 ---
 
