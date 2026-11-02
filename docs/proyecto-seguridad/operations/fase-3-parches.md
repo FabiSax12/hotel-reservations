@@ -4,9 +4,10 @@
 |---|---|
 | Módulo | Operaciones / Transacciones (`operations`) |
 | Responsable | Aarón Líos Cubillo |
-| Rama | `security/operations/fase3-parches` (creada **desde** `security/operations/fase2-pocs`, para aplicar los fixes sobre las vulnerabilidades introducidas/reales y comprobar que la PoC deja de funcionar — §4.1) |
+| Ramas | `security/operations/fase3-parches` (A3.1–A3.3, creada **desde** `security/operations/fase2-pocs` para aplicar los fixes sobre las vulnerabilidades introducidas/reales y comprobar que la PoC deja de funcionar — §4.1) · `security/operations/fase3-checkout-rooms-catalog` (A3.3, catálogo de habitaciones) · `security/operations/fase3-audit-logging` (A3.4) |
+| Pull Requests | [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12) (A3.1–A3.3) · [#15](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/15) (bitácora) · [#16](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/16) (catálogo de habitaciones) · [#23](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/23) (A3.4) — todos mergeados a `develop` |
 | Insumo | `operations/fase-2-pocs.md` (OP-POC-1 … OP-POC-6) |
-| Estado | A3.1, A3.2 y A3.3 completos (los 3 vectores parcheados). A3.4 implementada con la API de auditoría de Fabian y verificada en vivo (rama `security/operations/fase3-audit-logging`); pendiente PR. |
+| Estado | A3.1–A3.6 completas y mergeadas a `develop`; los 6 hallazgos (OP-POC-1…6) parcheados y re-probados. Pendiente: A3.7 (video). |
 
 > Formato por parche según §4.6: ficha · mapeo · diff antes/después · prueba de regresión · riesgo residual.
 
@@ -21,13 +22,13 @@
 | OP-POC-3 | 2 — XSS stored | Escape de salida (`{guest.notes}`) | **Bajo** |
 | OP-POC-4 | 3 — CSRF | Verificación de `Origin` | **Medio** (sin token anti-CSRF ni rate limiting) |
 | OP-POC-5 | 3 — manipulación de parámetros | Esquema Zod + capacidad (fechas/aforo); disponibilidad + `EXCLUDE` + catálogo de rooms reconciliado | **Bajo** (fechas/aforo y disponibilidad/TOCTOU verificados en vivo, ver A3.3) |
-| OP-POC-6 | 3 — log injection | `logAuditEvent` en creación y cambio de estado de reservas, saneado por la API (A3.4) | **Bajo** (verificado en vivo, ver A3.4) |
+| OP-POC-6 | 3 — evasión de auditoría | `logAuditEvent` en creación y cambio de estado de reservas, saneado por la API (A3.4) | **Bajo** (verificado en vivo, ver A3.4) |
 
 ---
 
 ## A3.1 — OP-POC-1 · Inyección en el filtro de "consultar mi reserva" → IDOR
 
-**Ficha.** Responsable: Aarón · Módulo: operations · Rama: `security/operations/fase3-parches` · Commit: `1f43498`.
+**Ficha.** Responsable: Aarón · Módulo: operations · Rama: `security/operations/fase3-parches` · Commit: `1f43498` · PR: [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12).
 
 **Mapeo.** OWASP A03 (injection, clase PostgREST) + A01 (IDOR). NIST CSF 2.0: PR.DS-10, PR.AA-05, ID.RA-01.
 Archivo: `apps/portal-reservas/src/features/reservation-lookup/services/lookupReservation.server.ts`.
@@ -61,7 +62,7 @@ se deja como mejora de menor privilegio; no reabre la PoC. Hermano del fix F3.1 
 
 ## A3.1 (cont.) — OP-POC-2 · `galleryActions` sin verificación de permisos
 
-**Ficha.** Commit: `1f43498`. (Parchado junto al Vector 1 por ser el otro hallazgo de servidor.)
+**Ficha.** Responsable: Aarón · Rama: `security/operations/fase3-parches` · Commit: `1f43498` · PR: [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12). (Parchado junto a OP-POC-1 por ser el otro hallazgo de servidor.)
 
 **Mapeo.** OWASP A01. NIST CSF 2.0: PR.AA-05, DE.CM-03. Archivo:
 `apps/panel-admin/src/features/rooms/services/galleryActions.ts` (`uploadImage`, `deleteImage`, `reorderImages`).
@@ -73,17 +74,18 @@ export async function deleteImage(imageId: string): Promise<boolean> {
   const supabase = createSupabaseServiceClient() as unknown as AnyClient;
   // …
 
-// DESPUÉS (A3.2): autorización server-side antes de tocar datos
+// DESPUÉS (A3.1): autorización server-side antes de tocar datos
 export async function deleteImage(imageId: string): Promise<boolean> {
   await requirePermission(PERMISSIONS.ROOMS.MANAGE);
   const supabase = createSupabaseServiceClient() as unknown as AnyClient;
   // …
 ```
 
-**Prueba de regresión.** Por lectura de código: las tres escrituras ahora pasan por `requirePermission`,
-igual que los servicios hermanos del módulo (`reservationService`, `getRooms`). La invocación directa de la
-Server Action con una cuenta sin `rooms_manage` lanza `PermissionDeniedError`. Captura con cuenta de permisos
-acotados a agregar en `evidencias/` (requiere entorno con Supabase, igual que A2.4).
+**Prueba de regresión (en vivo, Supabase local, 2026-11-01)** — `evidencias/A3.1-A3.2-regression-live.txt`:
+se repitió exactamente el replay de la Fase 2 (`Next-Action: 4092c2ef…f3be`, mismo id de `deleteImage`) con
+la cuenta `sec.admin.norooms@hotel.local` (sin `rooms:manage`) sobre una imagen de prueba. Antes: HTTP 200,
+`true` y fila borrada. Ahora: `PermissionDeniedError: Permission denied: rooms:manage` desde
+`requirePermission` y la fila **sigue en la BD**. Las tres escrituras pasan por el mismo guard.
 
 **Riesgo residual: Bajo.** La autorización ya no depende solo de la UI. Nota de defensa en profundidad: el
 middleware del panel (dueño: Paula) sigue sin verificar rol; `requirePermission` es independiente de ese
@@ -93,7 +95,7 @@ middleware y lo cubre a nivel de acción.
 
 ## A3.2 — OP-POC-3 · XSS stored vía notas del huésped (Vector 2)
 
-**Ficha.** Commit: `ceda94a`.
+**Ficha.** Responsable: Aarón · Rama: `security/operations/fase3-parches` · Commit: `ceda94a` · PR: [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12).
 
 **Mapeo.** OWASP A03 (XSS stored). NIST CSF 2.0: PR.DS-01, PR.PS-06, DE.CM-09. Archivo:
 `apps/panel-admin/src/features/reservations/components/detail/ReservationGuestCard/ReservationGuestCard.tsx`.
@@ -107,21 +109,23 @@ middleware y lo cubre a nivel de acción.
 <span className={STYLES.fieldValue}>{guest.notes}</span>
 ```
 
-**Prueba de regresión.** Verificación por código: `{guest.notes}` interpola como texto, por lo que un payload
-`<img src=x onerror=…>` se muestra literal en vez de ejecutarse. El vitest del panel corre en
-`environment: node` (sin jsdom/RTL), así que no se agregó un test de render de componente para no modificar
-configuración compartida (§4.4); la ejecución-ya-no-ocurre se confirma con la captura en vivo de A2.4
-(payload mostrado como texto tras el fix).
+**Prueba de regresión (en vivo, Supabase local, 2026-11-01)** — `evidencias/A3.1-A3.2-regression-live.txt`:
+la reserva `581567fd…` tiene en `guest_notes` el payload `<img src=x onerror=alert(document.cookie)>` + una
+línea falsa. Al abrir su detalle en el panel, el DOM muestra el payload como **texto literal** y contiene
+**0** elementos `img[onerror]` y **0** `img[src="x"]`. Antes (Fase 2, `A2.2-xss-executed-panel.png`) el
+mismo tipo de payload se ejecutaba. No se agregó un test de render de componente porque el vitest del panel
+corre en `environment: node` (sin jsdom/RTL) y cambiarlo tocaría configuración compartida (§4.4).
 
 **Riesgo residual: Bajo.** El XSS queda neutralizado por el escape por defecto de React. Como el almacenamiento
-del valor crudo es legítimo, no se requiere más. Defensa en profundidad pendiente (no reabre la PoC): la **CSP**
-global de Paula cortaría cualquier `inline`/`onerror` residual; alinear con F3.2 de Fabian (mismo patrón).
+del valor crudo es legítimo, no se requiere más. Defensa en profundidad ya activa: la **CSP** global con nonce
+de Paula (P3.2, PR #20) está presente en la respuesta del panel (`script-src 'self' 'nonce-…' 'strict-dynamic'`)
+y bloquearía cualquier handler inline residual; F3.2 de Fabian aplicó el mismo patrón en el visor de auditoría.
 
 ---
 
 ## A3.3 — OP-POC-4 · CSRF en `POST /api/checkout` (Vector 3)
 
-**Ficha.** Commit: `e90807b`.
+**Ficha.** Responsable: Aarón · Rama: `security/operations/fase3-parches` · Commit: `e90807b` · PR: [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12).
 
 **Mapeo.** OWASP A08. NIST CSF 2.0: PR.PS-06, DE.CM-09. Archivo:
 `apps/portal-reservas/src/app/api/checkout/route.ts`.
@@ -146,19 +150,22 @@ export async function POST(request: Request) {
 }
 ```
 
-**Prueba de regresión.** La página de ataque de OP-POC-4 (y el `curl` sin `Origin` propio) ahora recibe
-**403** y no crea reserva. Captura/salida a agregar en `evidencias/` (entorno con Supabase).
+**Prueba de regresión (en vivo, Supabase local).** La misma petición de la PoC con un `Origin` ajeno ahora
+recibe **403** y no crea reserva: caso 10 de `evidencias/A3.3-rooms-catalog-live.txt` (2026-10-20) y caso 2
+de `evidencias/A3.4-audit-logging-live.txt` (2026-10-24, `Origin: https://evil.example` → 403, sin fila ni
+evento).
 
 **Riesgo residual: Medio.** La verificación de `Origin` es una defensa estándar y suficiente contra el CSRF
 basado en navegador, pero no es un token anti-CSRF ni añade rate limiting; un cliente que falsee cabeceras
-fuera del navegador no está cubierto (fuera del modelo de amenaza de CSRF). Coordinar con Paula para que la
-defensa encaje con cualquier política global de origen/CSP (P3.x).
+fuera del navegador no está cubierto (fuera del modelo de amenaza de CSRF). Las cookies de sesión ya son
+`SameSite=Lax` (P3.3 de Paula, PR #21), lo que suma una segunda barrera en el navegador, pero el checkout es
+anónimo y no depende de esa cookie.
 
 ---
 
 ## A3.3 (cont.) — OP-POC-5 · Manipulación de parámetros del checkout (Vector 3)
 
-**Ficha.** Commit: `e90807b`.
+**Ficha.** Responsable: Aarón · Rama: `security/operations/fase3-parches` · Commits: `e90807b` (esquema Zod, capacidad, disponibilidad), `08eae14` (restricción `EXCLUDE`) · PR: [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12).
 
 **Mapeo.** OWASP A08 + A04 (insecure design). NIST CSF 2.0: PR.DS-01, PR.PS-06, ID.RA-01. Archivos:
 `apps/portal-reservas/src/features/checkout/domain/checkoutSchema.ts` (nuevo),
@@ -202,7 +209,7 @@ mantiene sincronizado el mapa catálogo → uuid.
 
 ### Reconciliación del catálogo de habitaciones (cierra el "no verificado")
 
-**Ficha.** Rama: `security/operations/fase3-checkout-rooms-catalog` · Commit: `ce54581`.
+**Ficha.** Responsable: Aarón · Rama: `security/operations/fase3-checkout-rooms-catalog` · Commit: `ce54581` · PR: [#16](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/16).
 
 **Decisión.** Opción A: enlazar el catálogo del portal con filas reales de `rooms`. Se descartó la opción B
 (`reservations.room_id` → `text`) porque eliminaba la FK a `rooms`: debilitaba la integridad referencial para
@@ -257,10 +264,10 @@ exclusión a nivel de BD (`EXCLUDE`) es la autoridad final ante la carrera TOCTO
 
 ---
 
-## A3.4 — OP-POC-6 · Log injection / cobertura de auditoría
+## A3.4 — OP-POC-6 · Evasión de los registros de auditoría
 
 **Ficha.** Responsable: Aarón · Módulo: operations · Rama: `security/operations/fase3-audit-logging`
-(desde `develop@1e6ce17`) · Commit: _pendiente_ · PR: _pendiente_.
+(desde `develop@1e6ce17`) · Commits: `1dba1a7` (auditoría), `7e84d9a` (endurecimiento `"use server"`), `5fe93b7` (docs y evidencia) · PR: [#23](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/23), aprobado por Fabian (G3.3).
 
 **Mapeo.** OWASP A09 (Security Logging and Monitoring Failures) + A08/CWE-117 (log injection, cubierto por la
 API). NIST CSF 2.0: DE.CM-09, DE.AE-03, PR.PS-04. Archivos:
@@ -351,6 +358,11 @@ await logAuditEvent({ actorId: user?.id, action: isCancellation ? RESERVATION_CA
 
 El caso "admin sin `reservations:edit`" no se repitió en vivo; lo cubre el test del panel.
 
+**Contraste con la PoC de la Fase 2.** En el código anterior (`develop@1e6ce17`) las mismas acciones —checkout
+con una línea falsa en las notas y cancelación desde el panel— crean y cancelan reservas sin escribir ningún
+evento (`evidencias/A2.3-OP-POC-6-audit-evasion-live.txt`). Con A3.4, cada una queda registrada y el texto
+saneado: la PoC original ya no evade la auditoría.
+
 **Riesgo residual de OP-POC-6: Bajo (verificado en vivo).** El módulo ya deja
 rastro de cada creación y cambio de estado, con actor verificado en el panel, y el saneo CWE-117 lo garantiza la
 API de Fabian (append-only + hash encadenado cuando sus migraciones están aplicadas). **Límites declarados:**
@@ -365,5 +377,4 @@ API de Fabian (append-only + hash encadenado cuando sus migraciones están aplic
 
 ## Pendientes de la fase
 
-- **A3.4** — PR (código, tests y evidencia en vivo listos).
 - **A3.7** — video ≤ 5 min (solo IDE) explicando las líneas de A3.1–A3.4.

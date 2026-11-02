@@ -5,8 +5,9 @@
 | Módulo | Operaciones / Transacciones (`operations`) |
 | Responsable | Aarón Líos Cubillo |
 | Rama | `security/operations/fase2-pocs` |
+| Pull Requests | [#11](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/11) (A2.1–A2.3) · [#13](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/13) (cuentas de prueba) · [#14](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/14) (A2.4, evidencias en vivo) — mergeados a `develop` |
 | Insumo | `docs/proyecto-seguridad/operations/fase-1-diagnostico.md` (§3 observaciones, §5.5 riesgos) |
-| Estado | A2.1 (V1) + A2.2 (V2) + A2.3 (V3) completos — OP-POC-1 … OP-POC-6 |
+| Estado | A2.1 (V1) + A2.2 (V2) + A2.3 (V3) + A2.4 completos — OP-POC-1 … OP-POC-6, las 6 reproducidas en vivo contra Supabase local (OP-POC-6 reescrita como PoC reproducible el 2026-11-01). Remediación en `fase-3-parches.md`. |
 
 ---
 
@@ -107,17 +108,14 @@ que una sea verdadera para que la fila se devuelva: la consulta retorna **todas*
   — verifica el string exacto que llega a `.or()` y que el payload de ataque produce la condición
   `status.ilike.%%` (siempre verdadera). Ejecutar: `pnpm --filter @hotel/portal-reservas vitest run
   src/features/reservation-lookup`.
-- Reproducción manual por HTTP: comandos `curl` de arriba contra `pnpm --filter @hotel/portal-reservas dev`
-  (puerto 3001) con al menos una fila en `reservations`.
-- Nota de entorno: no fue posible grabar la salida de los `curl` contra el proyecto de Supabase de
-  desarrollo del equipo desde este entorno de trabajo (resolución DNS intermitente hacia
-  `*.supabase.co` en el sandbox de ejecución). El test de Vitest cubre la construcción del filtro de
-  forma determinista sin depender de la red; la grabación en video (A3.7) se hará en un entorno con
-  conectividad completa al proyecto de Supabase.
+- Reproducción en vivo por HTTP (Supabase local, 2026-10-20): `A2.1-A03-filter-injection.txt` — el caso
+  legítimo devuelve una lista vacía y el payload `email='a,status.ilike.%'` devuelve **todas** las reservas
+  con nombre, email y teléfono de los huéspedes (10 filas).
 
 ### Commit donde se reprodujo
 
-Por confirmar al abrir el PR de A2.1 (se registra el hash exacto en la bitácora del plan de desarrollo).
+Vulnerabilidad introducida en `cbccfa9` (`chore(security): introduce controlled vuln for OP-POC-1`), rama
+`security/operations/fase2-pocs`; evidencia en vivo registrada en `767a0d6` (PR #14).
 
 ---
 
@@ -209,7 +207,8 @@ Server Actions, porque Next.js no aplica ningún control adicional sobre ellas m
 
 ### Commit donde se reprodujo
 
-No aplica (hallazgo real sobre `develop`, sin modificación de código para esta PoC).
+Hallazgo real (sin código introducido). Reproducido en vivo sobre la rama `security/operations/fase2-pocs`;
+evidencia registrada en `767a0d6` (PR #14).
 
 ---
 
@@ -296,12 +295,13 @@ el fix de salida (A3.2 / F3.2) debe alinearse.
   `reservations.room_id` es `uuid NOT NULL` con FK a `rooms` (ids uuid, datos disjuntos) → el insert falla con
   `22P02` (invalid input syntax for type uuid). Por eso la fila de la PoC se **insertó directamente en la BD**
   (el hallazgo de OP-POC-3 es el render sin escapar, no cómo llega el dato). Es un bug de datos aparte, no del
-  sink. Follow-up: reconciliar el catálogo de habitaciones (ver `fase-3-parches.md`, sección A3.3).
+  sink. **Resuelto en la Fase 3** (A3.3, commit `ce54581`, PR #16): el checkout ya persiste con el `room_id`
+  uuid correcto.
 
 ### Commit donde se reprodujo
 
-Commit de introducción `chore(security): introduce controlled vuln for OP-POC-3` (hash exacto en la
-bitácora del plan de desarrollo al abrir el PR de Fase 2).
+Vulnerabilidad introducida en `e1828a4` (`chore(security): introduce controlled vuln for OP-POC-3`), rama
+`security/operations/fase2-pocs`; evidencia en vivo registrada en `767a0d6` (PR #14).
 
 ---
 
@@ -355,7 +355,7 @@ cambio de estado de una reserva **no** es CSRF-able. La asimetría está en el h
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      roomIds: ["room-std-01"], checkIn: "2027-01-01", checkOut: "2027-01-05",
+      roomIds: ["mv-1"], checkIn: "2027-01-01", checkOut: "2027-01-05",
       guests: 2, email: "victima@ejemplo.com", fullName: "Forzado",
       phone: "0000", specialRequests: ""
     })
@@ -368,15 +368,15 @@ Equivalente por consola/curl (sin cabecera `Origin`, simulando el cross-site):
 ```bash
 curl -s -X POST http://localhost:3001/api/checkout \
   -H "Content-Type: application/json" \
-  -d '{"roomIds":["room-std-01"],"checkIn":"2027-01-01","checkOut":"2027-01-05","guests":2,"email":"victima@ejemplo.com","fullName":"Forzado","phone":"0000","specialRequests":""}'
-# → 200 + URL de pago; y una nueva fila en `reservations`.
+  -d '{"roomIds":["mv-1"],"checkIn":"2027-01-01","checkOut":"2027-01-05","guests":2,"email":"victima@ejemplo.com","fullName":"Forzado","phone":"0000","specialRequests":""}'
+# → 200 + URL de pago (el diseño pretendía además crear la fila; ver la nota de Evidencia).
 ```
 
 ### Resultado esperado vs. obtenido
 
 | | Esperado (diseño) | Obtenido |
 |---|---|---|
-| Petición `POST` sin `Origin` del propio sitio / sin token | Rechazada (403) | ❌ Aceptada; crea la reserva |
+| Petición `POST` sin `Origin` del propio sitio / sin token | Rechazada (403) | ❌ Aceptada (HTTP 200) |
 
 ### Impacto
 
@@ -395,7 +395,8 @@ curl -s -X POST http://localhost:3001/api/checkout \
 
 ### Commit donde se reprodujo
 
-No aplica (hallazgo real sobre `develop`; la fila persistida usa el flujo de OP-POC-3).
+Hallazgo real (sin código introducido). Reproducido en vivo sobre la rama `security/operations/fase2-pocs`;
+evidencia registrada en `767a0d6` (PR #14).
 
 ---
 
@@ -437,8 +438,8 @@ tiene efecto. Esto es la contraparte correcta de OP-POC-1 y se documenta como l�
 # Reserva en el pasado y con aforo imposible para una habitación estándar.
 curl -s -X POST http://localhost:3001/api/checkout \
   -H "Content-Type: application/json" \
-  -d '{"roomIds":["room-std-01"],"checkIn":"2020-01-01","checkOut":"2020-01-02","guests":99,"email":"a@b.co","fullName":"Fechas Pasadas","phone":"0","specialRequests":""}'
-# → 200 + reserva creada con check_in en 2020 y adults=99.
+  -d '{"roomIds":["mv-1"],"checkIn":"2020-01-01","checkOut":"2020-01-02","guests":99,"email":"a@b.co","fullName":"Fechas Pasadas","phone":"0","specialRequests":""}'
+# → 200: se acepta check_in en 2020 y guests=99 para una habitación de capacidad 2.
 
 # Doble booking: repetir dos veces el mismo room+fechas → ambas quedan "pending".
 ```
@@ -447,9 +448,12 @@ curl -s -X POST http://localhost:3001/api/checkout \
 
 | | Esperado (diseño) | Obtenido |
 |---|---|---|
-| `checkIn` en el pasado | Rechazo (fecha inválida) | ❌ Reserva creada |
-| Segunda reserva solapada del mismo cuarto | Rechazo (no disponible) | ❌ Ambas aceptadas |
-| `guests` > capacidad de la habitación | Rechazo | ❌ `adults` = 99 persistido |
+| `checkIn` en el pasado | Rechazo (fecha inválida) | ❌ Aceptada (HTTP 200) |
+| Segunda reserva solapada del mismo cuarto | Rechazo (no disponible) | ❌ Ambas aceptadas (HTTP 200) |
+| `guests` > capacidad de la habitación | Rechazo | ❌ Aceptada (HTTP 200) |
+
+La fila no llegaba a guardarse por el bug de persistencia descrito en la nota de Evidencia; el hallazgo es
+que el servidor **acepta** los parámetros sin ninguna regla de negocio.
 
 ### Impacto
 
@@ -473,45 +477,86 @@ curl -s -X POST http://localhost:3001/api/checkout \
 
 ### Commit donde se reprodujo
 
-No aplica (hallazgo real sobre `develop`).
+Hallazgo real (sin código introducido). Reproducido en vivo sobre la rama `security/operations/fase2-pocs`;
+evidencia registrada en `767a0d6` (PR #14).
 
 ---
 
-## OP-POC-6 — Log injection en eventos de operaciones (hallazgo documentado, sin repro en este módulo)
+## OP-POC-6 — Evasión de los registros de auditoría en el ciclo de una reserva (audit poisoning / tracing)
 
 | Campo | Valor |
 |---|---|
 | ID | OP-POC-6 |
-| Vector | 3 — alteración de entrada (log injection) |
-| OWASP | A09:2021 Security Logging and Monitoring Failures |
-| NIST CSF 2.0 | DE.CM-01/03/09 (brecha de cobertura), PR.PS-04 |
-| Origen del hallazgo | **Real (negativo).** El módulo de operaciones **no registra ningún evento de auditoría** hoy: no hay una sola llamada a `logAuditEvent` en `checkout/**`, `reservations/**` ni `reservation-lookup/**` (confirmado por búsqueda). |
+| Vector | 3 — alteración de entrada y detección (*tracing code & audit poisoning*) |
+| OWASP | A09:2021 Security Logging and Monitoring Failures (relacionado con A08 / CWE-117) |
+| NIST CSF 2.0 | DE.CM-01/03/09 (monitoreo y detección), DE.AE-03 (correlación de eventos), PR.PS-04 (generación de registros) |
+| Origen del hallazgo | **Real.** Confirma O12 / OP-R04 de la Fase 1. |
+| Componente / archivo:línea | `apps/portal-reservas/src/features/checkout/services/gateway.server.ts` (`openGatewaySession`) y `apps/panel-admin/src/features/reservations/services/reservationService.ts` (`updateReservationStatus`): ninguno llama a `logAuditEvent` |
 
 ### Descripción
 
-Al no existir ningún sink de logging en operaciones, **no hay una PoC de log injection reproducible dentro
-de este módulo** (no se puede envenenar un log que no se escribe). Es una **brecha DETECT** ya señalada en
-la Fase 1: creación y cambios de estado de reservas ocurren sin traza de auditoría.
+El enunciado pide demostrar que las entradas manipuladas pueden **alterar o evadir** los registros de
+auditoría e invalidar la detección de intrusos. En Operaciones el caso es la **evasión total**: ni el
+checkout público ni el cambio de estado de una reserva escriben un evento en `audit_logs`. Cualquier abuso del
+checkout (reservas basura, bloqueo de inventario, combinado con OP-POC-4/5) y cualquier cambio de estado hecho
+por un admin —o por un atacante en su sesión vía OP-POC-3— **no deja rastro**, así que no se puede detectar,
+atribuir ni reconstruir.
 
-La clase de ataque sí está demostrada de forma **real y cross-module** por Fabian en **AUD-POC-6**
-(inyección de `\r\n` + texto fabricado vía un campo libre que llega a `audit_logs`). El riesgo concreto para
-operaciones aparece **cuando se cierre A3.4** (registrar creación/cambio de reservas vía la API de Fabian):
-campos libres controlados por el huésped —`guest_notes`, `guest_name`— con saltos de línea o caracteres de
-control contaminarían los eventos de operaciones igual que AU-R04.
+La inyección de líneas falsas en el log (CWE-117) no aplica aquí porque no hay sink: no se puede envenenar un
+log que no se escribe. Esa variante la demuestra Fabian en AUD-POC-6, y es justamente el riesgo que A3.4 debe
+evitar al instrumentar este módulo.
 
-### Remediación asociada (Fase 3)
+### Precondiciones
 
-- **A3.4** debe (a) instrumentar los eventos de operaciones vía `logAuditEvent` y (b) **sanitizar** los
-  campos libres antes de registrarlos (normalizar saltos de línea / caracteres de control), reutilizando la
-  utilidad de saneo que Fabian expone en F3.3/F3.4 para no reintroducir AU-R04 en este módulo.
+- Código anterior a A3.4: `develop@1e6ce17` (mismo comportamiento en la rama `security/operations/fase2-pocs`).
+- Supabase local con las migraciones aplicadas; cuenta owner de prueba (`seed-security-admins.mjs`).
+
+### Pasos reproducibles
+
+```bash
+# 0) Línea base del log
+psql … -c "select max(seq), count(*) from public.audit_logs;"
+
+# 1) Dos reservas por el checkout público (una con una línea falsa en las notas)
+curl -s -X POST http://localhost:3001/api/checkout -H "Origin: http://localhost:3001" \
+  -H "Content-Type: application/json" \
+  -d '{"roomIds":["lf-1"],"checkIn":"2027-01-10","checkOut":"2027-01-13","guests":2,"email":"op-poc-6@poc.local","fullName":"OP-POC-6 Evasion","phone":"8888-6666","specialRequests":"reserva sin rastro\r\n2027-01-10 action=reservation.deleted actor=owner@hotel.local"}'
+curl -s -X POST http://localhost:3001/api/checkout -H "Origin: http://localhost:3001" \
+  -H "Content-Type: application/json" \
+  -d '{"roomIds":["mv-4"],"checkIn":"2027-01-10","checkOut":"2027-01-11","guests":1,"email":"op-poc-6@poc.local","fullName":"OP-POC-6 Evasion","phone":"8888-6666","specialRequests":""}'
+
+# 2) En el panel (owner): abrir la primera reserva → "Cancelar reserva" → motivo → "Guardar" → "Confirmar".
+
+# 3) Comparar el log
+psql … -c "select seq, action, entity_id, actor_email from public.audit_logs where seq > <línea base>;"
+```
+
+### Resultado esperado vs. obtenido
+
+| | Esperado (diseño) | Obtenido |
+|---|---|---|
+| Reserva creada por el checkout | Evento `reservation.created` | ❌ Dos reservas creadas (HTTP 200), **0 eventos** |
+| Cancelación desde el panel | Evento `reservation.cancelled` con actor, estado y motivo | ❌ Reserva cancelada; el único evento es el `auth.login.success` del módulo de Autenticación |
+
+### Impacto
+
+- Las acciones sobre reservas son **invisibles** para la detección: no hay alertas posibles, ni atribución,
+  ni no repudio (OP-R04, Alto en la Fase 1).
+- Amplifica los demás hallazgos del módulo: el abuso del checkout (OP-POC-4/5) y las acciones hechas con la
+  sesión robada de un admin (OP-POC-3) no se pueden investigar después.
 
 ### Evidencia
 
-- Búsqueda negativa: sin coincidencias de `logAuditEvent`/`AUDIT_ACTIONS` en el código de operaciones.
+- Reproducción en vivo (Supabase local, 2026-11-01, `develop@1e6ce17`):
+  `A2.3-OP-POC-6-audit-evasion-live.txt` — 2 reservas creadas y 1 cancelada; `audit_logs` solo registra el login.
+- Búsqueda en el código: 0 llamadas a `logAuditEvent` en checkout ni en reservas (`A2.3-logging-gap.txt`,
+  primera constatación del 2026-10-20).
 
 ### Commit donde se reprodujo
 
-No aplica (hallazgo negativo / de cobertura).
+Hallazgo real (sin código introducido). Reproducido sobre `develop@1e6ce17`, el último commit antes de A3.4.
+Remediado en A3.4 (`1dba1a7`, PR #23); la re-prueba con las mismas acciones está en
+`A3.4-audit-logging-live.txt`.
 
 ---
 
@@ -533,3 +578,8 @@ No aplica (hallazgo negativo / de cobertura).
 - **OP-POC-6 (log injection)** depende de la API de auditoría de Fabian: A3.4 instrumenta los eventos de
   operaciones y reutiliza la utilidad de saneo de F3.3/F3.4; sin esa utilidad publicada no se puede cerrar
   A3.4 sin reintroducir AU-R04.
+
+**Resultado de la coordinación (Fase 3):** Fabian corrigió el `.or()` de `getAuditLogs` (F3.1) y el sink del
+drawer (F3.2) y publicó la API saneada (PR #18); Paula agregó la CSP global con nonce (PR #20) y las cookies
+`HttpOnly`/`SameSite` (PR #21). El middleware del panel sigue sin verificar rol, así que el `requirePermission`
+de A3.1 sigue siendo el control efectivo de OP-POC-2. A3.4 usa la API de Fabian (PR #23).
