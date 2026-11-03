@@ -1,6 +1,10 @@
 "use server";
 
-import { createAdminAccount } from "@hotel/core/auth";
+import { AUDIT_ACTIONS, AUDIT_ENTITIES } from "@hotel/core/audit";
+import { getAuditRequestContext, logAuditEvent } from "@hotel/core/audit/server";
+import { createAdminAccount, getVerifiedSession } from "@hotel/core/auth";
+import { createSupabaseServerClient } from "@hotel/db";
+import { cookies } from "next/headers";
 import { ENV } from "@/config/env";
 import { ROUTES } from "@/config/routes";
 import type { CreateAdminActionState } from "@/features/invitations/domain/adminInvite";
@@ -28,6 +32,22 @@ export async function createAdminAccountAction(
       `${ENV.NEXT_PUBLIC_BASE_URL}${ROUTES.AUTH.ACTIVATE}`,
       full_name,
     );
+
+    // J3.4: audit who sent the invitation.
+    const cookieStore = await cookies();
+    const { user } = await getVerifiedSession(createSupabaseServerClient(cookieStore));
+    const { ipAddress, userAgent } = await getAuditRequestContext();
+    await logAuditEvent({
+      actorId: user?.id ?? null,
+      actorEmail: user?.email ?? null,
+      action: AUDIT_ACTIONS.USER_INVITED,
+      entity: AUDIT_ENTITIES.USER,
+      entityId: null,
+      metadata: { email, full_name },
+      ipAddress,
+      userAgent,
+    });
+
     return { success: true, email };
   } catch {
     return { error: "UNKNOWN_ERROR" };

@@ -65,12 +65,12 @@ Cuando la persona se identifique:
 
 ## 2. Tablero de estado (actualizar siempre)
 
-_Última actualización: 2026-11-01_
+_Última actualización: 2026-11-02_
 
 | Integrante | Módulo | Fase actual | Próxima tarea | Rama activa | Bloqueos |
 |---|---|---|---|---|---|
 | Paula | Autenticación | 3 — Remediación (P3.1–P3.6 hechas) | P3.7 (video) y G3.1 (matriz de riesgo residual) | — (P3.1–P3.6 mergeados: PR #19, #20, #21, #22) | G3.1 espera J3.5 (Fase 3 de Joseph) |
-| Joseph | Gestión de Usuarios | 3 — Remediación (sin empezar) | J3.1 Parches del vector 1 (J2-POC-1/2/3/6/9: permisos server-side + RLS) | — (Fase 2 mergeada: PR #10) | Su Fase 3 bloquea G3.1 (Paula), G3.2 (la consolida él) y G4 (Aarón) |
+| Joseph | Gestión de Usuarios | 3 — Remediación (J3.1–J3.6 hechas en el árbol local, sin commit) | J3.7 (video); commitear/pushear/abrir PR (Claude no commitea) | — (Fase 2 mergeada: PR #10; Fase 3 sin PR todavía) | Desbloquea G3.1 (Paula) y G3.2 (propio) en cuanto se mergee su PR de Fase 3 |
 | Aarón | Operaciones / Transacciones | 3 — Remediación (A3.1–A3.6 hechas) | A3.7 (video ≤ 5 min de A3.1–A3.4); luego G4 (paquete final) | — (PR #23 mergeado) | G4 depende de G2 (Fabian), G3.1 (Paula) y G3.2 (Joseph); G3.1/G3.2 esperan la Fase 3 de Joseph |
 | Fabian | Logs / Auditoría | 3 — Remediación (F3.1–F3.6 hechas) | Aplicar migraciones de auditoría al Supabase remoto, G2 (documento de PoCs consolidado, ya desbloqueado) y F3.7 (video) | — (PR #18 y #24 mergeados) | Ninguno propio. G3.1/G3.2 esperan a Joseph (J3.5/J3.6) |
 
@@ -292,12 +292,12 @@ usuario (nombre, email) renderizados en tablas y drawers, flujo de invitaciones 
 - [x] J2.4 Entregar `users/fase-2-pocs.md` + evidencias.
 
 **Fase 3**
-- [ ] J3.1 Parches del vector 1 (verificación de permisos server-side + RLS de menor privilegio).
-- [ ] J3.2 Parches del vector 2 (sanitización/escape de salida).
-- [ ] J3.3 Parches del vector 3 (tokens anti-CSRF / validación de origen, validación estricta de parámetros).
-- [ ] J3.4 Auditoría del módulo: registrar cambios de permisos/estado vía API de Fabian.
-- [ ] J3.5 Tests de regresión + riesgo residual por hallazgo.
-- [ ] J3.6 Entregar `users/fase-3-parches.md`.
+- [x] J3.1 Parches del vector 1 (verificación de permisos server-side + RLS de menor privilegio).
+- [x] J3.2 Parches del vector 2 (sanitización/escape de salida — revierte el `dangerouslySetInnerHTML` introducido en J2-POC-8).
+- [x] J3.3 Parches del vector 3 (validación estricta de objetivo/estado en `updateUserPermissions`, `toggleAdminStatus`, invitaciones; sesión verificada con `getVerifiedSession`).
+- [x] J3.4 Auditoría del módulo: `logAuditEvent` en `updateUserPermissions`, `toggleAdminStatus`, `resendInvitation`, `createAdminAccountAction`.
+- [x] J3.5 Tests de regresión + riesgo residual por hallazgo (en vivo: curl contra PostgREST para J2-POC-6/9, Playwright/Next-Action replay para J2-POC-2/3/5/7, verificación de accesibilidad para J2-POC-8).
+- [x] J3.6 Entregar `users/fase-3-parches.md`.
 - [ ] J3.7 Grabar video (≤ 5 min, solo IDE).
 
 **Bitácora**
@@ -309,6 +309,7 @@ usuario (nombre, email) renderizados en tablas y drawers, flujo de invitaciones 
 | 2026-09-28 | J1.4 Línea base: 16 controles (13 PROTECT, 3 DETECT) con estado, brecha, tarea J3.x y coordinación; 7 filas listas para G1 | `security/users/fase1-diagnostico` | Hecho; 2 cumplen, 6 parciales, 8 no cumplen / por verificar (§6–§8) |
 | 2026-10-01 | J1.5 Entrega de la Fase 1 (revisado y mergeado por Aarón) | `security/users/fase1-diagnostico`, PR #6 (merge `9b066e8`) | Mergeado a `develop`; Fase 1 cerrada |
 | 2026-10-20 | J2.1–J2.4 Entrega de la Fase 2: `users/fase-2-pocs.md` con 9 PoCs (J2-POC-1…9) — vector 1: bypass de permisos, IDOR, delegación sin límite, `getSession()`, `get_admins()` sin sesión y RLS permisivas (todas **reales**); vector 2: XSS stored en la tabla de admins (J2-POC-8, **introducida**); vector 3: manipulación de parámetros en `toggleAdminStatus` y en invitaciones (J2-POC-5/7). A03 y log injection documentados como hallazgos negativos en el alcance; CSRF sin PoC propia (las Server Actions validan `Origin`). Evidencias en `users/evidencias/` (11) y `users/evidencias_r2/` (27) _(registrado por Aarón el 2026-11-01 al verificar el repo)_ | `security/users/fase2-pocs`, commits `d82ceb0`, `585201b`, PR #10 (merge `80294e4`) | Mergeado a `develop`; Fase 2 cerrada. Fase 3 sin empezar (no hay rama `security/users/fase3-*`) |
+| 2026-11-02 | J3.1–J3.6: 9 parches (J3-PAT-1 a 9) cerrando J2-POC-2/3/5/6/7/8/9 (J2-POC-1/4 ya venían resueltos por el trabajo compartido de Paula en `getVerifiedSession`/signup). Migración nueva: `GRANT`/`REVOKE` + guard de rol en `get_admins()` y RLS de `profiles`/`user_permissions` con permiso real. Regresión 100% en vivo contra Supabase local + panel-admin `:3002`: `curl` directo a PostgREST (J2-POC-6: `anon` → `401` antes `200`; J2-POC-9: `profiles` 11→1 filas, `user_permissions` 14→2 filas) y réplica exacta del exploit documentado vía captura/repetición de `Next-Action` con Playwright (J2-POC-2: `admins:view` ahora exigido; J2-POC-3: escalación a `admins:revoke` ahora devuelve `PERMISSION_EXCEEDED` contra un admin real de prueba; J2-POC-5: `toggleAdminStatus` contra el owner ahora exige `admins:disable`; J2-POC-7: `resendInvitation` sobre una invitación revocada ahora devuelve `NOT_PENDING`); J2-POC-8 confirmado por snapshot de accesibilidad (el payload se renderiza como texto, sin `<img>` real ni alertas). Bug propio detectado y corregido en vivo durante la prueba: el primer borrador de `get_admins()` rompía el camino interno `service_role` (`auth.uid()` es `NULL` para esa clave) — corregido con `OR auth.role() = 'service_role'` antes de cerrar el parche. `pnpm exec biome check --write` limpio sobre los 10 archivos propios; `type-check` sin errores nuevos (los de `@hotel/db`/`UploadDropzone` ya existían en `develop@868b95c`, fuera de alcance — trabajo en curso de Aarón). Detalle completo, diffs y mapeo OWASP/NIST en `users/fase-3-parches.md` | `security/users/fase3-remediacion` (sin commits todavía — Claude no commitea/pushea; Joseph aplica el commit y abre el PR) | Parches y verificación completos en el árbol de trabajo local; pendiente de commit/push/PR por Joseph. Desbloquea G3.1 (Paula) y G3.2 (propio) en cuanto se mergee |
 
 ---
 
