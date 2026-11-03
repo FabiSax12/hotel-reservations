@@ -56,7 +56,7 @@ Mismas columnas que `plantillas/matriz-riesgo-residual.xlsx`.
 | Módulo y Responsable | Vulnerabilidad identificada (OWASP) | Subcategoría NIST CSF | Control / Parche aplicado (Fase 3) | Riesgo inherente | Riesgo residual | Estado final |
 |---|---|---|---|---|---|---|
 | Autenticación (Paula) | A01 — Escalamiento de privilegios en el registro: rol tomado de `user_metadata` (AUTH-POC-1) | PR.AA-05, PR.AA-01 | Trigger `handle_new_user` solo lee `app_metadata`; promoción de admins con `promote_invited_admin()` (solo `service_role`) y permiso `admins:invite` | Crítico | Bajo | Mitigado |
-| Autenticación (Paula) | A01/A07 — Confianza en el claim `role` del JWT en RLS y sesión sin verificar (AUTH-POC-2) | PR.AA-05, PR.AA-02 | RLS con `is_admin_or_owner()` (tabla `user_roles`); `getVerifiedSession()` con `auth.getUser()` en servidor | Medio | Bajo (RLS) / Medio (sesión: quedan 2 lectores fuera del módulo) | Mitigado parcialmente |
+| Autenticación (Paula) | A01/A07 — Confianza en el claim `role` del JWT en RLS y sesión sin verificar (AUTH-POC-2) | PR.AA-05, PR.AA-02 | RLS con `is_admin_or_owner()` (tabla `user_roles`); `getVerifiedSession()` con `auth.getUser()` en servidor | Medio | Bajo (RLS) / Medio (sesión: queda 1 lector fuera del módulo, `getAuditLogs.ts`) | Mitigado parcialmente |
 | Autenticación (Paula) | A03 — Inyección en filtro PostgREST, introducida (AUTH-POC-3) | PR.DS-10 | Filtro parametrizado `.eq()` sobre UUID validado; nombre comparado en código | Alto (estimado) | Bajo | Mitigado |
 | Autenticación (Paula) | A03 — XSS reflejado en `/auth/error`, introducido (AUTH-POC-4) + inyección de texto (O-04) | PR.PS-06, PR.DS-01 | Sink eliminado; allowlist de códigos resuelta en servidor; CSP global con nonce sin `'unsafe-inline'` | Alto | Bajo | Mitigado |
 | Autenticación (Paula) | A01/A08 — Open redirect vía `callbackUrl` (AUTH-POC-5) | PR.PS-06, PR.DS-02 | `resolveSafeRedirectPath`: solo rutas del mismo origen, en login y callback OAuth | Alto | Bajo | Mitigado |
@@ -159,9 +159,10 @@ de `rooms` y el admin real 1; un token con el `sub` cambiado al del admin y la f
 
 **Riesgo residual: Bajo para (a), Medio para (b).**
 - (a) Ninguna política confía ya en el claim `role` del JWT.
-- (b) Los lectores del módulo usan `getUser()`, pero quedan lectores con `getSession()` fuera del módulo:
-  `apps/panel-admin/src/features/audit-log/services/getAuditLogs.ts` (Fabian) y
-  `apps/panel-admin/src/features/admins-table/services/permissions.ts` (Joseph). También queda el helper
+- (b) Los lectores del módulo usan `getUser()`, pero queda un lector con `getSession()` fuera del módulo:
+  `apps/panel-admin/src/features/audit-log/services/getAuditLogs.ts` (Fabian).
+  `apps/panel-admin/src/features/admins-table/services/permissions.ts` (Joseph) ya usa `getVerifiedSession()`
+  desde su Fase 3 (commit `4d7c38c`, PR #27; actualizado el 2026-11-03). También queda el helper
   `getSession()` de `packages/core/src/auth/index.ts`, marcado `@deprecated` y sin uso. Mitigación parcial: el
   middleware del panel valida con `getUser()` en `/admin/**` y la RLS de la base vuelve a verificar el JWT.
 
@@ -432,7 +433,8 @@ pnpm --filter @hotel/portal-reservas exec vitest run src/features/auth src/app/a
 | Con | Tema | Estado |
 |---|---|---|
 | Joseph (Usuarios) | `requirePermission.ts` usa `getVerifiedSession()`; `createAdminAccountAction` exige `admins:invite` (PR #19) | Avisado en el PR #19 |
-| Joseph | `admins-table/services/permissions.ts` todavía usa `getSession()` (deja AUTH-POC-2 (b) en Medio) | Pendiente en su módulo |
+| Joseph | `admins-table/services/permissions.ts` usaba `getSession()` (dejaba AUTH-POC-2 (b) en Medio) | Resuelto en su Fase 3 (commit `4d7c38c`, PR #27) |
+| Joseph | J2-POC-1 y J2-POC-4 de su módulo citan los commits `1ef0b61` y `e1994f9` (users §10.1) | Confirmados el 2026-11-03: en `develop`, sin reverts |
 | Aarón (Operaciones) | RLS de `rooms`/`room_schedules`/`room_images` (PR #19); horarios y amenidades vía Server Actions (PR #21) | Avisado en los PR #19 y #21 |
 | Fabian (Auditoría) | `getAuditLogs.ts` todavía usa `getSession()`; `auth.login.failed` ahora sin actor (email en `metadata.attempted_email`) | Avisado en los PR #19 y #21 |
 | Fabian | Payload de AUTH-POC-3 corregido en `fase-2-pocs.md` (para G2) | Avisado en el PR #19 |
