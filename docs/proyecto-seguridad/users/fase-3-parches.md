@@ -381,9 +381,26 @@ user.status.changed      | user       | <uuid-invitación>     | owner@hotel.loc
 Las 2 primeras filas corresponden a las llamadas de `updateUserPermissions` y `toggleAdminStatus` hechas
 durante la regresión de J2-POC-3/5 (§4, §5); la última, a `revokeInvitation` durante la regresión de
 J2-POC-7 (§7) — confirma que las 3 acciones realmente escriben en `audit_logs` con actor, entidad y
-metadata correctos, no solo que el código las invoca. No se ejercitó en vivo la ruta exitosa de
-`resendInvitation` ni de `createAdminAccountAction` (solo sus rutas de error, en §7); se verificaron por
-lectura de código contra el mismo patrón.
+metadata correctos, no solo que el código las invoca.
+
+Las rutas exitosas de `resendInvitation` y `createAdminAccountAction` también se ejercitaron en vivo
+(2026-11-03), usando un correo sin cuenta previa en `auth.users` (el intento inicial con `newadmin@hotel.local`
+fallaba con "ya registrado" porque esa cuenta ya existe en el seed — no es un bug, solo un dato de prueba
+inválido para este camino en particular):
+```
+action        | entity | entity_id                            | actor_email       | metadata
+user.invited  | user   | NULL                                 | owner@hotel.local | {"email":"qa-resend-test@hotel.local","full_name":"QA Resend Test"}
+user.invited  | user   | <uuid-invitación-qa-resend-test>      | owner@hotel.local | {"email":"qa-resend-test@hotel.local","action":"invitation_resent"}
+```
+La primera fila confirma `createAdminAccountAction` (crea la invitación y audita `user.invited` con los
+datos del nuevo admin); la segunda, `resendInvitation` (extiende `expires_at` +7 días y audita el reenvío).
+Única observación menor, no de seguridad: `createAdminAccountAction` audita con `entityId: null` porque en
+ese punto todavía no existe la fila de `pending_invitations`; `resendInvitation` sí la tiene. No afecta la
+trazabilidad del actor ni del dato modificado, solo impide correlacionar esa fila puntual por `entity_id`
+con la invitación — queda como mejora menor fuera de alcance de esta fase. Datos de prueba limpiados tras la
+verificación (`pending_invitations`/`auth.users` eliminados; los 2 registros de `audit_logs` de arriba
+quedaron intencionalmente — la tabla es append-only por trigger, lo cual también confirma en vivo que ni
+siquiera el owner puede borrar evidencia de auditoría desde el editor SQL).
 
 **Riesgo residual: Bajo (con una salvedad documentada).** La escritura de auditoría es best-effort por
 diseño (no bloqueante), lo cual es la decisión correcta para no degradar la disponibilidad del panel, pero
