@@ -1,5 +1,8 @@
 "use server";
 
+import { AUDIT_ACTIONS, AUDIT_ENTITIES } from "@hotel/core/audit";
+import { getAuditRequestContext, logAuditEvent } from "@hotel/core/audit/server";
+import { getVerifiedSession } from "@hotel/core/auth";
 import { getUserPermissions, setUserPermissions } from "@hotel/core/permissions";
 import {
   type AdminsList,
@@ -32,6 +35,10 @@ export type AdminWithPermissions = {
 export type UpdatePermissionsResult = { success: true } | { error: UpdatePermissionError };
 
 export async function getUserPermissionsService(userId: string): Promise<PermissionName[]> {
+  // J3.1 (J2-POC-2): this read was reachable by any authenticated session with no
+  // guard at all, leaking any admin's (including the owner's) full permission set
+  // via the Next-Action endpoint. Same bar as its sibling getUserPermissionsList.
+  await requirePermission(PERMISSIONS.ADMINS.VIEW);
   return await getUserPermissions(userId);
 }
 
@@ -93,18 +100,17 @@ export async function updateUserPermissions(
 ): Promise<UpdatePermissionsResult> {
   await requirePermission(PERMISSIONS.PERMISSIONS.MANAGE);
 
-  // Get current user ID from session
+  // J3.1 (J2-POC-4 pattern): getSession() trusts the cookie as-is; getUser()/
+  // getVerifiedSession() re-validates the JWT against the Supabase Auth server.
   const cookieStore = await cookies();
   const supabaseServer = createSupabaseServerClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabaseServer.auth.getSession();
+  const { user } = await getVerifiedSession(supabaseServer);
 
-  if (!session?.user) {
+  if (!user) {
     return { error: UPDATE_PERMISSION_ERRORS.UNKNOWN_ERROR };
   }
 
-  const currentUserId = session.user.id;
+  const currentUserId = user.id;
 
   // Validation: cannot modify own permissions
   if (currentUserId === targetUserId) {
@@ -113,15 +119,24 @@ export async function updateUserPermissions(
 
   const supabase = createSupabaseServiceClient();
 
-  // Validation: cannot modify owner permissions
+  // Validation: target must be an existing, non-owner admin (J2-POC-3: a target
+  // with no admin role at all should never reach setUserPermissions).
   const { data: targetRole } = await supabase
     .from(DB_TABLES.USER_ROLES)
     .select(DB_COLUMNS.user_roles.role)
     .eq(DB_COLUMNS.user_roles.user_id, targetUserId)
     .single();
 
-  if (targetRole?.role === DB_ENUMS.user_role.owner) {
+  if (!targetRole) {
+    return { error: UPDATE_PERMISSION_ERRORS.INVALID_TARGET };
+  }
+
+  if (targetRole.role === DB_ENUMS.user_role.owner) {
     return { error: UPDATE_PERMISSION_ERRORS.OWNER_MODIFY };
+  }
+
+  if (targetRole.role !== DB_ENUMS.user_role.admin) {
+    return { error: UPDATE_PERMISSION_ERRORS.INVALID_TARGET };
   }
 
   // Validation: all permissions must be valid
@@ -131,8 +146,51 @@ export async function updateUserPermissions(
     return { error: UPDATE_PERMISSION_ERRORS.INVALID_PERMISSION };
   }
 
+  // J3.1 (J2-POC-3): "confused deputy" fix. A caller with permissions:manage could
+  // otherwise grant a target MORE permissions than the caller itself holds (e.g.
+  // admins:revoke, audit:view) by calling this action directly, bypassing the UI.
+  // The owner has no row in user_permissions (permissions are implicit for it),
+  // so the subset check only applies to non-owner callers.
+  const isCallerOwner = await supabase
+    .from(DB_TABLES.USER_ROLES)
+    .select(DB_COLUMNS.user_roles.role)
+    .eq(DB_COLUMNS.user_roles.user_id, currentUserId)
+    .single()
+    .then(({ data }) => data?.role === DB_ENUMS.user_role.owner);
+
+  if (!isCallerOwner) {
+    const callerPermissions = new Set(await getUserPermissions(currentUserId));
+    const exceededPermissions = permissions.filter((p) => !callerPermissions.has(p));
+    if (exceededPermissions.length > 0) {
+      return { error: UPDATE_PERMISSION_ERRORS.PERMISSION_EXCEEDED };
+    }
+  }
+
+  const previousPermissions = await getUserPermissions(targetUserId);
+
   try {
     await setUserPermissions(targetUserId, permissions, currentUserId);
+
+    // J3.4: audit the permission change (who, target, before/after).
+    const { ipAddress, userAgent } = await getAuditRequestContext();
+    const granted = permissions.filter((p) => !previousPermissions.includes(p));
+    const revoked = previousPermissions.filter((p) => !permissions.includes(p));
+    await logAuditEvent({
+      actorId: currentUserId,
+      actorEmail: user.email ?? null,
+      action:
+        granted.length > 0 && revoked.length === 0
+          ? AUDIT_ACTIONS.USER_PERMISSION_GRANTED
+          : revoked.length > 0 && granted.length === 0
+            ? AUDIT_ACTIONS.USER_PERMISSION_REVOKED
+            : AUDIT_ACTIONS.USER_PERMISSION_GRANTED,
+      entity: AUDIT_ENTITIES.PERMISSION,
+      entityId: targetUserId,
+      metadata: { before: previousPermissions, after: permissions, granted, revoked },
+      ipAddress,
+      userAgent,
+    });
+
     return { success: true };
   } catch {
     return { error: UPDATE_PERMISSION_ERRORS.UNKNOWN_ERROR };

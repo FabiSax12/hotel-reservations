@@ -10,11 +10,28 @@ export interface InvitationListItem {
 
 export type RevokeInvitationResult =
   | { success: true }
-  | { error: "NOT_FOUND" | "ALREADY_REVOKED" | "UNKNOWN_ERROR" };
+  | {
+      error:
+        | "NOT_FOUND"
+        | "ALREADY_REVOKED"
+        // J3.3 (J2-POC-7): invitation is not in a revocable state (e.g. already
+        // accepted — revoking an accepted invitation used to delete a live admin
+        // account instead of invalidating a pending invite).
+        | "NOT_PENDING"
+        | "UNKNOWN_ERROR";
+    };
 
 export type ResendInvitationResult =
   | { success: true }
-  | { error: "NOT_FOUND" | "EXPIRED" | "UNKNOWN_ERROR" };
+  | {
+      error:
+        | "NOT_FOUND"
+        | "EXPIRED"
+        // J3.3 (J2-POC-7): invitation is not pending (revoked/accepted), so it
+        // should not be reactivated by resending a new activation email.
+        | "NOT_PENDING"
+        | "UNKNOWN_ERROR";
+    };
 
 export type CreateInvitationActionState =
   | null
