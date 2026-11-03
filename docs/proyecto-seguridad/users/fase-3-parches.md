@@ -34,6 +34,7 @@ en `:3002`.
 
 | Parche | Cierra | OWASP | NIST CSF 2.0 | Residual |
 |---|---|---|---|---|
+| J3-PAT-0a Guard de autorización en `createAdminAccountAction` (coordinado con Paula, no es commit propio de esta rama) | J2-POC-1 | A01 | PR.AA-05 | **Bajo** |
 | J3-PAT-1 Guard de autorización en `getUserPermissionsService` | J2-POC-2 (IDOR) | A01 | PR.AA-05 | **Bajo** |
 | J3-PAT-2 "Confused deputy" en `updateUserPermissions` | J2-POC-3 | A01, A04 | PR.AA-05, GV.RM | **Bajo** |
 | J3-PAT-3 Validación de objetivo + sesión verificada en `updateUserPermissions` | J2-POC-3/J2-POC-4 (patrón) | A01, A07 | PR.AA-05, PR.AA-02 | **Bajo** |
@@ -43,8 +44,11 @@ en `:3002`.
 | J3-PAT-7 Eliminación de `dangerouslySetInnerHTML` | J2-POC-8 (introducida) | A03 (XSS) | PR.DS-01 | **Bajo** |
 | J3-PAT-8 RLS de `profiles`/`user_permissions` con permiso real | J2-POC-9 | A01 | PR.AA-05 | **Bajo** |
 | J3-PAT-9 Auditoría de cambios de permisos, estado y invitaciones | J3.4 (transversal) | A09 | DE.CM-01, DE.AE-03 | **Bajo** |
+| J3-PAT-0b `requirePermission.ts` usa `getUser()` (vía `getVerifiedSession`) en vez de `getSession()` (coordinado con Paula, no es commit propio de esta rama) | J2-POC-4 | A07 | PR.AA-02 | **Bajo** |
 
-J2.1 y J2.3 (hallazgos negativos de la Fase 2: ya estaban correctamente protegidos) no requieren parche.
+J2.1 y J2.3 (hallazgos negativos de la Fase 2: ya estaban correctamente protegidos) no requieren parche. J2-POC-1
+y J2-POC-4 se cierran con J3-PAT-0a/0b — ver nota de coordinación con Paula (§10.1) para la trazabilidad de
+commits y la verificación en vivo repetida desde esta rama.
 
 ---
 
@@ -52,6 +56,7 @@ J2.1 y J2.3 (hallazgos negativos de la Fase 2: ya estaban correctamente protegid
 
 | Módulo y Responsable | Vulnerabilidad identificada (OWASP) | Subcategoría NIST CSF | Control / Parche aplicado (Fase 3) | Riesgo inherente | Riesgo residual | Estado final |
 |---|---|---|---|---|---|---|
+| Usuarios (Joseph) | A01 — `createAdminAccountAction` sin `requirePermission("admins:invite")`: cualquier sesión autenticada creaba invitaciones de administrador (J2-POC-1) | PR.AA-05 | `requirePermission(PERMISSIONS.ADMINS.INVITE)` — commit `1ef0b61` de Paula (AUTH-POC-1), coordinado por archivo compartido | Crítico | Bajo | Mitigado (ver §10.1) |
 | Usuarios (Joseph) | A01 — IDOR: cualquier sesión autenticada podía leer los permisos de cualquier admin, incluido el owner (J2-POC-2) | PR.AA-05 | `requirePermission(ADMINS.VIEW)` en `getUserPermissionsService` | Alto | Bajo | Mitigado |
 | Usuarios (Joseph) | A01/A04 — "Confused deputy": un admin con solo `permissions:manage` podía otorgar a otros permisos que él mismo no tenía (J2-POC-3) | PR.AA-05, GV.RM | Chequeo de subconjunto contra los permisos reales del que llama (`isCallerOwner` o `exceededPermissions`) | Alto | Bajo | Mitigado |
 | Usuarios (Joseph) | A01 — Falta de validación de objetivo (owner, auto-modificación, rol inválido) en `updateUserPermissions` | PR.AA-05, PR.AA-02 | `SELF_MODIFY`/`OWNER_MODIFY`/`INVALID_TARGET` + `getVerifiedSession()` | Medio | Bajo | Mitigado |
@@ -61,6 +66,7 @@ J2.1 y J2.3 (hallazgos negativos de la Fase 2: ya estaban correctamente protegid
 | Usuarios (Joseph) | A03 — XSS vía `dangerouslySetInnerHTML` en nombre de usuario, introducida para la PoC (J2-POC-8) | PR.DS-01 | JSX plano (React escapa por defecto) | Alto (si fuera real) | Bajo | Mitigado |
 | Usuarios (Joseph) | A01 — RLS de `profiles`/`user_permissions` permitía a cualquier admin/owner leer todas las filas sin el permiso real (J2-POC-9) | PR.AA-05 | Política RLS exige `admins:view` (profiles) o `admins:view`/`permissions:manage` (user_permissions) | Alto | Bajo | Mitigado |
 | Usuarios (Joseph) | A09 — Cambios de permisos/estado/invitaciones sin registro de auditoría (brecha transversal, J3.4) | DE.CM-01, DE.AE-03 | `logAuditEvent` en `updateUserPermissions`, `toggleAdminStatus`, `resendInvitation`, `createAdminAccountAction` | Medio | Bajo | Mitigado |
+| Usuarios (Joseph) | A07 — `requirePermission.ts` (guard central de todas las Server Actions del módulo) usaba `getSession()` en vez de `getUser()`, sin validar el JWT contra el servidor de Auth (J2-POC-4) | PR.AA-02 | `getVerifiedSession()` (usa `auth.getUser()`) — commit `e1994f9` de Paula (AUTH-POC-2), coordinado por archivo compartido | Alto | Bajo | Mitigado (ver §10.1) |
 
 ---
 
@@ -411,13 +417,58 @@ regla de la profesora en `CLAUDE.md` / instrucciones del proyecto).
 
 ---
 
+## 10.1 J3-PAT-0a/0b — J2-POC-1 y J2-POC-4 · parches coordinados con Paula (Autenticación)
+
+Estos 2 hallazgos de `users/fase-2-pocs.md` aparecen con ficha completa en el Documento de PoCs consolidado
+del equipo (`J2-POC-1` y `J2-POC-4`), pero su causa raíz vive en archivos compartidos entre este módulo y el
+de Autenticación, y ya se corrigieron como parte de la Fase 3 de Paula — **antes** de que esta rama
+(`security/users/fase3-remediacion`) existiera. Se documentan aquí explícitamente (no solo en el resumen de
+§1/§2) para que la trazabilidad de los 9 hallazgos del módulo quede completa.
+
+**J2-POC-1 (Crítico).** `apps/panel-admin/src/features/invitations/services/createAdminAccountAction.ts` no
+llamaba a `requirePermission("admins:invite")` antes de invitar a un administrador — cualquier sesión
+autenticada podía crear cuentas admin. Corregido en el commit `1ef0b61 fix(auth): stop trusting
+client-supplied role on signup (AUTH-POC-1)` de Paula, que agregó el guard junto con el resto del parche de
+registro público (`handle_new_user`). El archivo lo tocó después también esta rama (commit `4d7c38c`), pero
+solo para agregar la auditoría de J3.4 — el guard de autorización ya estaba.
+
+**J2-POC-4 (Alto).** `apps/panel-admin/src/shared/auth/requirePermission.ts` — el guard central que usan
+*todas* las Server Actions protegidas del módulo — usaba `supabase.auth.getSession()` en vez de `getUser()`,
+confiando en el contenido de la cookie sin validarlo contra el servidor de Auth. Corregido en el commit
+`e1994f9 fix(auth): verify JWT server-side and check business role in RLS (AUTH-POC-2)` de Paula.
+
+**Verificación en vivo (2026-11-03, repetida contra el código actual de `develop`, no solo revisión de
+código).** Login como `admin@hotel.local` (sin `admins:invite`) y repetición exacta del exploit documentado
+en `J2-POC-1` (mismo `Next-Action`, mismo payload):
+```
+// Antes del parche de Paula: 200 OK, {"success":true,"email":"pwned-j2poc1@hotel.local"}
+// Ahora:                     200 OK, {"error":"UNKNOWN_ERROR"} — 0 filas nuevas en pending_invitations
+```
+Para `J2-POC-4`: ninguna carga del panel muestra ya la advertencia nativa de Supabase sobre
+`getSession()` en la consola (antes aparecía en cada navegación, con origen explícito en
+`requirePermission.ts:28`); el código confirma `getVerifiedSession()` (que internamente usa `auth.getUser()`)
+en la función `getCurrentUserId()` de ese archivo.
+
+**Riesgo residual: Bajo** para ambos, con el mismo criterio que el resto del módulo: el vector fue
+neutralizado en el código fuente, la PoC original ya no es ejecutable y el control cumple la subcategoría
+NIST correspondiente (PR.AA-05 y PR.AA-02).
+
+**Nota de coordinación (pendiente de confirmar por Paula).** Esta sección se agrega desde el módulo de
+Gestión de Usuarios citando commits que no son de esta rama. Paula debe confirmar que `1ef0b61` y `e1994f9`
+son efectivamente los commits correctos y vigentes para estos 2 parches (y que no hay un commit posterior
+que los haya movido o revertido) antes de dar esta sección por cerrada para la entrega.
+
+---
+
 ## 11. Riesgo residual — resumen final
 
-Los 7 vectores de autorización/estado (J2-POC-2, -3, -5, -6, -7, -9) y el vector de XSS introducido
-(J2-POC-8) quedan en **riesgo residual Bajo**, verificado en vivo con evidencia concreta de antes/después
-(curl y Playwright) en este mismo documento. La única salvedad documentada con honestidad es la capacidad de
-*detección* sobre fallos silenciosos de auditoría (§10), que queda en riesgo residual Medio y es aceptable
-dado el alcance y las restricciones de herramientas del curso.
+Los 9 hallazgos del módulo (`J2-POC-1` a `J2-POC-9`) quedan en **riesgo residual Bajo**, verificado en vivo
+con evidencia concreta de antes/después en este mismo documento: 7 con commits propios de esta rama
+(J2-POC-2, -3, -5, -6, -7, -8, -9, vía curl y Playwright) y 2 con commits de Paula coordinados por archivo
+compartido (J2-POC-1, -4, vía §10.1 — pendientes de que ella confirme los hashes de commit citados). La
+única salvedad documentada con honestidad es la capacidad de *detección* sobre fallos silenciosos de
+auditoría (§10), que queda en riesgo residual Medio y es aceptable dado el alcance y las restricciones de
+herramientas del curso.
 
 J2.1 y J2.3 (hallazgos negativos de la Fase 2) no requirieron parche: ya estaban correctamente protegidos y
 se mantienen sin cambios.
