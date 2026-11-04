@@ -8,14 +8,14 @@
 
 ## 0. Ficha
 
-| Campo | Valor |
-|---|---|
-| Responsable | Joseph (Daniel Salas) |
-| Módulo | Gestión de Usuarios (`users`) |
-| Tareas | J3.1 (vectores de autorización), J3.2 (XSS), J3.3 (RLS/RPC), J3.4 (auditoría), J3.5 (regresión + riesgo residual), J3.6 (este documento) |
-| Línea base vulnerable | `develop@868b95c` |
-| Rama | `security/users/fase3-remediacion` (sin commits al momento de escribir este documento — Claude no hace commit/push; ver §9 para el mensaje de commit sugerido) |
-| Insumos | `users/fase-2-pocs.md` (J2-POC-1…9) |
+| Campo                  | Valor                                                                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Responsable            | Joseph (Daniel Salas)                                                                                                                                              |
+| Módulo                | Gestión de Usuarios (`users`)                                                                                                                                   |
+| Tareas                 | J3.1 (vectores de autorización), J3.2 (XSS), J3.3 (RLS/RPC), J3.4 (auditoría), J3.5 (regresión + riesgo residual), J3.6 (este documento)                        |
+| Línea base vulnerable | `develop@868b95c`                                                                                                                                                |
+| Rama                   | `security/users/fase3-remediacion` (sin commits al momento de escribir este documento — Claude no hace commit/push; ver §9 para el mensaje de commit sugerido) |
+| Insumos                | `users/fase-2-pocs.md` (J2-POC-1…9)                                                                                                                             |
 
 **Tests / type-check (J3.5):** `pnpm exec biome check` limpio sobre los 10 archivos propios. `pnpm type-check`
 no introduce errores nuevos — los únicos errores preexistentes (`@hotel/db`: `gallery_content`, `gallery_items`,
@@ -32,19 +32,19 @@ en `:3002`.
 
 ## 1. Resumen
 
-| Parche | Cierra | OWASP | NIST CSF 2.0 | Residual |
-|---|---|---|---|---|
-| J3-PAT-0a Guard de autorización en `createAdminAccountAction` (coordinado con Paula, no es commit propio de esta rama) | J2-POC-1 | A01 | PR.AA-05 | **Bajo** |
-| J3-PAT-1 Guard de autorización en `getUserPermissionsService` | J2-POC-2 (IDOR) | A01 | PR.AA-05 | **Bajo** |
-| J3-PAT-2 "Confused deputy" en `updateUserPermissions` | J2-POC-3 | A01, A04 | PR.AA-05, GV.RM | **Bajo** |
-| J3-PAT-3 Validación de objetivo + sesión verificada en `updateUserPermissions` | J2-POC-3/J2-POC-4 (patrón) | A01, A07 | PR.AA-05, PR.AA-02 | **Bajo** |
-| J3-PAT-4 Estado re-leído del servidor en `toggleAdminStatus` + protección owner/self | J2-POC-5 | A01, A04 | PR.AA-05 | **Bajo** |
-| J3-PAT-5 `GRANT`/`REVOKE` + guard de rol en `get_admins()` | J2-POC-6 | A01 | PR.AA-05 | **Bajo** |
-| J3-PAT-6 Máquina de estados (allowlist) en `revokeInvitation`/`resendInvitation` | J2-POC-7 | A04 | PR.DS-01 | **Bajo** |
-| J3-PAT-7 Eliminación de `dangerouslySetInnerHTML` | J2-POC-8 (introducida) | A03 (XSS) | PR.DS-01 | **Bajo** |
-| J3-PAT-8 RLS de `profiles`/`user_permissions` con permiso real | J2-POC-9 | A01 | PR.AA-05 | **Bajo** |
-| J3-PAT-9 Auditoría de cambios de permisos, estado y invitaciones | J3.4 (transversal) | A09 | DE.CM-01, DE.AE-03 | **Bajo** |
-| J3-PAT-0b `requirePermission.ts`/`getInitialAuthStatus.ts` usan `getUser()` (vía `getVerifiedSession`) en vez de `getSession()` (coordinado con Paula, no es commit propio de esta rama) | J2-POC-4 | A07 | PR.AA-03 | **Bajo** |
+| Parche                                                                                                                                                                                              | Cierra                      | OWASP     | NIST CSF 2.0       | Residual       |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | --------- | ------------------ | -------------- |
+| J3-PAT-0a Guard de autorización en `createAdminAccountAction` (coordinado con Paula, no es commit propio de esta rama)                                                                           | J2-POC-1                    | A01       | PR.AA-05           | **Bajo** |
+| J3-PAT-1 Guard de autorización en `getUserPermissionsService`                                                                                                                                    | J2-POC-2 (IDOR)             | A01       | PR.AA-05           | **Bajo** |
+| J3-PAT-2 "Confused deputy" en `updateUserPermissions`                                                                                                                                             | J2-POC-3                    | A01, A04  | PR.AA-05, GV.RM    | **Bajo** |
+| J3-PAT-3 Validación de objetivo + sesión verificada en `updateUserPermissions`                                                                                                                  | J2-POC-3/J2-POC-4 (patrón) | A01, A07  | PR.AA-05, PR.AA-02 | **Bajo** |
+| J3-PAT-4 Estado re-leído del servidor en `toggleAdminStatus` + protección owner/self                                                                                                            | J2-POC-5                    | A01, A04  | PR.AA-05           | **Bajo** |
+| J3-PAT-5 `GRANT`/`REVOKE` + guard de rol en `get_admins()`                                                                                                                                    | J2-POC-6                    | A01       | PR.AA-05           | **Bajo** |
+| J3-PAT-6 Máquina de estados (allowlist) en `revokeInvitation`/`resendInvitation`                                                                                                               | J2-POC-7                    | A04       | PR.DS-01           | **Bajo** |
+| J3-PAT-7 Eliminación de `dangerouslySetInnerHTML`                                                                                                                                                | J2-POC-8 (introducida)      | A03 (XSS) | PR.DS-01           | **Bajo** |
+| J3-PAT-8 RLS de `profiles`/`user_permissions` con permiso real                                                                                                                                  | J2-POC-9                    | A01       | PR.AA-05           | **Bajo** |
+| J3-PAT-9 Auditoría de cambios de permisos, estado y invitaciones                                                                                                                                   | J3.4 (transversal)          | A09       | DE.CM-01, DE.AE-03 | **Bajo** |
+| J3-PAT-0b `requirePermission.ts`/`getInitialAuthStatus.ts` usan `getUser()` (vía `getVerifiedSession`) en vez de `getSession()` (coordinado con Paula, no es commit propio de esta rama) | J2-POC-4                    | A07       | PR.AA-03           | **Bajo** |
 
 J2.1 y J2.3 (hallazgos negativos de la Fase 2: ya estaban correctamente protegidos) no requieren parche. J2-POC-1
 y J2-POC-4 se cierran con J3-PAT-0a/0b — ver nota de coordinación con Paula (§10.1) para la trazabilidad de
@@ -54,19 +54,19 @@ commits y la verificación en vivo repetida desde esta rama.
 
 ## 2. Filas para la Matriz de Riesgos actualizada
 
-| Módulo y Responsable | Vulnerabilidad identificada (OWASP) | Subcategoría NIST CSF | Control / Parche aplicado (Fase 3) | Riesgo inherente | Riesgo residual | Estado final |
-|---|---|---|---|---|---|---|
-| Usuarios (Joseph) | A01 — `createAdminAccountAction` sin `requirePermission("admins:invite")`: cualquier sesión autenticada creaba invitaciones de administrador (J2-POC-1) | PR.AA-05 | `requirePermission(PERMISSIONS.ADMINS.INVITE)` — commit `1ef0b61` de Paula (AUTH-POC-1), coordinado por archivo compartido | Crítico | Bajo | Mitigado (ver §10.1) |
-| Usuarios (Joseph) | A01 — IDOR: cualquier sesión autenticada podía leer los permisos de cualquier admin, incluido el owner (J2-POC-2) | PR.AA-05 | `requirePermission(ADMINS.VIEW)` en `getUserPermissionsService` | Alto | Bajo | Mitigado |
-| Usuarios (Joseph) | A01/A04 — "Confused deputy": un admin con solo `permissions:manage` podía otorgar a otros permisos que él mismo no tenía (J2-POC-3) | PR.AA-05, GV.RM | Chequeo de subconjunto contra los permisos reales del que llama (`isCallerOwner` o `exceededPermissions`) | Alto | Bajo | Mitigado |
-| Usuarios (Joseph) | A01 — Falta de validación de objetivo (owner, auto-modificación, rol inválido) en `updateUserPermissions` | PR.AA-05, PR.AA-02 | `SELF_MODIFY`/`OWNER_MODIFY`/`INVALID_TARGET` + `getVerifiedSession()` | Medio | Bajo | Mitigado |
-| Usuarios (Joseph) | A01/A04 — Estado "activo" dictado por el cliente en `toggleAdminStatus`, sin proteger al owner (J2-POC-5) | PR.AA-05 | El servidor relee `is_active` de la BD; ignora el booleano del cliente; `OWNER_MODIFY`/`SELF_MODIFY` | Alto | Bajo | Mitigado |
-| Usuarios (Joseph) | A01 — `get_admins()` expuesto sin autenticación vía PostgREST (J2-POC-6) | PR.AA-05 | `REVOKE EXECUTE ... FROM PUBLIC, anon`; `GRANT ... TO authenticated`; chequeo de rol dentro de la función | Crítico | Bajo | Mitigado |
-| Usuarios (Joseph) | A04 — Lista de denegación (en vez de permitida) en `resendInvitation`/`revokeInvitation`, con bug de comparación de string (J2-POC-7) | PR.DS-01 | Máquina de estados por lista permitida: solo se actúa si `status === pending` | Medio | Bajo | Mitigado |
-| Usuarios (Joseph) | A03 — XSS vía `dangerouslySetInnerHTML` en nombre de usuario, introducida para la PoC (J2-POC-8) | PR.DS-01 | JSX plano (React escapa por defecto) | Alto (si fuera real) | Bajo | Mitigado |
-| Usuarios (Joseph) | A01 — RLS de `profiles`/`user_permissions` permitía a cualquier admin/owner leer todas las filas sin el permiso real (J2-POC-9) | PR.AA-05 | Política RLS exige `admins:view` (profiles) o `admins:view`/`permissions:manage` (user_permissions) | Alto | Bajo | Mitigado |
-| Usuarios (Joseph) | A09 — Cambios de permisos/estado/invitaciones sin registro de auditoría (brecha transversal, J3.4) | DE.CM-01, DE.AE-03 | `logAuditEvent` en `updateUserPermissions`, `toggleAdminStatus`, `resendInvitation`, `createAdminAccountAction` | Medio | Bajo | Mitigado |
-| Usuarios (Joseph) | A07 — `requirePermission.ts` (guard central de todas las Server Actions del módulo) y `getInitialAuthStatus.ts` usaban `getSession()` en vez de `getUser()`, sin validar el JWT contra el servidor de Auth (J2-POC-4) | PR.AA-03 | `getVerifiedSession()` (usa `auth.getUser()`) — commit `e1994f9` de Paula (AUTH-POC-2), coordinado por archivo compartido | Alto | Bajo | Mitigado (ver §10.1) |
+| Módulo y Responsable | Vulnerabilidad identificada (OWASP)                                                                                                                                                                                             | Subcategoría NIST CSF | Control / Parche aplicado (Fase 3)                                                                                               | Riesgo inherente     | Riesgo residual | Estado final          |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------- | --------------- | --------------------- |
+| Usuarios (Joseph)     | A01 — `createAdminAccountAction` sin `requirePermission("admins:invite")`: cualquier sesión autenticada creaba invitaciones de administrador (J2-POC-1)                                                                   | PR.AA-05               | `requirePermission(PERMISSIONS.ADMINS.INVITE)` — commit `1ef0b61` de Paula (AUTH-POC-1), coordinado por archivo compartido  | Crítico             | Bajo            | Mitigado (ver §10.1) |
+| Usuarios (Joseph)     | A01 — IDOR: cualquier sesión autenticada podía leer los permisos de cualquier admin, incluido el owner (J2-POC-2)                                                                                                            | PR.AA-05               | `requirePermission(ADMINS.VIEW)` en `getUserPermissionsService`                                                              | Alto                 | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A01/A04 — "Confused deputy": un admin con solo `permissions:manage` podía otorgar a otros permisos que él mismo no tenía (J2-POC-3)                                                                                       | PR.AA-05, GV.RM        | Chequeo de subconjunto contra los permisos reales del que llama (`isCallerOwner` o `exceededPermissions`)                    | Alto                 | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A01 — Falta de validación de objetivo (owner, auto-modificación, rol inválido) en `updateUserPermissions`                                                                                                                 | PR.AA-05, PR.AA-02     | `SELF_MODIFY`/`OWNER_MODIFY`/`INVALID_TARGET` + `getVerifiedSession()`                                                   | Medio                | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A01/A04 — Estado "activo" dictado por el cliente en `toggleAdminStatus`, sin proteger al owner (J2-POC-5)                                                                                                                    | PR.AA-05               | El servidor relee `is_active` de la BD; ignora el booleano del cliente; `OWNER_MODIFY`/`SELF_MODIFY`                       | Alto                 | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A01 — `get_admins()` expuesto sin autenticación vía PostgREST (J2-POC-6)                                                                                                                                                   | PR.AA-05               | `REVOKE EXECUTE ... FROM PUBLIC, anon`; `GRANT ... TO authenticated`; chequeo de rol dentro de la función                   | Crítico             | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A04 — Lista de denegación (en vez de permitida) en `resendInvitation`/`revokeInvitation`, con bug de comparación de string (J2-POC-7)                                                                                    | PR.DS-01               | Máquina de estados por lista permitida: solo se actúa si `status === pending`                                                | Medio                | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A03 — XSS vía `dangerouslySetInnerHTML` en nombre de usuario, introducida para la PoC (J2-POC-8)                                                                                                                            | PR.DS-01               | JSX plano (React escapa por defecto)                                                                                             | Alto (si fuera real) | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A01 — RLS de `profiles`/`user_permissions` permitía a cualquier admin/owner leer todas las filas sin el permiso real (J2-POC-9)                                                                                           | PR.AA-05               | Política RLS exige `admins:view` (profiles) o `admins:view`/`permissions:manage` (user_permissions)                       | Alto                 | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A09 — Cambios de permisos/estado/invitaciones sin registro de auditoría (brecha transversal, J3.4)                                                                                                                            | DE.CM-01, DE.AE-03     | `logAuditEvent` en `updateUserPermissions`, `toggleAdminStatus`, `resendInvitation`, `createAdminAccountAction`        | Medio                | Bajo            | Mitigado              |
+| Usuarios (Joseph)     | A07 — `requirePermission.ts` (guard central de todas las Server Actions del módulo) y `getInitialAuthStatus.ts` usaban `getSession()` en vez de `getUser()`, sin validar el JWT contra el servidor de Auth (J2-POC-4) | PR.AA-03               | `getVerifiedSession()` (usa `auth.getUser()`) — commit `e1994f9` de Paula (AUTH-POC-2), coordinado por archivo compartido | Alto                 | Bajo            | Mitigado (ver §10.1) |
 
 ---
 
@@ -77,6 +77,7 @@ commits y la verificación en vivo repetida desde esta rama.
 **Mapeo.** OWASP A01 (control de acceso roto — IDOR). NIST CSF 2.0: PR.AA-05.
 
 **Diff (antes → después).**
+
 ```ts
 // ANTES: sin ningún guard — cualquier sesión autenticada podía invocar el
 // Server Action directamente (bypass de la UI) pasando el UUID de cualquier
@@ -100,6 +101,7 @@ fetch('/admin/admins', { headers: { 'Next-Action': '409b06a19cd4f0b05120ddc3101f
   body: '["<uuid-owner>"]' })
 → 500 PermissionDeniedError: "Permission denied: admins:view"
 ```
+
 Antes del parche este mismo payload devolvía `200` con el arreglo de permisos del owner. Resultado capturado
 en vivo con Playwright contra el panel-admin local.
 
@@ -120,6 +122,7 @@ Server Actions).
 GV.RM (gestión de riesgo de privilegios), PR.AA-02 (sesión verificada).
 
 **Diff (antes → después, resumen de los 3 defectos corregidos en la misma función).**
+
 ```ts
 // DEFECTO 1 (confused deputy): cualquiera con permissions:manage podía otorgar
 // CUALQUIER permiso a CUALQUIER admin, incluidos permisos que el propio
@@ -155,6 +158,7 @@ fetch('/admin/admins', { headers: { 'Next-Action': '6090dad2b1d560459c7d974eaba4
   body: '["<uuid-newadmin>",["permissions:manage","admins:revoke"]]' })
 → 200 { "error": "PERMISSION_EXCEEDED" }
 ```
+
 Antes del parche este mismo payload devolvía `200 { "success": true }`, otorgando `admins:revoke` sin que el
 atacante lo tuviera. Se confirmó además que la UI (`/admin/admins`) ya rechaza con `403` a ese mismo usuario
 tras perder `admins:view` — defensa en profundidad adicional a nivel de página.
@@ -175,6 +179,7 @@ de bajo volumen.
 **Mapeo.** OWASP A01 + A04. NIST CSF 2.0: PR.AA-05.
 
 **Diff (antes → después).**
+
 ```ts
 // ANTES: el nuevo estado dependía del booleano que mandaba el cliente
 // (`isActive`), permitiendo reenviar un valor obsoleto o forjado; sin
@@ -193,9 +198,11 @@ export const toggleAdminStatus = async (adminId: string, isActive: boolean) => {
 **Prueba de regresión (en vivo).** Con `admin@hotel.local` reducido a `permissions:manage` (sin
 `admins:disable`), se repitió el `Next-Action` capturado (`7f89d617713f9e9176b60d316965d6c72fd6733eba`) contra
 el UUID del owner:
+
 ```
 body: '["<uuid-owner>", true]' → 500 PermissionDeniedError: "Permission denied: admins:disable"
 ```
+
 El guard de permiso bloquea el intento incluso antes de llegar al chequeo `OWNER_MODIFY`, que es la segunda
 capa de defensa para un admin que sí tuviera `admins:disable`.
 
@@ -212,6 +219,7 @@ tokens ya cacheados por un proxy intermedio (no aplica en este entorno local, do
 **Mapeo.** OWASP A01. NIST CSF 2.0: PR.AA-05.
 
 **Diff (antes → después).**
+
 ```sql
 -- ANTES: SECURITY DEFINER sin REVOKE explícito → EXECUTE quedaba en PUBLIC
 -- por defecto de Postgres, alcanzable incluso por `anon` vía PostgREST RPC.
@@ -226,6 +234,7 @@ GRANT EXECUTE ON FUNCTION public.get_admins() TO authenticated;
 ```
 
 **Prueba de regresión (en vivo, antes/después con curl).**
+
 ```
 # Antes del parche (comportamiento original, documentado en fase-2-pocs.md):
 POST /rest/v1/rpc/get_admins  (solo apikey anon, sin sesión) → 200 OK, roster completo (owner + admins)
@@ -234,9 +243,9 @@ POST /rest/v1/rpc/get_admins  (solo apikey anon, sin sesión) → 200 OK, roster
 POST /rest/v1/rpc/get_admins  (solo apikey anon, sin sesión)
 → 401 { "code": "42501", "message": "permission denied for function get_admins" }
 ```
+
 Se verificó además que el camino legítimo interno (`getUserPermissionsList()` vía cliente `service_role`)
-sigue funcionando — un primer intento del parche (`AND public.is_admin_or_owner()` sin el `OR auth.role() =
-'service_role'`) rompió ese camino porque `auth.uid()` es `NULL` para el `service_role`; el bug se detectó en
+sigue funcionando — un primer intento del parche (`AND public.is_admin_or_owner()` sin el `OR auth.role() = 'service_role'`) rompió ese camino porque `auth.uid()` es `NULL` para el `service_role`; el bug se detectó en
 vivo (la página `/admin/admins` del owner mostraba "0 administradores") y se corrigió antes de considerar el
 parche cerrado — ver evidencia en el propio commit de la migración.
 
@@ -255,6 +264,7 @@ función debe mantener el chequeo de rol para no reabrir el hallazgo.
 **Mapeo.** OWASP A04 (diseño inseguro: lista de denegación en vez de permitida). NIST CSF 2.0: PR.DS-01.
 
 **Diff (antes → después).**
+
 ```ts
 // resendInvitation.ts — ANTES: comparación de string rota contra un valor
 // ("expired") que el estado calculado nunca produce en la práctica (la
@@ -270,6 +280,7 @@ if (invitation.status !== DB_ENUMS.invitation_status.pending) {
   return { error: "NOT_PENDING" };
 }
 ```
+
 `revokeInvitation.ts` recibió el mismo patrón (líneas 33-41): mantiene `ALREADY_REVOKED` para el caso
 específico y agrega `NOT_PENDING` como cierre general de la lista permitida.
 
@@ -277,9 +288,11 @@ específico y agrega `NOT_PENDING` como cierre general de la lista permitida.
 (`Next-Action 7fde44704de7975394b3553611471a916837ae78ce` → `{"success":true}`), y luego se repitió el
 `Next-Action` de `resendInvitation` (`7f60626a92af2dc6f47e881189cffa433f1241b5a7`) sobre esa misma invitación
 ya revocada:
+
 ```
 body: '["<uuid-invitacion-revocada>"]' → 200 { "error": "NOT_PENDING" }
 ```
+
 Y al repetir `revokeInvitation` sobre la misma invitación ya revocada: `{"error":"ALREADY_REVOKED"}` (guarda
 preexistente, sigue funcionando). Datos de prueba (invitación de `manager@hotel.local`) restaurados a
 `status = 'pending'` al finalizar la prueba para no dejar el seed local alterado.
@@ -299,6 +312,7 @@ introducido deliberadamente para la PoC de la Fase 2 (no existía en el código 
 al render seguro original, documentado así en `fase-2-pocs.md` / J2-POC-8.
 
 **Diff (antes → después).**
+
 ```tsx
 // ANTES (introducido para la PoC):
 <Table.Cell>
@@ -308,6 +322,7 @@ al render seguro original, documentado así en `fase-2-pocs.md` / J2-POC-8.
 // DESPUÉS (JSX plano — React escapa por defecto):
 <Table.Cell>{user.full_name}</Table.Cell>
 ```
+
 Mismo patrón en `PermissionDrawer.tsx` (interpolación de `admin.full_name` directamente en JSX).
 
 **Prueba de regresión (en vivo).** Se puso temporalmente `full_name = '<img src=x onerror=alert(1)>XSS-TEST'`
@@ -329,6 +344,7 @@ depende de sanitización manual que pueda olvidarse en el futuro.
 **Mapeo.** OWASP A01. NIST CSF 2.0: PR.AA-05.
 
 **Diff (antes → después).**
+
 ```sql
 -- profiles — ANTES: cualquier admin/owner (is_admin_or_owner()) leía TODAS las filas,
 -- sin exigir el permiso admins:view que sí protege el camino de la UI.
@@ -344,6 +360,7 @@ USING (auth.uid() = id OR (public.is_admin_or_owner() AND public.has_permission(
 ```
 
 **Prueba de regresión (en vivo, antes/después con curl usando el JWT real de `admin@hotel.local`).**
+
 ```
 # Antes del parche (documentado en fase-2-pocs.md):
 GET /rest/v1/profiles?select=*          → 200, 11 filas (todos los perfiles)
@@ -374,6 +391,7 @@ fallo de auditoría no puede bloquear la operación de negocio.
 
 **Prueba de regresión (en vivo).** Confirmado contra la tabla `audit_logs` real tras las pruebas de los
 parches anteriores (mismo Supabase local, sin inserción manual):
+
 ```
 action                   | entity     | entity_id            | actor_email        | metadata
 user.permission.granted  | permission | <uuid-admin>          | owner@hotel.local  | {"before":["view:dashboard","reservations:view"],
@@ -384,6 +402,7 @@ user.status.changed      | user       | <uuid-admin>          | owner@hotel.loca
 user.status.changed      | user       | <uuid-admin>          | owner@hotel.local  | {"from":false,"to":true}
 user.status.changed      | user       | <uuid-invitación>     | owner@hotel.local  | {"action":"invitation_revoked"}
 ```
+
 Las 2 primeras filas corresponden a las llamadas de `updateUserPermissions` y `toggleAdminStatus` hechas
 durante la regresión de J2-POC-3/5 (§4, §5); la última, a `revokeInvitation` durante la regresión de
 J2-POC-7 (§7) — confirma que las 3 acciones realmente escriben en `audit_logs` con actor, entidad y
@@ -393,11 +412,13 @@ Las rutas exitosas de `resendInvitation` y `createAdminAccountAction` también s
 (2026-11-03), usando un correo sin cuenta previa en `auth.users` (el intento inicial con `newadmin@hotel.local`
 fallaba con "ya registrado" porque esa cuenta ya existe en el seed — no es un bug, solo un dato de prueba
 inválido para este camino en particular):
+
 ```
 action        | entity | entity_id                            | actor_email       | metadata
 user.invited  | user   | NULL                                 | owner@hotel.local | {"email":"qa-resend-test@hotel.local","full_name":"QA Resend Test"}
 user.invited  | user   | <uuid-invitación-qa-resend-test>      | owner@hotel.local | {"email":"qa-resend-test@hotel.local","action":"invitation_resent"}
 ```
+
 La primera fila confirma `createAdminAccountAction` (crea la invitación y audita `user.invited` con los
 datos del nuevo admin); la segunda, `resendInvitation` (extiende `expires_at` +7 días y audita el reenvío).
 Única observación menor, no de seguridad: `createAdminAccountAction` audita con `entityId: null` porque en
@@ -427,8 +448,7 @@ de Autenticación, y ya se corrigieron como parte de la Fase 3 de Paula — **an
 
 **J2-POC-1 (Crítico).** `apps/panel-admin/src/features/invitations/services/createAdminAccountAction.ts` no
 llamaba a `requirePermission("admins:invite")` antes de invitar a un administrador — cualquier sesión
-autenticada podía crear cuentas admin. Corregido en el commit `1ef0b61 fix(auth): stop trusting
-client-supplied role on signup (AUTH-POC-1)` de Paula, que agregó el guard junto con el resto del parche de
+autenticada podía crear cuentas admin. Corregido en el commit `1ef0b61 fix(auth): stop trusting client-supplied role on signup (AUTH-POC-1)` de Paula, que agregó el guard junto con el resto del parche de
 registro público (`handle_new_user`). El archivo lo tocó después también esta rama (commit `4d7c38c`), pero
 solo para agregar la auditoría de J3.4 — el guard de autorización ya estaba.
 
@@ -442,13 +462,15 @@ construir el estado de sesión inicial del panel. Ambos se corrigieron en el mis
 **Verificación en vivo (2026-11-03, repetida contra el código actual de `develop`, no solo revisión de
 código).** Login como `admin@hotel.local` (sin `admins:invite`) y repetición exacta del exploit documentado
 en `J2-POC-1` (mismo `Next-Action`, mismo payload):
+
 ```
 // Antes del parche de Paula: 200 OK, {"success":true,"email":"pwned-j2poc1@hotel.local"}
 // Ahora:                     200 OK, {"error":"UNKNOWN_ERROR"} — 0 filas nuevas en pending_invitations
 ```
+
 Para `J2-POC-4`: ninguna carga del panel muestra ya la advertencia nativa de Supabase sobre
 `getSession()` en la consola (antes aparecía en cada navegación, con origen explícito en
-`requirePermission.ts:17` y `getInitialAuthStatus.ts:25`); el código confirma `getVerifiedSession()` (que
+`requirePermission.ts:28` y `getInitialAuthStatus.ts:25`); el código confirma `getVerifiedSession()` (que
 internamente usa `auth.getUser()`) en la función `getCurrentUserId()` de `requirePermission.ts`, y el mismo
 patrón en `getInitialAuthStatus.ts`.
 
@@ -461,8 +483,13 @@ los commits correctos y vigentes (están en `develop`, sin revertir; el commit `
 el guard de `createAdminAccountAction.ts`). También señaló y se corrigieron aquí 3 detalles: (1) el fix de
 `getSession()` de `e1994f9` incluyó además `getInitialAuthStatus.ts`, no solo `requirePermission.ts`; (2) la
 subcategoría NIST de J2-POC-4 se unificó a `PR.AA-03` para que coincida con `users/fase-2-pocs.md` (antes
-decía `PR.AA-02` en esta sección); (3) la línea original de `getSession()` en `requirePermission.ts` era la
-17, no la 28. Sección cerrada.
+decía `PR.AA-02` en esta sección); (3) sobre la línea de `requirePermission.ts` que origina la advertencia:
+verificado contra el commit `9fed57e` (el que cita la propia ficha de J2-POC-4), el `getSession()` está en
+la línea 17 del código fuente versionado — la línea 28 de ese commit pertenece a otra función (`isOwner`)
+y no tiene relación con `getSession()`. El `28` citado en `users/fase-2-pocs.md` es la advertencia real del
+navegador capturada en esa sesión (extraída programáticamente, no se altera), que no necesariamente coincide
+línea-por-línea con el archivo fuente por cómo Next.js reporta en modo dev el origen de un log del servidor.
+Ambos números son correctos para lo que describen; no se trata de un error a corregir. Sección cerrada.
 
 ---
 
