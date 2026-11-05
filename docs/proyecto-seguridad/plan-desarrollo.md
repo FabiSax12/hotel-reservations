@@ -358,6 +358,7 @@ CSRF en acciones de estado de reserva, integridad del webhook/pasarela de pago, 
 - [x] A3.5 Tests de regresión + riesgo residual por hallazgo.
 - [x] A3.6 Entregar `operations/fase-3-parches.md`.
 - [ ] A3.7 Grabar video (≤ 5 min, solo IDE).
+- [x] A3.8 Parchear riesgos de Fase 1 sin PoC: OP-R05 (transiciones de estado) y OP-R07 (`booking_confirmation_mode`).
 
 **Bitácora**
 | Fecha | Tarea | Rama / commit / PR | Resultado |
@@ -393,6 +394,7 @@ CSRF en acciones de estado de reserva, integridad del webhook/pasarela de pago, 
 | 2026-10-31 | Entrega de A3.4: PR #23 aprobado por Fabian (revisión cruzada G3.3) y mergeado a `develop` (merge `dcec7f0`) | `security/operations/fase3-audit-logging`, PR #23 | Mergeado; A3.4 cerrada. Fase 3 de Operaciones completa salvo A3.7 (video) |
 | 2026-11-01 | Corrección del tablero §2: la fila de Aarón había vuelto a un texto viejo ("PR #16", "A3.4 bloqueada") al resolver el conflicto del merge de `develop` en el PR #24 | `docs/plan-sync-aaron` | Hecho |
 | 2026-11-01 | Revisión contra el enunciado y congruencia de los documentos de Operaciones. (1) **OP-POC-6 reescrita como PoC reproducible** de evasión de la auditoría (vector 3, audit poisoning): sobre `develop@1e6ce17` se crean 2 reservas por el checkout y un admin cancela una, y `audit_logs` solo registra el login. (2) **Re-prueba en vivo** de OP-POC-2 (mismo replay de `deleteImage` → `PermissionDeniedError`, fila intacta) y de OP-POC-3 (payload mostrado como texto, 0 `img[onerror]`, CSP con nonce activa), que el reporte daba por verificadas sin evidencia. (3) `fase-3-parches.md`: fichas con PR, commits y rama; encabezado y estado al día; CSP de Paula ya entregada. (4) `fase-2-pocs.md`: hashes reales en "Commit donde se reprodujo" (`cbccfa9`, `e1828a4`, `767a0d6`), payloads con ids reales del catálogo (`mv-1`) y resultados de OP-POC-4/5 ajustados a lo observado (HTTP 200; la fila no se guardaba por el bug de persistencia) | `docs/operations-congruencia`; evidencias `A2.3-OP-POC-6-audit-evasion-live.txt` y `A3.1-A3.2-regression-live.txt` | Hecho; pendiente PR |
+| 2026-11-04 | A3.8 — OP-R05 y OP-R07 (riesgos de Fase 1 que la Matriz de Riesgo Residual dejaba en Medio): `reservation-rules.ts` (enum + `VALID_TRANSITIONS` en el servidor), `updateReservationStatus` con `UPDATE` condicional por el estado validado, `updateBookingMode` valida el enum y audita `system.setting.changed` (acción nueva en el catálogo compartido de Fabián), migración `20261104000001` (trigger de transiciones + `CHECK` del modo). Tests: panel 46/46 (27 de reservas; 19 fallan con el código anterior), core audit 14/14. Re-test en vivo en Supabase local como `service_role`: `cancelled → approved` y `'disabled'` rechazados por la base, flujos legítimos OK (`evidencias/A3.8-op-r05-r07-live.txt`) | `security/operations/fase3-op-r05-r07`, commit `8f5608f`, PR #33 | Hecho; PR #33 abierto (pendiente revisión G3.3), avisar a Fabián (catálogo de auditoría) y actualizar G3.1/G3.2: OP-R05 y OP-R07 pasan a residual Bajo |
 
 ---
 

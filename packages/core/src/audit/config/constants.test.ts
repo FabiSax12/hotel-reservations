@@ -26,6 +26,7 @@ describe("AUDIT_ACTIONS", () => {
     ["RESERVATION_UPDATED", "reservation.updated"],
     ["RESERVATION_CANCELLED", "reservation.cancelled"],
     ["RESERVATION_DELETED", "reservation.deleted"],
+    ["SYSTEM_SETTING_CHANGED", "system.setting.changed"],
   ])("offers %s for the Users/Operations/Auth modules", (key, value) => {
     expect(AUDIT_ACTIONS[key as keyof typeof AUDIT_ACTIONS]).toBe(value);
   });

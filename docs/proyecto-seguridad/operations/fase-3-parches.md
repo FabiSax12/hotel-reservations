@@ -5,9 +5,9 @@
 | Módulo | Operaciones / Transacciones (`operations`) |
 | Responsable | Aarón Líos Cubillo |
 | Ramas | `security/operations/fase3-parches` (A3.1–A3.3, creada **desde** `security/operations/fase2-pocs` para aplicar los fixes sobre las vulnerabilidades introducidas/reales y comprobar que la PoC deja de funcionar — §4.1) · `security/operations/fase3-checkout-rooms-catalog` (A3.3, catálogo de habitaciones) · `security/operations/fase3-audit-logging` (A3.4) |
-| Pull Requests | [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12) (A3.1–A3.3) · [#15](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/15) (bitácora) · [#16](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/16) (catálogo de habitaciones) · [#23](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/23) (A3.4) — todos mergeados a `develop` |
+| Pull Requests | [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12) (A3.1–A3.3) · [#15](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/15) (bitácora) · [#16](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/16) (catálogo de habitaciones) · [#23](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/23) (A3.4) · [#33](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/33) (A3.8, abierto) — los demás mergeados a `develop` |
 | Insumo | `operations/fase-2-pocs.md` (OP-POC-1 … OP-POC-6) |
-| Estado | A3.1–A3.6 completas y mergeadas a `develop`; los 6 hallazgos (OP-POC-1…6) parcheados y re-probados. Pendiente: A3.7 (video). |
+| Estado | A3.1–A3.6 completas y mergeadas a `develop`; los 6 hallazgos (OP-POC-1…6) parcheados y re-probados. A3.8 (OP-R05 y OP-R07, riesgos de Fase 1) en la rama `security/operations/fase3-op-r05-r07`, PR [#33](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/33) abierto (pendiente de revisión). Pendiente: A3.7 (video). |
 
 > Formato por parche según §4.6: ficha · mapeo · diff antes/después · prueba de regresión · riesgo residual.
 
@@ -23,6 +23,8 @@
 | OP-POC-4 | 3 — CSRF | Verificación de `Origin` | **Medio** (sin token anti-CSRF ni rate limiting) |
 | OP-POC-5 | 3 — manipulación de parámetros | Esquema Zod + capacidad (fechas/aforo); disponibilidad + `EXCLUDE` + catálogo de rooms reconciliado | **Bajo** (fechas/aforo y disponibilidad/TOCTOU verificados en vivo, ver A3.3) |
 | OP-POC-6 | 3 — evasión de auditoría | `logAuditEvent` en creación y cambio de estado de reservas, saneado por la API (A3.4) | **Bajo** (verificado en vivo, ver A3.4) |
+| OP-R05 | Riesgo de Fase 1 (sin PoC propia) | `VALID_TRANSITIONS` en el servidor + `UPDATE` condicional + trigger en la base (A3.8) | **Bajo** (verificado en vivo, ver A3.8) |
+| OP-R07 | Riesgo de Fase 1 (sin PoC propia) | `BookingMode` validado en el servidor + `CHECK` en la base + auditoría del cambio (A3.8) | **Bajo** (verificado en vivo, ver A3.8) |
 
 ---
 
@@ -341,7 +343,8 @@ await logAuditEvent({ actorId: user?.id, action: isCancellation ? RESERVATION_CA
   inválido no registran nada.
 - `apps/panel-admin/tests/reservations/updateReservationStatus.test.ts` (5 casos): aprobación →
   `reservation.updated` con `from/to` y el admin real; cancelación → `reservation.cancelled` con motivo; sin
-  `reservations:edit`, con `UPDATE` fallido o con id inexistente → sin evento.
+  `reservations:edit`, con `UPDATE` fallido o con id inexistente → sin evento. (Desde A3.8 el id inexistente
+  además lanza `ReservationNotFoundError`; ver A3.8.)
 - Suites completas en verde: portal 66/66, panel 24/24. Type-check sin errores nuevos (los de `@hotel/db` y
   galería son preexistentes de `develop`).
 
@@ -372,6 +375,107 @@ API de Fabian (append-only + hash encadenado cuando sus migraciones están aplic
 - No existe en el código una ruta para borrar o editar fechas de una reserva, así que `reservation.deleted` no
   tiene dónde cablearse.
 - La IP queda `null` mientras `AUDIT_TRUSTED_PROXY_HOPS` no se fije para el despliegue real (pendiente AU-X03).
+
+---
+
+## A3.8 — OP-R05 y OP-R07 · Reglas de negocio del estado de reservas y del modo de confirmación
+
+Riesgos de la Fase 1 que quedaron sin parche en A3.1–A3.4 (fuera de los 3 vectores) y que la Matriz de Riesgo
+Residual dejaba en **Medio** («Tolerado»). Se cierran con el control de línea base OP-C04 + OP-C05 de la Matriz
+General de Gobernanza: «Aplicar `VALID_TRANSITIONS` en `updateReservationStatus` y validar `BookingMode` contra un
+enum en `updateBookingMode`, ambos en el servidor».
+
+**Ficha.** Responsable: Aarón · Módulo: operations · Rama: `security/operations/fase3-op-r05-r07` (desde
+`develop@a230045`, actualizada a `develop@1241dc3`) · Commit: `8f5608f` · PR: [#33](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/33).
+
+**Mapeo.** OWASP A04 (Insecure Design: reglas de negocio solo en la UI) + A08 (el valor llega de un parámetro del
+cliente sin validar). NIST CSF 2.0: PR.DS-01 (integridad de datos en reposo), PR.PS-01 (configuración) y, para la
+auditoría del modo, DE.CM-03. Archivos:
+`apps/panel-admin/src/features/reservations/domain/reservation-rules.ts` (nuevo),
+`apps/panel-admin/src/features/reservations/services/reservationService.ts`,
+`apps/panel-admin/src/features/reservations/services/bookingModeService.ts`,
+`packages/db/supabase/migrations/20261104000001_operations_status_and_booking_mode_guards.sql` (nueva),
+`packages/core/src/audit/config/constants.ts` (acción `system.setting.changed`, archivo compartido de Fabián).
+
+**PoC (Fase 1, por código).** Ambas funciones son Server Actions: el panel solo muestra los botones válidos
+(`FooterActionButtons`), pero el servidor aceptaba cualquier valor. Repitiendo la Server Action con su
+`Next-Action` id, un admin con `reservations:edit` podía reabrir una reserva `cancelled` como `approved` (o
+`completed → pending`), y guardar en `booking_confirmation_mode` un valor fuera del enum (`"disabled"`, HTML…),
+sin validación en tiempo de ejecución, sin `CHECK` en la base y sin rastro en la auditoría.
+`VALID_TRANSITIONS` existía en `constants/status-transitions.ts`, pero nadie lo usaba.
+
+**Diff (antes → después).**
+```ts
+// reservationService.ts — ANTES: cualquier estado destino; UPDATE directo por id
+await requirePermission(PERMISSIONS.RESERVATIONS.EDIT);
+const { data: previous } = await supabase.from(RESERVATIONS).select("status").eq("id", id).maybeSingle();
+await supabase.from(RESERVATIONS).update(updateData).eq("id", id);
+
+// DESPUÉS (A3.8): enum + máquina de estados en el servidor, y UPDATE condicional (compare-and-set)
+await requirePermission(PERMISSIONS.RESERVATIONS.EDIT);
+if (!isReservationStatus(status)) throw new InvalidStatusTransitionError(null, String(status));
+const { data: previous, error: readError } = await supabase.from(RESERVATIONS).select("status").eq("id", id).maybeSingle();
+if (!previous) throw new ReservationNotFoundError();
+const from = previous.status;
+if (!isValidStatusTransition(from, status)) throw new InvalidStatusTransitionError(from, status);
+const { data: updated } = await supabase.from(RESERVATIONS).update(updateData)
+  .eq("id", id).eq("status", from)        // solo si nadie lo cambió entre la lectura y el UPDATE
+  .select("id");
+if (!updated?.length) throw new InvalidStatusTransitionError(from, status);
+```
+```ts
+// bookingModeService.ts — ANTES: el tipo BookingMode no existe en ejecución
+export async function updateBookingMode(mode: BookingMode) {
+  await requirePermission(PERMISSIONS.RESERVATIONS.EDIT);
+  await supabase.from(SYSTEM_SETTINGS).update({ setting_value: mode }).eq("setting_key", BOOKING_MODE_SETTING_KEY);
+}
+
+// DESPUÉS (A3.8): enum validado en el servidor y cambio auditado (from → to, admin verificado)
+if (!isBookingMode(mode)) throw new InvalidBookingModeError();
+// … UPDATE …
+await logAuditEvent({ action: AUDIT_ACTIONS.SYSTEM_SETTING_CHANGED, entity: AUDIT_ENTITIES.SYSTEM_SETTING,
+  entityId: BOOKING_MODE_SETTING_KEY, metadata: { setting, from, to: mode }, actorId: user?.id, … });
+```
+```sql
+-- 20261104000001: última línea en la base (aplica también al cliente service-role, que salta la RLS)
+create trigger reservations_status_transition before update of status on public.reservations
+  for each row execute function public.enforce_reservation_status_transition();   -- pending→approved|cancelled, approved→completed|cancelled
+alter table public.system_settings add constraint system_settings_booking_mode_valid
+  check (setting_key <> 'booking_confirmation_mode' or setting_value in ('manual', 'automatic'));
+```
+
+**Prueba de regresión (Vitest).**
+- `apps/panel-admin/tests/reservations/updateReservationStatus.test.ts` (19 casos): las 4 transiciones válidas
+  pasan; 7 inválidas (`cancelled → approved`, `completed → pending`, `pending → completed`…) y un estado fuera del
+  enum se rechazan **antes** del `UPDATE` y sin evento; el `UPDATE` filtra por el estado validado y, si no
+  coincide ninguna fila (cambio concurrente), se rechaza. Un id inexistente ahora lanza `ReservationNotFoundError`
+  (antes terminaba sin error y sin hacer nada). Se conservan los 5 casos de auditoría de A3.4.
+- `apps/panel-admin/tests/reservations/updateBookingMode.test.ts` (8 casos): `"automatic"` se guarda y se audita
+  `manual → automatic`; `"disabled"`, `"AUTOMATIC"`, `""`, una cadena de inyección, HTML y un número se rechazan
+  antes del `UPDATE`; sin `reservations:edit` no se toca nada.
+- Contraste: con los servicios de `develop` estos mismos tests fallan 19 veces (el código anterior hacía el
+  `UPDATE` con cualquier valor). Suite del panel: 46/46; `@hotel/core` audit 14/14. Type-check sin errores nuevos
+  (los 6 de `@hotel/db` y `UploadDropzone` son preexistentes de `develop`).
+
+**Prueba de regresión (en vivo, Supabase local, 2026-11-04)** — `evidencias/A3.8-op-r05-r07-live.txt`, como
+`service_role` y dentro de una transacción revertida:
+
+| # | Caso | Esperado | Obtenido |
+|---|---|---|---|
+| 1 | `cancelled → approved` | Rechazo en la base | ✅ `invalid reservation status transition: cancelled -> approved` |
+| 2 | `approved → pending` | Rechazo en la base | ✅ `invalid reservation status transition: approved -> pending` |
+| 3 | `pending → approved` (flujo legítimo) | Se actualiza | ✅ `RES-002` → `approved` (revertido) |
+| 4 | `booking_confirmation_mode = 'disabled'` | Rechazo en la base | ✅ viola `system_settings_booking_mode_valid` |
+| 5 | `booking_confirmation_mode = 'automatic'` (legítimo) | Se actualiza | ✅ (revertido) |
+| 6 | Estado final | Sin cambios | ✅ mismos conteos y modo `manual` |
+
+**Riesgo residual de OP-R05 y OP-R07: Bajo.** La PoC (reenviar la Server Action con un estado o modo arbitrario)
+ya no funciona: el servidor rechaza el valor antes del `UPDATE` y, si alguien escribiera saltándose la app con el
+cliente service-role, la base lo rechaza también. Cumple PR.DS-01. **Límites declarados:**
+- Las transiciones rechazadas no generan evento de auditoría (mismo límite que A3.4: no hay un evento de rechazo
+  en el catálogo).
+- La migración está probada en local; falta aplicarla al Supabase remoto junto con las demás pendientes.
+- `system.setting.changed` se agregó al catálogo compartido de auditoría (archivo de Fabián): avisarle.
 
 ---
 

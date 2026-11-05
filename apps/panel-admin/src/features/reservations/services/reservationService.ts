@@ -8,6 +8,12 @@ import { requirePermission } from "@/shared/auth/requirePermission";
 import { PERMISSIONS } from "@/shared/constants/permissions";
 import { RESERVATION_STATUS } from "../constants/reservation-statuses";
 import type { Reservation, ReservationStatus } from "../domain/reservation";
+import {
+  InvalidStatusTransitionError,
+  isReservationStatus,
+  isValidStatusTransition,
+  ReservationNotFoundError,
+} from "../domain/reservation-rules";
 import { RESERVATIONS_TEXTS } from "../i18n/reservations.texts";
 import {
   type DbReservation,
@@ -40,14 +46,26 @@ export async function updateReservationStatus(
 ): Promise<void> {
   await requirePermission(PERMISSIONS.RESERVATIONS.EDIT);
 
+  // OP-R05: the Server Action receives the status from the client; check it
+  // against the enum before touching the database.
+  if (!isReservationStatus(status)) throw new InvalidStatusTransitionError(null, String(status));
+
   const supabase = createSupabaseServiceClient();
 
   // A3.4: read the current status first so the audit event records from → to.
-  const { data: previous } = await supabase
+  const { data: previous, error: readError } = await supabase
     .from(DB_TABLES.RESERVATIONS)
     .select(DB_COLUMNS.reservations.status)
     .eq(DB_COLUMNS.reservations.id, id)
     .maybeSingle();
+
+  if (readError) throw new Error(`${ERRORS.UPDATE_STATUS}: ${readError.message}`);
+  if (!previous) throw new ReservationNotFoundError();
+
+  // OP-R05: enforce the state machine on the server (e.g. cancelled → approved
+  // is rejected even if the request is replayed outside the UI).
+  const from = (previous as { status: ReservationStatus }).status;
+  if (!isValidStatusTransition(from, status)) throw new InvalidStatusTransitionError(from, status);
 
   const updateData: ReservationStatusUpdate = {
     status,
@@ -57,17 +75,20 @@ export async function updateReservationStatus(
       : {}),
   };
 
-  const { error } = await supabase
+  // Compare-and-set on the status read above: if another request changed it in
+  // between, no row matches and the transition is rejected instead of applied
+  // on top of a state that was never validated.
+  const { data: updated, error } = await supabase
     .from(DB_TABLES.RESERVATIONS)
     .update(updateData)
-    .eq(DB_COLUMNS.reservations.id, id);
+    .eq(DB_COLUMNS.reservations.id, id)
+    .eq(DB_COLUMNS.reservations.status, from)
+    .select(DB_COLUMNS.reservations.id);
 
   if (error) throw new Error(`${ERRORS.UPDATE_STATUS}: ${error.message}`);
+  if (!updated || updated.length === 0) throw new InvalidStatusTransitionError(from, status);
 
-  // A3.4 / OP-POC-6: audit the change with the verified admin as actor. Only
-  // existing reservations are logged (an unknown id updates no row).
-  if (!previous) return;
-
+  // A3.4 / OP-POC-6: audit the change with the verified admin as actor.
   const { user } = await getVerifiedSession(createSupabaseServerClient(await cookies()));
   const { ipAddress, userAgent } = await getAuditRequestContext();
   const isCancellation = status === RESERVATION_STATUS.CANCELLED;
@@ -81,7 +102,7 @@ export async function updateReservationStatus(
     entity: AUDIT_ENTITIES.RESERVATION,
     entityId: id,
     metadata: {
-      from: (previous as { status: string }).status,
+      from,
       to: status,
       ...(isCancellation && cancellationReason ? { cancellation_reason: cancellationReason } : {}),
     },
