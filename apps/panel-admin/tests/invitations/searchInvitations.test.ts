@@ -31,7 +31,7 @@ vi.mock("@hotel/db", async (importOriginal) => {
 
 const { searchInvitations } = await import("@/features/invitations/services/searchInvitations");
 
-describe("searchInvitations (J2-POC-10, A03 - vulnerabilidad introducida)", () => {
+describe("searchInvitations", () => {
   beforeEach(() => {
     calls.length = 0;
     mockRequirePermission.mockResolvedValue(undefined);
@@ -44,19 +44,29 @@ describe("searchInvitations (J2-POC-10, A03 - vulnerabilidad introducida)", () =
     expect(calls).toHaveLength(0);
   });
 
-  it("lets an attacker-controlled comma add an always-true OR condition", async () => {
-    // Payload verificado en vivo contra Supabase local (ver
-    // users/evidencias/J2-POC-10-A03-filter-injection.txt): 0 filas de control
-    // vs. el 100% de la tabla con este mismo valor de `search`.
+  it("does not let the search payload add filter conditions (J2-POC-10)", async () => {
+    // Mismo payload que inyectaba antes del parche (ver
+    // users/evidencias/J2-POC-10-A03-filter-injection.txt): la coma y las
+    // comillas ahora se eliminan por el allowlist de `sanitizeInvitationsSearch`
+    // antes de llegar al `.or()`.
     const payload = 'nope,email.neq.""';
     await searchInvitations(payload);
 
     const orArg = String(calls.find((c) => c.method === "or")?.args[0]);
-    // Se espera (en una versión segura) que el valor del usuario quede
-    // confinado a UN solo campo ilike, sin que una coma pueda agregar una
-    // tercera condición OR. Hoy (vulnerable) el string trae 4 cláusulas:
-    // 2 ilike legítimas partidas en 2 por la coma inyectada + email.neq("").
-    expect(orArg.split(",")).toHaveLength(4);
-    expect(orArg).toContain('email.neq.""');
+    // Exactamente 2 condiciones (una coma, la que separa los dos ilike legítimos),
+    // sin comillas ni paréntesis, y cada condición matcheando solo el campo email.
+    expect(orArg.split(",")).toHaveLength(2);
+    expect(orArg).not.toContain('"');
+    const [prefixCondition, containsCondition] = orArg.split(",");
+    expect(prefixCondition).toMatch(/^email\.ilike\.[^%]*%$/);
+    expect(containsCondition).toMatch(/^email\.ilike\.%[^%]*%$/);
+    expect(orArg).not.toMatch(/[()"\\]/);
+  });
+
+  it("strips characters outside the allowlist from the search term", async () => {
+    await searchInvitations('a"b\\c(d)e%f');
+
+    const orArg = String(calls.find((c) => c.method === "or")?.args[0]);
+    expect(orArg).toBe("email.ilike.abcdef%,email.ilike.%abcdef%");
   });
 });
