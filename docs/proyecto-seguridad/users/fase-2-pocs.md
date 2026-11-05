@@ -641,7 +641,7 @@ solo en el cliente, para que cualquier chequeo basado en ese valor tenga sentido
 | **Subcategoría NIST CSF 2.0** | PR.DS-10 (protección de la integridad de los datos en uso) — hoy en estado **No cumple** *a propósito* en este módulo mientras dure la demostración (ver §4.2 de `fase-1-diagnostico.md`, donde originalmente estaba en **Cumple**); se remedia formalmente en Fase 3. También aplica **PR.PS-01** (gestión de configuración): no hay CSP como defensa en profundidad. |
 | **Origen del hallazgo** | **Introducida** — corresponde a la observación **O11** de `users/fase-1-diagnostico.md` §3, que ya identificó este módulo como "seguro por ahora, pero sin segunda capa de defensa", y que anticipó explícitamente la necesidad de una vulnerabilidad introducida para poder demostrar el patrón. Decisión de introducir la vulnerabilidad, y de dejarla viva hasta el parche de Fase 3, tomada explícitamente por el equipo (Seph), no unilateralmente por Claude. |
 | **Componente / archivo:línea** | `AdminsTable.tsx:50-58` y `PermissionDrawer.tsx:41-47` (ver diff abajo) — **vigente en el código al cierre de esta fase**, se remedia en Fase 3. |
-| **Commit donde se reprodujo** | Rama `security/users/fase2-pocs` — ver commit de este PR (Seph agrega el hash al mergear). |
+| **Commit donde se reprodujo** | `d82ceb0` (rama `security/users/fase2-pocs`) |
 
 ### Precondiciones
 - Mismo entorno de J2-POC-1 a J2-POC-7 (Supabase local, `panel-admin` en `:3002`).
@@ -860,7 +860,7 @@ el stack.
 | **Subcategoría NIST CSF 2.0** | PR.PS-04 (hardening de entrada), PR.DS-10 (integridad de los datos en uso) |
 | **Origen del hallazgo** | **Introducida** — corresponde a la observación de J2.1 (abajo), que ya anticipaba que haría falta introducir algo para demostrar A03. Mismo patrón que el real `getAuditLogs.ts:56-57` (AUD-POC-2) y los introducidos `AUTH-POC-3`/`OP-POC-1`. |
 | **Componente / archivo:línea** | `apps/panel-admin/src/features/invitations/services/searchInvitations.ts` (archivo nuevo, íntegro) |
-| **Commit donde se reprodujo** | Rama `security/users/fase2-pocs-faltantes` (Seph agrega el hash al commitear) |
+| **Commit donde se reprodujo** | `9eac585` (rama `security/users/fase2-pocs-faltantes`, PR #31) |
 
 ### Precondiciones
 - Sesión admin/owner con el permiso `admins:invite` — el mismo guard que ya protege
@@ -947,7 +947,7 @@ remediación ya documentado para AUD-POC-2/AUTH-POC-3.
 | **Subcategoría NIST CSF 2.0** | DE.CM-01, DE.AE-03, PR.PS-01 |
 | **Origen del hallazgo** | **Introducida.** `audit_logs` (la tabla real) ya está protegida por el saneamiento de Fabian (AUD-POC-6) — verificado en vivo, ver nota metodológica. El `console.log` introducido demuestra el mismo patrón sobre stdout, calcando el hallazgo real `AUTH-POC-6` de Autenticación. |
 | **Componente / archivo:línea** | `apps/panel-admin/src/features/invitations/services/createAdminAccountAction.ts` (línea agregada, justo antes del `try` que llama a `createAdminAccount`) |
-| **Commit donde se reprodujo** | Rama `security/users/fase2-pocs-faltantes` (Seph agrega el hash al commitear) |
+| **Commit donde se reprodujo** | `9eac585` (rama `security/users/fase2-pocs-faltantes`, PR #31) |
 
 ### Precondiciones
 - Sesión admin/owner con el permiso `admins:invite` (el formulario real de "Invitar" en
