@@ -838,7 +838,172 @@ el stack.
 
 ---
 
-## J2.1 — Inyección en filtros/búsquedas (A03): hallazgo negativo, documentado por código
+## J2-POC-10 — Inyección en el filtro PostgREST de `searchInvitations` (A03, vulnerabilidad introducida)
+
+> **Nota metodológica.** J2.1 (más abajo) ya había concluido, leyendo el código real, que este módulo no
+> tiene ninguna superficie de inyección: `getAdmins.ts` llama al RPC sin parámetros, el filtrado de
+> `admins-table` es 100% cliente, y `get_admins()` es SQL estático. Igual que J2-POC-8 para XSS, se
+> **introduce** una vulnerabilidad acotada para poder cubrir la parte A03 del Vector 1 que exige el
+> enunciado — decisión de equipo (Seph), no unilateral de Claude. El patrón elegido **calca el mismo bug
+> real** que ya tiene el módulo de Auditoría (`getAuditLogs.ts:56-57`, AUD-POC-2 — real) y que Autenticación
+> y Operaciones ya introdujeron igual (`AUTH-POC-3`, `OP-POC-1`): un `.or()` de PostgREST armado con un
+> template string sin escapar. Archivo nuevo, íntegro: `searchInvitations.ts` — mismo guard
+> (`requirePermission(ADMINS.INVITE)`) y mismo `createSupabaseServiceClient()` que ya usan
+> `getAllInvitations.ts`/`getPendingInvitations.ts` existentes, para que el único cambio real sea la línea
+> vulnerable. **Queda vigente en el código hasta el parche de Fase 3** (mismo motivo que J2-POC-8: Fase 3
+> necesita un diff de remediación real sobre un estado "antes" genuino).
+
+| Campo | Valor |
+|---|---|
+| **Vector** | Vector 1 — servidor (**vulnerabilidad introducida**, no real) |
+| **OWASP** | A03:2021 — Injection (clase PostgREST/Supabase query-builder) |
+| **Subcategoría NIST CSF 2.0** | PR.PS-04 (hardening de entrada), PR.DS-10 (integridad de los datos en uso) |
+| **Origen del hallazgo** | **Introducida** — corresponde a la observación de J2.1 (abajo), que ya anticipaba que haría falta introducir algo para demostrar A03. Mismo patrón que el real `getAuditLogs.ts:56-57` (AUD-POC-2) y los introducidos `AUTH-POC-3`/`OP-POC-1`. |
+| **Componente / archivo:línea** | `apps/panel-admin/src/features/invitations/services/searchInvitations.ts` (archivo nuevo, íntegro) |
+| **Commit donde se reprodujo** | Rama `security/users/fase2-pocs-faltantes` (Seph agrega el hash al commitear) |
+
+### Precondiciones
+- Sesión admin/owner con el permiso `admins:invite` — el mismo guard que ya protege
+  `getAllInvitations`/`getPendingInvitations`; la inyección no depende de ningún hueco de autorización
+  adicional, solo de que el valor de búsqueda llega sin escapar al `.or()`.
+
+### Pasos reproducibles
+1. **Código vulnerable** (`searchInvitations.ts`):
+   ```ts
+   const { data, error } = await supabase
+     .from(DB_TABLES.PENDING_INVITATIONS)
+     .select("*")
+     .or(`email.ilike.${search}%,email.ilike.%${search}%`)
+     .order(DB_COLUMNS.pending_invitations.created_at, { ascending: false });
+   ```
+2. **Control** (sin coincidencia literal): `search = "zzz_nonexistent_zzz"` →
+   `email.ilike.zzz_nonexistent_zzz%,email.ilike.%zzz_nonexistent_zzz%` → **0 filas**.
+3. **Ataque** (la coma rompe la cadena `.or()` e inyecta una condición siempre verdadera). Con
+   `search = nope,email.neq.""` el filtro final queda
+   `email.ilike.nope,email.neq.""%,email.ilike.%nope,email.neq.""%` → **2 filas (el 100% de
+   `pending_invitations`)**, reproducido en vivo contra Supabase local con la misma `apikey`/sesión que usa
+   `createSupabaseServiceClient()` (evidencia: `evidencias/J2-POC-10-A03-filter-injection.txt`, con 2
+   payloads adicionales que SI fallan con `400`, documentados para mostrar que no cualquier coma funciona —
+   mismo cuidado que el payload corregido de AUD-POC-2/AUTH-POC-3).
+4. **Test de regresión** (sin red, confirma la inyectabilidad del filtro por construcción):
+   `apps/panel-admin/tests/invitations/searchInvitations.test.ts` —
+   `pnpm --filter @hotel/panel-admin exec vitest run tests/invitations/searchInvitations.test.ts` → 2/2 ✓.
+
+### Resultado esperado vs. obtenido
+- **Esperado:** con un término de búsqueda sin coincidencia literal, `0` filas, igual que el control.
+- **Obtenido:** con una coma inyectada en `search`, `total: 2` — el 100% de `pending_invitations`,
+  incluida la invitación `revoked` de `manager@hotel.local`, que una búsqueda legítima por email no
+  debería devolver.
+
+### Impacto
+Un atacante con sesión admin (el permiso `admins:invite`, no uno de lectura más restringido) controla la
+sintaxis del filtro de búsqueda más allá de un `ilike` simple, pudiendo construir condiciones PostgREST
+arbitrarias contra `pending_invitations` — la misma clase de problema que AUD-POC-2, aquí sobre una tabla
+que incluye invitaciones ya revocadas. Como `searchInvitations` usa el cliente de **service-role**
+(bypassa RLS por diseño, igual que sus hermanas `getAllInvitations`/`getPendingInvitations`), el único
+control es la capa de aplicación — que la inyección no afecta.
+
+### Causa raíz (para Fase 3 — J3.x nuevo)
+No interpolar `search` dentro de `.or()`: acotar su longitud y el conjunto de caracteres permitidos antes
+de construir el filtro (lista blanca), o evitar `.or()` por completo usando dos llamadas `.ilike()`
+independientes compuestas con el propio query builder (que sí parametriza el valor). Mismo patrón de
+remediación ya documentado para AUD-POC-2/AUTH-POC-3.
+
+### Evidencia
+- `evidencias/J2-POC-10-A03-filter-injection.txt`
+- `apps/panel-admin/tests/invitations/searchInvitations.test.ts`
+
+---
+
+## J2-POC-11 — Audit Poisoning / Log Injection vía `console.log` introducido en `createAdminAccountAction` (A08/A09, vulnerabilidad introducida)
+
+> **Nota metodológica (leer antes que la PoC).** J2.3 (más abajo) concluyó originalmente que este módulo no
+> tenía superficie de log injection porque **no había logging** — cierto en el momento en que se escribió.
+> Eso cambió en Fase 3 (J3.4/J3-PAT-9): las 4 acciones mutables ahora llaman a `logAuditEvent`. Al diseñar
+> esta PoC se verificó **en vivo** si ese nuevo logging era explotable — y **no lo es**: `logAuditEvent`
+> (`packages/core/src/audit/server/logAuditEvent.ts`) ya pasa `actorEmail`/`action`/`entity`/`metadata` por
+> `sanitizeAuditText`/`sanitizeAuditMetadata` (`packages/core/src/audit/shared/sanitize.ts`), que elimina
+> caracteres de control (CR, LF, TAB, etc.) y trunca a 512 caracteres — el parche real de Fabian para
+> **AUD-POC-6**, ya vigente en `develop` antes de que Usuarios agregara su propio logging. Verificado
+> enviando un `full_name` con un `\r\n` real (vía intercepción de red en Playwright, igual que documentó el
+> equipo para AUTH-POC-6: el formulario del navegador no permite escribir saltos de línea reales en un
+> input de una sola línea) hasta `audit_logs`: el valor llega **sin** `\r` ni `\n` (confirmado
+> programáticamente, no solo visualmente — ver evidencia). **La conclusión de J2.3 se mantiene: no hay
+> superficie real de log injection en el alcance de `users`, ahora por saneamiento en lugar de por
+> ausencia de logging.**
+>
+> Para cubrir igual la parte de Audit Poisoning / Log Injection del Vector 3 que exige el enunciado, se
+> **introduce** (decisión de equipo, mismo espíritu que J2-POC-8) un `console.log` de depuración en
+> `createAdminAccountAction.ts` que imprime `full_name`/`email` **crudos a stdout, antes** de llegar al
+> `logAuditEvent` ya saneado — el mismo patrón real que ya documentó Paula en `loginAction.ts`
+> (`AUTH-POC-6`, módulo de Autenticación, fuera de este alcance), introducido aquí a propósito. Queda
+> vigente en el código hasta el parche de Fase 3 (se elimina, no se sanea — es un log de depuración que
+> nunca debió llegar a producción).
+
+| Campo | Valor |
+|---|---|
+| **Vector** | Vector 3 — alteración de entrada / detección (**vulnerabilidad introducida**, no real) |
+| **OWASP** | A09:2021 — Security Logging and Monitoring Failures (log injection hacia stdout); relacionado A08:2021 — Software and Data Integrity Failures (integridad del registro) |
+| **Subcategoría NIST CSF 2.0** | DE.CM-01, DE.AE-03, PR.PS-01 |
+| **Origen del hallazgo** | **Introducida.** `audit_logs` (la tabla real) ya está protegida por el saneamiento de Fabian (AUD-POC-6) — verificado en vivo, ver nota metodológica. El `console.log` introducido demuestra el mismo patrón sobre stdout, calcando el hallazgo real `AUTH-POC-6` de Autenticación. |
+| **Componente / archivo:línea** | `apps/panel-admin/src/features/invitations/services/createAdminAccountAction.ts` (línea agregada, justo antes del `try` que llama a `createAdminAccount`) |
+| **Commit donde se reprodujo** | Rama `security/users/fase2-pocs-faltantes` (Seph agrega el hash al commitear) |
+
+### Precondiciones
+- Sesión admin/owner con el permiso `admins:invite` (el formulario real de "Invitar" en
+  `/admin/invitations`) — ninguna autorización adicional requerida.
+
+### Pasos reproducibles
+1. Con sesión de `owner@hotel.local`, se abre el diálogo "Invitar" y se completa el campo **Nombre
+   completo** con:
+   ```
+   j2poc11-stdout-poisoning<CRLF>[FORGED] 2026-11-05T00:00:00Z action=user.permission.granted actor=owner@hotel.local result=success<CRLF>
+   ```
+   (el `<CRLF>` real no se puede escribir tecleando en el input del navegador — se fijó interceptando la
+   petición de red con Playwright y reemplazando un marcador por bytes `\r\n` reales en el cuerpo
+   `multipart/form-data`, antes de que salga hacia el servidor; mismo problema y misma solución que
+   documentó el equipo para `AUTH-POC-6`). Email: `j2poc11-stdout@hotel.local`.
+2. Al enviar la invitación (`200 OK`), la consola del servidor (`pnpm --filter @hotel/panel-admin dev`)
+   imprime:
+   ```
+   [invitations] creating admin account for j2poc11-stdout-poisoning
+   [FORGED] 2026-11-05T00:00:00Z action=user.permission.granted actor=owner@hotel.local result=success <j2poc11-stdout@hotel.local>
+   ```
+3. **Contraste verificado con la ruta ya saneada:** el mismo evento, ya en `audit_logs.metadata.full_name`
+   (vía el `logAuditEvent` de más abajo en la misma función), llega **sin** el CR/LF — consultado
+   directamente contra PostgREST con la `service_role` key local (longitud de la cadena, `hasCR=False`,
+   `hasLF=False`).
+
+### Resultado esperado vs. obtenido
+- **Esperado:** ningún valor controlado por el usuario debería llegar sin sanear a ningún sink de log
+  (stdout incluido) — el propio `logAuditEvent`, dos líneas más abajo en el mismo archivo, es la prueba de
+  que el equipo ya sabe hacerlo bien.
+- **Obtenido:** el `console.log` introducido imprime el valor crudo; la segunda línea del `full_name`
+  aparece en stdout como una entrada de log independiente, indistinguible a simple vista de un evento real
+  (`action=user.permission.granted actor=owner@hotel.local result=success`) — mientras que la misma cadena,
+  ya en `audit_logs`, llega limpia.
+
+### Impacto
+En un despliegue real, los logs de stdout de un proceso Node suelen enviarse, sin volver a sanear, a un
+agregador de logs externo. Un atacante con permiso para invitar administradores (un rol normal del
+negocio, no un privilegio excepcional) puede sembrar en esos logs una línea que simula un evento de
+auditoría distinto — por ejemplo, un otorgamiento de permisos que nunca ocurrió — confundiendo cualquier
+revisión manual o correlación automática contra la tabla `audit_logs` real. El riesgo queda acotado a este
+`console.log` introducido: la tabla `audit_logs` en sí, que es la fuente de verdad real para auditoría, ya
+está protegida (ver nota metodológica).
+
+### Causa raíz (para Fase 3 — J3.x nuevo)
+Eliminar el `console.log` de depuración por completo — nunca debió quedar en el código; no es información
+que la aplicación necesite imprimir a stdout. Si en el futuro se quisiera un log de depuración similar,
+debe pasar por `sanitizeAuditText`/`sanitizeAuditMetadata` (ya disponibles en `@hotel/core/audit`) antes de
+imprimirse, igual que ya hace `logAuditEvent`.
+
+### Evidencia
+- `evidencias/J2-POC-11-audit-poisoning-stdout.txt`
+
+---
+
+## J2.1 — Inyección en filtros/búsquedas (A03): sin superficie real, cubierta con una PoC introducida (J2-POC-10)
 
 Como parte de J2.1 se revisó explícitamente si algún endpoint de este módulo (vistas de `admins-table` o
 `invitations`) acepta parámetros de búsqueda/filtro controlados por el usuario que lleguen a una consulta
@@ -859,12 +1024,14 @@ de inyección en el alcance de `users`**, por las siguientes razones verificadas
   vector de inyección SQL clásica ahí (el problema de esa función es de **control de acceso**, no de
   inyección — ver J2-POC-6).
 
-**Conclusión para J2.1:** dentro del alcance exacto de Joseph (`admins-table`, `invitations`,
-`admin/admins`, `admin/invitations`, `core/permissions`), A03 (Injection) no es explotable porque no existe
-ningún punto donde un parámetro de búsqueda/filtro llegue a una consulta — el checklist de J2.1 queda
-cubierto con este hallazgo negativo documentado, sin necesidad de una PoC de explotación porque no hay nada
-que explotar en este módulo. (Otros módulos del equipo, por ejemplo donde sí haya búsquedas de texto libre
-contra la base de datos, podrían tener superficie distinta — fuera del alcance de este documento.)
+**Conclusión para J2.1 (actualizada):** dentro del código real heredado de Fase 1/2, A03 (Injection)
+sigue sin ser explotable por los motivos de arriba — ningún punto del alcance de Joseph deja que un
+parámetro de búsqueda/filtro llegue a una consulta construida dinámicamente. Para no dejar el checklist del
+Vector 1 cubierto solo con un hallazgo negativo (el enunciado pide una PoC de explotación por vector), se
+introdujo deliberadamente una superficie acotada y realista — **J2-POC-10** (`searchInvitations.ts`),
+siguiendo exactamente el mismo patrón que el resto del equipo ya usó para esto (real en Auditoría, AUD-POC-2;
+introducida en Autenticación y Operaciones, AUTH-POC-3/OP-POC-1). Ver J2-POC-10 más arriba para la PoC
+completa, reproducida en vivo.
 
 ---
 
@@ -901,22 +1068,27 @@ documentación.
 
 ---
 
-## J2.3 — Log injection: hallazgo negativo en el alcance de `users`, hallazgo real fuera de alcance
+## J2.3 — Log injection / Audit Poisoning: `audit_logs` ya saneado, cubierta con una PoC introducida (J2-POC-11)
 
-Se revisó el único punto de integración de auditoría disponible en el repo
-(`packages/core/src/audit/server/logAuditEvent.ts`, usado vía `@hotel/core/audit`) y todos los `console.*`
-dentro del alcance exacto de Joseph (`admins-table`, `invitations`, `core/permissions`) para confirmar si
-algún valor controlado por el usuario (nombre, email) llega sin sanear a una línea de log, lo que permitiría
-forjar/inyectar entradas falsas (CRLF, caracteres de control) en los logs.
+**Actualización (post J3.4/J3-PAT-9).** Cuando se escribió esta sección por primera vez (Fase 2 original,
+20 oct), era cierto que ninguna Server Action de este módulo llamaba a `logAuditEvent` — esa era la razón
+de fondo del hallazgo negativo. En Fase 3 (J3.4/J3-PAT-9, 2 nov) eso cambió: las 4 acciones mutables
+(`createAdminAccountAction`, `updateUserPermissions`, `toggleAdminStatus`, `resendInvitation`/
+`revokeInvitation`) ahora sí llaman a `logAuditEvent`, lo cual **reabre la pregunta** de J2.3 — ¿hay ahora
+una superficie de log injection donde antes no la había? Se verificó **en vivo**, no se asumió: no. Confirmado leyendo
+`packages/core/src/audit/server/logAuditEvent.ts` y `packages/core/src/audit/shared/sanitize.ts`, y
+reproduciendo un envío real con `\r\n` en `full_name` (ver J2-POC-11), `logAuditEvent` pasa
+`actorEmail`/`action`/`entity`/`metadata` por `sanitizeAuditText`/`sanitizeAuditMetadata` — que ya quita
+caracteres de control y trunca a 512 — **antes** de insertar en `audit_logs`. Es el mismo saneamiento que
+Fabian agregó como parche real de `AUD-POC-6`, vigente desde antes de que Usuarios agregara su propio
+logging, así que **`audit_logs` no es explotable desde este módulo**: la conclusión original de J2.3 (sin
+superficie real) se mantiene, solo que ahora por saneamiento en vez de por ausencia de logging.
 
-**Dentro del alcance de `users`:** ningún archivo de `admins-table/` ni `invitations/` llama a
-`logAuditEvent` ni a `console.log`/`console.error` con datos de usuario — de hecho, **ninguna** de las
-Server Actions de este módulo (`createAdminAccountAction`, `updateUserPermissions`, `toggleAdminStatus`,
-`revokeInvitation`, `resendInvitation`) registra evento alguno en `audit_logs`. No hay superficie de
-inyección de logs en este módulo simplemente porque **no hay logging** — lo cual es, en sí mismo, un
-hallazgo para Fase 3 (falta de trazabilidad/auditoría — PR.PS-01, DE.CM-01 — sobre acciones sensibles
-como crear/revocar administradores o cambiar permisos; las 7 PoCs de este documento no habrían dejado
-ningún rastro en `audit_logs` si se hubieran ejecutado contra un sistema real).
+Para cubrir igual la parte de Audit Poisoning / Log Injection del Vector 3 que exige el enunciado, se
+introdujo (igual que J2-POC-8 y J2-POC-10) una vulnerabilidad acotada: un `console.log` de depuración en
+`createAdminAccountAction.ts` que imprime `full_name`/`email` crudos a **stdout**, antes de llegar al
+`logAuditEvent` ya saneado — ver **J2-POC-11** más arriba. A diferencia de `audit_logs`, stdout no tiene
+ninguna capa de saneamiento propia, por lo que ese log de depuración sí es explotable tal como está.
 
 **Fuera de alcance (reportado aparte, no como PoC propia):** `packages/core/src/auth/server/loginAction.ts`
 (módulo de **Autenticación**, responsabilidad de Paula, no de `users`) sí tiene un patrón de log injection

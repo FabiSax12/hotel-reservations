@@ -1,0 +1,34 @@
+J2-POC-11 - Audit Poisoning / Log Injection via console.log introducido (A08/A09)
+Reproducido en vivo contra el dev server real (pnpm --filter @hotel/panel-admin dev, :3002),
+sesion autenticada como owner@hotel.local, vía el formulario real de "Invitar" en
+/admin/invitations (se uso Playwright con un intercept de red para fijar bytes CRLF reales
+en el campo del formulario, ya que el navegador normaliza Enter en inputs de una sola linea -
+mismo problema documentado por el equipo para AUTH-POC-6).
+
+Payload (campo "Nombre completo" del formulario de invitacion):
+  "j2poc11-stdout-poisoning" + CRLF +
+  "[FORGED] 2026-11-05T00:00:00Z action=user.permission.granted actor=owner@hotel.local result=success" + CRLF
+Email: j2poc11-stdout@hotel.local
+
+Salida real de la consola del servidor (pnpm --filter @hotel/panel-admin dev), verbatim:
+
+[invitations] creating admin account for j2poc11-stdout-poisoning
+[FORGED] 2026-11-05T00:00:00Z action=user.permission.granted actor=owner@hotel.local result=success <j2poc11-stdout@hotel.local>
+ POST /admin/invitations 200 in 1115ms
+
+La segunda linea ("[FORGED] ... result=success") es texto 100% controlado por el atacante
+(ningun dato real del sistema) pero aparece en el log del servidor como una entrada
+independiente, indistinguible a simple vista de un evento de auditoria real -
+exactamente el patron de audit poisoning / CWE-117 que ya documentaron Fabian (AUD-POC-6)
+y Paula (AUTH-POC-6), aqui introducido a proposito en Usuarios via un console.log de
+depuracion en createAdminAccountAction.ts que se ejecuta ANTES del logAuditEvent saneado.
+
+Contraste verificado con la ruta YA saneada (logAuditEvent -> audit_logs, columna metadata):
+el mismo valor con CRLF, insertado por la via normal de la app, llega a audit_logs con el
+CR/LF ya removido (sanitizeAuditText - packages/core/src/audit/shared/sanitize.ts), confirmado
+consultando audit_logs via PostgREST con la service_role key local:
+  metadata.full_name (tal como queda en audit_logs, YA fuera de riesgo):
+    "j2poc11-audit-poisoning [FORGED] 2026-11-05T00:00:00Z action=user.permission.granted actor=owner@hotel.local entity=admin_total_access result=success"
+    (un solo espacio donde iba el CRLF; longitud=150; hasCR=False; hasLF=False)
+Esto confirma que el riesgo real hoy esta unicamente en el console.log introducido (stdout),
+no en audit_logs (ya protegido por el parche real de Fabian para AUD-POC-6).
