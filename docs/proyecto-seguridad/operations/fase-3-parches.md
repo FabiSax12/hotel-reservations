@@ -5,9 +5,9 @@
 | Módulo | Operaciones / Transacciones (`operations`) |
 | Responsable | Aarón Líos Cubillo |
 | Ramas | `security/operations/fase3-parches` (A3.1–A3.3, creada **desde** `security/operations/fase2-pocs` para aplicar los fixes sobre las vulnerabilidades introducidas/reales y comprobar que la PoC deja de funcionar — §4.1) · `security/operations/fase3-checkout-rooms-catalog` (A3.3, catálogo de habitaciones) · `security/operations/fase3-audit-logging` (A3.4) |
-| Pull Requests | [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12) (A3.1–A3.3) · [#15](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/15) (bitácora) · [#16](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/16) (catálogo de habitaciones) · [#23](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/23) (A3.4) — todos mergeados a `develop` |
+| Pull Requests | [#12](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/12) (A3.1–A3.3) · [#15](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/15) (bitácora) · [#16](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/16) (catálogo de habitaciones) · [#23](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/23) (A3.4) · [#33](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/33) (A3.8, abierto) — los demás mergeados a `develop` |
 | Insumo | `operations/fase-2-pocs.md` (OP-POC-1 … OP-POC-6) |
-| Estado | A3.1–A3.6 completas y mergeadas a `develop`; los 6 hallazgos (OP-POC-1…6) parcheados y re-probados. A3.8 (OP-R05 y OP-R07, riesgos de Fase 1) en la rama `security/operations/fase3-op-r05-r07`, pendiente de PR. Pendiente: A3.7 (video). |
+| Estado | A3.1–A3.6 completas y mergeadas a `develop`; los 6 hallazgos (OP-POC-1…6) parcheados y re-probados. A3.8 (OP-R05 y OP-R07, riesgos de Fase 1) en la rama `security/operations/fase3-op-r05-r07`, PR [#33](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/33) abierto (pendiente de revisión). Pendiente: A3.7 (video). |
 
 > Formato por parche según §4.6: ficha · mapeo · diff antes/después · prueba de regresión · riesgo residual.
 
@@ -386,7 +386,7 @@ General de Gobernanza: «Aplicar `VALID_TRANSITIONS` en `updateReservationStatus
 enum en `updateBookingMode`, ambos en el servidor».
 
 **Ficha.** Responsable: Aarón · Módulo: operations · Rama: `security/operations/fase3-op-r05-r07` (desde
-`develop@a230045`) · Commit y PR: pendientes.
+`develop@a230045`, actualizada a `develop@1241dc3`) · Commit: `8f5608f` · PR: [#33](https://github.com/PauCCH/hotel-reservations-seguridad-proyecto/pull/33).
 
 **Mapeo.** OWASP A04 (Insecure Design: reglas de negocio solo en la UI) + A08 (el valor llega de un parámetro del
 cliente sin validar). NIST CSF 2.0: PR.DS-01 (integridad de datos en reposo), PR.PS-01 (configuración) y, para la
