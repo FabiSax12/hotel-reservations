@@ -12,6 +12,7 @@ export const AUDIT_ACTIONS = Object.freeze({
   RESERVATION_UPDATED: "reservation.updated",
   RESERVATION_CANCELLED: "reservation.cancelled",
   RESERVATION_DELETED: "reservation.deleted",
+  SYSTEM_SETTING_CHANGED: "system.setting.changed",
 } as const);
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[keyof typeof AUDIT_ACTIONS];
@@ -21,6 +22,7 @@ export const AUDIT_ENTITIES = Object.freeze({
   USER: "user",
   PERMISSION: "permission",
   RESERVATION: "reservation",
+  SYSTEM_SETTING: "system_setting",
 } as const);
 
 export type AuditEntity = (typeof AUDIT_ENTITIES)[keyof typeof AUDIT_ENTITIES];

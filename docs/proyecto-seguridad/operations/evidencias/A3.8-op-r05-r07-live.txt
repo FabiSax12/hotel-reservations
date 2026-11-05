@@ -1,0 +1,105 @@
+A3.8 — OP-R05 (transiciones de estado) y OP-R07 (booking_confirmation_mode): re-test en vivo
+Fecha: 2026-11-04 · Entorno: Supabase LOCAL (Docker), migración 20261104000001 aplicada con 'supabase migration up --local'
+Rama: security/operations/fase3-op-r05-r07 (desde origin/develop@a230045)
+
+PoC original (Fase 1, OP-R05/OP-R07): el servidor aceptaba cualquier estado destino y cualquier valor de modo,
+porque updateReservationStatus y updateBookingMode son Server Actions y el tipo TypeScript no existe en ejecución.
+
+=== 1. Capa de base de datos (rol service_role, el mismo cliente que usa el panel; todo dentro de BEGIN … ROLLBACK)
+
+== estado de partida
+  status   | count 
+-----------+-------
+ approved  |     5
+ cancelled |     2
+ pending   |    13
+(3 rows)
+
+ setting_value 
+---------------
+ manual
+(1 row)
+
+BEGIN
+SET
+== OP-R05: cancelled -> approved (PoC: reactivar una reserva cancelada)
+SAVEPOINT
+ERROR:  invalid reservation status transition: cancelled -> approved
+CONTEXT:  PL/pgSQL function public.enforce_reservation_status_transition() line 7 at RAISE
+ROLLBACK
+== OP-R05: completed -> pending
+SAVEPOINT
+ERROR:  invalid reservation status transition: approved -> pending
+CONTEXT:  PL/pgSQL function public.enforce_reservation_status_transition() line 7 at RAISE
+ROLLBACK
+== OP-R05: pending -> approved (flujo legítimo)
+SAVEPOINT
+  code   |  status  
+---------+----------
+ RES-002 | approved
+(1 row)
+
+UPDATE 1
+ROLLBACK
+== OP-R07: booking_confirmation_mode = disabled (PoC: valor arbitrario)
+SAVEPOINT
+ERROR:  new row for relation "system_settings" violates check constraint "system_settings_booking_mode_valid"
+DETAIL:  Failing row contains (2c9277a5-aab9-404c-8683-f48f6b20f7ed, booking_confirmation_mode, disabled, 2026-11-05 02:03:03.053135+00).
+ROLLBACK
+== OP-R07: booking_confirmation_mode = automatic (flujo legítimo)
+SAVEPOINT
+ setting_value 
+---------------
+ automatic
+(1 row)
+
+UPDATE 1
+ROLLBACK
+ROLLBACK
+== estado final (sin cambios)
+  status   | count 
+-----------+-------
+ approved  |     5
+ cancelled |     2
+ pending   |    13
+(3 rows)
+
+ setting_value 
+---------------
+ manual
+(1 row)
+
+
+=== 2. Capa de servidor (Vitest, panel-admin)
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > accepts a valid mode and audits the change from → to 4ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > rejects "disabled" before the UPDATE (PoC: replayed Server Action) 1ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > rejects "AUTOMATIC" before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > rejects "" before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > rejects "manual' OR '1'='1" before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > rejects "<img src=x onerror=alert(1)>" before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > rejects non-string payloads 0ms
+✓ tests/reservations/updateBookingMode.test.ts > updateBookingMode (OP-R07) > still requires reservations:edit first 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus audit (A3.4) > records an approval as reservation.updated with from/to and the real actor 4ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus audit (A3.4) > records a cancellation as reservation.cancelled with its reason 1ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus audit (A3.4) > does not log when the caller lacks reservations:edit 2ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus audit (A3.4) > does not log when the update fails 2ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus audit (A3.4) > rejects an unknown reservation id without updating or logging 1ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > allows pending → approved 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > allows pending → cancelled 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > allows approved → completed 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > allows approved → cancelled 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects cancelled → approved before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects cancelled → pending before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects completed → pending before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects completed → cancelled before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects pending → completed before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects approved → pending before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects pending → pending before the UPDATE (PoC: replayed Server Action) 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects a status outside the enum sent by a forged request 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > only updates the row while it still has the status that was validated 0ms
+✓ tests/reservations/updateReservationStatus.test.ts > updateReservationStatus state machine (OP-R05) > rejects the change when the status moved in between (no row matched) 0ms
+Test Files  2 passed (2)
+Tests  27 passed (27)
+
+=== 3. Contraste: los mismos tests contra reservationService.ts / bookingModeService.ts de origin/develop
+19 tests fallan (los 'rejects …' de OP-R05/OP-R07 y los que exigen el UPDATE condicional): el código anterior hacía el UPDATE con cualquier valor.
