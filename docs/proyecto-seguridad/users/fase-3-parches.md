@@ -15,6 +15,7 @@
 | Tareas                 | J3.1 (vectores de autorización), J3.2 (XSS), J3.3 (RLS/RPC), J3.4 (auditoría), J3.5 (regresión + riesgo residual), J3.6 (este documento)                        |
 | Línea base vulnerable | `develop@868b95c`                                                                                                                                                |
 | Rama                   | `security/users/fase3-remediacion` (sin commits al momento de escribir este documento — Claude no hace commit/push; ver §9 para el mensaje de commit sugerido) |
+| Rama (adenda J3-PAT-10/11) | `security/users/fase3-parches-faltantes`, creada sobre `security/users/fase2-pocs-faltantes` (que introduce J2-POC-10/11) — ver §§12-14 |
 | Insumos                | `users/fase-2-pocs.md` (J2-POC-1…9)                                                                                                                             |
 
 **Tests / type-check (J3.5):** `pnpm exec biome check` limpio sobre los 10 archivos propios. `pnpm type-check`
@@ -27,6 +28,13 @@ no introduce errores nuevos — los únicos errores preexistentes (`@hotel/db`: 
 de `Next-Action` de Server Actions de Next.js 15 vía Playwright/fetch, y pruebas directas contra PostgREST con
 `curl`), usando Supabase local (`supabase db reset` con la migración de este parche aplicada) y el panel-admin
 en `:3002`.
+
+**Adenda (J3-PAT-10/11, rama `security/users/fase3-parches-faltantes`):** J2-POC-10/J2-POC-11 se descubrieron
+después de cerrado este documento (al cubrir los vectores A03/Audit Poisoning que faltaban en el módulo, ver
+`fase-2-pocs.md`). Mismos estándares: `pnpm exec biome check --write` y `pnpm --filter @hotel/panel-admin
+exec vitest run tests/invitations/searchInvitations.test.ts` limpios (3/3); `pnpm type-check` solo repite los
+mismos errores preexistentes de `rooms`/`gallery` ya señalados arriba (confirmado de nuevo, no relacionados
+con este cambio). Verificación en vivo: ver §§12-13.
 
 ---
 
@@ -45,10 +53,14 @@ en `:3002`.
 | J3-PAT-8 RLS de `profiles`/`user_permissions` con permiso real                                                                                                                                  | J2-POC-9                    | A01       | PR.AA-05           | **Bajo** |
 | J3-PAT-9 Auditoría de cambios de permisos, estado y invitaciones                                                                                                                                   | J3.4 (transversal)          | A09       | DE.CM-01, DE.AE-03 | **Bajo** |
 | J3-PAT-0b `requirePermission.ts`/`getInitialAuthStatus.ts` usan `getUser()` (vía `getVerifiedSession`) en vez de `getSession()` (coordinado con Paula, no es commit propio de esta rama) | J2-POC-4                    | A07       | PR.AA-03           | **Bajo** |
+| J3-PAT-10 Allowlist (`sanitizeInvitationsSearch`) antes del `.or()` en `searchInvitations`                                                                                                 | J2-POC-10 (introducida)     | A03       | PR.PS-04, PR.DS-10 | **Bajo** |
+| J3-PAT-11 Eliminación del `console.log` de depuración en `createAdminAccountAction`                                                                                                        | J2-POC-11 (introducida)     | A08/A09   | DE.CM-01, DE.AE-03 | **Bajo** |
 
-J2.1 y J2.3 (hallazgos negativos de la Fase 2: ya estaban correctamente protegidos) no requieren parche. J2-POC-1
-y J2-POC-4 se cierran con J3-PAT-0a/0b — ver nota de coordinación con Paula (§10.1) para la trazabilidad de
-commits y la verificación en vivo repetida desde esta rama.
+J2-POC-1 y J2-POC-4 se cierran con J3-PAT-0a/0b — ver nota de coordinación con Paula (§10.1) para la
+trazabilidad de commits y la verificación en vivo repetida desde esta rama. J2.1/J2.3 originalmente no
+requerían parche (eran hallazgos negativos), pero al introducirse J2-POC-10/J2-POC-11 para cubrir esos
+mismos vectores (ver nota metodológica en `fase-2-pocs.md`), sí necesitan parche propio — ver J3-PAT-10/11
+(§§12-13).
 
 ---
 
@@ -67,6 +79,8 @@ commits y la verificación en vivo repetida desde esta rama.
 | Usuarios (Joseph)     | A01 — RLS de `profiles`/`user_permissions` permitía a cualquier admin/owner leer todas las filas sin el permiso real (J2-POC-9)                                                                                           | PR.AA-05               | Política RLS exige `admins:view` (profiles) o `admins:view`/`permissions:manage` (user_permissions)                       | Alto                 | Bajo            | Mitigado              |
 | Usuarios (Joseph)     | A09 — Cambios de permisos/estado/invitaciones sin registro de auditoría (brecha transversal, J3.4)                                                                                                                            | DE.CM-01, DE.AE-03     | `logAuditEvent` en `updateUserPermissions`, `toggleAdminStatus`, `resendInvitation`, `createAdminAccountAction`        | Medio                | Bajo            | Mitigado              |
 | Usuarios (Joseph)     | A07 — `requirePermission.ts` (guard central de todas las Server Actions del módulo) y `getInitialAuthStatus.ts` usaban `getSession()` en vez de `getUser()`, sin validar el JWT contra el servidor de Auth (J2-POC-4) | PR.AA-03               | `getVerifiedSession()` (usa `auth.getUser()`) — commit `e1994f9` de Paula (AUTH-POC-2), coordinado por archivo compartido | Alto                 | Bajo            | Mitigado (ver §10.1) |
+| Usuarios (Joseph)     | A03 — Inyección en el filtro `.or()` de `searchInvitations`, introducida para cubrir el vector (J2-POC-10)                                                                                                                      | PR.PS-04, PR.DS-10      | Allowlist (`sanitizeInvitationsSearch`) antes de interpolar en el `.or()`                                                        | Alto (si fuera real)  | Bajo            | Mitigado (ver §12)    |
+| Usuarios (Joseph)     | A08/A09 — `console.log` de depuración imprimía `full_name`/`email` crudos a stdout antes del saneamiento de `logAuditEvent`, introducido para cubrir el vector (J2-POC-11)                                                   | DE.CM-01, DE.AE-03      | Eliminación del `console.log`                                                                                                     | Medio (si fuera real) | Bajo            | Mitigado (ver §13)    |
 
 ---
 
@@ -493,15 +507,119 @@ Ambos números son correctos para lo que describen; no se trata de un error a co
 
 ---
 
-## 11. Riesgo residual — resumen final
+## 12. J3-PAT-10 — J2-POC-10 · Inyección en el filtro `.or()` de `searchInvitations` (vulnerabilidad introducida)
 
-Los 9 hallazgos del módulo (`J2-POC-1` a `J2-POC-9`) quedan en **riesgo residual Bajo**, verificado en vivo
-con evidencia concreta de antes/después en este mismo documento: 7 con commits propios de esta rama
+**Ficha.** Archivos: `apps/panel-admin/src/features/invitations/services/searchInvitations.ts` (modificado),
+`apps/panel-admin/src/features/invitations/utils/sanitizeSearch.ts` (nuevo).
+
+**Mapeo.** OWASP A03:2021 — Injection (clase PostgREST/Supabase query-builder). NIST CSF 2.0: PR.PS-04
+(hardening de entrada), PR.DS-10 (integridad de los datos en uso). Nota de metodología: este vector fue
+introducido deliberadamente para la PoC de la Fase 2 porque el módulo no tenía ninguna superficie real de
+inyección (J2.1); documentado en `fase-2-pocs.md` / J2-POC-10, con el mismo espíritu que J3-PAT-7 (J2-POC-8).
+
+**Diff (antes → después).**
+
+```ts
+// ANTES (introducido para la PoC):
+const { data, error } = await supabase
+  .from(DB_TABLES.PENDING_INVITATIONS)
+  .select("*")
+  .or(`email.ilike.${search}%,email.ilike.%${search}%`)
+  .order(DB_COLUMNS.pending_invitations.created_at, { ascending: false });
+
+// DESPUÉS (allowlist antes de interpolar — mismo patrón que el parche real de AUD-POC-2):
+const safeSearch = sanitizeInvitationsSearch(search);
+const { data, error } = await supabase
+  .from(DB_TABLES.PENDING_INVITATIONS)
+  .select("*")
+  .or(`email.ilike.${safeSearch}%,email.ilike.%${safeSearch}%`)
+  .order(DB_COLUMNS.pending_invitations.created_at, { ascending: false });
+```
+
+`sanitizeInvitationsSearch` (`utils/sanitizeSearch.ts`) calca `sanitizeSearch` de
+`audit-log/utils/sanitizeAuditLogParams.ts`: elimina todo carácter fuera de `[\p{L}\p{N}\s@._+-]`
+(incluida la coma y las comillas que permitían la inyección), recorta y trunca a 100 caracteres.
+
+**Prueba de regresión (en vivo, antes/después contra Supabase local con el mismo filtro que construye el
+código).** Mismo payload de ataque que J2-POC-10 (`search = nope,email.neq.""`):
+
+```
+# Antes del parche (documentado en fase-2-pocs.md / J2-POC-10-A03-filter-injection.txt):
+GET /rest/v1/pending_invitations?or=(email.ilike.nope,email.neq.""%,email.ilike.%nope,email.neq.""%)
+  -> 200 OK, 2 filas (el 100% de la tabla, incluida la invitación revocada)
+
+# Después del parche, mismo payload de entrada (sanitizeInvitationsSearch lo reduce a "nopeemail.neq."):
+GET /rest/v1/pending_invitations?or=(email.ilike.nopeemail.neq.%,email.ilike.%nopeemail.neq.%)
+  -> 200 OK, 0 filas
+```
+
+Test de regresión (sin red):
+`pnpm --filter @hotel/panel-admin exec vitest run tests/invitations/searchInvitations.test.ts` → 3/3 ✓
+(incluye un caso que confirma el filtro final a exactamente 2 cláusulas, sin comillas ni paréntesis, y un
+caso que confirma que cada carácter fuera de la allowlist se elimina).
+
+**Riesgo residual: Bajo.** La allowlist actúa sobre el único punto de entrada de `search`, así que ninguna
+coma, comilla o paréntesis llega al `.or()`; mismo patrón ya aceptado para AUD-POC-2/AUTH-POC-3/OP-POC-1.
+
+---
+
+## 13. J3-PAT-11 — J2-POC-11 · `console.log` de depuración en `createAdminAccountAction` (vulnerabilidad introducida)
+
+**Ficha.** Archivo: `apps/panel-admin/src/features/invitations/services/createAdminAccountAction.ts`
+(línea eliminada, justo antes del `try` que llama a `createAdminAccount`).
+
+**Mapeo.** OWASP A09:2021 — Security Logging and Monitoring Failures (log injection hacia stdout);
+relacionado A08:2021 — Software and Data Integrity Failures. NIST CSF 2.0: DE.CM-01, DE.AE-03, PR.PS-01.
+Nota de metodología: introducido para la PoC porque `audit_logs` (la tabla real) ya está protegida por el
+saneamiento de Fabian (AUD-POC-6), verificado en vivo antes de introducir este `console.log` — ver nota
+metodológica completa en `fase-2-pocs.md` / J2-POC-11.
+
+**Diff (antes → después).**
+
+```ts
+// ANTES (introducido para la PoC):
+const email = ((formData.get("email") as string) ?? "").trim();
+const full_name = ((formData.get("name") as string) ?? "").trim();
+
+console.log(`[invitations] creating admin account for ${full_name} <${email}>`);
+
+try {
+  await createAdminAccount(/* ... */);
+
+// DESPUÉS (se elimina por completo; nunca debió imprimirse a stdout):
+const email = ((formData.get("email") as string) ?? "").trim();
+const full_name = ((formData.get("name") as string) ?? "").trim();
+
+try {
+  await createAdminAccount(/* ... */);
+```
+
+**Prueba de regresión (en vivo).** Con el dev server corriendo (`pnpm --filter @hotel/panel-admin dev`,
+`:3002`) y sesión de `owner@hotel.local`, se envió una invitación real (`full_name =
+"j3pat11-regresion-check"`, `email = "j3pat11-regresion@hotel.local"`) vía el formulario "Invitar"
+(Playwright). Resultado: `POST /admin/invitations 200` en el log del servidor, **sin** ninguna línea
+`[invitations] creating admin account for ...` — contraste directo con la captura de J2-POC-11 (antes del
+parche), donde esa misma ruta sí imprimía el valor crudo (y, con un payload CRLF, una segunda línea
+forjada).
+
+**Riesgo residual: Bajo.** Al eliminar el sink por completo no depende de que nadie recuerde sanear un log
+de depuración que no debía existir; `logAuditEvent`, dos líneas más abajo en el mismo archivo, sigue siendo
+el único canal de auditoría y ya está saneado (AUD-POC-6).
+
+---
+
+## 14. Riesgo residual — resumen final (actualizado tras J3-PAT-10/11)
+
+Los 9 hallazgos originales del módulo (`J2-POC-1` a `J2-POC-9`) quedan en **riesgo residual Bajo**, verificado
+en vivo con evidencia concreta de antes/después en este mismo documento: 7 con commits propios de esta rama
 (J2-POC-2, -3, -5, -6, -7, -8, -9, vía curl y Playwright) y 2 con commits de Paula coordinados por archivo
 compartido (J2-POC-1, -4, vía §10.1 — commits `1ef0b61`/`e1994f9` confirmados por Paula). La
 única salvedad documentada con honestidad es la capacidad de *detección* sobre fallos silenciosos de
 auditoría (§10), que queda en riesgo residual Medio y es aceptable dado el alcance y las restricciones de
 herramientas del curso.
 
-J2.1 y J2.3 (hallazgos negativos de la Fase 2) no requirieron parche: ya estaban correctamente protegidos y
-se mantienen sin cambios.
+J2-POC-10 y J2-POC-11 (adenda, rama `security/users/fase3-parches-faltantes`) también quedan en **riesgo
+residual Bajo**, verificado en vivo (§§12-13): el filtro de `searchInvitations` ya no puede inyectar
+condiciones adicionales, y el `console.log` de depuración que exponía Audit Poisoning se eliminó por
+completo. Con esto, los 11 hallazgos de código del módulo (J2-POC-1 a J2-POC-11) quedan mitigados con
+riesgo residual Bajo; la única salvedad sigue siendo la de detección (§10), ya señalada arriba.
