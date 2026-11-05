@@ -26,6 +26,16 @@ export async function createAdminAccountAction(
   const email = ((formData.get("email") as string) ?? "").trim();
   const full_name = ((formData.get("name") as string) ?? "").trim();
 
+  // VULNERABILIDAD INTRODUCIDA A PROPOSITO (J2-POC-11, A08/A09 - Audit
+  // Poisoning / Log Injection). Debug log temporal que imprime full_name/email
+  // crudos a stdout, ANTES del saneamiento que logAuditEvent SI aplica mas
+  // abajo (sanitizeAuditText/sanitizeAuditMetadata). Mismo patron real que
+  // AUTH-POC-6 (loginAction.ts, modulo de Autenticacion) pero introducido a
+  // proposito aqui, en Usuarios, para poder demostrarlo en este modulo. Ver
+  // nota metodologica en users/fase-2-pocs.md (J2-POC-11) - se deja vigente
+  // hasta el parche de Fase 3.
+  console.log(`[invitations] creating admin account for ${full_name} <${email}>`);
+
   try {
     await createAdminAccount(
       email,

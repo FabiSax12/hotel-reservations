@@ -32,3 +32,4 @@ docs/proyecto-seguridad/consolidado/
 .playwright-mcp/
 
 *.local.md
+.cctmp/
